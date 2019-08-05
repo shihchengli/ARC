@@ -206,18 +206,18 @@
 <span class="sd">        software (str, optional): The electronic structure software to be used.</span>
 <span class="sd">        is_ts (bool, optional): Whether this species represents a transition structure.</span>
 <span class="sd">        scan (list, optional): A list representing atom labels for the dihedral scan</span>
-<span class="sd">                                (e.g., &quot;2 1 3 5&quot; as a string or [2, 1, 3, 5] as a list of integers).</span>
+<span class="sd">                              (e.g., &quot;2 1 3 5&quot; as a string or [2, 1, 3, 5] as a list of integers).</span>
 <span class="sd">        pivots (list, optional): The rotor scan pivots, if the job type is scan. Not used directly in these methods,</span>
-<span class="sd">                                   but used to identify the rotor.</span>
+<span class="sd">                                 but used to identify the rotor.</span>
 <span class="sd">        memory (int, optional): The total job allocated memory in GB.</span>
 <span class="sd">        comments (str, optional): Job comments (archived, not used).</span>
 <span class="sd">        trsh (str, optional): A troubleshooting keyword to be used in input files.</span>
 <span class="sd">        scan_trsh (str, optional): A troubleshooting method for rotor scans.</span>
 <span class="sd">        ess_trsh_methods (list, optional): A list of troubleshooting methods already tried out for ESS convergence.</span>
 <span class="sd">        bath_gas (str, optional): A bath gas. Currently used in OneDMin to calc L-J parameters.</span>
-<span class="sd">                                    Allowed values are He, Ne, Ar, Kr, H2, N2, O2</span>
+<span class="sd">                                  Allowed values are He, Ne, Ar, Kr, H2, N2, O2</span>
 <span class="sd">        initial_trsh (dict, optional): Troubleshooting methods to try by default. Keys are ESS software,</span>
-<span class="sd">                                         values are trshs.</span>
+<span class="sd">                                       values are trshs.</span>
 <span class="sd">        job_num (int, optional): Used as the entry number in the database, as well as the job name on the server.</span>
 <span class="sd">        job_server_name (str, optional): Job&#39;s name on the server (e.g., &#39;a103&#39;).</span>
 <span class="sd">        job_name (str, optional): Job&#39;s name for internal usage (e.g., &#39;opt_a103&#39;).</span>
@@ -229,9 +229,9 @@
 <span class="sd">        scan_res (int, optional): The rotor scan resolution in degrees.</span>
 <span class="sd">        checkfile (str, optional): The path to a previous Gaussian checkfile to be used in the current job.</span>
 <span class="sd">        number_of_radicals (int, optional): The number of radicals (inputted by the user, ARC won&#39;t attempt to</span>
-<span class="sd">                                              determine it). Defaults to None. Important, e.g., if a Species is a bi-rad</span>
-<span class="sd">                                              singlet, in which case the job should be unrestricted with</span>
-<span class="sd">                                              multiplicity = 1.</span>
+<span class="sd">                                            determine it). Defaults to None. Important, e.g., if a Species is a bi-rad</span>
+<span class="sd">                                            singlet, in which case the job should be unrestricted with</span>
+<span class="sd">                                            multiplicity = 1.</span>
 <span class="sd">        conformers (str, optional): A path to the YAML file conformer coordinates for a Gromacs MD job.</span>
 <span class="sd">        radius (float, optional): The species radius in Angstrom.</span>
 <span class="sd">        testing (bool, optional): Whether the object is generated for testing purposes, True if it is.</span>
@@ -243,8 +243,8 @@
 <span class="sd">        charge (int): The species net charge. Default is 0.</span>
 <span class="sd">        multiplicity (int): The species multiplicity.</span>
 <span class="sd">        number_of_radicals (int): The number of radicals (inputted by the user, ARC won&#39;t attempt to determine it).</span>
-<span class="sd">                                    Defaults to None. Important, e.g., if a Species is a bi-rad singlet, in which case</span>
-<span class="sd">                                    the job should be unrestricted with multiplicity = 1.</span>
+<span class="sd">                                  Defaults to None. Important, e.g., if a Species is a bi-rad singlet, in which case</span>
+<span class="sd">                                  the job should be unrestricted with multiplicity = 1.</span>
 <span class="sd">        spin (int): The spin. automatically derived from the multiplicity.</span>
 <span class="sd">        xyz (str): The xyz geometry. Used for the calculation.</span>
 <span class="sd">        radius (float): The species radius in Angstrom.</span>
@@ -255,9 +255,9 @@
 <span class="sd">        level_of_theory (str): Level of theory, e.g. &#39;CBS-QB3&#39;, &#39;CCSD(T)-F12a/aug-cc-pVTZ&#39;, &#39;B3LYP/6-311++G(3df,3pd)&#39;...</span>
 <span class="sd">        job_type (str): The job&#39;s type.</span>
 <span class="sd">        scan (list): A list representing atom labels for the dihedral scan</span>
-<span class="sd">                      (e.g., &quot;2 1 3 5&quot; as a string or [2, 1, 3, 5] as a list of integers).</span>
+<span class="sd">                    (e.g., &quot;2 1 3 5&quot; as a string or [2, 1, 3, 5] as a list of integers).</span>
 <span class="sd">        pivots (list): The rotor scan pivots, if the job type is scan. Not used directly in these methods,</span>
-<span class="sd">                         but used to identify the rotor.</span>
+<span class="sd">                       but used to identify the rotor.</span>
 <span class="sd">        scan_res (int): The rotor scan resolution in degrees.</span>
 <span class="sd">        software (str): The electronic structure software to be used.</span>
 <span class="sd">        server_nodes (list): A list of nodes this job was submitted to (for troubleshooting).</span>
@@ -272,10 +272,10 @@
 <span class="sd">        final_time (datetime): The date-time this job was initiated.</span>
 <span class="sd">        run_time (timedelta): Job execution time.</span>
 <span class="sd">        job_status (list): The job&#39;s server and ESS statuses.</span>
-<span class="sd">                             The job server status is in job.job_status[0] and can be either &#39;initializing&#39; / &#39;running&#39;</span>
-<span class="sd">                             / &#39;errored&#39; / &#39;done&#39;. The job ess (electronic structure software calculation) status is in</span>
-<span class="sd">                             job.job_status[1] and can be either `initializing` / `running` / `errored:</span>
-<span class="sd">                             {error type / message}` / `unconverged` / `done`.</span>
+<span class="sd">                           The job server status is in job.job_status[0] and can be either &#39;initializing&#39; / &#39;running&#39;</span>
+<span class="sd">                           / &#39;errored&#39; / &#39;done&#39;. The job ess (electronic structure software calculation) status is in</span>
+<span class="sd">                           job.job_status[1] and can be either `initializing` / `running` / `errored:</span>
+<span class="sd">                           {error type / message}` / `unconverged` / `done`.</span>
 <span class="sd">        job_server_name (str): Job&#39;s name on the server (e.g., &#39;a103&#39;).</span>
 <span class="sd">        job_name (str): Job&#39;s name for internal usage (e.g., &#39;opt_a103&#39;).</span>
 <span class="sd">        job_id (int): The job&#39;s ID determined by the server.</span>
@@ -298,7 +298,7 @@
 <span class="sd">        project_directory (str): The path to the project directory.</span>
 <span class="sd">        max_job_time (int): The maximal allowed job time on the server in hours.</span>
 <span class="sd">        bath_gas (str): A bath gas. Currently used in OneDMin to calc L-J parameters.</span>
-<span class="sd">                                      Allowed values are He, Ne, Ar, Kr, H2, N2, O2</span>
+<span class="sd">                        Allowed values are He, Ne, Ar, Kr, H2, N2, O2</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">ess_settings</span><span class="p">,</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">job_type</span><span class="p">,</span> <span class="n">level_of_theory</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">,</span>

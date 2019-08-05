@@ -766,7 +766,30 @@
                 <span class="n">conformer</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ess_trsh_methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scan</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">pivots</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scan_trsh</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">scan_res</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">max_job_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">confs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A helper function for running (all) jobs</span>
+<span class="sd">        A helper function for running (all) jobs.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
+<span class="sd">            xyz (str): A string-formated 3D coordinates for the species.</span>
+<span class="sd">            level_of_theory (str): The level of theory to use.</span>
+<span class="sd">            job_type (dtr): The type of job to run.</span>
+<span class="sd">            fine (bool, optional): Whether to run an optimization job with a fine grid. `True` to use fine.</span>
+<span class="sd">            software (str, optional): An ESS software to use.</span>
+<span class="sd">            shift (str, optional): A string representation alpha- and beta-spin orbitals shifts (molpro only).</span>
+<span class="sd">            trsh (str, optional): A troubleshooting keyword to be used in input files.</span>
+<span class="sd">            memory (int, optional): The total job allocated memory in GB.</span>
+<span class="sd">            conformer (int, optional): Conformer number if optimizing conformers.</span>
+<span class="sd">            ess_trsh_methods (list, optional): A list of troubleshooting methods already tried out for ESS convergence.</span>
+<span class="sd">            scan (list, optional): A list representing atom labels for the dihedral scan</span>
+<span class="sd">                                  (e.g., &quot;2 1 3 5&quot; as a string or [2, 1, 3, 5] as a list of integers).</span>
+<span class="sd">            pivots (list, optional): The rotor scan pivots, if the job type is scan. Not used directly in these methods,</span>
+<span class="sd">                                     but used to identify the rotor.</span>
+<span class="sd">            occ (int, optional): The number of occupied orbitals (core + val) from a molpro CCSD sp calc.</span>
+<span class="sd">            scan_trsh (str, optional): A troubleshooting method for rotor scans.</span>
+<span class="sd">            scan_res (int, optional): The rotor scan resolution in degrees.</span>
+<span class="sd">            max_job_time (int, optional): The maximal allowed job time on the server in hours.</span>
+<span class="sd">            confs (str, optional): A path to the YAML file conformer coordinates for a Gromacs MD job.</span>
+<span class="sd">            radius (float, optional): The species radius in Angstrom.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">max_job_time</span> <span class="o">=</span> <span class="n">max_job_time</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_job_time</span>  <span class="c1"># if it&#39;s None, set to default</span>
         <span class="n">ess_trsh_methods</span> <span class="o">=</span> <span class="n">ess_trsh_methods</span> <span class="k">if</span> <span class="n">ess_trsh_methods</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
@@ -808,7 +831,14 @@
 <div class="viewcode-block" id="Scheduler.end_job"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.end_job">[docs]</a>    <span class="k">def</span> <span class="nf">end_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">job_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A helper function for checking job status, saving in csv file, and downloading output files.</span>
-<span class="sd">        Returns ``True`` if job terminated successfully on the server, ``False`` otherwise</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            job (Job): The job object.</span>
+<span class="sd">            label (str): The species label.</span>
+<span class="sd">            job_name (str): The job name from the running_jobs dict.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">             bool: `True` if job terminated successfully on the server, `False` otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">job</span><span class="o">.</span><span class="n">determine_job_status</span><span class="p">()</span>  <span class="c1"># also downloads output file</span>
@@ -891,7 +921,10 @@
 
 <div class="viewcode-block" id="Scheduler.run_ts_conformer_jobs"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.run_ts_conformer_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">run_ts_conformer_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Spawn opt jobs at the ts_guesses level of theory for the TS guesses</span>
+<span class="sd">        Spawn opt jobs at the ts_guesses level of theory for the TS guesses.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The TS species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plotter</span><span class="o">.</span><span class="n">save_conformers_file</span><span class="p">(</span><span class="n">project_directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
                                      <span class="n">xyzs</span><span class="o">=</span><span class="p">[</span><span class="n">tsg</span><span class="o">.</span><span class="n">xyz</span> <span class="k">for</span> <span class="n">tsg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">ts_guesses</span><span class="p">],</span>
@@ -899,12 +932,13 @@
                                      <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span>
                                      <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">charge</span><span class="p">,</span> <span class="n">is_ts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                      <span class="n">ts_methods</span><span class="o">=</span><span class="p">[</span><span class="n">tsg</span><span class="o">.</span><span class="n">method</span> <span class="k">for</span> <span class="n">tsg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">ts_guesses</span><span class="p">])</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">conformers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">successful_tsgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">tsg</span> <span class="k">for</span> <span class="n">tsg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">ts_guesses</span> <span class="k">if</span> <span class="n">tsg</span><span class="o">.</span><span class="n">success</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">successful_tsgs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;conformers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">conformers</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">run_job</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">level_of_theory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_guess_level</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="s1">&#39;conformer&#39;</span><span class="p">,</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tsg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">successful_tsgs</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run_job</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">tsg</span><span class="o">.</span><span class="n">xyz</span><span class="p">,</span> <span class="n">level_of_theory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_guess_level</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="s1">&#39;conformer&#39;</span><span class="p">,</span>
                              <span class="n">conformer</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">conformers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">successful_tsgs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="s1">&#39;opt&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="ow">and</span> <span class="s1">&#39;composite&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]:</span>
                 <span class="c1"># proceed only if opt (/composite) not already spawned</span>
                 <span class="n">rxn</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -912,7 +946,7 @@
                     <span class="n">rxn</span> <span class="o">=</span> <span class="s1">&#39; of reaction &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">rxn_label</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Only one TS guess is available for species </span><span class="si">{0}{1}</span><span class="s1">,&#39;</span>
                             <span class="s1">&#39; using it for geometry optimization&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">rxn</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">conformers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">successful_tsgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">xyz</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_method</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -922,6 +956,9 @@
 <div class="viewcode-block" id="Scheduler.run_opt_job"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.run_opt_job">[docs]</a>    <span class="k">def</span> <span class="nf">run_opt_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn a geometry optimization job. The initial guess is taken from the `initial_xyz` attribute.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;opt&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]:</span>  <span class="c1"># Check whether or not opt jobs have been spawned yet</span>
             <span class="c1"># we&#39;re spawning the first opt job for this species</span>
@@ -935,6 +972,9 @@
 <div class="viewcode-block" id="Scheduler.run_composite_job"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.run_composite_job">[docs]</a>    <span class="k">def</span> <span class="nf">run_composite_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn a composite job (e.g., CBS-QB3) using &#39;final_xyz&#39; for species ot TS &#39;label&#39;.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_method</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">SchedulerError</span><span class="p">(</span><span class="s1">&#39;Cannot run </span><span class="si">{0}</span><span class="s1"> as a composite method, without specifying a method.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
@@ -952,6 +992,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn a freq job using &#39;final_xyz&#39; for species ot TS &#39;label&#39;.</span>
 <span class="sd">        If this was originally a composite job, run an appropriate separate freq job outputting the Hessian.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;freq&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]:</span>  <span class="c1"># Check whether or not freq jobs have been spawned yet</span>
             <span class="c1"># we&#39;re spawning the first freq job for this species</span>
@@ -963,7 +1006,10 @@
 <div class="viewcode-block" id="Scheduler.run_sp_job"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.run_sp_job">[docs]</a>    <span class="k">def</span> <span class="nf">run_sp_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn a single point job using &#39;final_xyz&#39; for species ot TS &#39;label&#39;.</span>
-<span class="sd">        If the method is MRCI, first spawn a simple CCSD job, and use orbital determination to run the MRCI job</span>
+<span class="sd">        If the method is MRCI, first spawn a simple CCSD job, and use orbital determination to run the MRCI job.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># determine_occ(label=self.label, xyz=self.xyz, charge=self.charge)</span>
         <span class="k">if</span> <span class="s1">&#39;sp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]:</span>  <span class="c1"># Check whether or not single point jobs have been spawned yet</span>
@@ -1011,6 +1057,9 @@
 <div class="viewcode-block" id="Scheduler.run_scan_jobs"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.run_scan_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">run_scan_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn rotor scan jobs using &#39;final_xyz&#39; for species or TS &#39;label&#39;.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;1d_rotors&#39;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="s1">&#39;scan&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]:</span>  <span class="c1"># Check whether or not rotor scan jobs have been spawned yet</span>
@@ -1031,8 +1080,11 @@
 
 <div class="viewcode-block" id="Scheduler.run_orbitals_job"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.run_orbitals_job">[docs]</a>    <span class="k">def</span> <span class="nf">run_orbitals_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Spawn orbitals job used for molecular orbital visualization</span>
-<span class="sd">        Currently supporting QChem for printing the orbitals, the output could be visualized using IQMol</span>
+<span class="sd">        Spawn orbitals job used for molecular orbital visualization.</span>
+<span class="sd">        Currently supporting QChem for printing the orbitals, the output could be visualized using IQMol.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;orbitals&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="s1">&#39;orbitals&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run_job</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">,</span> <span class="n">level_of_theory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orbitals_level</span><span class="p">,</span>
@@ -1040,7 +1092,10 @@
 
 <div class="viewcode-block" id="Scheduler.run_onedmin_job"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.run_onedmin_job">[docs]</a>    <span class="k">def</span> <span class="nf">run_onedmin_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Spawn a lennard-jones calculation using OneDMin</span>
+<span class="sd">        Spawn a lennard-jones calculation using OneDMin.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;onedmin&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ess_settings</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot execute a Lennard Jones job without the OneDMin software&#39;</span><span class="p">)</span>
@@ -1051,6 +1106,9 @@
 <div class="viewcode-block" id="Scheduler.run_force_field_fit_job"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.run_force_field_fit_job">[docs]</a>    <span class="k">def</span> <span class="nf">run_force_field_fit_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn a force field parameter fitting job (currently only Gaussian is supported for this task).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">svpfit_output_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>\
                 <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">svpfit_output_file</span><span class="p">):</span>
@@ -1166,6 +1224,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Process the generated conformers and spawn DFT jobs at the conformer_level.</span>
 <span class="sd">        If more than one conformer is available, they will be optimized at the DFT conformer_level.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plotter</span><span class="o">.</span><span class="n">save_conformers_file</span><span class="p">(</span><span class="n">project_directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
                                      <span class="n">xyzs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">conformers</span><span class="p">,</span> <span class="n">level_of_theory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conformer_level</span><span class="p">,</span>
@@ -1238,6 +1299,11 @@
 <span class="sd">        Parse E0 (kJ/mol) from the conformer opt output file.</span>
 <span class="sd">        For species, save it in the Species.conformer_energies attribute.</span>
 <span class="sd">        Fot TSs, save it in the TSGuess.energy attribute, and also parse the geometry.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            job (Job): The conformer job object.</span>
+<span class="sd">            label (str): The TS species label.</span>
+<span class="sd">            i (int): The conformer index.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;done&#39;</span><span class="p">:</span>
             <span class="n">log</span> <span class="o">=</span> <span class="n">determine_qm_software</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">job</span><span class="o">.</span><span class="n">local_path_to_output_file</span><span class="p">)</span>
@@ -1260,7 +1326,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine the most stable conformer for a species (which is not a TS).</span>
 <span class="sd">        Also run an isomorphism check.</span>
-<span class="sd">        Save the resulting xyz as `initial_xyz`</span>
+<span class="sd">        Save the resulting xyz as `initial_xyz`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">SchedulerError</span><span class="p">(</span><span class="s1">&#39;The determine_most_stable_conformer() method does not deal with transition&#39;</span>
@@ -1382,7 +1451,10 @@
 <div class="viewcode-block" id="Scheduler.determine_most_likely_ts_conformer"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.determine_most_likely_ts_conformer">[docs]</a>    <span class="k">def</span> <span class="nf">determine_most_likely_ts_conformer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine the most likely TS conformer.</span>
-<span class="sd">        Save the resulting xyz as `initial_xyz`</span>
+<span class="sd">        Save the resulting xyz as `initial_xyz`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The TS species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">SchedulerError</span><span class="p">(</span><span class="s1">&#39;determine_most_likely_ts_conformer() method only processes transition state guesses.&#39;</span><span class="p">)</span>
@@ -1451,6 +1523,10 @@
 <span class="sd">        Also checks (QA) that no imaginary frequencies were assigned for stable species,</span>
 <span class="sd">        and that exactly one imaginary frequency was assigned for a TS.</span>
 <span class="sd">        Returns ``True`` if the job converged successfully, ``False`` otherwise and troubleshoots.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
+<span class="sd">            job (Job): The composite job object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;parsing composite geo for </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">job_name</span><span class="p">))</span>
         <span class="n">freq_ok</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1500,6 +1576,10 @@
 <span class="sd">        If the job is &#39;optfreq&#39;, also checks (QA) that no imaginary frequencies were assigned for stable species,</span>
 <span class="sd">        and that exactly one imaginary frequency was assigned for a TS.</span>
 <span class="sd">        Returns ``True`` if the job (or both jobs) converged successfully, ``False`` otherwise and troubleshoots opt.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
+<span class="sd">            job (Job): The optimization job object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;parsing opt geo for </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">job_name</span><span class="p">))</span>
@@ -1572,6 +1652,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check that a freq job converged successfully. Also checks (QA) that no imaginary frequencies were assigned for</span>
 <span class="sd">        stable species, and that exactly one imaginary frequency was assigned for a TS.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
+<span class="sd">            job (Job): The frequency job object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;done&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">local_path_to_output_file</span><span class="p">):</span>
@@ -1602,6 +1686,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A helper function for determining the number of negative frequencies. Also logs appropriate errors.</span>
 <span class="sd">        Returns ``True`` if the number of negative frequencies is as excepted, ``False`` otherwise.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
+<span class="sd">            job (Job): The optimization job object.</span>
+<span class="sd">            vibfreqs (list): The vibrational frequencies.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">neg_freq_counter</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">neg_fre</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1634,6 +1723,10 @@
 <div class="viewcode-block" id="Scheduler.check_sp_job"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.check_sp_job">[docs]</a>    <span class="k">def</span> <span class="nf">check_sp_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">job</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check that a single point job converged successfully.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
+<span class="sd">            job (Job): The single point job object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;mrci&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sp_level</span> <span class="ow">and</span> <span class="s1">&#39;mrci&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">job</span><span class="o">.</span><span class="n">level_of_theory</span><span class="p">:</span>
             <span class="c1"># This is a CCSD job ran before MRCI. Spawn MRCI</span>
@@ -1683,6 +1776,9 @@
 <span class="sd">                          2: {}, ...</span>
 <span class="sd">                         }</span>
 
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
+<span class="sd">            job (Job): The rotor scan job object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">number_of_rotors</span><span class="p">):</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -1881,7 +1977,10 @@
 
 <div class="viewcode-block" id="Scheduler.check_all_done"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.check_all_done">[docs]</a>    <span class="k">def</span> <span class="nf">check_all_done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Check that we have all required data for the species/TS in ``label``</span>
+<span class="sd">        Check that we have all required data for the species/TS.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="s1">&#39;error&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">status</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;composite converged&#39;</span> <span class="ow">in</span> <span class="n">status</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;sp converged&#39;</span> <span class="ow">in</span> <span class="n">status</span> <span class="ow">and</span>
@@ -1929,7 +2028,11 @@
 <div class="viewcode-block" id="Scheduler.troubleshoot_negative_freq"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.troubleshoot_negative_freq">[docs]</a>    <span class="k">def</span> <span class="nf">troubleshoot_negative_freq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">job</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Troubleshooting cases where stable species (not TS&#39;s) have negative frequencies.</span>
-<span class="sd">        We take  +/-1.1 displacements, generating several initial geometries, and running them as conformers</span>
+<span class="sd">        We take  +/-1.1 displacements, generating several initial geometries, and running them as conformers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
+<span class="sd">            job (Job): The frequency job object.</span>
 
 <span class="sd">        Todo:</span>
 <span class="sd">            * get all torsions of the molecule (if weren&#39;t already generated),</span>
@@ -2051,6 +2154,9 @@
 <span class="sd">        We&#39;re troubleshooting for opt jobs.</span>
 <span class="sd">        First check for server status and troubleshoot if needed. Then check for ESS status and troubleshoot</span>
 <span class="sd">        if needed. Finally, check whether or not the last job had fine=True, add if it didn&#39;t run with fine.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">previous_job_num</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">latest_job_num</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -2095,7 +2201,14 @@
 
 <div class="viewcode-block" id="Scheduler.troubleshoot_ess"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.troubleshoot_ess">[docs]</a>    <span class="k">def</span> <span class="nf">troubleshoot_ess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">job</span><span class="p">,</span> <span class="n">level_of_theory</span><span class="p">,</span> <span class="n">job_type</span><span class="p">,</span> <span class="n">conformer</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Troubleshoot issues related to the electronic structure software, such as conversion</span>
+<span class="sd">        Troubleshoot issues related to the electronic structure software, such as conversion.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
+<span class="sd">            job (Job): The job object to troubleshoot.</span>
+<span class="sd">            level_of_theory (str): The level of theory to use.</span>
+<span class="sd">            job_type (str): The original job type.</span>
+<span class="sd">            conformer (str, optional): The conformer index.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Troubleshooting </span><span class="si">{label}</span><span class="s1"> job </span><span class="si">{job_name}</span><span class="s1"> which failed with status &quot;</span><span class="si">{stat}</span><span class="s1">&quot; in </span><span class="si">{soft}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -2391,7 +2504,10 @@
 
 <div class="viewcode-block" id="Scheduler.delete_all_species_jobs"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.delete_all_species_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">delete_all_species_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Delete all jobs of species/TS represented by `label`</span>
+<span class="sd">        Delete all jobs of a species/TS.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): The species label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Deleting all jobs for species </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">job_dict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -2466,7 +2582,7 @@
 
 <div class="viewcode-block" id="Scheduler.save_restart_dict"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.save_restart_dict">[docs]</a>    <span class="k">def</span> <span class="nf">save_restart_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Update the restart_dict and save the restart.yml file</span>
+<span class="sd">        Update the restart_dict and save the restart.yml file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_restart</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">restart_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Creating a restart file...&#39;</span><span class="p">)</span>
@@ -2504,6 +2620,11 @@
 <span class="sd">        self.adaptive_levels is a dictionary of levels of theory for ranges of the number of heavy atoms in the</span>
 <span class="sd">        molecule. Keys are tuples of (min_num_atoms, max_num_atoms), values are dictionaries with &#39;optfreq&#39; and &#39;sp&#39;</span>
 <span class="sd">        as keys and levels of theory as values. &#39;inf&#39; is accepted an max_num_atoms.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            original_level_of_theory (str): The level of theory for non-sp/opt/freq job types.</span>
+<span class="sd">            job_type (Job): The job type for whcih the level of theory is determined.</span>
+<span class="sd">            heavy_atoms (int): The number of heavy atoms in the species.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptive_levels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">constraint</span><span class="p">,</span> <span class="n">level_dict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptive_levels</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2530,7 +2651,12 @@
 
 
 <div class="viewcode-block" id="sum_time_delta"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.sum_time_delta">[docs]</a><span class="k">def</span> <span class="nf">sum_time_delta</span><span class="p">(</span><span class="n">timedelta_list</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A helper function for summing datetime.timedelta objects&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A helper function for summing datetime.timedelta objects.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        timedelta_list (list): Time delta&#39;s to sum.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">timedelta</span> <span class="ow">in</span> <span class="n">timedelta_list</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">timedelta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
