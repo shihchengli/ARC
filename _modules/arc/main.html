@@ -873,6 +873,9 @@
                                    <span class="n">adaptive_levels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">adaptive_levels</span><span class="p">,</span> <span class="n">confs_to_dft</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">confs_to_dft</span><span class="p">,</span>
                                    <span class="n">dont_gen_confs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dont_gen_confs</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_checks</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_check_files</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">save_project_info_file</span><span class="p">()</span>
 
         <span class="n">prc</span> <span class="o">=</span> <span class="n">Processor</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">project_directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span><span class="p">,</span>
@@ -882,8 +885,6 @@
                         <span class="n">t_count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t_count</span><span class="p">,</span> <span class="n">freq_scale_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq_scale_factor</span><span class="p">)</span>
         <span class="n">prc</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_checks</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">delete_check_files</span><span class="p">()</span>
         <span class="n">log_footer</span><span class="p">(</span><span class="n">execution_time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ARC.save_project_info_file"><a class="viewcode-back" href="../../api/main.html#arc.main.ARC.save_project_info_file">[docs]</a>    <span class="k">def</span> <span class="nf">save_project_info_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
