@@ -335,6 +335,7 @@
 <span class="sd">        conf_is_isomorphic (bool): Whether the lowest conformer is isomorphic with the 2D graph representation</span>
 <span class="sd">                                   of the species. `True` if it is. Defaults to `None`. If `True`, an isomorphism check</span>
 <span class="sd">                                   will be strictly enforced for the final optimized coordinates.</span>
+<span class="sd">        conformers_before_opt (tuple): Conformers XYZs of a species before optimization.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_ts</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rmg_species</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -345,6 +346,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">t1</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ts_number</span> <span class="o">=</span> <span class="n">ts_number</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conformers_before_opt</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">most_stable_conformer</span> <span class="o">=</span> <span class="kc">None</span>
@@ -639,6 +641,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformer_energies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformer_energies</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers_before_opt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers_before_opt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers_before_opt</span>
         <span class="k">return</span> <span class="n">species_dict</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.from_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species_dict</span><span class="p">):</span>
@@ -756,7 +760,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span>\
                 <span class="ow">and</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">tsg</span><span class="o">.</span><span class="n">xyz</span> <span class="k">for</span> <span class="n">tsg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="p">]):</span>
             <span class="c1"># TS species are allowed to be loaded w/o a structure</span>
-            <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Must have either mol or xyz for species </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span></div>
+            <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Must have either mol or xyz for species </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">conformers_before_opt</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers_before_opt&#39;</span><span class="p">]</span> \
+            <span class="k">if</span> <span class="s1">&#39;conformers_before_opt&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.from_yml_file"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.from_yml_file">[docs]</a>    <span class="k">def</span> <span class="nf">from_yml_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
