@@ -189,30 +189,41 @@ Includes spawning, terminating, checking, and troubleshooting various jobs</p>
 <dd><p>ARC’s Scheduler class. Creates jobs, submits, checks status, troubleshoots.
 Each species in <cite>species_list</cite> has to have a unique label.</p>
 <p>Dictionary structures:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>job_dict = {label_1: {&#39;conformers&#39;: {0: Job1,
-                                     1: Job2, ...},  # TS guesses are considered `conformers` as well
-                      &#39;opt&#39;:        {job_name1: Job1,
-                                     job_name2: Job2, ...},
-                      &#39;sp&#39;:         {job_name1: Job1,
-                                     job_name2: Job2, ...},
-                      &#39;freq&#39;:       {job_name1: Job1,
-                                     job_name2: Job2, ...},
-                      &#39;composite&#39;:  {job_name1: Job1,
-                                     job_name2: Job2, ...},
-                      &#39;scan&#39;:       {job_name1: Job1,
-                                     job_name2: Job2, ...},
-                      ...
-                      }
-            label_2: {...},
-            }
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">label_1</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;conformers&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">Job1</span><span class="p">,</span>
+                                     <span class="mi">1</span><span class="p">:</span> <span class="n">Job2</span><span class="p">,</span> <span class="o">...</span><span class="p">},</span>  <span class="c1"># TS guesses are considered `conformers` as well</span>
+                      <span class="s1">&#39;opt&#39;</span><span class="p">:</span>        <span class="p">{</span><span class="n">job_name1</span><span class="p">:</span> <span class="n">Job1</span><span class="p">,</span>
+                                     <span class="n">job_name2</span><span class="p">:</span> <span class="n">Job2</span><span class="p">,</span> <span class="o">...</span><span class="p">},</span>
+                      <span class="s1">&#39;sp&#39;</span><span class="p">:</span>         <span class="p">{</span><span class="n">job_name1</span><span class="p">:</span> <span class="n">Job1</span><span class="p">,</span>
+                                     <span class="n">job_name2</span><span class="p">:</span> <span class="n">Job2</span><span class="p">,</span> <span class="o">...</span><span class="p">},</span>
+                      <span class="s1">&#39;freq&#39;</span><span class="p">:</span>       <span class="p">{</span><span class="n">job_name1</span><span class="p">:</span> <span class="n">Job1</span><span class="p">,</span>
+                                     <span class="n">job_name2</span><span class="p">:</span> <span class="n">Job2</span><span class="p">,</span> <span class="o">...</span><span class="p">},</span>
+                      <span class="s1">&#39;composite&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="n">job_name1</span><span class="p">:</span> <span class="n">Job1</span><span class="p">,</span>
+                                     <span class="n">job_name2</span><span class="p">:</span> <span class="n">Job2</span><span class="p">,</span> <span class="o">...</span><span class="p">},</span>
+                      <span class="s1">&#39;scan&#39;</span><span class="p">:</span>       <span class="p">{</span><span class="n">job_name1</span><span class="p">:</span> <span class="n">Job1</span><span class="p">,</span>
+                                     <span class="n">job_name2</span><span class="p">:</span> <span class="n">Job2</span><span class="p">,</span> <span class="o">...</span><span class="p">},</span>
+                      <span class="o">...</span>
+                      <span class="p">}</span>
+            <span class="n">label_2</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+            <span class="p">}</span>
 
-output = {label_1: {&#39;status&#39;: ``str``,  # &#39;converged&#39;, or &#39;Error: &lt;reason&gt;&#39;
-                    &#39;geo&#39;: &lt;path to geometry optimization output file&gt;,
-                    &#39;freq&#39;: &lt;path to freq output file&gt;,
-                    &#39;sp&#39;: &lt;path to sp output file&gt;,
-                    &#39;composite&#39;: &lt;path to composite output file&gt;,
-         label_2: {...},
-         }
+<span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="n">label_1</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;job_types&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">job_type1</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">status1</span><span class="o">&gt;</span><span class="p">,</span>  <span class="c1"># boolean</span>
+                                  <span class="n">job_type2</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">status2</span><span class="o">&gt;</span><span class="p">,</span>
+                                 <span class="p">},</span>
+                    <span class="s1">&#39;paths&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;geo&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">geometry</span> <span class="n">optimization</span> <span class="n">output</span> <span class="n">file</span><span class="o">&gt;</span><span class="p">,</span>
+                              <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">freq</span> <span class="n">output</span> <span class="n">file</span><span class="o">&gt;</span><span class="p">,</span>
+                              <span class="s1">&#39;sp&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">sp</span> <span class="n">output</span> <span class="n">file</span><span class="o">&gt;</span><span class="p">,</span>
+                              <span class="s1">&#39;composite&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">composite</span> <span class="n">output</span> <span class="n">file</span><span class="o">&gt;</span><span class="p">,</span>
+                             <span class="p">},</span>
+                    <span class="s1">&#39;conformers&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
+                    <span class="s1">&#39;isomorphism&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
+                    <span class="s1">&#39;convergence&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
+                    <span class="s1">&#39;restart&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
+                    <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
+                    <span class="s1">&#39;warnings&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
+                    <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
+                   <span class="p">},</span>
+         <span class="n">label_2</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+         <span class="p">}</span>
 </pre></div>
 </div>
 <p>Note: The rotor scan dicts are located under Species.rotors_dict</p>
@@ -405,7 +416,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <dl class="attribute">
 <dt id="arc.scheduler.Scheduler.output">
 <code class="descname">output</code><a class="headerlink" href="#arc.scheduler.Scheduler.output" title="Permalink to this definition">¶</a></dt>
-<dd><p>Output dictionary with status and final QM file paths for all species.</p>
+<dd><p>Output dictionary with status per job type and final QM file paths for all species.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -838,6 +849,22 @@ Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="arc.scheduler.Scheduler.does_output_dict_contain_info">
+<code class="descname">does_output_dict_contain_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.does_output_dict_contain_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.does_output_dict_contain_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether self.output contains any information other than the initialized structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Whether self.output contains any information, <cite>True</cite> if it does.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="arc.scheduler.Scheduler.end_job">
 <code class="descname">end_job</code><span class="sig-paren">(</span><em>job</em>, <em>label</em>, <em>job_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.end_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.end_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for checking job status, saving in csv file, and downloading output files.</p>
@@ -866,6 +893,14 @@ Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 <dt id="arc.scheduler.Scheduler.get_servers_jobs_ids">
 <code class="descname">get_servers_jobs_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.get_servers_jobs_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.get_servers_jobs_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check status on all active servers, return a list of relevant running job IDs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.scheduler.Scheduler.initialize_output_dict">
+<code class="descname">initialize_output_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.initialize_output_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.initialize_output_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.output.
+Do not initialize keys that will contain paths (‘geo’, ‘freq’, ‘sp’, ‘composite’),
+their existence indicate the job was terminated for restarting purposes.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1040,7 +1075,7 @@ If this was originally a composite job, run an appropriate separate freq job out
 <li><strong>label</strong> (<em>str</em>) – The species label.</li>
 <li><strong>xyz</strong> (<em>str</em>) – A string-formated 3D coordinates for the species.</li>
 <li><strong>level_of_theory</strong> (<em>str</em>) – The level of theory to use.</li>
-<li><strong>job_type</strong> (<em>dtr</em>) – The type of job to run.</li>
+<li><strong>job_type</strong> (<em>str</em>) – The type of job to run.</li>
 <li><strong>fine</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to run an optimization job with a fine grid. <cite>True</cite> to use fine.</li>
 <li><strong>software</strong> (<em>str</em><em>, </em><em>optional</em>) – An ESS software to use.</li>
 <li><strong>shift</strong> (<em>str</em><em>, </em><em>optional</em>) – A string representation alpha- and beta-spin orbitals shifts (molpro only).</li>

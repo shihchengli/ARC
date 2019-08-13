@@ -319,8 +319,6 @@
 <span class="sd">        arkane_file (str): Path to the Arkane Species file generated in Processor.</span>
 <span class="sd">        yml_path (str): Path to an Arkane YAML file representing a species (for loading the object).</span>
 <span class="sd">        checkfile (str): The local path to the latest checkfile by Gaussian for the species.</span>
-<span class="sd">        conformer_checkfiles (dict): A dictionary of conformer checkfiles. Keys are conformer indices,</span>
-<span class="sd">                                     Values are local paths to check files.</span>
 <span class="sd">        external_symmetry (int): The external symmetry of the species (not including rotor symmetries).</span>
 <span class="sd">        optical_isomers (int): Whether (=2) or not (=1) the species has chiral center/s.</span>
 <span class="sd">        transport_data (TransportData): A placeholder for updating transport properties after Lennard-Jones</span>
@@ -368,7 +366,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="n">charge</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_time</span> <span class="o">=</span> <span class="n">run_time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span> <span class="o">=</span> <span class="n">checkfile</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">conformer_checkfiles</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transport_data</span> <span class="o">=</span> <span class="n">TransportData</span><span class="p">()</span>
         <span class="n">smiles</span><span class="p">,</span> <span class="n">adjlist</span><span class="p">,</span> <span class="n">inchi</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">smiles</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">adjlist</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">inchi</span><span class="p">)</span>
 
@@ -626,8 +623,6 @@
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;initial_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;checkfile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformer_checkfiles</span><span class="p">:</span>
-            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformer_checkfiles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformer_checkfiles</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">most_stable_conformer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;most_stable_conformer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">most_stable_conformer</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -696,8 +691,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">chosen_ts_method</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;chosen_ts_method&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;chosen_ts_method&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">chosen_ts</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;chosen_ts&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;chosen_ts&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;checkfile&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;checkfile&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">conformer_checkfiles</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformer_checkfiles&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;conformer_checkfiles&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span>\
-                <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ts_methods</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="s1">&#39;xyz&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1202,7 +1195,8 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">return_value</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Not spawning additional jobs for this species!&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Species </span><span class="si">{0}</span><span class="s1"> was found to be isomorphic with the perception of its optimized coordinates.&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Species </span><span class="si">{0}</span><span class="s1"> was found to be isomorphic with the perception &#39;</span>
+                            <span class="s1">&#39;of its optimized coordinates.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot check isomorphism for species </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">return_value</span></div></div>
