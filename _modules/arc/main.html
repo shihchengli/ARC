@@ -510,11 +510,9 @@
                 <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices_to_pop</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">arc_species_list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">arc_species_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">converted_species_list</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">arc_spc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arc_species_list</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">arc_spc</span><span class="o">.</span><span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_species_labels</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">unique_species_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arc_spc</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Species label </span><span class="si">{0}</span><span class="s1"> is not unique&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arc_spc</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;bde&#39;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_hydrogen_for_bde</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">determine_unique_species_labels</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">arc_rxn_list</span> <span class="o">=</span> <span class="n">arc_rxn_list</span> <span class="k">if</span> <span class="n">arc_rxn_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
             <span class="n">converted_rxn_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
             <span class="n">indices_to_pop</span> <span class="o">=</span> <span class="p">[]</span>
@@ -823,6 +821,9 @@
                                                <span class="s1">&#39; </span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rotor_num</span><span class="p">,</span> <span class="n">spc</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">rotor_dict</span><span class="p">[</span><span class="s1">&#39;scan_path&#39;</span><span class="p">]))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">arc_species_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;bde&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_hydrogen_for_bde</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">determine_unique_species_labels</span><span class="p">()</span>
         <span class="k">if</span> <span class="s1">&#39;reactions&#39;</span> <span class="ow">in</span> <span class="n">input_dict</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">arc_rxn_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ARCReaction</span><span class="p">(</span><span class="n">reaction_dict</span><span class="o">=</span><span class="n">rxn_dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">rxn_dict</span> <span class="ow">in</span> <span class="n">input_dict</span><span class="p">[</span><span class="s1">&#39;reactions&#39;</span><span class="p">]]</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">rxn</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arc_rxn_list</span><span class="p">):</span>
@@ -1172,7 +1173,7 @@
             <span class="k">if</span> <span class="n">job_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">:</span>
                 <span class="c1"># set default value to True if key is missing</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="n">job_type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">for</span> <span class="n">job_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;onedmin&#39;</span><span class="p">,</span> <span class="s1">&#39;orbitals&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">job_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;onedmin&#39;</span><span class="p">,</span> <span class="s1">&#39;orbitals&#39;</span><span class="p">,</span> <span class="s1">&#39;bde&#39;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">job_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">:</span>
                 <span class="c1"># set default value to False if key is missing</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="n">job_type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></div>
@@ -1212,7 +1213,37 @@
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">logged</span><span class="p">:</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;deleting all Gaussian check files...&#39;</span><span class="p">)</span>
                         <span class="n">logged</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file_</span><span class="p">))</span></div></div>
+                    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file_</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ARC.determine_unique_species_labels"><a class="viewcode-back" href="../../api/main.html#arc.main.ARC.determine_unique_species_labels">[docs]</a>    <span class="k">def</span> <span class="nf">determine_unique_species_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine unique species labels.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If a non-unique species is found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">arc_spc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arc_species_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">arc_spc</span><span class="o">.</span><span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_species_labels</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unique_species_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arc_spc</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Species label </span><span class="si">{0}</span><span class="s1"> is not unique&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arc_spc</span><span class="o">.</span><span class="n">label</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ARC.add_hydrogen_for_bde"><a class="viewcode-back" href="../../api/main.html#arc.main.ARC.add_hydrogen_for_bde">[docs]</a>    <span class="k">def</span> <span class="nf">add_hydrogen_for_bde</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make sure ARC has a hydrogen species labeled as &#39;H&#39; for the final processing of bde jobs (if not, create one).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">spc</span><span class="o">.</span><span class="n">bdes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arc_species_list</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arc_species_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">species</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">species</span><span class="o">.</span><span class="n">number_of_atoms</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">species</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(</span><span class="n">get_cheap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;A species with label &quot;H&quot; was defined, but does not seem to be &#39;</span>
+                                           <span class="s1">&#39;the hydrogen atom species. Cannot calculate bond dissociation energies.&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># no H species defined, make one</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="n">ARCSpecies</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">smiles</span><span class="o">=</span><span class="s1">&#39;[H]&#39;</span><span class="p">,</span> <span class="n">generate_thermo</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">arc_species_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

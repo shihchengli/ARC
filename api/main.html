@@ -749,6 +749,12 @@ if xyz is given.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="arc.main.ARC.add_hydrogen_for_bde">
+<code class="descname">add_hydrogen_for_bde</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.add_hydrogen_for_bde"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.add_hydrogen_for_bde" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure ARC has a hydrogen species labeled as ‘H’ for the final processing of bde jobs (if not, create one).</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="arc.main.ARC.as_dict">
 <code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.as_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for dumping this object as a dictionary in a YAML file for restarting ARC.</p>
@@ -785,6 +791,20 @@ if <cite>diagnostics</cite> is True, this method will not raise errors, and will
 <dt id="arc.main.ARC.determine_model_chemistry">
 <code class="descname">determine_model_chemistry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.determine_model_chemistry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.determine_model_chemistry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the model_chemistry to be used in Arkane.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.main.ARC.determine_unique_species_labels">
+<code class="descname">determine_unique_species_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.determine_unique_species_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.determine_unique_species_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine unique species labels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – If a non-unique species is found.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

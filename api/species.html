@@ -185,7 +185,7 @@
 If the species is a transition state (TS), its <code class="docutils literal notranslate"><span class="pre">ts_guesses</span></code> attribute will have one or more <code class="docutils literal notranslate"><span class="pre">TSGuess</span></code> objects.</p>
 <dl class="class">
 <dt id="arc.species.species.ARCSpecies">
-<em class="property">class </em><code class="descclassname">arc.species.species.</code><code class="descname">ARCSpecies</code><span class="sig-paren">(</span><em>label=None</em>, <em>is_ts=False</em>, <em>rmg_species=None</em>, <em>mol=None</em>, <em>xyz=None</em>, <em>multiplicity=None</em>, <em>charge=None</em>, <em>smiles=u''</em>, <em>adjlist=u''</em>, <em>inchi=u''</em>, <em>bond_corrections=None</em>, <em>generate_thermo=True</em>, <em>species_dict=None</em>, <em>yml_path=None</em>, <em>ts_methods=None</em>, <em>ts_number=None</em>, <em>rxn_label=None</em>, <em>external_symmetry=None</em>, <em>optical_isomers=None</em>, <em>run_time=None</em>, <em>checkfile=None</em>, <em>number_of_radicals=None</em>, <em>force_field=u'MMFF94'</em>, <em>svpfit_output_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">arc.species.species.</code><code class="descname">ARCSpecies</code><span class="sig-paren">(</span><em>label=None</em>, <em>is_ts=False</em>, <em>rmg_species=None</em>, <em>mol=None</em>, <em>xyz=None</em>, <em>multiplicity=None</em>, <em>charge=None</em>, <em>smiles=u''</em>, <em>adjlist=u''</em>, <em>inchi=u''</em>, <em>bond_corrections=None</em>, <em>generate_thermo=True</em>, <em>species_dict=None</em>, <em>yml_path=None</em>, <em>ts_methods=None</em>, <em>ts_number=None</em>, <em>rxn_label=None</em>, <em>external_symmetry=None</em>, <em>optical_isomers=None</em>, <em>run_time=None</em>, <em>checkfile=None</em>, <em>number_of_radicals=None</em>, <em>force_field=u'MMFF94'</em>, <em>svpfit_output_file=None</em>, <em>bdes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class for representing stationary points.</p>
 <p>Dictionary structure:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: pivots_list,
@@ -251,6 +251,9 @@ species and species with many heteroatoms). Another option is specifying ‘chea
 and the “old” RDKit embedding method will be used.</li>
 <li><strong>svpfit_output_file</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to a Gaussian output file of an SVP Fit job if previously ran
 (otherwise, this job will be spawned if running Gromacs).</li>
+<li><strong>bdes</strong> (<em>list</em>) – Specifying for which bonds should bond dissociation energies be calculated.
+Entries are bonded atom indices tuples (1-indexed). An ‘all_h’ string entry is also allowed,
+triggering BDE calculations for all hydrogen atoms in the molecule.</li>
 </ul>
 </td>
 </tr>
@@ -319,7 +322,21 @@ information to make that decision (r vs. u).</p>
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.e_elect">
 <code class="descname">e_elect</code><a class="headerlink" href="#arc.species.species.ARCSpecies.e_elect" title="Permalink to this definition">¶</a></dt>
-<dd><p>The total electronic energy (without ZPE) of the species at the chosen sp level, in kJ/mol.</p>
+<dd><p>The total electronic energy (without ZPE) at the chosen sp level, in kJ/mol.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.species.species.ARCSpecies.e0">
+<code class="descname">e0</code><a class="headerlink" href="#arc.species.species.ARCSpecies.e0" title="Permalink to this definition">¶</a></dt>
+<dd><p>The 0 Kelvin energy (total electronic energy plus ZPE) at the chosen sp level, in kJ/mol.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -964,6 +981,22 @@ will be strictly enforced for the final optimized coordinates.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="arc.species.species.ARCSpecies.bdes">
+<code class="descname">bdes</code><a class="headerlink" href="#arc.species.species.ARCSpecies.bdes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifying for which bonds should bond dissociation energies be calculated.
+Entries are bonded atom indices tuples (1-indexed). An ‘all_h’ string entry is also allowed,
+triggering BDE calculations for all hydrogen atoms in the molecule.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.as_dict">
 <code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.as_dict" title="Permalink to this definition">¶</a></dt>
@@ -1128,6 +1161,26 @@ energies), or an ESS log/input files, making this method extremely flexible.</td
 <code class="descname">radius</code></dt>
 <dd><p>Determine the largest distance from the coordinate system origin attributed to one of the molecule’s
 atoms in 3D space. Units are Angstrom.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.species.species.ARCSpecies.scissors">
+<code class="descname">scissors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.scissors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.scissors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cut chemical bonds to create new species from the original one according to the .bdes attribute,
+preserving the 3D geometry other than the splitted bond.
+If one of the scission-resulting species is a hydrogen atom, it will be returned last, labeled as ‘H’.
+Other species labels will be &lt;original species label&gt;_BDE_index1_index2_X, where “X” is either “A” or “B”,
+and the indices are 1-indexed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The scission-resulting species.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

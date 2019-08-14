@@ -102,6 +102,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#visualizing-molecular-orbitals-mos">Visualizing molecular orbitals (MOs)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#don-t-generate-conformers-for-specific-species">Don’t generate conformers for specific species</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#writing-an-arc-input-file-using-the-api">Writing an ARC input file using the API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculating-bdes-bond-dissociation-energies">Calculating BDEs (bond dissociation energies)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Output</a></li>
@@ -532,6 +533,54 @@ which could be read as an input in ARC:</p>
   <span class="n">t1</span><span class="p">:</span> <span class="n">null</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="calculating-bdes-bond-dissociation-energies">
+<h2>Calculating BDEs (bond dissociation energies)<a class="headerlink" href="#calculating-bdes-bond-dissociation-energies" title="Permalink to this headline">¶</a></h2>
+<p>To direct ARC to calculate BDEs for a species, set the <code class="docutils literal notranslate"><span class="pre">bde</span></code> job type to <cite>True</cite>,
+and set the requested atom indices (1-indexed) in the species <code class="docutils literal notranslate"><span class="pre">.bdes</span></code> argument
+as a list of tuples representing indices of bonded atoms (via a single bond)
+between which the BDE will be calculated (a list of lists is also allowed and will be converted),
+E.g., a species can be defined as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spc1</span> <span class="o">=</span> <span class="n">ARCSpecies</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;label1&#39;</span><span class="p">,</span> <span class="n">smiles</span><span class="o">=</span><span class="s1">&#39;CC(NO)C&#39;</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz1</span><span class="p">,</span> <span class="n">bdes</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>Note that the <cite>bdes</cite> species argument also accepts the string <code class="docutils literal notranslate"><span class="pre">'all_h'</span></code> as one of the entries
+in the list, directing ARC to calculate BDEs for all hydrogen atoms in the species.
+Below is an example requesting all hydrogen BDEs in ethanol including the <cite>C–O</cite> BDE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="p">:</span> <span class="n">ethanol_BDEs</span>
+
+<span class="n">job_types</span><span class="p">:</span>
+  <span class="mi">1</span><span class="n">d_rotors</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">conformers</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">fine_grid</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">freq</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">opt</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">sp</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">bde</span><span class="p">:</span> <span class="n">true</span>
+
+<span class="n">species</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">label</span><span class="p">:</span> <span class="n">ethanol</span>
+  <span class="n">smiles</span><span class="p">:</span> <span class="n">CCO</span>
+  <span class="n">xyz</span><span class="p">:</span> <span class="o">|</span>
+    <span class="n">O</span>       <span class="mf">1.20823797</span>   <span class="o">-</span><span class="mf">0.43654321</span>    <span class="mf">0.79046266</span>
+    <span class="n">C</span>       <span class="mf">0.38565457</span>    <span class="mf">0.37473766</span>   <span class="o">-</span><span class="mf">0.03466399</span>
+    <span class="n">C</span>      <span class="o">-</span><span class="mf">0.94122817</span>   <span class="o">-</span><span class="mf">0.32248828</span>   <span class="o">-</span><span class="mf">0.24592109</span>
+    <span class="n">H</span>       <span class="mf">0.89282946</span>    <span class="mf">0.53292877</span>   <span class="o">-</span><span class="mf">0.99112072</span>
+    <span class="n">H</span>       <span class="mf">0.23767951</span>    <span class="mf">1.34108205</span>    <span class="mf">0.45660206</span>
+    <span class="n">H</span>      <span class="o">-</span><span class="mf">0.79278514</span>   <span class="o">-</span><span class="mf">1.30029213</span>   <span class="o">-</span><span class="mf">0.71598886</span>
+    <span class="n">H</span>      <span class="o">-</span><span class="mf">1.43922693</span>   <span class="o">-</span><span class="mf">0.50288055</span>    <span class="mf">0.71249177</span>
+    <span class="n">H</span>      <span class="o">-</span><span class="mf">1.60098471</span>    <span class="mf">0.27712988</span>   <span class="o">-</span><span class="mf">0.87920708</span>
+    <span class="n">H</span>       <span class="mf">2.04982343</span>    <span class="mf">0.03632579</span>    <span class="mf">0.90734524</span>
+  <span class="n">bdes</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">all_h</span>
+  <span class="o">-</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="o">-</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>Note: The BDEs are determined based on <cite>E0</cite>, therefore both <code class="docutils literal notranslate"><span class="pre">sp</span></code> and <code class="docutils literal notranslate"><span class="pre">freq</span></code> jobs
+must be spawned (and successfully terminated for all species and fragments).</p>
+<p>The calculated BDEs are reported in the log file as well as in a designated <cite>BDE_report.yml</cite>
+file under the <cite>output</cite> directory in the project’s folder. Units are kJ/mol.</p>
 </div>
 </div>
 

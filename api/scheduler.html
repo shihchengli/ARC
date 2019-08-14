@@ -216,7 +216,7 @@ Each species in <cite>species_list</cite> has to have a unique label.</p>
                              <span class="p">},</span>
                     <span class="s1">&#39;conformers&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
                     <span class="s1">&#39;isomorphism&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
-                    <span class="s1">&#39;convergence&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
+                    <span class="s1">&#39;convergence&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">status</span><span class="o">&gt;</span><span class="p">,</span>  <span class="c1"># boolean</span>
                     <span class="s1">&#39;restart&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
                     <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
                     <span class="s1">&#39;warnings&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">comments</span><span class="o">&gt;</span><span class="p">,</span>
@@ -897,10 +897,19 @@ Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.initialize_output_dict">
-<code class="descname">initialize_output_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.initialize_output_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.initialize_output_dict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">initialize_output_dict</code><span class="sig-paren">(</span><em>label=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.initialize_output_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.initialize_output_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.output.
 Do not initialize keys that will contain paths (‘geo’, ‘freq’, ‘sp’, ‘composite’),
-their existence indicate the job was terminated for restarting purposes.</p>
+their existence indicate the job was terminated for restarting purposes.
+If <cite>label</cite> is not None, will initialize for a specific species, otherwise will initialize for all species.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A species label.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1212,6 +1221,24 @@ Then generate conformers using combinations of the detected torsion wells, and r
 <li><strong>prev_conf_list</strong> (<em>list</em><em>, </em><em>optional</em>) – The previous conformers (entries are two length lists, not dicts).
 If not given, a first Gromacs job will be spawned.</li>
 <li><strong>num_confs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of conformers to generate.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.scheduler.Scheduler.spawn_post_opt_jobs">
+<code class="descname">spawn_post_opt_jobs</code><span class="sig-paren">(</span><em>label</em>, <em>job_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_post_opt_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_post_opt_jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawn additional jobs after opt has converged.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>label</strong> (<em>str</em>) – The species label.</li>
+<li><strong>job_name</strong> (<em>str</em>) – THe opt job name to differetiate between <cite>opt</cite> and <cite>optfreq</cite> jobs.</li>
 </ul>
 </td>
 </tr>
