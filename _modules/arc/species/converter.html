@@ -746,9 +746,15 @@
     <span class="n">mol1_copy</span> <span class="o">=</span> <span class="n">mol1</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">mol2_copy</span> <span class="o">=</span> <span class="n">mol2</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">spc1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="n">molecule</span><span class="o">=</span><span class="p">[</span><span class="n">mol1_copy</span><span class="p">])</span>
-    <span class="n">spc1</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="n">filter_structures</span><span class="p">)</span>
     <span class="n">spc2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="n">molecule</span><span class="o">=</span><span class="p">[</span><span class="n">mol2_copy</span><span class="p">])</span>
-    <span class="n">spc2</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="n">filter_structures</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">spc1</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="n">filter_structures</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">AtomTypeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">spc2</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="n">filter_structures</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">AtomTypeError</span><span class="p">:</span>
+        <span class="k">pass</span>
     <span class="k">return</span> <span class="n">spc1</span><span class="o">.</span><span class="n">isIsomorphic</span><span class="p">(</span><span class="n">spc2</span><span class="p">)</span></div>
 
 
