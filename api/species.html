@@ -215,9 +215,9 @@ Atom order corresponds to the order in .initial_xyz</li>
 (If there’s only one entry, it could be given directly as a string, not in a list).
 The file paths could direct to either a .xyz file, ARC conformers
 (w/ or w/o energies), or an ESS log/input files.</li>
-<li><strong>multiplicity</strong> (<em>int</em><em>, </em><em>optional</em>) – The species’ multiplicity. Can be determined from the adjlist/smiles/xyz
-(the algorithm assumes it’s either a singlet or a doublet).</li>
-<li><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The species’ net charge. Assumed to be 0 be default.</li>
+<li><strong>multiplicity</strong> (<em>int</em><em>, </em><em>optional</em>) – The species’ electron spin multiplicity. Can be determined from the
+adjlist/smiles/xyz (If unspecified, assumed to be either a singlet or a doublet).</li>
+<li><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The species’ net charge. Assumed to be 0 if unspecified.</li>
 <li><strong>smiles</strong> (<em>str</em><em>, </em><em>optional</em>) – A <a class="reference external" href="https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system">SMILES</a>
 representation for the species 2D graph.</li>
 <li><strong>adjlist</strong> (<em>str</em><em>, </em><em>optional</em>) – An <a class="reference external" href="http://reactionmechanismgenerator.github.io/RMG-Py/reference/molecule/adjlist.html">RMG adjacency list</a>
@@ -276,8 +276,8 @@ triggering BDE calculations for all hydrogen atoms in the molecule.</li>
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.multiplicity">
 <code class="descname">multiplicity</code><a class="headerlink" href="#arc.species.species.ARCSpecies.multiplicity" title="Permalink to this definition">¶</a></dt>
-<dd><p>The species’ multiplicity. Can be determined from the adjlist/smiles/xyz
-(the algorithm assumes it’s either a singlet or a doublet).</p>
+<dd><p>The species’ electron spin multiplicity. Can be determined from the adjlist/smiles/xyz
+(If unspecified, assumed to be either a singlet or a doublet).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -291,7 +291,7 @@ triggering BDE calculations for all hydrogen atoms in the molecule.</li>
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.charge">
 <code class="descname">charge</code><a class="headerlink" href="#arc.species.species.ARCSpecies.charge" title="Permalink to this definition">¶</a></dt>
-<dd><p>The species’ net charge. Assumed to be 0 be default.</p>
+<dd><p>The species’ net charge. Assumed to be 0 if unspecified.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -350,7 +350,7 @@ information to make that decision (r vs. u).</p>
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.is_ts">
 <code class="descname">is_ts</code><a class="headerlink" href="#arc.species.species.ARCSpecies.is_ts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether or not the species represents a transition state.</p>
+<dd><p>Whether the species represents a transition state. <cite>True</cite> if it does.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

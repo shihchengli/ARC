@@ -225,9 +225,9 @@
 <span class="sd">                                     (If there&#39;s only one entry, it could be given directly as a string, not in a list).</span>
 <span class="sd">                                     The file paths could direct to either a .xyz file, ARC conformers</span>
 <span class="sd">                                     (w/ or w/o energies), or an ESS log/input files.</span>
-<span class="sd">        multiplicity (int, optional): The species&#39; multiplicity. Can be determined from the adjlist/smiles/xyz</span>
-<span class="sd">                                      (the algorithm assumes it&#39;s either a singlet or a doublet).</span>
-<span class="sd">        charge (int, optional): The species&#39; net charge. Assumed to be 0 be default.</span>
+<span class="sd">        multiplicity (int, optional): The species&#39; electron spin multiplicity. Can be determined from the</span>
+<span class="sd">                                      adjlist/smiles/xyz (If unspecified, assumed to be either a singlet or a doublet).</span>
+<span class="sd">        charge (int, optional): The species&#39; net charge. Assumed to be 0 if unspecified.</span>
 <span class="sd">        smiles (str, optional): A `SMILES &lt;https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system&gt;`_</span>
 <span class="sd">                                representation for the species 2D graph.</span>
 <span class="sd">        adjlist (str, optional): An `RMG adjacency list</span>
@@ -268,16 +268,16 @@
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        label (str): The species&#39; label.</span>
-<span class="sd">        multiplicity (int): The species&#39; multiplicity. Can be determined from the adjlist/smiles/xyz</span>
-<span class="sd">                            (the algorithm assumes it&#39;s either a singlet or a doublet).</span>
-<span class="sd">        charge (int): The species&#39; net charge. Assumed to be 0 be default.</span>
+<span class="sd">        multiplicity (int): The species&#39; electron spin multiplicity. Can be determined from the adjlist/smiles/xyz</span>
+<span class="sd">                            (If unspecified, assumed to be either a singlet or a doublet).</span>
+<span class="sd">        charge (int): The species&#39; net charge. Assumed to be 0 if unspecified.</span>
 <span class="sd">        number_of_radicals (int): The number of radicals (inputted by the user, ARC won&#39;t attempt to determine it).</span>
 <span class="sd">                                  Defaults to None. Important, e.g., if a Species is a bi-rad singlet, in which case</span>
 <span class="sd">                                  the job should be unrestricted, but the multiplicity does not have the required</span>
 <span class="sd">                                  information to make that decision (r vs. u).</span>
 <span class="sd">        e_elect (float): The total electronic energy (without ZPE) at the chosen sp level, in kJ/mol.</span>
 <span class="sd">        e0 (float): The 0 Kelvin energy (total electronic energy plus ZPE) at the chosen sp level, in kJ/mol.</span>
-<span class="sd">        is_ts (bool):  Whether or not the species represents a transition state.</span>
+<span class="sd">        is_ts (bool):  Whether the species represents a transition state. `True` if it does.</span>
 <span class="sd">        number_of_rotors (int): The number of potential rotors to scan.</span>
 <span class="sd">        rotors_dict (dict): A dictionary of rotors. structure given below.</span>
 <span class="sd">        conformers (list): A list of selected conformers XYZs.</span>
@@ -845,11 +845,17 @@
                                                           <span class="n">force_field</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">force_field</span><span class="p">,</span> <span class="n">print_logs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                                           <span class="n">num_confs_to_return</span><span class="o">=</span><span class="n">confs_to_dft</span><span class="p">,</span> <span class="n">return_all_conformers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                                           <span class="n">plot_path</span><span class="o">=</span><span class="n">plot_path</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">conf</span> <span class="ow">in</span> <span class="n">lowest_confs</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">conformer_energies</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">lowest_confs</span><span class="p">))</span>
-            <span class="n">lowest_conf</span> <span class="o">=</span> <span class="n">conformers</span><span class="o">.</span><span class="n">get_lowest_confs</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">confs</span><span class="o">=</span><span class="n">lowest_confs</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Most stable force field conformer for </span><span class="si">{0}</span><span class="s1">:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">lowest_conf</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])</span></div>
+            <span class="k">if</span> <span class="n">lowest_confs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">conf</span> <span class="ow">in</span> <span class="n">lowest_confs</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">conformer_energies</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">lowest_confs</span><span class="p">))</span>
+                <span class="n">lowest_conf</span> <span class="o">=</span> <span class="n">conformers</span><span class="o">.</span><span class="n">get_lowest_confs</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">confs</span><span class="o">=</span><span class="n">lowest_confs</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Most stable force field conformer for </span><span class="si">{0}</span><span class="s1">:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">lowest_conf</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not generate conformers for </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(</span><span class="n">get_cheap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;No 3D coordinates available for species </span><span class="si">{0}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span></div>
+
 
 <div class="viewcode-block" id="ARCSpecies.get_cheap_conformer"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.get_cheap_conformer">[docs]</a>    <span class="k">def</span> <span class="nf">get_cheap_conformer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
