@@ -172,25 +172,29 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="kn">from</span> <span class="nn">arkane.gaussian</span> <span class="k">import</span> <span class="n">GaussianLog</span>
+<span class="kn">from</span> <span class="nn">arkane.molpro</span> <span class="k">import</span> <span class="n">MolproLog</span>
+<span class="kn">from</span> <span class="nn">arkane.qchem</span> <span class="k">import</span> <span class="n">QChemLog</span>
+<span class="kn">from</span> <span class="nn">arkane.util</span> <span class="k">import</span> <span class="n">determine_qm_software</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="k">import</span> <span class="n">getElement</span>
 <span class="kn">from</span> <span class="nn">rmgpy.qm.qmdata</span> <span class="k">import</span> <span class="n">QMData</span>
 <span class="kn">from</span> <span class="nn">rmgpy.qm.symmetry</span> <span class="k">import</span> <span class="n">PointGroupCalculator</span>
 
-<span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">arc_path</span><span class="p">,</span> <span class="n">servers</span><span class="p">,</span> <span class="n">default_job_types</span>
 <span class="kn">from</span> <span class="nn">arc.arc_exceptions</span> <span class="k">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">SettingsError</span>
+<span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">arc_path</span><span class="p">,</span> <span class="n">servers</span><span class="p">,</span> <span class="n">default_job_types</span>
 
-<span class="c1">##################################################################</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;arc&#39;</span><span class="p">)</span>
 
@@ -355,6 +359,19 @@
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Starting project </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">))</span></div>
 
 
+<div class="viewcode-block" id="log_footer"><a class="viewcode-back" href="../../api/common.html#arc.common.log_footer">[docs]</a><span class="k">def</span> <span class="nf">log_footer</span><span class="p">(</span><span class="n">execution_time</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Output a footer for the log.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        execution_time (str): The overall execution time for ARC.</span>
+<span class="sd">        level: The desired logging level.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;Total execution time: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">execution_time</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;ARC execution terminated on </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">asctime</span><span class="p">()))</span></div>
+
+
 <div class="viewcode-block" id="get_git_commit"><a class="viewcode-back" href="../../api/common.html#arc.common.get_git_commit">[docs]</a><span class="k">def</span> <span class="nf">get_git_commit</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the recent git commit to be logged.</span>
@@ -391,19 +408,6 @@
                 <span class="k">return</span> <span class="n">branch_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="log_footer"><a class="viewcode-back" href="../../api/common.html#arc.common.log_footer">[docs]</a><span class="k">def</span> <span class="nf">log_footer</span><span class="p">(</span><span class="n">execution_time</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Output a footer for the log.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        execution_time (str): The overall execution time for ARC.</span>
-<span class="sd">        level: The desired logging level.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;Total execution time: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">execution_time</span><span class="p">))</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;ARC execution terminated on </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">asctime</span><span class="p">()))</span></div>
 
 
 <div class="viewcode-block" id="read_yaml_file"><a class="viewcode-back" href="../../api/common.html#arc.common.read_yaml_file">[docs]</a><span class="k">def</span> <span class="nf">read_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -552,6 +556,12 @@
 <div class="viewcode-block" id="min_list"><a class="viewcode-back" href="../../api/common.html#arc.common.min_list">[docs]</a><span class="k">def</span> <span class="nf">min_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for finding the minimum of a list of integers where some of the entries might be None.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lst (list): The list.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: The entry with the minimal value.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
@@ -600,6 +610,26 @@
     <span class="n">job_types_report</span> <span class="o">=</span> <span class="p">[</span><span class="n">job_type</span> <span class="k">for</span> <span class="n">job_type</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">job_types</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">val</span><span class="p">]</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Considering the following job types: </span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_types_report</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">job_types</span></div>
+
+
+<div class="viewcode-block" id="determine_ess"><a class="viewcode-back" href="../../api/common.html#arc.common.determine_ess">[docs]</a><span class="k">def</span> <span class="nf">determine_ess</span><span class="p">(</span><span class="n">log_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine the ESS to which the log file belongs.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        log_file (str): The ESS log file path.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The ESS (either &#39;gaussian&#39;, &#39;qchem&#39;, or &#39;molpro&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">determine_qm_software</span><span class="p">(</span><span class="n">log_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;gaussian&#39;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">QChemLog</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;qchem&#39;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;molpro&#39;</span>
+    <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Could not identify the log file in </span><span class="si">{0}</span><span class="s1"> as belonging to Gaussian, QChem, or Molpro.&#39;</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

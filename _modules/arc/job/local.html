@@ -168,17 +168,19 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 
-<span class="kn">from</span> <span class="nn">arc.job.ssh</span> <span class="k">import</span> <span class="n">check_job_status_in_stdout</span>
-<span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">servers</span><span class="p">,</span> <span class="n">check_status_command</span><span class="p">,</span> <span class="n">submit_command</span><span class="p">,</span> <span class="n">submit_filename</span><span class="p">,</span> <span class="n">delete_command</span><span class="p">,</span> <span class="n">output_filename</span>
 <span class="kn">from</span> <span class="nn">arc.arc_exceptions</span> <span class="k">import</span> <span class="n">SettingsError</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="k">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">servers</span><span class="p">,</span> <span class="n">check_status_command</span><span class="p">,</span> <span class="n">submit_command</span><span class="p">,</span> <span class="n">submit_filename</span><span class="p">,</span> <span class="n">delete_command</span><span class="p">,</span> <span class="n">output_filename</span>
+<span class="kn">from</span> <span class="nn">arc.job.ssh</span> <span class="k">import</span> <span class="n">check_job_status_in_stdout</span>
 
-<span class="c1">##################################################################</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="execute_command"><a class="viewcode-back" href="../../../api/local.html#arc.job.local.execute_command">[docs]</a><span class="k">def</span> <span class="nf">execute_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>

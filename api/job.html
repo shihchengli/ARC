@@ -669,9 +669,11 @@ but used to identify the rotor.</p>
 <code class="descname">job_status</code><a class="headerlink" href="#arc.job.job.Job.job_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>The job’s server and ESS statuses.
 The job server status is in job.job_status[0] and can be either ‘initializing’ / ‘running’
-/ ‘errored’ / ‘done’. The job ess (electronic structure software calculation) status is in
-job.job_status[1] and can be either <cite>initializing</cite> / <cite>running</cite> / <cite>errored:
-{error type / message}</cite> / <cite>unconverged</cite> / <cite>done</cite>.</p>
+/ ‘errored’ / ‘done’. The job ESS status is in job.job_status[1] is a dictionary of
+{‘status’: str, ‘keywords’: list, ‘error’: str, ‘line’: str}.
+The values of ‘status’ can be either <cite>initializing</cite>, <cite>running</cite>, <cite>errored</cite>, <cite>unconverged</cite>,
+or <cite>done</cite>. If the status is ‘errored’, then standardized error keywords, the error
+description and the identified error line from the ESS log file will be given as well.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1013,6 +1015,14 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2</p>
 <dt id="arc.job.job.Job.determine_job_status">
 <code class="descname">determine_job_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.determine_job_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.determine_job_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the Job’s status. Updates self.job_status.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">IOError</span></code> – If the output file and any additional server information cannot be found.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

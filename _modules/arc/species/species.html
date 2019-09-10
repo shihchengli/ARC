@@ -1188,21 +1188,23 @@
             <span class="n">comment</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.check_final_xyz_isomorphism"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.check_final_xyz_isomorphism">[docs]</a>    <span class="k">def</span> <span class="nf">check_final_xyz_isomorphism</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">allow_nonisomorphic_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="ARCSpecies.check_xyz_isomorphism"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.check_xyz_isomorphism">[docs]</a>    <span class="k">def</span> <span class="nf">check_xyz_isomorphism</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">allow_nonisomorphic_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Check whether the perception of self.final_xyz is isomorphic with self.mol.</span>
+<span class="sd">        Check whether the perception of self.final_xyz or ``xyz`` is isomorphic with self.mol.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            allow_nonisomorphic_2d (bool): Whether to continue spawning jobs for the species even if this test fails.</span>
-<span class="sd">                                           `True` to allow (default is `False`).</span>
+<span class="sd">            allow_nonisomorphic_2d (bool, optional): Whether to continue spawning jobs for the species even if this</span>
+<span class="sd">                                                     test fails. `True` to allow (default is `False`).</span>
+<span class="sd">            xyz (str, optional): The coordinates to check (will use self.final_xyz if not given).</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Whether the perception of self.final_xyz is isomorphic with self.mol, `True` if it is.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">xyz</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span>
         <span class="n">passed_test</span><span class="p">,</span> <span class="n">return_value</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">b_mol</span> <span class="o">=</span> <span class="n">molecules_from_xyz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">b_mol</span> <span class="o">=</span> <span class="n">molecules_from_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">except</span> <span class="n">SanitizationError</span><span class="p">:</span>
                 <span class="n">b_mol</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">b_mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

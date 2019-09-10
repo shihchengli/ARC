@@ -849,22 +849,6 @@ Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="arc.scheduler.Scheduler.does_output_dict_contain_info">
-<code class="descname">does_output_dict_contain_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.does_output_dict_contain_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.does_output_dict_contain_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine whether self.output contains any information other than the initialized structure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Whether self.output contains any information, <cite>True</cite> if it does.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="arc.scheduler.Scheduler.end_job">
 <code class="descname">end_job</code><span class="sig-paren">(</span><em>job</em>, <em>label</em>, <em>job_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.end_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.end_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for checking job status, saving in csv file, and downloading output files.</p>
@@ -1285,8 +1269,8 @@ If not given, a first Gromacs job will be spawned.</li>
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.troubleshoot_negative_freq">
 <code class="descname">troubleshoot_negative_freq</code><span class="sig-paren">(</span><em>label</em>, <em>job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_negative_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_negative_freq" title="Permalink to this definition">¶</a></dt>
-<dd><p>Troubleshooting cases where stable species (not TS’s) have negative frequencies.
-We take  +/-1.1 displacements, generating several initial geometries, and running them as conformers.</p>
+<dd><p>Troubleshooting cases where non-TS species have negative frequencies.
+Run newly generated conformers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1319,7 +1303,7 @@ if needed. Finally, check whether or not the last job had fine=True, add if it d
 
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.troubleshoot_scan_job">
-<code class="descname">troubleshoot_scan_job</code><span class="sig-paren">(</span><em>job</em>, <em>method=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_scan_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_scan_job" title="Permalink to this definition">¶</a></dt>
+<code class="descname">troubleshoot_scan_job</code><span class="sig-paren">(</span><em>job</em>, <em>methods=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_scan_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_scan_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshooting rotor scans
 Using the following methods: freezing all dihedrals other than the scan’s pivots for this job,
 or increasing the scan resolution.</p>
@@ -1329,8 +1313,7 @@ or increasing the scan resolution.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The scan Job object.</li>
-<li><strong>method</strong> (<em>list</em>) – The troubleshooting method/s to try.
-Optional values: ‘freeze’, ‘inc_res’.</li>
+<li><strong>methods</strong> (<em>list</em>) – The troubleshooting method/s to try. Optional values: ‘freeze’, ‘inc_res’.</li>
 </ul>
 </td>
 </tr>

@@ -208,6 +208,24 @@ Also check ESS and servers.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="arc.common.determine_ess">
+<code class="descclassname">arc.common.</code><code class="descname">determine_ess</code><span class="sig-paren">(</span><em>log_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_ess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the ESS to which the log file belongs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log_file</strong> (<em>str</em>) – The ESS log file path.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The ESS (either ‘gaussian’, ‘qchem’, or ‘molpro’.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.common.determine_symmetry">
 <code class="descclassname">arc.common.</code><code class="descname">determine_symmetry</code><span class="sig-paren">(</span><em>coords</em>, <em>symbols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_symmetry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine external symmetry and chirality (optical isomers) of the species.</p>
@@ -395,6 +413,18 @@ Returns the comprehensive (default values for missing job types) job types for A
 <dt id="arc.common.min_list">
 <code class="descclassname">arc.common.</code><code class="descname">min_list</code><span class="sig-paren">(</span><em>lst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#min_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.min_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for finding the minimum of a list of integers where some of the entries might be None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lst</strong> (<em>list</em>) – The list.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The entry with the minimal value.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">

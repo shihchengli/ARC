@@ -1004,19 +1004,25 @@ triggering BDE calculations for all hydrogen atoms in the molecule.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="arc.species.species.ARCSpecies.check_final_xyz_isomorphism">
-<code class="descname">check_final_xyz_isomorphism</code><span class="sig-paren">(</span><em>allow_nonisomorphic_2d=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.check_final_xyz_isomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.check_final_xyz_isomorphism" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check whether the perception of self.final_xyz is isomorphic with self.mol.</p>
+<dt id="arc.species.species.ARCSpecies.check_xyz_isomorphism">
+<code class="descname">check_xyz_isomorphism</code><span class="sig-paren">(</span><em>allow_nonisomorphic_2d=False</em>, <em>xyz=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.check_xyz_isomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.check_xyz_isomorphism" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the perception of self.final_xyz or <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is isomorphic with self.mol.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>allow_nonisomorphic_2d</strong> (<em>bool</em>) – Whether to continue spawning jobs for the species even if this test fails.
-<cite>True</cite> to allow (default is <cite>False</cite>).</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>allow_nonisomorphic_2d</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to continue spawning jobs for the species even if this
+test fails. <cite>True</cite> to allow (default is <cite>False</cite>).</li>
+<li><strong>xyz</strong> (<em>str</em><em>, </em><em>optional</em>) – The coordinates to check (will use self.final_xyz if not given).</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Whether the perception of self.final_xyz is isomorphic with self.mol, <cite>True</cite> if it is.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Whether the perception of self.final_xyz is isomorphic with self.mol, <cite>True</cite> if it is.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
