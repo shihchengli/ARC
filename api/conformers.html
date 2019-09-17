@@ -187,30 +187,26 @@
 <p class="last">variables that contain atom indices such as torsions and tops are 1-indexed,
 while atoms in Molecules are 0-indexed.</p>
 </div>
-<dl class="function">
-<dt id="arc.species.conformers.calculate_dihedral_angle">
-<code class="descclassname">arc.species.conformers.</code><code class="descname">calculate_dihedral_angle</code><span class="sig-paren">(</span><em>coord</em>, <em>torsion</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#calculate_dihedral_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.calculate_dihedral_angle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate a dihedral angle. Inspired by ASE Atoms.get_dihedral().</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>coord</strong> (<em>list</em>) – The array-format coordinates.</li>
-<li><strong>torsion</strong> (<em>list</em>) – The 4 atoms defining the dihedral angle.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The dihedral angle.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<p>conformers is a list of dictionaries, each with the following keys:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;xyz&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="s1">&#39;FF energy&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">float</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="s1">&#39;torsion_dihedrals&#39;</span><span class="p">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="n">torsion</span> <span class="nb">tuple</span> <span class="mi">0</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">angle</span> <span class="mi">0</span><span class="p">,</span>
+                       <span class="o">&lt;</span><span class="n">torsion</span> <span class="nb">tuple</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">angle</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>Module workflow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">generate_conformers</span>
+    <span class="n">generate_force_field_conformers</span>
+        <span class="n">get_force_field_energies</span><span class="p">,</span> <span class="n">rdkit_force_field</span> <span class="ow">or</span> <span class="n">mix_rdkit_and_openbabel_force_field</span><span class="p">,</span> <span class="n">determine_dihedrals</span>
+    <span class="n">deduce_new_conformers</span>
+        <span class="n">get_torsion_angles</span><span class="p">,</span> <span class="n">determine_torsion_symmetry</span><span class="p">,</span> <span class="n">determine_torsion_sampling_points</span><span class="p">,</span>
+        <span class="n">change_dihedrals_and_force_field_it</span>
+    <span class="n">get_lowest_confs</span>
+</pre></div>
+</div>
 <dl class="function">
 <dt id="arc.species.conformers.change_dihedrals_and_force_field_it">
 <code class="descclassname">arc.species.conformers.</code><code class="descname">change_dihedrals_and_force_field_it</code><span class="sig-paren">(</span><em>label</em>, <em>mol</em>, <em>xyz</em>, <em>torsions</em>, <em>new_dihedrals</em>, <em>optimize=True</em>, <em>return_xyz_strings=True</em>, <em>force_field=u'MMFF94'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#change_dihedrals_and_force_field_it"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.change_dihedrals_and_force_field_it" title="Permalink to this definition">¶</a></dt>
@@ -614,14 +610,14 @@ We don’t care about the actual rotor symmetry number here, since we plan to ju
 <dl class="function">
 <dt id="arc.species.conformers.find_internal_rotors">
 <code class="descclassname">arc.species.conformers.</code><code class="descname">find_internal_rotors</code><span class="sig-paren">(</span><em>mol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#find_internal_rotors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.find_internal_rotors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Locates the sets of indices corresponding to every internal rotor.</p>
+<dd><p>Locates the sets of indices corresponding to every internal rotor (1-indexed).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mol</strong> (<em>Molecule</em>) – The molecule for which rotors will be determined</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">All rotor dictionaries with the gaussian scan coordinates, the pivots and the smallest top.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Entrties are rotor dictionaries with the gaussian scan coordinates, the pivots and the smallest top.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>

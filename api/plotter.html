@@ -290,8 +290,24 @@ Source: <a class="reference external" href="https://stackoverflow.com/questions/
 
 <dl class="function">
 <dt id="arc.plotter.plot_rotor_scan">
-<code class="descclassname">arc.plotter.</code><code class="descname">plot_rotor_scan</code><span class="sig-paren">(</span><em>angle</em>, <em>v_list</em>, <em>path=None</em>, <em>pivots=None</em>, <em>comment=u''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_rotor_scan" title="Permalink to this definition">¶</a></dt>
-<dd><p>plots a 1D rotor PES for v_list vs. angle.</p>
+<code class="descclassname">arc.plotter.</code><code class="descname">plot_rotor_scan</code><span class="sig-paren">(</span><em>angles</em>, <em>energies</em>, <em>path=None</em>, <em>pivots=None</em>, <em>comment=u''</em>, <em>units=u'radians'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_rotor_scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a 1D rotor PES for energy vs. angles.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>angles</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>np.array</em>) – Dihedral angles.</li>
+<li><strong>energies</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>np.array</em>) – The energies in kJ/mol.</li>
+<li><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The folder path for saving the rotor scan image and comments.</li>
+<li><strong>pivots</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>optional</em>) – The pivotal atoms of the scan.</li>
+<li><strong>comment</strong> (<em>str</em><em>, </em><em>optional</em>) – Reason for invalidating this rotor.</li>
+<li><strong>units</strong> (<em>str</em><em>, </em><em>optional</em>) – The <code class="docutils literal notranslate"><span class="pre">angle</span></code> units, either ‘degrees’ or ‘radians’.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -358,6 +374,28 @@ If not given (None) then the Species.conformer_energies are used instead.</li>
 <cite>rxn_list</cite> is a list of ARCReaction objects.
 <cite>name</cite> is the library’s name (or project’s name).
 <cite>long_desc</cite> is a multiline string with level of theory description.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.plotter.save_rotor_text_file">
+<code class="descclassname">arc.plotter.</code><code class="descname">save_rotor_text_file</code><span class="sig-paren">(</span><em>angles</em>, <em>energies</em>, <em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_rotor_text_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_rotor_text_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a text file summarizing a rotor scan, useful for brute force scans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>angles</strong> (<em>list</em>) – The dihedral angles in degrees.</li>
+<li><strong>energies</strong> (<em>list</em>) – The respective scan energies in kJ/mol.</li>
+<li><strong>path</strong> (<em>str</em>) – The path of the file to be saved.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">InputError</span></code> – If energies and angles are not the same length.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">

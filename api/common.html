@@ -188,6 +188,30 @@ As such, it should not import any other ARC module (specifically ones that use t
 <p>VERSION is the full ARC version, using <a class="reference external" href="https://semver.org/">semantic versioning</a>.</p>
 <p>ATOM_RADII data taken from <a class="reference external" href="http://dx.doi.org/10.1039/b801115j">DOI 10.1039/b801115j</a>.</p>
 <dl class="function">
+<dt id="arc.common.calculate_dihedral_angle">
+<code class="descclassname">arc.common.</code><code class="descname">calculate_dihedral_angle</code><span class="sig-paren">(</span><em>coords</em>, <em>torsion</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#calculate_dihedral_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.calculate_dihedral_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate a dihedral angle. Inspired by ASE Atoms.get_dihedral().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>coords</strong> (<em>list</em><em>, </em><em>tuple</em>) – The array-format or tuple-format coordinates.</li>
+<li><strong>torsion</strong> (<em>list</em>) – The 4 atoms defining the dihedral angle, 1-indexed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The dihedral angle.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.common.check_ess_settings">
 <code class="descclassname">arc.common.</code><code class="descname">check_ess_settings</code><span class="sig-paren">(</span><em>ess_settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#check_ess_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.check_ess_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function to convert servers in the ess_settings dict to lists

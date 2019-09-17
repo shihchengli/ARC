@@ -201,6 +201,8 @@ Each species in <cite>species_list</cite> has to have a unique label.</p>
                                      <span class="n">job_name2</span><span class="p">:</span> <span class="n">Job2</span><span class="p">,</span> <span class="o">...</span><span class="p">},</span>
                       <span class="s1">&#39;scan&#39;</span><span class="p">:</span>       <span class="p">{</span><span class="n">job_name1</span><span class="p">:</span> <span class="n">Job1</span><span class="p">,</span>
                                      <span class="n">job_name2</span><span class="p">:</span> <span class="n">Job2</span><span class="p">,</span> <span class="o">...</span><span class="p">},</span>
+                      <span class="o">&lt;</span><span class="n">job_type</span><span class="o">&gt;</span><span class="p">:</span>   <span class="p">{</span><span class="n">job_name1</span><span class="p">:</span> <span class="n">Job1</span><span class="p">,</span>
+                                     <span class="n">job_name2</span><span class="p">:</span> <span class="n">Job2</span><span class="p">,</span> <span class="o">...</span><span class="p">},</span>
                       <span class="o">...</span>
                       <span class="p">}</span>
             <span class="n">label_2</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
@@ -670,6 +672,65 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="arc.scheduler.Scheduler.check_directed_scan">
+<code class="descname">check_directed_scan</code><span class="sig-paren">(</span><em>label</em>, <em>pivots</em>, <em>scan</em>, <em>energies</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_directed_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_directed_scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks (QA) whether the directed scan is relatively “smooth”,
+and whether the optimized geometry indeed represents the minimum energy conformer.
+Recommends whether or not to use this rotor using the ‘successful_rotors’ and ‘unsuccessful_rotors’ attributes.
+This method differs from check_directed_scan_job(), since here we consider the entire scan.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>label</strong> (<em>str</em>) – The species label.</li>
+<li><strong>pivots</strong> (<em>list</em>) – The rotor pivots.</li>
+<li><strong>scan</strong> (<em>list</em>) – The four atoms defining the dihedral.</li>
+<li><strong>energies</strong> (<em>list</em>) – The rotor scan energies in kJ/mol.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.scheduler.Scheduler.check_directed_scan_job">
+<code class="descname">check_directed_scan_job</code><span class="sig-paren">(</span><em>label</em>, <em>job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_directed_scan_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_directed_scan_job" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that a directed scan job for a specific dihedral angle converged successfully, otherwise troubleshoot.
+This method differs from check_directed_scan, since here we consider each the constrained opt separately.</p>
+<p>rotors_dict structure (attribute of ARCSpecies):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: pivots_list,
+                  &#39;top&#39;: top_list,
+                  &#39;scan&#39;: scan_list,
+                  &#39;success&#39;: ``bool``,
+                  &#39;invalidation_reason&#39;: ``str``,
+                  &#39;times_dihedral_set&#39;: ``int``,
+                  &#39;scan_path&#39;: &lt;path to scan output file&gt;,
+                  &#39;max_e&#39;: ``float``,  # in kJ/mol},
+                  &#39;symmetry&#39;: ``int``,
+                  &#39;directed_scan&#39;: ``dict``,  # keys: dihedrals,
+                                              # values: dicts of energy, xyz, is_isomorphic, trsh
+                 }
+              2: {}, ...
+             }
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>label</strong> (<em>str</em>) – The species label.</li>
+<li><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The rotor scan job object.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="arc.scheduler.Scheduler.check_freq_job">
 <code class="descname">check_freq_job</code><span class="sig-paren">(</span><em>label</em>, <em>job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_freq_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_freq_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that a freq job converged successfully. Also checks (QA) that no imaginary frequencies were assigned for
@@ -734,8 +795,8 @@ Returns <code class="docutils literal notranslate"><span class="pre">True</span>
 <code class="descname">check_scan_job</code><span class="sig-paren">(</span><em>label</em>, <em>job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_scan_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_scan_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that a rotor scan job converged successfully. Also checks (QA) whether the scan is relatively “smooth”,
 and whether the optimized geometry indeed represents the minimum energy conformer.
-Recommends whether or not to use this rotor using the ‘successful_rotors’ and ‘unsuccessful_rotors’ attributes.</p>
-<p>rotors_dict structure (attribute of ARCSpecies):</p>
+Recommends whether or not to use this rotor using the ‘successful_rotors’ and ‘unsuccessful_rotors’ attributes.
+rotors_dict structure (attribute of ARCSpecies):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: pivots_list,
                   &#39;top&#39;: top_list,
                   &#39;scan&#39;: scan_list,
@@ -744,7 +805,10 @@ Recommends whether or not to use this rotor using the ‘successful_rotors’ an
                   &#39;times_dihedral_set&#39;: ``int``,
                   &#39;scan_path&#39;: &lt;path to scan output file&gt;,
                   &#39;max_e&#39;: ``float``,  # in kJ/mol},
-                  &#39;symmetry&#39;: ``int``}
+                  &#39;symmetry&#39;: ``int``
+                  &#39;directed_scan&#39;: ``dict``,  # keys: dihedrals,
+                                              # values: dicts of energy, xyz, is_isomorphic, trsh
+                 }
               2: {}, ...
              }
 </pre></div>
@@ -981,6 +1045,41 @@ If more than one conformer is available, they will be optimized at the DFT confo
 </dd></dl>
 
 <dl class="method">
+<dt id="arc.scheduler.Scheduler.process_directed_scans">
+<code class="descname">process_directed_scans</code><span class="sig-paren">(</span><em>label</em>, <em>pivots</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.process_directed_scans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.process_directed_scans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process all brute force rotors for a species and check the quality of the scan.</p>
+<p>rotors_dict structure (attribute of ARCSpecies):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: pivots_list,
+                  &#39;top&#39;: top_list,
+                  &#39;scan&#39;: scan_list,
+                  &#39;success&#39;: ``bool``,
+                  &#39;invalidation_reason&#39;: ``str``,
+                  &#39;times_dihedral_set&#39;: ``int``,
+                  &#39;scan_path&#39;: &lt;path to scan output file&gt;,
+                  &#39;max_e&#39;: ``float``,  # in kJ/mol},
+                  &#39;symmetry&#39;: ``int``,
+                  &#39;directed_scan&#39;: ``dict``,  # keys: dihedrals,
+                                              # values: dicts of energy, xyz, is_isomorphic, trsh
+                 }
+              2: {}, ...
+             }
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>label</strong> (<em>str</em>) – The species label.</li>
+<li><strong>pivots</strong> (<em>list</em><em>, </em><em>tuple</em>) – The rotor pivots.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="arc.scheduler.Scheduler.restore_running_jobs">
 <code class="descname">restore_running_jobs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.restore_running_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.restore_running_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make Job objects for jobs which were running in the previous session.
@@ -1058,7 +1157,7 @@ If this was originally a composite job, run an appropriate separate freq job out
 
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.run_job">
-<code class="descname">run_job</code><span class="sig-paren">(</span><em>label</em>, <em>xyz</em>, <em>level_of_theory</em>, <em>job_type</em>, <em>fine=False</em>, <em>software=None</em>, <em>shift=u''</em>, <em>trsh=u''</em>, <em>memory=None</em>, <em>conformer=-1</em>, <em>ess_trsh_methods=None</em>, <em>scan=u''</em>, <em>pivots=None</em>, <em>occ=None</em>, <em>scan_trsh=u''</em>, <em>scan_res=None</em>, <em>max_job_time=None</em>, <em>confs=None</em>, <em>radius=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_job" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_job</code><span class="sig-paren">(</span><em>label</em>, <em>xyz</em>, <em>level_of_theory</em>, <em>job_type</em>, <em>fine=False</em>, <em>software=None</em>, <em>shift=u''</em>, <em>trsh=u''</em>, <em>memory=None</em>, <em>conformer=-1</em>, <em>ess_trsh_methods=None</em>, <em>scan=u''</em>, <em>pivots=None</em>, <em>occ=None</em>, <em>scan_trsh=u''</em>, <em>scan_res=None</em>, <em>max_job_time=None</em>, <em>confs=None</em>, <em>radius=None</em>, <em>directed_dihedral=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for running (all) jobs.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1086,6 +1185,7 @@ but used to identify the rotor.</li>
 <li><strong>max_job_time</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximal allowed job time on the server in hours.</li>
 <li><strong>confs</strong> (<em>str</em><em>, </em><em>optional</em>) – A path to the YAML file conformer coordinates for a Gromacs MD job.</li>
 <li><strong>radius</strong> (<em>float</em><em>, </em><em>optional</em>) – The species radius in Angstrom.</li>
+<li><strong>directed_dihedral</strong> (<em>float</em><em>, </em><em>optional</em>) – The dihedral angle of a directed scan job (either continous or brute force).</li>
 </ul>
 </td>
 </tr>
@@ -1192,6 +1292,30 @@ If the method is MRCI, first spawn a simple CCSD job, and use orbital determinat
 </dd></dl>
 
 <dl class="method">
+<dt id="arc.scheduler.Scheduler.spawn_directed_scan_jobs">
+<code class="descname">spawn_directed_scan_jobs</code><span class="sig-paren">(</span><em>label</em>, <em>scan</em>, <em>pivots</em>, <em>directed_scan_type</em>, <em>xyz=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_directed_scan_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_directed_scan_jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawn brute force scan jobs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>label</strong> (<em>str</em>) – The species label.</li>
+<li><strong>scan</strong> (<em>list</em>) – The atom indices representing the dihedral.</li>
+<li><strong>pivots</strong> (<em>list</em>) – The pivotal atoms.</li>
+<li><strong>directed_scan_type</strong> (<em>str</em>) – Either ‘cont’ or ‘brute’ for continues brute force directed scans, respectively.</li>
+<li><strong>xyz</strong> (<em>str</em>) – The 3D coordinates for a continuous directed scan.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">InputError</span></code> – If job_type has an unexpected value.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="arc.scheduler.Scheduler.spawn_md_jobs">
 <code class="descname">spawn_md_jobs</code><span class="sig-paren">(</span><em>label</em>, <em>prev_conf_list=None</em>, <em>num_confs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_md_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_md_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Embed conformers and run a molecular dynamics optimization using a fitted force field.
@@ -1247,7 +1371,7 @@ If not given, a first Gromacs job will be spawned.</li>
 
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.troubleshoot_ess">
-<code class="descname">troubleshoot_ess</code><span class="sig-paren">(</span><em>label</em>, <em>job</em>, <em>level_of_theory</em>, <em>job_type</em>, <em>conformer=-1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_ess" title="Permalink to this definition">¶</a></dt>
+<code class="descname">troubleshoot_ess</code><span class="sig-paren">(</span><em>label</em>, <em>job</em>, <em>level_of_theory</em>, <em>conformer=-1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_ess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshoot issues related to the electronic structure software, such as conversion.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

@@ -184,7 +184,7 @@
 <p>The ARC Job module</p>
 <dl class="class">
 <dt id="arc.job.job.Job">
-<em class="property">class </em><code class="descclassname">arc.job.job.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>project</em>, <em>ess_settings</em>, <em>species_name</em>, <em>xyz</em>, <em>job_type</em>, <em>level_of_theory</em>, <em>multiplicity</em>, <em>project_directory</em>, <em>charge=0</em>, <em>conformer=-1</em>, <em>fine=False</em>, <em>shift=u''</em>, <em>software=None</em>, <em>is_ts=False</em>, <em>scan=None</em>, <em>pivots=None</em>, <em>memory=14</em>, <em>comments=u''</em>, <em>trsh=u''</em>, <em>scan_trsh=u''</em>, <em>ess_trsh_methods=None</em>, <em>bath_gas=None</em>, <em>initial_trsh=None</em>, <em>job_num=None</em>, <em>job_server_name=None</em>, <em>job_name=None</em>, <em>job_id=None</em>, <em>server=None</em>, <em>initial_time=None</em>, <em>occ=None</em>, <em>max_job_time=120</em>, <em>scan_res=None</em>, <em>checkfile=None</em>, <em>number_of_radicals=None</em>, <em>conformers=None</em>, <em>radius=None</em>, <em>testing=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">arc.job.job.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>project=u''</em>, <em>ess_settings=None</em>, <em>species_name=u''</em>, <em>xyz=None</em>, <em>job_type=u''</em>, <em>level_of_theory=u''</em>, <em>multiplicity=None</em>, <em>project_directory=u''</em>, <em>charge=0</em>, <em>conformer=-1</em>, <em>fine=False</em>, <em>shift=u''</em>, <em>software=None</em>, <em>is_ts=False</em>, <em>scan=None</em>, <em>pivots=None</em>, <em>memory=14</em>, <em>comments=u''</em>, <em>trsh=u''</em>, <em>scan_trsh=u''</em>, <em>job_dict=None</em>, <em>ess_trsh_methods=None</em>, <em>bath_gas=None</em>, <em>initial_trsh=None</em>, <em>job_num=None</em>, <em>job_server_name=None</em>, <em>job_name=None</em>, <em>job_id=None</em>, <em>server=None</em>, <em>initial_time=None</em>, <em>occ=None</em>, <em>max_job_time=120</em>, <em>scan_res=None</em>, <em>checkfile=None</em>, <em>number_of_radicals=None</em>, <em>conformers=None</em>, <em>radius=None</em>, <em>directed_dihedral=None</em>, <em>testing=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job" title="Permalink to this definition">¶</a></dt>
 <dd><p>ARC’s Job class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -234,6 +234,8 @@ singlet, in which case the job should be unrestricted with
 multiplicity = 1.</li>
 <li><strong>conformers</strong> (<em>str</em><em>, </em><em>optional</em>) – A path to the YAML file conformer coordinates for a Gromacs MD job.</li>
 <li><strong>radius</strong> (<em>float</em><em>, </em><em>optional</em>) – The species radius in Angstrom.</li>
+<li><strong>directed_dihedral</strong> (<em>float</em>) – The dihedral angle of a directed scan job (either continuous or brute force).</li>
+<li><strong>job_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</li>
 <li><strong>testing</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the object is generated for testing purposes, True if it is.</li>
 </ul>
 </td>
@@ -455,8 +457,7 @@ the job should be unrestricted with multiplicity = 1.</p>
 <dl class="attribute">
 <dt id="arc.job.job.Job.scan">
 <code class="descname">scan</code><a class="headerlink" href="#arc.job.job.Job.scan" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list representing atom labels for the dihedral scan
-(e.g., “2 1 3 5” as a string or [2, 1, 3, 5] as a list of integers).</p>
+<dd><p>A list representing atom labels for the dihedral scan (e.g., [2, 1, 3, 5]).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -982,12 +983,26 @@ description and the identified error line from the ESS log file will be given as
 <dt id="arc.job.job.Job.bath_gas">
 <code class="descname">bath_gas</code><a class="headerlink" href="#arc.job.job.Job.bath_gas" title="Permalink to this definition">¶</a></dt>
 <dd><p>A bath gas. Currently used in OneDMin to calc L-J parameters.
-Allowed values are He, Ne, Ar, Kr, H2, N2, O2</p>
+Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.job.job.Job.directed_dihedral">
+<code class="descname">directed_dihedral</code><a class="headerlink" href="#arc.job.job.Job.directed_dihedral" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dihedral angle of a directed scan job (either continuous or brute force).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
 </tr>
 </tbody>
 </table>
@@ -1029,6 +1044,12 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2</p>
 <dt id="arc.job.job.Job.determine_run_time">
 <code class="descname">determine_run_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.determine_run_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.determine_run_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the run time. Update self.run_time and round to seconds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.job.job.Job.from_dict">
+<code class="descname">from_dict</code><span class="sig-paren">(</span><em>job_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function for loading this object from a dictionary in a YAML file for restarting ARC</p>
 </dd></dl>
 
 <dl class="method">

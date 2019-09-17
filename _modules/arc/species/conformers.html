@@ -174,6 +174,27 @@
 <span class="sd">    * The secretary problem - incorporate for stochastic searching</span>
 <span class="sd">    * What&#39;s the confirmed bottleneck?</span>
 
+<span class="sd">conformers is a list of dictionaries, each with the following keys::</span>
+
+<span class="sd">    {&#39;xyz&#39;: &lt;str&gt;,</span>
+<span class="sd">     &#39;index&#39;: &lt;int&gt;,</span>
+<span class="sd">     &#39;FF energy&#39;: &lt;float&gt;,</span>
+<span class="sd">     &#39;source&#39;: &lt;str&gt;,</span>
+<span class="sd">     &#39;torsion_dihedrals&#39;: {&lt;torsion tuple 0&gt;: angle 0,</span>
+<span class="sd">                           &lt;torsion tuple 1&gt;: angle 1,</span>
+<span class="sd">     }</span>
+
+
+<span class="sd">Module workflow::</span>
+
+<span class="sd">    generate_conformers</span>
+<span class="sd">        generate_force_field_conformers</span>
+<span class="sd">            get_force_field_energies, rdkit_force_field or mix_rdkit_and_openbabel_force_field, determine_dihedrals</span>
+<span class="sd">        deduce_new_conformers</span>
+<span class="sd">            get_torsion_angles, determine_torsion_symmetry, determine_torsion_sampling_points,</span>
+<span class="sd">            change_dihedrals_and_force_field_it</span>
+<span class="sd">        get_lowest_confs</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">)</span>
@@ -197,29 +218,9 @@
 
 <span class="kn">from</span> <span class="nn">arc.arc_exceptions</span> <span class="k">import</span> <span class="n">ConformerError</span>
 <span class="kn">from</span> <span class="nn">arc.species</span> <span class="k">import</span> <span class="n">converter</span>
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="k">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">determine_symmetry</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="k">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">determine_symmetry</span><span class="p">,</span> <span class="n">calculate_dihedral_angle</span>
 <span class="kn">import</span> <span class="nn">arc.plotter</span>
 
-<span class="c1">##################################################################</span>
-
-
-<span class="c1"># conformers is a list of dictionaries, each with the following keys:</span>
-<span class="c1"># {&#39;xyz&#39;: &lt;str&gt;,</span>
-<span class="c1">#  &#39;index&#39;: &lt;int&gt;,</span>
-<span class="c1">#  &#39;FF energy&#39;: &lt;float&gt;,</span>
-<span class="c1">#  &#39;source&#39;: &lt;str&gt;,</span>
-<span class="c1">#  &#39;torsion_dihedrals&#39;: {&lt;torsion tuple 0&gt;: angle 0,</span>
-<span class="c1">#                        &lt;torsion tuple 1&gt;: angle 1,</span>
-<span class="c1">#  }</span>
-
-<span class="c1"># Module workflow:</span>
-<span class="c1"># generate_conformers</span>
-<span class="c1">#     generate_force_field_conformers</span>
-<span class="c1">#         get_force_field_energies, rdkit_force_field or mix_rdkit_and_openbabel_force_field, determine_dihedrals</span>
-<span class="c1">#     deduce_new_conformers</span>
-<span class="c1">#         get_torsion_angles, determine_torsion_symmetry, determine_torsion_sampling_points,</span>
-<span class="c1">#         change_dihedrals_and_force_field_it</span>
-<span class="c1">#     get_lowest_confs</span>
 
 <span class="c1"># The number of conformers to generate per range of heavy atoms in the molecule</span>
 <span class="n">CONFS_VS_HEAVY_ATOMS</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span>
@@ -863,13 +864,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">conformer</span> <span class="ow">in</span> <span class="n">conformers</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conformer</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">],</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)):</span>
-            <span class="n">coord</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">get_xyz_matrix</span><span class="p">(</span><span class="n">conformer</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">coords</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">get_xyz_matrix</span><span class="p">(</span><span class="n">conformer</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">coord</span> <span class="o">=</span> <span class="n">conformer</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span>
+            <span class="n">coords</span> <span class="o">=</span> <span class="n">conformer</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="s1">&#39;torsion_dihedrals&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">conformer</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">conformer</span><span class="p">[</span><span class="s1">&#39;torsion_dihedrals&#39;</span><span class="p">]:</span>
             <span class="n">conformer</span><span class="p">[</span><span class="s1">&#39;torsion_dihedrals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">torsion</span> <span class="ow">in</span> <span class="n">torsions</span><span class="p">:</span>
-                <span class="n">angle</span> <span class="o">=</span> <span class="n">calculate_dihedral_angle</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">torsion</span><span class="o">=</span><span class="n">torsion</span><span class="p">)</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">calculate_dihedral_angle</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">torsion</span><span class="o">=</span><span class="n">torsion</span><span class="p">)</span>
                 <span class="n">conformer</span><span class="p">[</span><span class="s1">&#39;torsion_dihedrals&#39;</span><span class="p">][</span><span class="nb">tuple</span><span class="p">(</span><span class="n">torsion</span><span class="p">)]</span> <span class="o">=</span> <span class="n">angle</span>
     <span class="k">return</span> <span class="n">conformers</span></div>
 
@@ -1511,13 +1512,13 @@
 
 <div class="viewcode-block" id="find_internal_rotors"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.find_internal_rotors">[docs]</a><span class="k">def</span> <span class="nf">find_internal_rotors</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Locates the sets of indices corresponding to every internal rotor.</span>
+<span class="sd">    Locates the sets of indices corresponding to every internal rotor (1-indexed).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        mol (Molecule): The molecule for which rotors will be determined</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        list: All rotor dictionaries with the gaussian scan coordinates, the pivots and the smallest top.</span>
+<span class="sd">        list: Entrties are rotor dictionaries with the gaussian scan coordinates, the pivots and the smallest top.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rotors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">atom1</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
@@ -1582,6 +1583,7 @@
                         <span class="n">rotor</span><span class="p">[</span><span class="s1">&#39;invalidation_reason&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
                         <span class="n">rotor</span><span class="p">[</span><span class="s1">&#39;times_dihedral_set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
                         <span class="n">rotor</span><span class="p">[</span><span class="s1">&#39;scan_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                        <span class="n">rotor</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
                         <span class="n">rotors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rotor</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rotors</span></div>
 
@@ -1957,38 +1959,6 @@
     <span class="n">z</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
     <span class="n">vector</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">vector</span></div>
-
-
-<div class="viewcode-block" id="calculate_dihedral_angle"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.calculate_dihedral_angle">[docs]</a><span class="k">def</span> <span class="nf">calculate_dihedral_angle</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">torsion</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate a dihedral angle. Inspired by ASE Atoms.get_dihedral().</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        coord (list): The array-format coordinates.</span>
-<span class="sd">        torsion (list): The 4 atoms defining the dihedral angle.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        float: The dihedral angle.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">torsion</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">torsion</span><span class="p">]</span>  <span class="c1"># convert 1-index to 0-index</span>
-    <span class="n">coord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">coord</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">-</span> <span class="n">coord</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">coord</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">-</span> <span class="n">coord</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">coord</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="o">-</span> <span class="n">coord</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
-    <span class="n">bxa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="n">bxa</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">bxa</span><span class="p">)</span>
-    <span class="n">cxb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-    <span class="n">cxb</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">cxb</span><span class="p">)</span>
-    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">bxa</span><span class="p">,</span> <span class="n">cxb</span><span class="p">)</span>
-    <span class="c1"># check for numerical trouble due to finite precision:</span>
-    <span class="k">if</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="k">elif</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">bxa</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">angle</span>
-    <span class="k">return</span> <span class="n">angle</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span></div>
 
 
 <div class="viewcode-block" id="initialize_log"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.initialize_log">[docs]</a><span class="k">def</span> <span class="nf">initialize_log</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>

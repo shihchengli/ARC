@@ -630,6 +630,38 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;molpro&#39;</span>
     <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Could not identify the log file in </span><span class="si">{0}</span><span class="s1"> as belonging to Gaussian, QChem, or Molpro.&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="calculate_dihedral_angle"><a class="viewcode-back" href="../../api/common.html#arc.common.calculate_dihedral_angle">[docs]</a><span class="k">def</span> <span class="nf">calculate_dihedral_angle</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">torsion</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate a dihedral angle. Inspired by ASE Atoms.get_dihedral().</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        coords (list, tuple): The array-format or tuple-format coordinates.</span>
+<span class="sd">        torsion (list): The 4 atoms defining the dihedral angle, 1-indexed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: The dihedral angle.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">torsion</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">torsion</span><span class="p">]</span>  <span class="c1"># convert 1-index to 0-index</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+    <span class="n">bxa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">bxa</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">bxa</span><span class="p">)</span>
+    <span class="n">cxb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">cxb</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">cxb</span><span class="p">)</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">bxa</span><span class="p">,</span> <span class="n">cxb</span><span class="p">)</span>
+    <span class="c1"># check for numerical trouble due to finite precision:</span>
+    <span class="k">if</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">bxa</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">angle</span>
+    <span class="k">return</span> <span class="n">angle</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span></div>
 </pre></div>
 
            </div>
