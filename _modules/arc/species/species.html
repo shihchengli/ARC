@@ -167,32 +167,31 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="kn">from</span> <span class="nn">arkane.common</span> <span class="k">import</span> <span class="n">ArkaneSpecies</span><span class="p">,</span> <span class="n">symbol_by_number</span>
+<span class="kn">from</span> <span class="nn">rmgpy.exceptions</span> <span class="k">import</span> <span class="n">InvalidAdjacencyListError</span>
 <span class="kn">from</span> <span class="nn">arkane.statmech</span> <span class="k">import</span> <span class="n">determine_qm_software</span><span class="p">,</span> <span class="n">is_linear</span>
+<span class="kn">import</span> <span class="nn">rmgpy.molecule.element</span> <span class="k">as</span> <span class="nn">elements</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.molecule</span> <span class="k">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Molecule</span>
+<span class="kn">from</span> <span class="nn">rmgpy.molecule.resonance</span> <span class="k">import</span> <span class="n">generate_kekule_structure</span>
 <span class="kn">from</span> <span class="nn">rmgpy.reaction</span> <span class="k">import</span> <span class="n">Reaction</span>
 <span class="kn">from</span> <span class="nn">rmgpy.species</span> <span class="k">import</span> <span class="n">Species</span>
 <span class="kn">from</span> <span class="nn">rmgpy.statmech</span> <span class="k">import</span> <span class="n">NonlinearRotor</span><span class="p">,</span> <span class="n">LinearRotor</span>
-<span class="kn">from</span> <span class="nn">rmgpy.molecule.resonance</span> <span class="k">import</span> <span class="n">generate_kekule_structure</span>
 <span class="kn">from</span> <span class="nn">rmgpy.transport</span> <span class="k">import</span> <span class="n">TransportData</span>
-<span class="kn">import</span> <span class="nn">rmgpy.molecule.element</span> <span class="k">as</span> <span class="nn">elements</span>
-<span class="kn">from</span> <span class="nn">rmgpy.exceptions</span> <span class="k">import</span> <span class="n">InvalidAdjacencyListError</span>
 
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="k">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">get_atom_radius</span><span class="p">,</span> <span class="n">determine_symmetry</span>
 <span class="kn">from</span> <span class="nn">arc.arc_exceptions</span> <span class="k">import</span> <span class="n">SpeciesError</span><span class="p">,</span> <span class="n">RotorError</span><span class="p">,</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">TSError</span><span class="p">,</span> <span class="n">SanitizationError</span>
-<span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">default_ts_methods</span><span class="p">,</span> <span class="n">valid_chars</span><span class="p">,</span> <span class="n">minimum_barrier</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="k">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">get_atom_radius</span><span class="p">,</span> <span class="n">determine_symmetry</span>
 <span class="kn">from</span> <span class="nn">arc.parser</span> <span class="k">import</span> <span class="n">parse_xyz_from_file</span><span class="p">,</span> <span class="n">parse_dipole_moment</span><span class="p">,</span> <span class="n">parse_polarizability</span><span class="p">,</span> <span class="n">process_conformers_file</span>
-<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="k">import</span> <span class="n">get_xyz_string</span><span class="p">,</span> <span class="n">get_xyz_matrix</span><span class="p">,</span> <span class="n">rdkit_conf_from_mol</span><span class="p">,</span> <span class="n">standardize_xyz_string</span><span class="p">,</span>\
-    <span class="n">molecules_from_xyz</span><span class="p">,</span> <span class="n">rmg_mol_from_inchi</span><span class="p">,</span> <span class="n">order_atoms_in_mol_list</span><span class="p">,</span> <span class="n">check_isomorphism</span><span class="p">,</span> <span class="n">set_rdkit_dihedrals</span><span class="p">,</span>\
-    <span class="n">translate_to_center_of_mass</span>
+<span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">default_ts_methods</span><span class="p">,</span> <span class="n">valid_chars</span><span class="p">,</span> <span class="n">minimum_barrier</span>
 <span class="kn">from</span> <span class="nn">arc.species</span> <span class="k">import</span> <span class="n">conformers</span>
+<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="k">import</span> <span class="n">rdkit_conf_from_mol</span><span class="p">,</span> <span class="n">xyz_from_data</span><span class="p">,</span> <span class="n">molecules_from_xyz</span><span class="p">,</span> <span class="n">rmg_mol_from_inchi</span><span class="p">,</span> \
+    <span class="n">order_atoms_in_mol_list</span><span class="p">,</span> <span class="n">check_isomorphism</span><span class="p">,</span> <span class="n">set_rdkit_dihedrals</span><span class="p">,</span> <span class="n">translate_to_center_of_mass</span><span class="p">,</span> \
+    <span class="n">str_to_xyz</span><span class="p">,</span> <span class="n">xyz_to_str</span><span class="p">,</span> <span class="n">check_xyz_dict</span><span class="p">,</span> <span class="n">xyz_to_x_y_z</span>
 <span class="kn">from</span> <span class="nn">arc.ts</span> <span class="k">import</span> <span class="n">atst</span>
 
-<span class="c1">##################################################################</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
 
@@ -201,7 +200,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class for representing stationary points.</span>
 
-<span class="sd">    Dictionary structure::</span>
+<span class="sd">    Dictionary structure (initialized in conformers.find_internal_rotors)::</span>
 
 <span class="sd">        rotors_dict: {1: {&#39;pivots&#39;: pivots_list,</span>
 <span class="sd">                          &#39;top&#39;: top_list,</span>
@@ -209,6 +208,7 @@
 <span class="sd">                          &#39;success&#39;: ``bool``.</span>
 <span class="sd">                          &#39;invalidation_reason&#39;: ``str``,</span>
 <span class="sd">                          &#39;times_dihedral_set&#39;: ``int``,</span>
+<span class="sd">                          &#39;trsh_methods&#39;: ``list``,</span>
 <span class="sd">                          &#39;scan_path&#39;: &lt;path to scan output file&gt;,</span>
 <span class="sd">                          &#39;max_e&#39;: ``float``,  # in kJ/mol</span>
 <span class="sd">                          &#39;symmetry&#39;: ``int``,</span>
@@ -224,10 +224,10 @@
 <span class="sd">        rmg_species (Species, optional): An RMG Species object to be converted to an ARCSpecies object.</span>
 <span class="sd">        mol (Molecule, optional): An ``RMG Molecule`` object used for BAC determination.</span>
 <span class="sd">                                  Atom order corresponds to the order in .initial_xyz</span>
-<span class="sd">        xyz (str or list, optional): Entries are either string-format coordinates or file paths.</span>
-<span class="sd">                                     (If there&#39;s only one entry, it could be given directly as a string, not in a list).</span>
-<span class="sd">                                     The file paths could direct to either a .xyz file, ARC conformers</span>
-<span class="sd">                                     (w/ or w/o energies), or an ESS log/input files.</span>
+<span class="sd">        xyz (list, str, dict, optional): Entries are either string-format coordinates, file paths, or ARC&#39;s dict format.</span>
+<span class="sd">                                         (If there&#39;s only one entry, it could be given directly, not in a list).</span>
+<span class="sd">                                         The file paths could direct to either a .xyz file, ARC conformers</span>
+<span class="sd">                                         (w/ or w/o energies), or an ESS log/input files.</span>
 <span class="sd">        multiplicity (int, optional): The species&#39; electron spin multiplicity. Can be determined from the</span>
 <span class="sd">                                      adjlist/smiles/xyz (If unspecified, assumed to be either a singlet or a doublet).</span>
 <span class="sd">        charge (int, optional): The species&#39; net charge. Assumed to be 0 if unspecified.</span>
@@ -291,18 +291,18 @@
 <span class="sd">        is_ts (bool):  Whether the species represents a transition state. `True` if it does.</span>
 <span class="sd">        number_of_rotors (int): The number of potential rotors to scan.</span>
 <span class="sd">        rotors_dict (dict): A dictionary of rotors. structure given below.</span>
-<span class="sd">        conformers (list): A list of selected conformers XYZs.</span>
+<span class="sd">        conformers (list): A list of selected conformers XYZs (dict format).</span>
 <span class="sd">        conformer_energies (list): A list of conformers E0 (in kJ/mol).</span>
 <span class="sd">        cheap_conformer (str): A string format xyz of a cheap conformer (not necessarily the best/lowest one).</span>
-<span class="sd">        most_stable_conformer (str): A string format xyz of the best/lowest conformer ARC found.</span>
-<span class="sd">        recent_md_conformer (list): A length three list containing the string format xyz of the recent conformer</span>
+<span class="sd">        most_stable_conformer (int): The index of the best/lowest conformer in self.conformers.</span>
+<span class="sd">        recent_md_conformer (list): A length three list containing the coordinates of the recent conformer</span>
 <span class="sd">                                    generated by MD, the energy in kJ/mol, and the number of MD runs. Used to detect</span>
 <span class="sd">                                    when the MD algorithm converges on a single structure.</span>
 <span class="sd">        svpfit_output_file (str): The path to a Gaussian output file of an SVP Fit job if previously ran</span>
 <span class="sd">                                  (otherwise, this job will be spawned if running Gromacs).</span>
-<span class="sd">        initial_xyz (str): The initial geometry guess.</span>
-<span class="sd">        final_xyz (str): The optimized species geometry.</span>
-<span class="sd">        cont_scan_xyz (str): The geometry used for continuous directed scan jobs.</span>
+<span class="sd">        initial_xyz (dict): The initial geometry guess.</span>
+<span class="sd">        final_xyz (dict): The optimized species geometry.</span>
+<span class="sd">        cont_scan_xyz (dict): The geometry used for continuous directed scan jobs.</span>
 <span class="sd">        radius (float): The species radius in Angstrom.</span>
 <span class="sd">        opt_level (str): Level of theory for geometry optimization. Saved for archiving.</span>
 <span class="sd">        number_of_atoms (int): The number of atoms in the species/TS.</span>
@@ -556,7 +556,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_atoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_atoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_atoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">()[</span><span class="s1">&#39;symbols&#39;</span><span class="p">])</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_atoms</span>
 
     <span class="nd">@number_of_atoms</span><span class="o">.</span><span class="n">setter</span>
@@ -571,8 +571,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_heavy_atoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">atom</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span> <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">isNonHydrogen</span><span class="p">()])</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_heavy_atoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-                                                   <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;H&#39;</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_heavy_atoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">symbol</span> <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">()[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">symbol</span> <span class="o">!=</span> <span class="s1">&#39;H&#39;</span><span class="p">])</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">ts_guess</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">ts_guess</span><span class="o">.</span><span class="n">xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -589,14 +588,17 @@
     <span class="k">def</span> <span class="nf">radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine the largest distance from the coordinate system origin attributed to one of the molecule&#39;s</span>
-<span class="sd">        atoms in 3D space. Units are Angstrom.</span>
+<span class="sd">        atoms in 3D space.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Radius in are Angstrom.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">translated_xyz</span> <span class="o">=</span> <span class="n">translate_to_center_of_mass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">())</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">get_xyz_matrix</span><span class="p">(</span><span class="n">translated_xyz</span><span class="p">)</span>
             <span class="n">border_elements</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># a list of the farthest element/s</span>
             <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">zi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">xyz_to_x_y_z</span><span class="p">(</span><span class="n">translated_xyz</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">zi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">translated_xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
                 <span class="n">ri</span> <span class="o">=</span> <span class="n">xi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">yi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">zi</span> <span class="o">**</span> <span class="mi">2</span>
                 <span class="k">if</span> <span class="n">ri</span> <span class="o">==</span> <span class="n">r</span><span class="p">:</span>
                     <span class="n">border_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">si</span><span class="p">)</span>
@@ -653,8 +655,6 @@
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;number_of_radicals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_radicals</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt_level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;opt_level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt_level</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;final_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;directed_rotors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_is_isomorphic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -664,7 +664,11 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;mol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">toAdjacencyList</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;initial_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span>
+            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;initial_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;final_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cont_scan_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;cont_scan_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cont_scan_xyz</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;checkfile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">most_stable_conformer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -672,20 +676,18 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;cheap_conformer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recent_md_conformer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;recent_md_conformer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recent_md_conformer</span>
+            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;recent_md_conformer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recent_md_conformer</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">svpfit_output_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;svpfit_output_file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">svpfit_output_file</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="p">:</span>
-            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span>
+            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">xyz_to_str</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span> <span class="k">for</span> <span class="n">conf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="p">]</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformer_energies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformer_energies</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers_before_opt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers_before_opt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers_before_opt</span>
+            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers_before_opt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">xyz_to_str</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span> <span class="k">for</span> <span class="n">conf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers_before_opt</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;bdes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cont_scan_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;cont_scan_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cont_scan_xyz</span>
         <span class="k">return</span> <span class="n">species_dict</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.from_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species_dict</span><span class="p">):</span>
@@ -704,18 +706,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">yml_path</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;yml_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;yml_path&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rxn_label</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;rxn_label&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;rxn_label&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;radius&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">most_stable_conformer</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;most_stable_conformer&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;most_stable_conformer&#39;</span>\
-                                                                              <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">most_stable_conformer</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;most_stable_conformer&#39;</span><span class="p">]</span> \
+            <span class="k">if</span> <span class="s1">&#39;most_stable_conformer&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;cheap_conformer&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;cheap_conformer&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">recent_md_conformer</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;recent_md_conformer&#39;</span><span class="p">]</span>\
+        <span class="bp">self</span><span class="o">.</span><span class="n">recent_md_conformer</span> <span class="o">=</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;recent_md_conformer&#39;</span><span class="p">])</span> \
             <span class="k">if</span> <span class="s1">&#39;recent_md_conformer&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force_field</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;force_field&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;force_field&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="s1">&#39;MMFF94&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">svpfit_output_file</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;svpfit_output_file&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;svpfit_output_file&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">long_thermo_description</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;long_thermo_description&#39;</span><span class="p">]</span>\
+        <span class="bp">self</span><span class="o">.</span><span class="n">long_thermo_description</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;long_thermo_description&#39;</span><span class="p">]</span> \
             <span class="k">if</span> <span class="s1">&#39;long_thermo_description&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">standardize_xyz_string</span><span class="p">(</span><span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;initial_xyz&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;initial_xyz&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span>\
-            <span class="k">else</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="o">=</span> <span class="n">standardize_xyz_string</span><span class="p">(</span><span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;final_xyz&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;final_xyz&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;initial_xyz&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;initial_xyz&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="o">=</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;final_xyz&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;final_xyz&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conf_is_isomorphic</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conf_is_isomorphic&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;conf_is_isomorphic&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;is_ts&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;is_ts&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
@@ -731,11 +732,11 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">ts_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;user guess&#39;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">TSError</span><span class="p">(</span><span class="s1">&#39;ts_methods must be a list, got </span><span class="si">{0}</span><span class="s1"> of type </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ts_methods</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">ts_methods</span><span class="p">)))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span> <span class="o">=</span> <span class="p">[</span><span class="n">TSGuess</span><span class="p">(</span><span class="n">ts_dict</span><span class="o">=</span><span class="n">tsg</span><span class="p">)</span> <span class="k">for</span> <span class="n">tsg</span> <span class="ow">in</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;ts_guesses&#39;</span><span class="p">]]</span>\
+            <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span> <span class="o">=</span> <span class="p">[</span><span class="n">TSGuess</span><span class="p">(</span><span class="n">ts_dict</span><span class="o">=</span><span class="n">tsg</span><span class="p">)</span> <span class="k">for</span> <span class="n">tsg</span> <span class="ow">in</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;ts_guesses&#39;</span><span class="p">]]</span> \
                 <span class="k">if</span> <span class="s1">&#39;ts_guesses&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">successful_methods</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;successful_methods&#39;</span><span class="p">]</span>\
+            <span class="bp">self</span><span class="o">.</span><span class="n">successful_methods</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;successful_methods&#39;</span><span class="p">]</span> \
                 <span class="k">if</span> <span class="s1">&#39;successful_methods&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">unsuccessful_methods</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;unsuccessful_methods&#39;</span><span class="p">]</span>\
+            <span class="bp">self</span><span class="o">.</span><span class="n">unsuccessful_methods</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;unsuccessful_methods&#39;</span><span class="p">]</span> \
                 <span class="k">if</span> <span class="s1">&#39;unsuccessful_methods&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">chosen_ts_method</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;chosen_ts_method&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;chosen_ts_method&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">chosen_ts</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;chosen_ts&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;chosen_ts&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
@@ -744,7 +745,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">ts_methods</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="s1">&#39;xyz&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">process_xyz</span><span class="p">(</span><span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cont_scan_xyz</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;cont_scan_xyz&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;cont_scan_xyz&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cont_scan_xyz</span> <span class="o">=</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;cont_scan_xyz&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;cont_scan_xyz&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">char</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_chars</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Species label </span><span class="si">{0}</span><span class="s1"> contains an invalid character: &quot;</span><span class="si">{1}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">char</span><span class="p">))</span>
@@ -797,34 +798,39 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                                                            <span class="n">filter_structures</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="s1">&#39;conformers&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers&#39;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">conformer_energies</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformer_energies&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;conformer_energies&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span>\
+            <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span> <span class="o">=</span> <span class="p">[</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span> <span class="k">for</span> <span class="n">conf</span> <span class="ow">in</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers&#39;</span><span class="p">]]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conformer_energies</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformer_energies&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;conformer_energies&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> \
                 <span class="k">else</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span>\
-                <span class="ow">and</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">tsg</span><span class="o">.</span><span class="n">xyz</span> <span class="k">for</span> <span class="n">tsg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="p">]):</span>
-            <span class="c1"># TS species are allowed to be loaded w/o a structure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conformers_before_opt</span> <span class="o">=</span> <span class="p">[</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span> <span class="k">for</span> <span class="n">conf</span> <span class="ow">in</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers_before_opt&#39;</span><span class="p">]]</span> \
+            <span class="k">if</span> <span class="s1">&#39;conformers_before_opt&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span> \
+                <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
+            <span class="c1"># Only TS species are allowed to be loaded w/o a structure</span>
             <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Must have either mol or xyz for species </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;directed_rotors&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;directed_rotors&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;bdes&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;bdes&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;The .bdes argument must be a list, got </span><span class="si">{0}</span><span class="s1"> which is a </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">)))</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">conformers_before_opt</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers_before_opt&#39;</span><span class="p">]</span> \
-            <span class="k">if</span> <span class="s1">&#39;conformers_before_opt&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span></div>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">)))</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.from_yml_file"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.from_yml_file">[docs]</a>    <span class="k">def</span> <span class="nf">from_yml_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Load important species attributes such as label and final_xyz from the Arkane YAML file</span>
-<span class="sd">        Actual QM data parsing is done later when processing thermo and kinetics</span>
+<span class="sd">        Load important species attributes such as label and final_xyz from an Arkane YAML file.</span>
+<span class="sd">        Actual QM data parsing is done later when processing thermo and kinetics.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str, optional): The specie label.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the adjlist cannot be read.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rmg_spc</span> <span class="o">=</span> <span class="n">Species</span><span class="p">()</span>
         <span class="n">arkane_spc</span> <span class="o">=</span> <span class="n">ArkaneSpecies</span><span class="p">(</span><span class="n">species</span><span class="o">=</span><span class="n">rmg_spc</span><span class="p">)</span>
         <span class="c1"># The data from the YAML file is loaded into the `species` argument of the `load_yaml` method in Arkane</span>
         <span class="n">arkane_spc</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">yml_path</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">pdep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span> <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">arkane_spc</span><span class="o">.</span><span class="n">label</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="o">=</span> <span class="n">get_xyz_string</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">arkane_spc</span><span class="o">.</span><span class="n">conformer</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                                        <span class="n">numbers</span><span class="o">=</span><span class="n">arkane_spc</span><span class="o">.</span><span class="n">conformer</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="o">=</span> <span class="n">xyz_from_data</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">arkane_spc</span><span class="o">.</span><span class="n">conformer</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                       <span class="n">numbers</span><span class="o">=</span><span class="n">arkane_spc</span><span class="o">.</span><span class="n">conformer</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">arkane_spc</span><span class="o">.</span><span class="n">adjacency_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">()</span><span class="o">.</span><span class="n">fromAdjacencyList</span><span class="p">(</span><span class="n">adjlist</span><span class="o">=</span><span class="n">arkane_spc</span><span class="o">.</span><span class="n">adjacency_list</span><span class="p">)</span>
@@ -880,26 +886,22 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">conf</span> <span class="ow">in</span> <span class="n">lowest_confs</span><span class="p">])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">conformer_energies</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">lowest_confs</span><span class="p">))</span>
                 <span class="n">lowest_conf</span> <span class="o">=</span> <span class="n">conformers</span><span class="o">.</span><span class="n">get_lowest_confs</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">confs</span><span class="o">=</span><span class="n">lowest_confs</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Most stable force field conformer for </span><span class="si">{0}</span><span class="s1">:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">lowest_conf</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Most stable force field conformer for </span><span class="si">{label}</span><span class="s1">:</span><span class="se">\n</span><span class="si">{xyz}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz_to_str</span><span class="p">(</span><span class="n">lowest_conf</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not generate conformers for </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(</span><span class="n">get_cheap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(</span><span class="n">generate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;No 3D coordinates available for species </span><span class="si">{0}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span></div>
-
 
 <div class="viewcode-block" id="ARCSpecies.get_cheap_conformer"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.get_cheap_conformer">[docs]</a>    <span class="k">def</span> <span class="nf">get_cheap_conformer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Cheaply (limiting the number of possible conformers) get a reasonable conformer,</span>
 <span class="sd">        this could very well not be the best (lowest) one.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            str: A reasonable conformer&#39;s xyz coordinates in string format.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_confs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">))</span>
         <span class="n">rd_mol</span><span class="p">,</span> <span class="n">rd_index_map</span> <span class="o">=</span> <span class="n">conformers</span><span class="o">.</span><span class="n">embed_rdkit</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">,</span> <span class="n">num_confs</span><span class="o">=</span><span class="n">num_confs</span><span class="p">)</span>
         <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">conformers</span><span class="o">.</span><span class="n">rdkit_force_field</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">rd_mol</span><span class="o">=</span><span class="n">rd_mol</span><span class="p">,</span> <span class="n">rd_index_map</span><span class="o">=</span><span class="n">rd_index_map</span><span class="p">,</span>
-                                                      <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s1">&#39;MMFF94&#39;</span><span class="p">,</span> <span class="n">return_xyz_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                                                      <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s1">&#39;MMFF94&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">energies</span><span class="p">:</span>
             <span class="n">min_energy</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
             <span class="n">min_energy_index</span> <span class="o">=</span> <span class="n">energies</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">min_energy</span><span class="p">)</span>
@@ -910,15 +912,17 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not generate a cheap conformer for </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.get_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.get_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">get_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get_cheap</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ARCSpecies.get_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.get_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">get_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the highest quality xyz the species has. If it doesn&#39;t have any 3D information, cheaply generate it.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            get_cheap (bool, optional): Whether to get a cheap FF conformer if no xyz is found. True to get.</span>
+<span class="sd">            generate (bool, optional): Whether to cheaply generate an FF conformer if no xyz is found.</span>
+<span class="sd">                                       ``True`` to generate. If generate is ``False`` and the species has no xyz data,</span>
+<span class="sd">                                       the method will return None.</span>
 
 <span class="sd">        Return:</span>
-<span class="sd">             str: A string-format xyz coordinates.</span>
+<span class="sd">             dict: The xyz coordinates.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">most_stable_conformer</span> <span class="ow">or</span> <span class="n">conf</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span>
@@ -929,7 +933,7 @@
                         <span class="n">xyz</span> <span class="o">=</span> <span class="n">ts_guess</span><span class="o">.</span><span class="n">xyz</span>
                         <span class="k">return</span> <span class="n">xyz</span>
                 <span class="k">return</span> <span class="kc">None</span>
-            <span class="k">elif</span> <span class="n">get_cheap</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">generate</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">get_cheap_conformer</span><span class="p">()</span>
                 <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span>
         <span class="k">return</span> <span class="n">xyz</span></div>
@@ -976,7 +980,7 @@
 <span class="sd">            deg_increment (float, optional): The dihedral angle increment.</span>
 <span class="sd">            deg_abs (float, optional): The absolute desired dihedral angle.</span>
 <span class="sd">            count (bool, optional): Whether to increment the rotor&#39;s times_dihedral_set parameter. `True` to increment.</span>
-<span class="sd">            xyz (str, optional): An alternative xyz to use instead of self.final_xyz.</span>
+<span class="sd">            xyz (dict, optional): An alternative xyz to use instead of self.final_xyz.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="n">xyz</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span>
         <span class="k">if</span> <span class="n">deg_increment</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">deg_abs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1001,12 +1005,11 @@
                         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Rotor </span><span class="si">{i}</span><span class="s1"> with pivots </span><span class="si">{pivots}</span><span class="s1"> was set </span><span class="si">{times}</span><span class="s1"> times&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                             <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">pivots</span><span class="o">=</span><span class="n">rotor</span><span class="p">[</span><span class="s1">&#39;pivots&#39;</span><span class="p">],</span> <span class="n">times</span><span class="o">=</span><span class="n">rotor</span><span class="p">[</span><span class="s1">&#39;times_dihedral_set&#39;</span><span class="p">]))</span>
                     <span class="k">raise</span> <span class="n">RotorError</span><span class="p">(</span><span class="s1">&#39;Rotors were set beyond the maximal number of times without converging&#39;</span><span class="p">)</span>
-            <span class="n">coordinates</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_xyz_matrix</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
             <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules_from_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">conf</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">indx_map</span> <span class="o">=</span> <span class="n">rdkit_conf_from_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">)</span>
+            <span class="n">conf</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">indx_map</span> <span class="o">=</span> <span class="n">rdkit_conf_from_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">xyz</span><span class="p">)</span>
             <span class="n">rd_scan</span> <span class="o">=</span> <span class="p">[</span><span class="n">indx_map</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">scan</span><span class="p">]</span>  <span class="c1"># convert the atom indices in `scan` to RDKit indices</span>
             <span class="n">new_xyz</span> <span class="o">=</span> <span class="n">set_rdkit_dihedrals</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">indx_map</span><span class="p">,</span> <span class="n">rd_scan</span><span class="p">,</span> <span class="n">deg_increment</span><span class="o">=</span><span class="n">deg_increment</span><span class="p">,</span> <span class="n">deg_abs</span><span class="o">=</span><span class="n">deg_abs</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">get_xyz_string</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">new_xyz</span><span class="p">,</span> <span class="n">symbols</span><span class="o">=</span><span class="n">atoms</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">new_xyz</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.determine_symmetry"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.determine_symmetry">[docs]</a>    <span class="k">def</span> <span class="nf">determine_symmetry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1014,8 +1017,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optical_isomers</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">external_symmetry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">()</span>
-            <span class="n">coords</span><span class="p">,</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_xyz_matrix</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
-            <span class="n">symmetry</span><span class="p">,</span> <span class="n">optical_isomers</span> <span class="o">=</span> <span class="n">determine_symmetry</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">symbols</span><span class="p">)</span>
+            <span class="n">symmetry</span><span class="p">,</span> <span class="n">optical_isomers</span> <span class="o">=</span> <span class="n">determine_symmetry</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">optical_isomers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optical_isomers</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optical_isomers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">optical_isomers</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optical_isomers</span> <span class="o">!=</span> <span class="n">optical_isomers</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;User input of optical isomers for </span><span class="si">{0}</span><span class="s2"> and ARC&#39;s calculation differ: </span><span class="si">{1}</span><span class="s2"> and </span><span class="si">{2}</span><span class="s2">,&quot;</span>
@@ -1046,15 +1048,14 @@
             <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="p">):</span>
                 <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">xyz</span><span class="p">:</span>
-                <span class="n">atoms</span> <span class="o">=</span> <span class="n">get_xyz_matrix</span><span class="p">(</span><span class="n">xyz</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
                 <span class="n">electrons</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">number</span><span class="p">,</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbol_by_number</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                        <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="n">atom</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]:</span>
+                    <span class="k">for</span> <span class="n">number</span><span class="p">,</span> <span class="n">symb</span> <span class="ow">in</span> <span class="n">symbol_by_number</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="n">symb</span><span class="p">:</span>
                             <span class="n">electrons</span> <span class="o">+=</span> <span class="n">number</span>
                             <span class="k">break</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Could not identify atom symbol </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
+                        <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Could not identify atom symbol </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">symbol</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">electrons</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="mi">2</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Multiplicity not specified for </span><span class="si">{0}</span><span class="s1">, assuming a value of 2&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
@@ -1082,15 +1083,20 @@
 
 <div class="viewcode-block" id="ARCSpecies.mol_from_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.mol_from_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">mol_from_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_cheap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Make sure atom order in self.mol corresponds to xyz</span>
-<span class="sd">        Important for TS discovery and for identifying rotor indices</span>
+<span class="sd">        Make sure atom order in self.mol corresponds to xyz.</span>
+<span class="sd">        Important for TS discovery and for identifying rotor indices.</span>
 
-<span class="sd">        This works by generating a molecule from the xyz and using the</span>
+<span class="sd">        This works by generating a molecule from xyz and using the</span>
 <span class="sd">        2D structure to confirm that the perceived molecule is correct.</span>
-<span class="sd">        Resonance structures are generated and saved to ``self.mol_list``.</span>
+<span class="sd">        Resonance structures are generated and saved to self.mol_list.</span>
+<span class="sd">        If ``xyz`` is not given, the species xyz will be used.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            xyz (dict, optional): Alternative coordinates to use.</span>
+<span class="sd">            get_cheap (bool, optional): Whether to generate conformers if the species has no xyz data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(</span><span class="n">get_cheap</span><span class="o">=</span><span class="n">get_cheap</span><span class="p">)</span>
+            <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(</span><span class="n">generate</span><span class="o">=</span><span class="n">get_cheap</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># self.mol should have come from another source, e.g., SMILES or yml</span>
@@ -1128,20 +1134,23 @@
 <span class="sd">        Process the user&#39;s input and add either to the .conformers attribute or to .ts_guesses.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            xyz_list (list, str): Entries are either string-format coordinates or file paths.</span>
-<span class="sd">                                  (If there&#39;s only one entry, it could be given directly, not in a list)</span>
-<span class="sd">                                  The file paths could direct to either a .xyz file, ARC conformers (w/ or w/o</span>
-<span class="sd">                                  energies), or an ESS log/input files, making this method extremely flexible.</span>
+<span class="sd">            xyz_list (list, str, dict): Entries are either string-format, dict-format coordinates or file paths.</span>
+<span class="sd">                                       (If there&#39;s only one entry, it could be given directly, not in a list)</span>
+<span class="sd">                                       The file paths could direct to either a .xyz file, ARC conformers (w/ or w/o</span>
+<span class="sd">                                       energies), or an ESS log/input files, making this method extremely flexible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">xyz_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="n">xyz_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">xyz_list</span><span class="p">]</span>
             <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">xyz_list</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)):</span>
-                    <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;each xyz entry in xyz_list must be a string. &#39;</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)):</span>
+                    <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Each xyz entry in xyz_list must be either a string or a dictionary. &#39;</span>
                                      <span class="s1">&#39;Got:</span><span class="se">\n</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">which is a </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyz</span><span class="p">)))</span>
-                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xyz</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">xyz</span><span class="p">))</span>
+                    <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># dummy (lists should be the same length)</span>
+                <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xyz</span><span class="p">):</span>
                     <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">xyz</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
                     <span class="k">if</span> <span class="s1">&#39;txt&#39;</span> <span class="ow">in</span> <span class="n">file_extension</span><span class="p">:</span>
                         <span class="c1"># assume this is an ARC conformer file</span>
@@ -1152,9 +1161,9 @@
                         <span class="c1"># assume this is an ESS log file</span>
                         <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parse_xyz_from_file</span><span class="p">(</span><span class="n">xyz</span><span class="p">))</span>  <span class="c1"># also calls standardize_xyz_string()</span>
                         <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># dummy (lists should be the same length)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># assume this is a string format xyz</span>
-                    <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">standardize_xyz_string</span><span class="p">(</span><span class="n">xyz</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)):</span>
+                    <span class="c1"># string which does not represent a (valid) path, treat as a string representation of xyz</span>
+                    <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">))</span>
                     <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># dummy (lists should be the same length)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">xyzs</span><span class="p">)</span>
@@ -1180,11 +1189,15 @@
 
 <div class="viewcode-block" id="ARCSpecies.set_transport_data"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.set_transport_data">[docs]</a>    <span class="k">def</span> <span class="nf">set_transport_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lj_path</span><span class="p">,</span> <span class="n">opt_path</span><span class="p">,</span> <span class="n">bath_gas</span><span class="p">,</span> <span class="n">opt_level</span><span class="p">,</span> <span class="n">freq_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">freq_level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the species.transport_data attribute after a Lennard-Jones calculation (via OneDMin)</span>
-<span class="sd">        `lj_path` is the path to a oneDMin job output file</span>
-<span class="sd">        `opt_path` is the path to an opt job output file</span>
-<span class="sd">        `bath_gas` is the oneDMin job bath gas</span>
-<span class="sd">        `opt_level` is the optimization level of theory</span>
+<span class="sd">        Set the species.transport_data attribute after a Lennard-Jones calculation (via OneDMin).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            lj_path (str): The path to a oneDMin job output file.</span>
+<span class="sd">            opt_path (str): The path to an opt job output file.</span>
+<span class="sd">            bath_gas (str): The oneDMin job bath gas.</span>
+<span class="sd">            opt_level (str): The optimization level of theory.</span>
+<span class="sd">            freq_path (str, optional): The path to a frequencies job output file.</span>
+<span class="sd">            freq_level (str, optional): The frequencies level of theory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">original_comment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transport_data</span><span class="o">.</span><span class="n">comment</span>
         <span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;L-J coefficients calculated by OneDMin using a DF-MP2/aug-cc-pVDZ potential energy surface &#39;</span> \
@@ -1203,9 +1216,7 @@
             <span class="n">shape_index</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">comment</span> <span class="o">+=</span> <span class="s1">&#39;; The molecule is monoatomic&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">coordinates</span> <span class="o">=</span> <span class="n">get_xyz_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">is_linear</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">is_linear</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">()[</span><span class="s1">&#39;coords&#39;</span><span class="p">])):</span>
                 <span class="n">shape_index</span> <span class="o">=</span> <span class="mi">1</span>
                 <span class="n">comment</span> <span class="o">+=</span> <span class="s1">&#39;; The molecule is linear&#39;</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1240,7 +1251,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            allow_nonisomorphic_2d (bool, optional): Whether to continue spawning jobs for the species even if this</span>
 <span class="sd">                                                     test fails. `True` to allow (default is `False`).</span>
-<span class="sd">            xyz (str, optional): The coordinates to check (will use self.final_xyz if not given).</span>
+<span class="sd">            xyz (dict, optional): The coordinates to check (will use self.final_xyz if not given).</span>
 <span class="sd">            verbose (bool, optional): Whether to log isomorphism findings and errors.</span>
 
 <span class="sd">        Returns:</span>
@@ -1358,9 +1369,13 @@
                 <span class="n">top1</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">top2</span><span class="p">]</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">top2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">top1</span><span class="p">):</span>
                 <span class="n">top2</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">top1</span><span class="p">]</span>
-        <span class="n">split_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-        <span class="n">xyz1</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">split_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top1</span><span class="p">])</span>
-        <span class="n">xyz2</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">split_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top2</span><span class="p">])</span>
+        <span class="n">xyz1</span><span class="p">,</span> <span class="n">xyz2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">xyz1</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">symbol</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top1</span><span class="p">)</span>
+        <span class="n">xyz2</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">symbol</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top2</span><span class="p">)</span>
+        <span class="n">xyz1</span><span class="p">[</span><span class="s1">&#39;isotopes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">isotope</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">isotope</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">[</span><span class="s1">&#39;isotopes&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top1</span><span class="p">)</span>
+        <span class="n">xyz2</span><span class="p">[</span><span class="s1">&#39;isotopes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">isotope</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">isotope</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">[</span><span class="s1">&#39;isotopes&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top2</span><span class="p">)</span>
+        <span class="n">xyz1</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">coord</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top1</span><span class="p">)</span>
+        <span class="n">xyz2</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">coord</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top2</span><span class="p">)</span>
         <span class="n">xyz1</span><span class="p">,</span> <span class="n">xyz2</span> <span class="o">=</span> <span class="n">translate_to_center_of_mass</span><span class="p">(</span><span class="n">xyz1</span><span class="p">),</span> <span class="n">translate_to_center_of_mass</span><span class="p">(</span><span class="n">xyz2</span><span class="p">)</span>
 
         <span class="n">mol_copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1442,8 +1457,8 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    TSGuess class</span>
 
-<span class="sd">    The user can define xyz directly, and the default `method` will be &#39;User guess&#39;</span>
-<span class="sd">    Alternatively, either ARC or the user can provide reactant/s and product/s geometries with a specified `method`</span>
+<span class="sd">    The user can define xyz directly, and the default `method` will be &#39;User guess&#39;.</span>
+<span class="sd">    Alternatively, either ARC or the user can provide reactant/s and product/s geometries with a specified `method`.</span>
 <span class="sd">    `method` could be one of the following:</span>
 <span class="sd">    - QST2 (not implemented)</span>
 <span class="sd">    - DEGSM (not implemented)</span>
@@ -1458,19 +1473,19 @@
 <span class="sd">        products_xyz (list, optional): A list of tuples, each containing:</span>
 <span class="sd">                                       (product label, product geometry in string format).</span>
 <span class="sd">        family (str, optional): The RMG family that corresponds to the reaction, if applicable.</span>
-<span class="sd">        xyz (str, optional): The 3D coordinates guess.</span>
+<span class="sd">        xyz (dict, str, optional): The 3D coordinates guess.</span>
 <span class="sd">        rmg_reaction (Reaction, optional): An RMG Reaction object.</span>
 <span class="sd">        ts_dict (dict, optional): A dictionary to create this object from (used when restarting ARC).</span>
 <span class="sd">        energy (float): Relative energy of all TS conformers in kJ/mol.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        xyz (str): The 3D coordinates guess.</span>
-<span class="sd">        opt_xyz (str): The 3D coordinates after optimization at the ts_guesses level.</span>
+<span class="sd">        initial_xyz (dict): The 3D coordinates guess.</span>
+<span class="sd">        opt_xyz (dict): The 3D coordinates after optimization at the ts_guesses level.</span>
 <span class="sd">        method (str): The method/source used for the xyz guess.</span>
 <span class="sd">        reactants_xyz (list): A list of tuples, each containing:</span>
-<span class="sd">                              (reactant label, reactant geometry in string format).</span>
+<span class="sd">                              (reactant label, reactant xyz).</span>
 <span class="sd">        products_xyz (list): A list of tuples, each containing:</span>
-<span class="sd">                             (product label, product geometry in string format).</span>
+<span class="sd">                             (product label, product xyz).</span>
 <span class="sd">        family (str): The RMG family that corresponds to the reaction, if applicable.</span>
 <span class="sd">        rmg_reaction (Reaction): An RMG Reaction object.</span>
 <span class="sd">        t0 (float): Initial time of spawning the guess job.</span>
@@ -1492,14 +1507,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">opt_xyz</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">process_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>  <span class="c1"># populates self.xyz</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>  <span class="c1"># populates self.initial_xyz</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">energy</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;user guess&#39;</span>
             <span class="k">if</span> <span class="s1">&#39;user guess&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">TSError</span><span class="p">(</span><span class="s1">&#39;If no method is specified, an xyz guess must be given&#39;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1523,8 +1538,10 @@
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span>
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span>
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;execution_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">:</span>
-            <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span><span class="p">:</span>
+            <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;initial_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt_xyz</span><span class="p">:</span>
+            <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;opt_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt_xyz</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reactants_xyz</span><span class="p">:</span>
             <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;reactants_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reactants_xyz</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">products_xyz</span><span class="p">:</span>
@@ -1543,15 +1560,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;t0&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;t0&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;index&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;xyz&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">process_xyz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">)</span>  <span class="c1"># re-populates self.xyz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;initial_xyz&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;initial_xyz&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_xyz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span><span class="p">)</span>  <span class="c1"># re-populates self.initial_xyz</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;success&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;energy&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;execution_time&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;execution_time&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;method&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="s1">&#39;user guess&#39;</span>
         <span class="k">if</span> <span class="s1">&#39;user guess&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">TSError</span><span class="p">(</span><span class="s1">&#39;If no method is specified, an xyz guess must be given&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TSError</span><span class="p">(</span><span class="s1">&#39;If no method is specified, an xyz guess must be given (initial_xyz).&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">success</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">success</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reactants_xyz</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;reactants_xyz&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;reactants_xyz&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
@@ -1622,9 +1639,9 @@
             <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;AutoTST requires an RMG Reaction object. Got: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span><span class="p">)))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;H_Abstraction&#39;</span><span class="p">]:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;AutoTST currently only works for H_Abstraction. Got: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">family</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">=</span> <span class="n">atst</span><span class="o">.</span><span class="n">autotst</span><span class="p">(</span><span class="n">rmg_reaction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span><span class="p">,</span> <span class="n">reaction_family</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">family</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">atst</span><span class="o">.</span><span class="n">autotst</span><span class="p">(</span><span class="n">rmg_reaction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span><span class="p">,</span> <span class="n">reaction_family</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">family</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TSGuess.qst2"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.qst2">[docs]</a>    <span class="k">def</span> <span class="nf">qst2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1652,18 +1669,28 @@
 
 <div class="viewcode-block" id="TSGuess.process_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.process_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">process_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        If xyz represents a file path, parse it.</span>
-<span class="sd">        Standardize the xyz format using converter.standardize_xyz_string</span>
+<span class="sd">        Process the user&#39;s input. If ``xyz`` represents a file path, parse it.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            xyz (dict, str): The coordinates in a dict/string form or a path to a file containing the coordinates.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            InputError: If xyz is of wrong type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xyz</span><span class="p">):</span>
-                <span class="n">xyz</span> <span class="o">=</span> <span class="n">parse_xyz_from_file</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">=</span> <span class="n">standardize_xyz_string</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span></div></div>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;xyz must be either a dictionary or string, &#39;</span>
+                                 <span class="s1">&#39;got:</span><span class="se">\n</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">which is a </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyz</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">xyz</span> <span class="o">=</span> <span class="n">parse_xyz_from_file</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="k">else</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="determine_occ"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.determine_occ">[docs]</a><span class="k">def</span> <span class="nf">determine_occ</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">charge</span><span class="p">):</span>
+<div class="viewcode-block" id="determine_occ"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.determine_occ">[docs]</a><span class="k">def</span> <span class="nf">determine_occ</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">charge</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Determines the number of occupied orbitals for an MRCI calculation</span>
+<span class="sd">    Determines the number of occupied orbitals for an MRCI calculation.</span>
+
+<span class="sd">    Todo</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">electrons</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">xyz</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
@@ -1828,17 +1855,17 @@
 
 <div class="viewcode-block" id="check_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.check_xyz">[docs]</a><span class="k">def</span> <span class="nf">check_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Checks a string-format coordinates for electronic consistency with the spin multiplicity and charge.</span>
+<span class="sd">    Checks xyz for electronic consistency with the spin multiplicity and charge.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        xyz (str): The species coordinates.</span>
+<span class="sd">        xyz (dict): The species coordinates.</span>
 <span class="sd">        multiplicity (int): The species spin multiplicity.</span>
 <span class="sd">        charge (int): The species net charge.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: Whether the input arguments are all in agreement. True if they are.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">symbols</span> <span class="o">=</span> <span class="n">get_xyz_matrix</span><span class="p">(</span><span class="n">xyz</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">symbols</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]</span>
     <span class="n">electrons</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">number</span><span class="p">,</span> <span class="n">element_symbol</span> <span class="ow">in</span> <span class="n">symbol_by_number</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1849,7 +1876,6 @@
     <span class="k">if</span> <span class="n">electrons</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">^</span> <span class="n">multiplicity</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="kc">False</span></div>
-
 </pre></div>
 
            </div>

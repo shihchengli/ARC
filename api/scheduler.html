@@ -872,7 +872,7 @@ as keys and levels of theory as values. ‘inf’ is accepted an max_num_atoms.<
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>original_level_of_theory</strong> (<em>str</em>) – The level of theory for non-sp/opt/freq job types.</li>
-<li><strong>job_type</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The job type for whcih the level of theory is determined.</li>
+<li><strong>job_type</strong> (<em>str</em>) – The job type for which the level of theory is determined.</li>
 <li><strong>heavy_atoms</strong> (<em>int</em>) – The number of heavy atoms in the species.</li>
 </ul>
 </td>
@@ -1165,7 +1165,7 @@ If this was originally a composite job, run an appropriate separate freq job out
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>label</strong> (<em>str</em>) – The species label.</li>
-<li><strong>xyz</strong> (<em>str</em>) – A string-formated 3D coordinates for the species.</li>
+<li><strong>xyz</strong> (<em>dict</em>) – The 3D coordinates for the species.</li>
 <li><strong>level_of_theory</strong> (<em>str</em>) – The level of theory to use.</li>
 <li><strong>job_type</strong> (<em>str</em>) – The type of job to run.</li>
 <li><strong>fine</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to run an optimization job with a fine grid. <cite>True</cite> to use fine.</li>
@@ -1381,7 +1381,6 @@ If not given, a first Gromacs job will be spawned.</li>
 <li><strong>label</strong> (<em>str</em>) – The species label.</li>
 <li><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The job object to troubleshoot.</li>
 <li><strong>level_of_theory</strong> (<em>str</em>) – The level of theory to use.</li>
-<li><strong>job_type</strong> (<em>str</em>) – The original job type.</li>
 <li><strong>conformer</strong> (<em>str</em><em>, </em><em>optional</em>) – The conformer index.</li>
 </ul>
 </td>

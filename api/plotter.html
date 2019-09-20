@@ -184,18 +184,55 @@
 <p>A module for plotting and saving output files such as RMG libraries.</p>
 <dl class="function">
 <dt id="arc.plotter.check_xyz_species_for_drawing">
-<code class="descclassname">arc.plotter.</code><code class="descname">check_xyz_species_for_drawing</code><span class="sig-paren">(</span><em>xyz</em>, <em>species</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#check_xyz_species_for_drawing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.check_xyz_species_for_drawing" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper function for checking the coordinates before drawing them.</p>
+<code class="descclassname">arc.plotter.</code><code class="descname">check_xyz_species_for_drawing</code><span class="sig-paren">(</span><em>xyz=None</em>, <em>species=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#check_xyz_species_for_drawing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.check_xyz_species_for_drawing" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function for checking the coordinates before drawing them.
+Either <code class="docutils literal notranslate"><span class="pre">xyz</span></code> or <code class="docutils literal notranslate"><span class="pre">species</span></code> must be given. If both are given, <code class="docutils literal notranslate"><span class="pre">xyz</span></code> gets precedence.
+If <code class="docutils literal notranslate"><span class="pre">species</span></code> is given, xys will be taken from it or cheaply generated for it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em><em>, </em><em>optional</em>) – The 3D coordinates in any form.</li>
+<li><strong>species</strong> (<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a><em>, </em><em>optional</em>) – A species to take the coordinates from.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The coordinates to plot.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">xyz (dict)</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">InputError</span></code> – If neither <code class="docutils literal notranslate"><span class="pre">xyz</span></code> nor <code class="docutils literal notranslate"><span class="pre">species</span></code> are given.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code> – If <code class="docutils literal notranslate"><span class="pre">species</span></code> is of wrong type.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.plotter.draw_3d">
 <code class="descclassname">arc.plotter.</code><code class="descname">draw_3d</code><span class="sig-paren">(</span><em>xyz=None</em>, <em>species=None</em>, <em>project_directory=None</em>, <em>save_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_3d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draws the molecule in a “3D-balls” style
-If xyz is given, it will be used, otherwise the function looks for species.final_xyz
-Input coordinates are in string format
-Saves an image if a species and <cite>project_directory</cite> are provided
-If <cite>save_only</cite> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, then don’t plot, only save the image</p>
+<dd><p>Draws the molecule in a “3D-balls” style.
+Saves an image if a species and <code class="docutils literal notranslate"><span class="pre">project_directory</span></code> are provided.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>xyz</strong> (<em>str</em><em>, </em><em>dict</em><em>, </em><em>optional</em>) – The coordinates to display.</li>
+<li><strong>species</strong> (<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a><em>, </em><em>optional</em>) – xyz coordinates will be taken from the species.</li>
+<li><strong>project_directory</strong> (<em>str</em>) – ARC’s project directory to save the image in.</li>
+<li><strong>save_only</strong> (<em>bool</em>) – Whether to only save an image without plotting it, <code class="docutils literal notranslate"><span class="pre">True</span></code> to only save.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -245,6 +282,25 @@ Source: <a class="reference external" href="https://stackoverflow.com/questions/
 </dd></dl>
 
 <dl class="function">
+<dt id="arc.plotter.log_bde_report">
+<code class="descclassname">arc.plotter.</code><code class="descname">log_bde_report</code><span class="sig-paren">(</span><em>path</em>, <em>bde_report</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#log_bde_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.log_bde_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prettify the report for bond dissociation energies. Log and save to file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<em>str</em>) – The file path.</li>
+<li><strong>bde_report</strong> (<em>dict</em>) – The BDE report dictionary. Keys are species labels, values are species BDE dictionaries.
+In the second level dict, keys are pivot tuples, values are energies in kJ/mol.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.plotter.log_kinetics">
 <code class="descclassname">arc.plotter.</code><code class="descname">log_kinetics</code><span class="sig-paren">(</span><em>label</em>, <em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#log_kinetics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.log_kinetics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logging kinetics from an Arkane output file.</p>
@@ -282,10 +338,23 @@ Source: <a class="reference external" href="https://stackoverflow.com/questions/
 
 <dl class="function">
 <dt id="arc.plotter.plot_3d_mol_as_scatter">
-<code class="descclassname">arc.plotter.</code><code class="descname">plot_3d_mol_as_scatter</code><span class="sig-paren">(</span><em>xyz</em>, <em>path=None</em>, <em>plot_h=True</em>, <em>show_plot=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_3d_mol_as_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_3d_mol_as_scatter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draws the molecule as scattered balls in space according to the supplied xyz coordinates
-<cite>xyz</cite> is in string form
-<cite>path</cite> is the species output path to save the image</p>
+<code class="descclassname">arc.plotter.</code><code class="descname">plot_3d_mol_as_scatter</code><span class="sig-paren">(</span><em>xyz</em>, <em>path=None</em>, <em>plot_h=True</em>, <em>show_plot=True</em>, <em>name=u''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_3d_mol_as_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_3d_mol_as_scatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws the molecule as scattered balls in space according to the supplied xyz coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em>) – The xyz coordinates.</li>
+<li><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – A directory path to save the generated figure in.</li>
+<li><strong>plot_h</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to plot hydrogen atoms as well. <code class="docutils literal notranslate"><span class="pre">True</span></code> to plot them.</li>
+<li><strong>show_plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to show the plot. <code class="docutils literal notranslate"><span class="pre">True</span></code> to show.</li>
+<li><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – A name to be added to the saved file name.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -346,7 +415,7 @@ If energies are given, the conformers are considered to be optimized.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>project_directory</strong> (<em>str</em>) – The path to the project’s directory.</li>
 <li><strong>label</strong> (<em>str</em>) – The species label.</li>
-<li><strong>xyzs</strong> (<em>list</em>) – Entries are sting-format xyz coordinates of conformers.</li>
+<li><strong>xyzs</strong> (<em>list</em>) – Entries are dict-format xyz coordinates of conformers.</li>
 <li><strong>level_of_theory</strong> (<em>str</em>) – The level of theory used for the conformers optimization.</li>
 <li><strong>multiplicity</strong> (<em>int</em><em>, </em><em>optional</em>) – The species multiplicity, used for perceiving the molecule.</li>
 <li><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The species charge, used for perceiving the molecule.</li>
@@ -418,7 +487,27 @@ If not given (None) then the Species.conformer_energies are used instead.</li>
 <dt id="arc.plotter.show_sticks">
 <code class="descclassname">arc.plotter.</code><code class="descname">show_sticks</code><span class="sig-paren">(</span><em>xyz=None</em>, <em>species=None</em>, <em>project_directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#show_sticks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.show_sticks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the molecule in a “sticks” style according to the supplied xyz coordinates.
-Returns whether successful of not. If successful, saves an image using draw_3d.</p>
+Returns whether successful of not. If successful, saves the image using draw_3d.
+Either <code class="docutils literal notranslate"><span class="pre">xyz</span></code> or <code class="docutils literal notranslate"><span class="pre">species</span></code> must be specified.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xyz</strong> (<em>str</em><em>, </em><em>dict</em><em>, </em><em>optional</em>) – The coordinates to display.</li>
+<li><strong>species</strong> (<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a><em>, </em><em>optional</em>) – xyz coordinates will be taken from the species.</li>
+<li><strong>project_directory</strong> (<em>str</em>) – ARC’s project directory to save a draw_3d image in.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Whether the show_sticks drawing was successfull. <code class="docutils literal notranslate"><span class="pre">True</span></code> if it was.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">

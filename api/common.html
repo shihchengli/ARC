@@ -188,6 +188,49 @@ As such, it should not import any other ARC module (specifically ones that use t
 <p>VERSION is the full ARC version, using <a class="reference external" href="https://semver.org/">semantic versioning</a>.</p>
 <p>ATOM_RADII data taken from <a class="reference external" href="http://dx.doi.org/10.1039/b801115j">DOI 10.1039/b801115j</a>.</p>
 <dl class="function">
+<dt id="arc.common.almost_equal_coords">
+<code class="descclassname">arc.common.</code><code class="descname">almost_equal_coords</code><span class="sig-paren">(</span><em>xyz1</em>, <em>xyz2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function for checking two xyz’s are almost equal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>xyz1</strong> (<em>dict</em>) – Coordinates.</li>
+<li><strong>xyz2</strong> (<em>dict</em>) – Coordinates.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.common.almost_equal_coords_lists">
+<code class="descclassname">arc.common.</code><code class="descname">almost_equal_coords_lists</code><span class="sig-paren">(</span><em>xyz1</em>, <em>xyz2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords_lists" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function for checking two lists of xyz’s has at least one entry in each that is almost equal.
+Useful for comparing xyz’s in unit tests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xyz1</strong> (<em>list</em><em>, </em><em>dict</em>) – Either a dict-format xyz, or a list of them.</li>
+<li><strong>xyz2</strong> (<em>list</em><em>, </em><em>dict</em>) – Either a dict-format xyz, or a list of them.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Whether at least one entry in each input xyz’s is almost equal to an entry in the other xyz.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.common.calculate_dihedral_angle">
 <code class="descclassname">arc.common.</code><code class="descname">calculate_dihedral_angle</code><span class="sig-paren">(</span><em>coords</em>, <em>torsion</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#calculate_dihedral_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.calculate_dihedral_angle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a dihedral angle. Inspired by ASE Atoms.get_dihedral().</p>
@@ -251,29 +294,21 @@ Also check ESS and servers.</p>
 
 <dl class="function">
 <dt id="arc.common.determine_symmetry">
-<code class="descclassname">arc.common.</code><code class="descname">determine_symmetry</code><span class="sig-paren">(</span><em>coords</em>, <em>symbols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_symmetry" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">arc.common.</code><code class="descname">determine_symmetry</code><span class="sig-paren">(</span><em>xyz</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_symmetry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine external symmetry and chirality (optical isomers) of the species.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>coords</strong> (<em>list</em>) – The 3D coordinates of a molecule in array-format.</li>
-<li><strong>symbols</strong> (<em>list</em>) – Entries are atomic symbols correcponding to coords.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xyz</strong> (<em>dict</em>) – The 3D coordinates.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The external symmetry number.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The external symmetry number.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">1 if no chiral centers are present, 2 if chiral centers are present.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1 if no chiral centers are present, 2 if chiral centers are present.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>

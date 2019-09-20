@@ -208,6 +208,10 @@
         <li><a href="api/scheduler.html#arc.scheduler.Scheduler.allow_nonisomorphic_2d">(arc.scheduler.Scheduler attribute)</a>
 </li>
       </ul></li>
+      <li><a href="api/common.html#arc.common.almost_equal_coords">almost_equal_coords() (in module arc.common)</a>
+</li>
+      <li><a href="api/common.html#arc.common.almost_equal_coords_lists">almost_equal_coords_lists() (in module arc.common)</a>
+</li>
       <li><a href="api/main.html#arc.main.ARC">ARC (class in arc.main)</a>
 </li>
       <li><a href="api/common.html#module-arc.common">arc.common (module)</a>
@@ -226,10 +230,10 @@
 </li>
       <li><a href="api/processor.html#module-arc.processor">arc.processor (module)</a>
 </li>
-      <li><a href="api/reaction.html#module-arc.reaction">arc.reaction (module)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/reaction.html#module-arc.reaction">arc.reaction (module)</a>
+</li>
       <li><a href="api/rmgdb.html#module-arc.rmgdb">arc.rmgdb (module)</a>
 </li>
       <li><a href="api/scheduler.html#module-arc.scheduler">arc.scheduler (module)</a>
@@ -359,6 +363,8 @@
       <li><a href="api/reaction.html#arc.reaction.ARCReaction.check_ts">check_ts() (arc.reaction.ARCReaction method)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.check_xyz">check_xyz() (in module arc.species.species)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.check_xyz_dict">check_xyz_dict() (in module arc.species.converter)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.check_xyz_isomorphism">check_xyz_isomorphism() (arc.species.species.ARCSpecies method)</a>
 </li>
@@ -678,6 +684,8 @@
 </li>
       <li><a href="api/conformers.html#arc.species.conformers.get_lp_vector">get_lp_vector() (in module arc.species.conformers)</a>
 </li>
+      <li><a href="api/converter.html#arc.species.converter.get_most_common_isotope_for_element">get_most_common_isotope_for_element() (in module arc.species.converter)</a>
+</li>
       <li><a href="api/conformers.html#arc.species.conformers.get_normal">get_normal() (in module arc.species.conformers)</a>
 </li>
       <li><a href="api/common.html#arc.common.get_ordinal_indicator">get_ordinal_indicator() (in module arc.common)</a>
@@ -695,10 +703,6 @@
       <li><a href="api/conformers.html#arc.species.conformers.get_wells">get_wells() (in module arc.species.conformers)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.get_xyz">get_xyz() (arc.species.species.ARCSpecies method)</a>
-</li>
-      <li><a href="api/converter.html#arc.species.converter.get_xyz_matrix">get_xyz_matrix() (in module arc.species.converter)</a>
-</li>
-      <li><a href="api/converter.html#arc.species.converter.get_xyz_string">get_xyz_string() (in module arc.species.converter)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -724,10 +728,14 @@
         <li><a href="api/scheduler.html#arc.scheduler.Scheduler.initial_trsh">(arc.scheduler.Scheduler attribute)</a>
 </li>
       </ul></li>
+      <li><a href="api/species.html#arc.species.species.ARCSpecies.initial_xyz">initial_xyz (arc.species.species.ARCSpecies attribute)</a>
+
+      <ul>
+        <li><a href="api/species.html#arc.species.species.TSGuess.initial_xyz">(arc.species.species.TSGuess attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/species.html#arc.species.species.ARCSpecies.initial_xyz">initial_xyz (arc.species.species.ARCSpecies attribute)</a>
-</li>
       <li><a href="api/common.html#arc.common.initialize_job_types">initialize_job_types() (in module arc.common)</a>
 </li>
       <li><a href="api/common.html#arc.common.initialize_log">initialize_log() (in module arc.common)</a>
@@ -816,6 +824,8 @@
 </li>
       <li><a href="api/rmgdb.html#arc.rmgdb.load_rmg_database">load_rmg_database() (in module arc.rmgdb)</a>
 </li>
+      <li><a href="api/processor.html#arc.processor.Processor.load_rmg_db">load_rmg_db() (arc.processor.Processor method)</a>
+</li>
       <li><a href="api/job.html#arc.job.job.Job.local_path">local_path (arc.job.job.Job attribute)</a>
 </li>
       <li><a href="api/job.html#arc.job.job.Job.local_path_to_check_file">local_path_to_check_file (arc.job.job.Job attribute)</a>
@@ -827,6 +837,8 @@
       <li><a href="api/job.html#arc.job.job.Job.local_path_to_orbitals_file">local_path_to_orbitals_file (arc.job.job.Job attribute)</a>
 </li>
       <li><a href="api/job.html#arc.job.job.Job.local_path_to_output_file">local_path_to_output_file (arc.job.job.Job attribute)</a>
+</li>
+      <li><a href="api/plotter.html#arc.plotter.log_bde_report">log_bde_report() (in module arc.plotter)</a>
 </li>
       <li><a href="api/common.html#arc.common.log_footer">log_footer() (in module arc.common)</a>
 </li>
@@ -1286,6 +1298,8 @@
 </li>
       <li><a href="api/converter.html#arc.species.converter.standardize_xyz_string">standardize_xyz_string() (in module arc.species.converter)</a>
 </li>
+      <li><a href="api/converter.html#arc.species.converter.str_to_xyz">str_to_xyz() (in module arc.species.converter)</a>
+</li>
       <li><a href="api/common.html#arc.common.string_representer">string_representer() (in module arc.common)</a>
 </li>
       <li><a href="api/job.html#arc.job.job.Job.submit">submit (arc.job.job.Job attribute)</a>
@@ -1461,16 +1475,20 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/job.html#arc.job.job.Job.xyz">xyz (arc.job.job.Job attribute)</a>
-
-      <ul>
-        <li><a href="api/species.html#arc.species.species.TSGuess.xyz">(arc.species.species.TSGuess attribute)</a>
 </li>
-      </ul></li>
+      <li><a href="api/converter.html#arc.species.converter.xyz_file_format_to_xyz">xyz_file_format_to_xyz() (in module arc.species.converter)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.xyz_from_data">xyz_from_data() (in module arc.species.converter)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/converter.html#arc.species.converter.xyz_string_to_xyz_file_format">xyz_string_to_xyz_file_format() (in module arc.species.converter)</a>
-</li>
       <li><a href="api/converter.html#arc.species.converter.xyz_to_pybel_mol">xyz_to_pybel_mol() (in module arc.species.converter)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.xyz_to_str">xyz_to_str() (in module arc.species.converter)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.xyz_to_x_y_z">xyz_to_x_y_z() (in module arc.species.converter)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.xyz_to_xyz_file_format">xyz_to_xyz_file_format() (in module arc.species.converter)</a>
 </li>
   </ul></td>
 </tr></table>

@@ -189,7 +189,8 @@
 
 <span class="kn">from</span> <span class="nn">arc.arc_exceptions</span> <span class="k">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">SanitizationError</span>
 <span class="kn">from</span> <span class="nn">arc.common</span> <span class="k">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">min_list</span>
-<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="k">import</span> <span class="n">get_xyz_matrix</span><span class="p">,</span> <span class="n">rdkit_conf_from_mol</span><span class="p">,</span> <span class="n">molecules_from_xyz</span>
+<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="k">import</span> <span class="n">rdkit_conf_from_mol</span><span class="p">,</span> <span class="n">molecules_from_xyz</span><span class="p">,</span> <span class="n">check_xyz_dict</span><span class="p">,</span> <span class="n">str_to_xyz</span><span class="p">,</span> <span class="n">xyz_to_str</span><span class="p">,</span> \
+    <span class="n">xyz_to_x_y_z</span><span class="p">,</span> <span class="n">xyz_from_data</span>
 <span class="kn">from</span> <span class="nn">arc.species.species</span> <span class="k">import</span> <span class="n">ARCSpecies</span>
 
 
@@ -221,17 +222,25 @@
 <div class="viewcode-block" id="show_sticks"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.show_sticks">[docs]</a><span class="k">def</span> <span class="nf">show_sticks</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draws the molecule in a &quot;sticks&quot; style according to the supplied xyz coordinates.</span>
-<span class="sd">    Returns whether successful of not. If successful, saves an image using draw_3d.</span>
+<span class="sd">    Returns whether successful of not. If successful, saves the image using draw_3d.</span>
+<span class="sd">    Either ``xyz`` or ``species`` must be specified.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xyz (str, dict, optional): The coordinates to display.</span>
+<span class="sd">        species (ARCSpecies, optional): xyz coordinates will be taken from the species.</span>
+<span class="sd">        project_directory (str): ARC&#39;s project directory to save a draw_3d image in.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Whether the show_sticks drawing was successfull. ``True`` if it was.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">xyz</span> <span class="o">=</span> <span class="n">check_xyz_species_for_drawing</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
-    <span class="n">coordinates</span> <span class="o">=</span> <span class="n">get_xyz_matrix</span><span class="p">(</span><span class="n">xyz</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">species</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">s_mol</span><span class="p">,</span> <span class="n">b_mol</span> <span class="o">=</span> <span class="n">molecules_from_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="n">b_mol</span> <span class="k">if</span> <span class="n">b_mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">s_mol</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">mol</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">rd_mol</span> <span class="o">=</span> <span class="n">rdkit_conf_from_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">rd_mol</span> <span class="o">=</span> <span class="n">rdkit_conf_from_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">xyz</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="n">mb</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToMolBlock</span><span class="p">(</span><span class="n">rd_mol</span><span class="p">)</span>
@@ -248,18 +257,19 @@
 
 <div class="viewcode-block" id="draw_3d"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.draw_3d">[docs]</a><span class="k">def</span> <span class="nf">draw_3d</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Draws the molecule in a &quot;3D-balls&quot; style</span>
-<span class="sd">    If xyz is given, it will be used, otherwise the function looks for species.final_xyz</span>
-<span class="sd">    Input coordinates are in string format</span>
-<span class="sd">    Saves an image if a species and `project_directory` are provided</span>
-<span class="sd">    If `save_only` is ``True``, then don&#39;t plot, only save the image</span>
+<span class="sd">    Draws the molecule in a &quot;3D-balls&quot; style.</span>
+<span class="sd">    Saves an image if a species and ``project_directory`` are provided.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xyz (str, dict, optional): The coordinates to display.</span>
+<span class="sd">        species (ARCSpecies, optional): xyz coordinates will be taken from the species.</span>
+<span class="sd">        project_directory (str): ARC&#39;s project directory to save the image in.</span>
+<span class="sd">        save_only (bool): Whether to only save an image without plotting it, ``True`` to only save.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">xyz</span> <span class="o">=</span> <span class="n">check_xyz_species_for_drawing</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">get_xyz_matrix</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
-    <span class="n">atoms</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">]</span>
     <span class="n">ase_atoms</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atoms</span><span class="p">):</span>
-        <span class="n">ase_atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Atom</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="n">atom</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span>
+    <span class="k">for</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">],</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]):</span>
+        <span class="n">ase_atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Atom</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">coord</span><span class="p">))</span>
     <span class="n">ase_mol</span> <span class="o">=</span> <span class="n">Atoms</span><span class="p">(</span><span class="n">ase_atoms</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">save_only</span><span class="p">:</span>
         <span class="n">display</span><span class="p">(</span><span class="n">view</span><span class="p">(</span><span class="n">ase_mol</span><span class="p">,</span> <span class="n">viewer</span><span class="o">=</span><span class="s1">&#39;x3d&#39;</span><span class="p">))</span>
@@ -271,63 +281,85 @@
         <span class="n">ase_write</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">geo_path</span><span class="p">,</span> <span class="s1">&#39;geometry.png&#39;</span><span class="p">),</span> <span class="n">images</span><span class="o">=</span><span class="n">ase_mol</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="plot_3d_mol_as_scatter"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.plot_3d_mol_as_scatter">[docs]</a><span class="k">def</span> <span class="nf">plot_3d_mol_as_scatter</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_h</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_3d_mol_as_scatter"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.plot_3d_mol_as_scatter">[docs]</a><span class="k">def</span> <span class="nf">plot_3d_mol_as_scatter</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_h</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Draws the molecule as scattered balls in space according to the supplied xyz coordinates</span>
-<span class="sd">    `xyz` is in string form</span>
-<span class="sd">    `path` is the species output path to save the image</span>
+<span class="sd">    Draws the molecule as scattered balls in space according to the supplied xyz coordinates.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xyz (dict, str): The xyz coordinates.</span>
+<span class="sd">        path (str, optional): A directory path to save the generated figure in.</span>
+<span class="sd">        plot_h (bool, optional): Whether to plot hydrogen atoms as well. ``True`` to plot them.</span>
+<span class="sd">        show_plot (bool, optional): Whether to show the plot. ``True`` to show.</span>
+<span class="sd">        name (str, optional): A name to be added to the saved file name.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">get_xyz_matrix</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">sizes</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atoms</span><span class="p">):</span>
+    <span class="n">xyz</span> <span class="o">=</span> <span class="n">check_xyz_species_for_drawing</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">)</span>
+    <span class="n">coords</span><span class="p">,</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">sizes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">],</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]):</span>
         <span class="n">size</span> <span class="o">=</span> <span class="mi">500</span>
-        <span class="k">if</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">plot_h</span><span class="p">:</span>
-                <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
-                <span class="n">size</span> <span class="o">=</span> <span class="mi">250</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
-                <span class="n">atoms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-                <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
-        <span class="k">elif</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span>
-            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span>
-            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span>
-            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span>
-            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;gray&#39;</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="mi">250</span>
+        <span class="k">elif</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span>
+        <span class="k">elif</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span>
+        <span class="k">elif</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span>
+        <span class="k">elif</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
-        <span class="n">sizes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;g&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">symbol</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">plot_h</span><span class="p">):</span>
+            <span class="c1"># we do want to plot this atom</span>
+            <span class="n">coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
+            <span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+            <span class="n">sizes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="n">xyz_</span> <span class="o">=</span> <span class="n">xyz_from_data</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">symbols</span><span class="o">=</span><span class="n">symbols</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">xyz_to_x_y_z</span><span class="p">(</span><span class="n">xyz_</span><span class="p">)</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">Axes3D</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">ys</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">zs</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">sizes</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">depthshade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atoms</span><span class="p">):</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">symbols</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">symbol</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">show_plot</span><span class="p">:</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;scattered_balls_structure.png&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;scattered_balls_structure</span><span class="si">{0}</span><span class="s1">.png&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="check_xyz_species_for_drawing"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.check_xyz_species_for_drawing">[docs]</a><span class="k">def</span> <span class="nf">check_xyz_species_for_drawing</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">species</span><span class="p">):</span>
+<div class="viewcode-block" id="check_xyz_species_for_drawing"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.check_xyz_species_for_drawing">[docs]</a><span class="k">def</span> <span class="nf">check_xyz_species_for_drawing</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for checking the coordinates before drawing them.</span>
+<span class="sd">    Either ``xyz`` or ``species`` must be given. If both are given, ``xyz`` gets precedence.</span>
+<span class="sd">    If ``species`` is given, xys will be taken from it or cheaply generated for it.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xyz (dict, str, optional): The 3D coordinates in any form.</span>
+<span class="sd">        species (ARCSpecies, optional): A species to take the coordinates from.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        xyz (dict): The coordinates to plot.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        InputError: If neither ``xyz`` nor ``species`` are given.</span>
+<span class="sd">        TypeError: If ``species`` is of wrong type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">species</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">xyz</span> <span class="o">=</span> <span class="n">xyz</span> <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">species</span><span class="o">.</span><span class="n">final_xyz</span>
+    <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">species</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Either xyz or species must be given.&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">species</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">ARCSpecies</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Species must be an ARCSpecies instance. Got </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">species</span><span class="p">)))</span>
-    <span class="k">if</span> <span class="n">species</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">species</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Species </span><span class="si">{0}</span><span class="s1"> has an empty final_xyz attribute.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">xyz</span></div>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Species must be an ARCSpecies instance. Got </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">species</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">xyz</span> <span class="o">=</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(</span><span class="n">generate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span></div>
 
 
 <span class="c1"># *** Logging output ***</span>
@@ -384,6 +416,29 @@
             <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">kinetics_block</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="log_bde_report"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.log_bde_report">[docs]</a><span class="k">def</span> <span class="nf">log_bde_report</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">bde_report</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prettify the report for bond dissociation energies. Log and save to file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The file path.</span>
+<span class="sd">        bde_report (dict): The BDE report dictionary. Keys are species labels, values are species BDE dictionaries.</span>
+<span class="sd">                           In the second level dict, keys are pivot tuples, values are energies in kJ/mol.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">bde_dict</span> <span class="ow">in</span> <span class="n">bde_report</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39; BDE report for </span><span class="si">{0}</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39; Pivots        BDE (kJ/mol)</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39; ------        ------------</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="k">for</span> <span class="n">pivots</span><span class="p">,</span> <span class="n">bde</span> <span class="ow">in</span> <span class="n">bde_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39; </span><span class="si">{0:15}</span><span class="s1"> </span><span class="si">{1:10.2f}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pivots</span><span class="p">,</span> <span class="n">bde</span><span class="p">)</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
 
 
 <span class="c1"># *** Parity and kinetic plots ***</span>
@@ -589,17 +644,19 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">geo_path</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">geo_path</span><span class="p">)</span>
 
+    <span class="n">xyz_str</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">)</span>
+
     <span class="c1"># xyz</span>
     <span class="n">xyz</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">number_of_atoms</span><span class="p">)</span>
     <span class="n">xyz</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> optimized at </span><span class="si">{1}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">species</span><span class="o">.</span><span class="n">opt_level</span><span class="p">)</span>
-    <span class="n">xyz</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">)</span>
+    <span class="n">xyz</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">geo_path</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">.xyz&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">)),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">xyz</span><span class="p">))</span>
 
     <span class="c1"># GaussView file</span>
     <span class="n">gv</span> <span class="o">=</span> <span class="s1">&#39;# hf/3-21g</span><span class="se">\n\n</span><span class="si">{0}</span><span class="s1"> optimized at </span><span class="si">{1}</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">species</span><span class="o">.</span><span class="n">opt_level</span><span class="p">)</span>
     <span class="n">gv</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">charge</span><span class="p">,</span> <span class="n">species</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">)</span>
-    <span class="n">gv</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">)</span>
+    <span class="n">gv</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">geo_path</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">.gjf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">)),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">gv</span><span class="p">))</span></div>
 
@@ -726,7 +783,7 @@
 <span class="sd">    Args:</span>
 <span class="sd">        project_directory (str): The path to the project&#39;s directory.</span>
 <span class="sd">        label (str): The species label.</span>
-<span class="sd">        xyzs (list): Entries are sting-format xyz coordinates of conformers.</span>
+<span class="sd">        xyzs (list): Entries are dict-format xyz coordinates of conformers.</span>
 <span class="sd">        level_of_theory (str): The level of theory used for the conformers optimization.</span>
 <span class="sd">        multiplicity (int, optional): The species multiplicity, used for perceiving the molecule.</span>
 <span class="sd">        charge (int, optional): The species charge, used for perceiving the molecule.</span>
@@ -753,14 +810,14 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xyzs</span><span class="p">):</span>
             <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;conformer </span><span class="si">{0}</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">content</span> <span class="o">+=</span> <span class="n">xyz</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">content</span> <span class="o">+=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ts</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">b_mol</span> <span class="o">=</span> <span class="n">molecules_from_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="n">charge</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
                     <span class="k">except</span> <span class="n">SanitizationError</span><span class="p">:</span>
                         <span class="n">b_mol</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="n">smiles</span> <span class="o">=</span> <span class="n">b_mol</span><span class="o">.</span><span class="n">toSMILES</span><span class="p">()</span> <span class="k">if</span> <span class="n">b_mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;Could not perceive molecule&#39;</span>
-                    <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;SMILES: </span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+                    <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">SMILES: </span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">ts_methods</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;TS guess method: </span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ts_methods</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">optimized</span><span class="p">:</span>
@@ -967,8 +1024,6 @@
             <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0:12.2f}</span><span class="s1"> </span><span class="si">{1:24.3f}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">energy</span><span class="p">))</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
-
-
 </pre></div>
 
            </div>

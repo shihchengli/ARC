@@ -415,6 +415,12 @@ if not available in Arkane and not provided by the user.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="arc.processor.Processor.load_rmg_db">
+<code class="descname">load_rmg_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor.load_rmg_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor.load_rmg_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the RMG database</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="arc.processor.Processor.process">
 <code class="descname">process</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor.process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process ARC outputs and generate thermo and kinetics.</p>
@@ -429,6 +435,10 @@ if not available in Arkane and not provided by the user.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label</strong> (<em>str</em>) – The species label.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The BDE report for a single species. Keys are pivots, values are energies in kJ/mol.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bde_report (dict)</td>
 </tr>
 </tbody>
 </table>
