@@ -187,12 +187,12 @@
 <span class="kn">from</span> <span class="nn">arkane.gaussian</span> <span class="k">import</span> <span class="n">GaussianLog</span>
 <span class="kn">from</span> <span class="nn">arkane.molpro</span> <span class="k">import</span> <span class="n">MolproLog</span>
 <span class="kn">from</span> <span class="nn">arkane.qchem</span> <span class="k">import</span> <span class="n">QChemLog</span>
-<span class="kn">from</span> <span class="nn">arkane.util</span> <span class="k">import</span> <span class="n">determine_qm_software</span>
+<span class="kn">from</span> <span class="nn">arkane.statmech</span> <span class="k">import</span> <span class="n">determine_qm_software</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="k">import</span> <span class="n">getElement</span>
 <span class="kn">from</span> <span class="nn">rmgpy.qm.qmdata</span> <span class="k">import</span> <span class="n">QMData</span>
 <span class="kn">from</span> <span class="nn">rmgpy.qm.symmetry</span> <span class="k">import</span> <span class="n">PointGroupCalculator</span>
 
-<span class="kn">from</span> <span class="nn">arc.arc_exceptions</span> <span class="k">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">SettingsError</span>
+<span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="k">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">SettingsError</span>
 <span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">arc_path</span><span class="p">,</span> <span class="n">servers</span><span class="p">,</span> <span class="n">default_job_types</span>
 
 
@@ -582,7 +582,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        job_types (dict): An updated (comprehensive) job type dictionary.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">defaults_to_true</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;conformers&#39;</span><span class="p">,</span> <span class="s1">&#39;opt&#39;</span><span class="p">,</span> <span class="s1">&#39;fine&#39;</span><span class="p">,</span> <span class="s1">&#39;freq&#39;</span><span class="p">,</span> <span class="s1">&#39;sp&#39;</span><span class="p">,</span> <span class="s1">&#39;1d_rotors&#39;</span><span class="p">]</span>
+    <span class="n">defaults_to_true</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;conformers&#39;</span><span class="p">,</span> <span class="s1">&#39;opt&#39;</span><span class="p">,</span> <span class="s1">&#39;fine&#39;</span><span class="p">,</span> <span class="s1">&#39;freq&#39;</span><span class="p">,</span> <span class="s1">&#39;sp&#39;</span><span class="p">,</span> <span class="s1">&#39;rotors&#39;</span><span class="p">]</span>
     <span class="n">defaults_to_false</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;onedmin&#39;</span><span class="p">,</span> <span class="s1">&#39;orbitals&#39;</span><span class="p">,</span> <span class="s1">&#39;bde&#39;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">job_types</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">job_types</span> <span class="o">=</span> <span class="n">default_job_types</span>
@@ -604,8 +604,11 @@
             <span class="n">job_types</span><span class="p">[</span><span class="n">job_type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">job_type</span> <span class="ow">in</span> <span class="n">job_types</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">job_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">defaults_to_true</span> <span class="ow">and</span> <span class="n">job_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">defaults_to_false</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;1d_rotors&#39;</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Note: The `1d_rotors` job type was renamed to simply `rotors`. &quot;</span>
+                              <span class="s2">&quot;Please modify your input accordingly (see ARC&#39;s documentation for examples).&quot;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Job type &#39;</span><span class="si">{0}</span><span class="s2">&#39; not supported. Check the job types dictionary &quot;</span>
-                             <span class="s2">&quot;(either in ARC&#39;s input or in default_job_types under settings)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_type</span><span class="p">))</span>
+                             <span class="s2">&quot;(either in ARC&#39;s input or in default_job_types under settings).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_type</span><span class="p">))</span>
     <span class="n">job_types_report</span> <span class="o">=</span> <span class="p">[</span><span class="n">job_type</span> <span class="k">for</span> <span class="n">job_type</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">job_types</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">val</span><span class="p">]</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Considering the following job types: </span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_types_report</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">job_types</span></div>
@@ -619,7 +622,7 @@
 <span class="sd">        log_file (str): The ESS log file path.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        str: The ESS (either &#39;gaussian&#39;, &#39;qchem&#39;, or &#39;molpro&#39;.</span>
+<span class="sd">        str: The ESS (either &#39;gaussian&#39;, &#39;qchem&#39;, or &#39;molpro&#39;).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">determine_qm_software</span><span class="p">(</span><span class="n">log_file</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">):</span>

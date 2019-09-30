@@ -184,7 +184,7 @@
 <p>The ARC Job module</p>
 <dl class="class">
 <dt id="arc.job.job.Job">
-<em class="property">class </em><code class="descclassname">arc.job.job.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>project=u''</em>, <em>ess_settings=None</em>, <em>species_name=u''</em>, <em>xyz=None</em>, <em>job_type=u''</em>, <em>level_of_theory=u''</em>, <em>multiplicity=None</em>, <em>project_directory=u''</em>, <em>charge=0</em>, <em>conformer=-1</em>, <em>fine=False</em>, <em>shift=u''</em>, <em>software=None</em>, <em>is_ts=False</em>, <em>scan=None</em>, <em>pivots=None</em>, <em>memory=14</em>, <em>comments=u''</em>, <em>trsh=u''</em>, <em>scan_trsh=u''</em>, <em>job_dict=None</em>, <em>ess_trsh_methods=None</em>, <em>bath_gas=None</em>, <em>initial_trsh=None</em>, <em>job_num=None</em>, <em>job_server_name=None</em>, <em>job_name=None</em>, <em>job_id=None</em>, <em>server=None</em>, <em>initial_time=None</em>, <em>occ=None</em>, <em>max_job_time=120</em>, <em>scan_res=None</em>, <em>checkfile=None</em>, <em>number_of_radicals=None</em>, <em>conformers=None</em>, <em>radius=None</em>, <em>directed_dihedral=None</em>, <em>testing=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">arc.job.job.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>project=u''</em>, <em>ess_settings=None</em>, <em>species_name=u''</em>, <em>xyz=None</em>, <em>job_type=u''</em>, <em>level_of_theory=u''</em>, <em>multiplicity=None</em>, <em>project_directory=u''</em>, <em>charge=0</em>, <em>conformer=-1</em>, <em>fine=False</em>, <em>shift=u''</em>, <em>software=None</em>, <em>is_ts=False</em>, <em>scan=None</em>, <em>pivots=None</em>, <em>memory=14</em>, <em>comments=u''</em>, <em>trsh=u''</em>, <em>scan_trsh=u''</em>, <em>job_dict=None</em>, <em>ess_trsh_methods=None</em>, <em>bath_gas=None</em>, <em>initial_trsh=None</em>, <em>job_num=None</em>, <em>job_server_name=None</em>, <em>job_name=None</em>, <em>job_id=None</em>, <em>server=None</em>, <em>initial_time=None</em>, <em>occ=None</em>, <em>max_job_time=120</em>, <em>scan_res=None</em>, <em>checkfile=None</em>, <em>number_of_radicals=None</em>, <em>conformers=None</em>, <em>radius=None</em>, <em>directed_scan_type=None</em>, <em>directed_scans=None</em>, <em>directed_dihedrals=None</em>, <em>rotor_index=None</em>, <em>testing=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job" title="Permalink to this definition">¶</a></dt>
 <dd><p>ARC’s Job class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -234,7 +234,10 @@ singlet, in which case the job should be unrestricted with
 multiplicity = 1.</li>
 <li><strong>conformers</strong> (<em>str</em><em>, </em><em>optional</em>) – A path to the YAML file conformer coordinates for a Gromacs MD job.</li>
 <li><strong>radius</strong> (<em>float</em><em>, </em><em>optional</em>) – The species radius in Angstrom.</li>
-<li><strong>directed_dihedral</strong> (<em>float</em>) – The dihedral angle of a directed scan job (either continuous or brute force).</li>
+<li><strong>directed_scans</strong> (<em>list</em>) – Entries are lists of four-atom dihedral scan indices to constrain during a directed scan.</li>
+<li><strong>directed_dihedrals</strong> (<em>list</em>) – The dihedral angles of a directed scan job corresponding to <code class="docutils literal notranslate"><span class="pre">directed_scans</span></code>.</li>
+<li><strong>directed_scan_type</strong> (<em>str</em>) – The type of the directed scan.</li>
+<li><strong>rotor_index</strong> (<em>int</em>) – The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</li>
 <li><strong>job_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</li>
 <li><strong>testing</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the object is generated for testing purposes, True if it is.</li>
 </ul>
@@ -995,14 +998,56 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="arc.job.job.Job.directed_dihedral">
-<code class="descname">directed_dihedral</code><a class="headerlink" href="#arc.job.job.Job.directed_dihedral" title="Permalink to this definition">¶</a></dt>
-<dd><p>The dihedral angle of a directed scan job (either continuous or brute force).</p>
+<dt id="arc.job.job.Job.directed_scans">
+<code class="descname">directed_scans</code><a class="headerlink" href="#arc.job.job.Job.directed_scans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Entries are lists of four-atom dihedral scan indices to constrain during a directed scan.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.job.job.Job.directed_dihedrals">
+<code class="descname">directed_dihedrals</code><a class="headerlink" href="#arc.job.job.Job.directed_dihedrals" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dihedral angles of a directed scan job corresponding to <code class="docutils literal notranslate"><span class="pre">directed_scans</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.job.job.Job.directed_scan_type">
+<code class="descname">directed_scan_type</code><a class="headerlink" href="#arc.job.job.Job.directed_scan_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The type of the directed scan.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.job.job.Job.rotor_index">
+<code class="descname">rotor_index</code><a class="headerlink" href="#arc.job.job.Job.rotor_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>

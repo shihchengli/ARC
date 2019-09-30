@@ -697,19 +697,23 @@ This method differs from check_directed_scan_job(), since here we consider the e
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.check_directed_scan_job">
 <code class="descname">check_directed_scan_job</code><span class="sig-paren">(</span><em>label</em>, <em>job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_directed_scan_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_directed_scan_job" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that a directed scan job for a specific dihedral angle converged successfully, otherwise troubleshoot.
-This method differs from check_directed_scan, since here we consider each the constrained opt separately.</p>
+<dd><p>Check that a directed scan job for a specific dihedral angle converged successfully, otherwise troubleshoot.</p>
 <p>rotors_dict structure (attribute of ARCSpecies):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: pivots_list,
-                  &#39;top&#39;: top_list,
-                  &#39;scan&#39;: scan_list,
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: ``list``,
+                  &#39;top&#39;: ``list``,
+                  &#39;scan&#39;: ``list``,
+                  &#39;number_of_running_jobs&#39;: ``int``,
                   &#39;success&#39;: ``bool``,
                   &#39;invalidation_reason&#39;: ``str``,
                   &#39;times_dihedral_set&#39;: ``int``,
                   &#39;scan_path&#39;: &lt;path to scan output file&gt;,
-                  &#39;max_e&#39;: ``float``,  # in kJ/mol},
+                  &#39;max_e&#39;: ``float``,  # in kJ/mol,
                   &#39;symmetry&#39;: ``int``,
-                  &#39;directed_scan&#39;: ``dict``,  # keys: dihedrals,
+                  &#39;dimensions&#39;: ``int``,
+                  &#39;original_dihedrals&#39;: ``list``,
+                  &#39;cont_indices&#39;: ``list``,
+                  &#39;directed_scan_type&#39;: ``str``,
+                  &#39;directed_scan&#39;: ``dict``,  # keys: tuples of dihedrals as strings,
                                               # values: dicts of energy, xyz, is_isomorphic, trsh
                  }
               2: {}, ...
@@ -797,16 +801,21 @@ Returns <code class="docutils literal notranslate"><span class="pre">True</span>
 and whether the optimized geometry indeed represents the minimum energy conformer.
 Recommends whether or not to use this rotor using the ‘successful_rotors’ and ‘unsuccessful_rotors’ attributes.
 rotors_dict structure (attribute of ARCSpecies):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: pivots_list,
-                  &#39;top&#39;: top_list,
-                  &#39;scan&#39;: scan_list,
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: ``list``,
+                  &#39;top&#39;: ``list``,
+                  &#39;scan&#39;: ``list``,
+                  &#39;number_of_running_jobs&#39;: ``int``,
                   &#39;success&#39;: ``bool``,
                   &#39;invalidation_reason&#39;: ``str``,
                   &#39;times_dihedral_set&#39;: ``int``,
                   &#39;scan_path&#39;: &lt;path to scan output file&gt;,
-                  &#39;max_e&#39;: ``float``,  # in kJ/mol},
-                  &#39;symmetry&#39;: ``int``
-                  &#39;directed_scan&#39;: ``dict``,  # keys: dihedrals,
+                  &#39;max_e&#39;: ``float``,  # in kJ/mol,
+                  &#39;symmetry&#39;: ``int``,
+                  &#39;dimensions&#39;: ``int``,
+                  &#39;original_dihedrals&#39;: ``list``,
+                  &#39;cont_indices&#39;: ``list``,
+                  &#39;directed_scan_type&#39;: ``str``,
+                  &#39;directed_scan&#39;: ``dict``,  # keys: tuples of dihedrals as strings,
                                               # values: dicts of energy, xyz, is_isomorphic, trsh
                  }
               2: {}, ...
@@ -1047,18 +1056,23 @@ If more than one conformer is available, they will be optimized at the DFT confo
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.process_directed_scans">
 <code class="descname">process_directed_scans</code><span class="sig-paren">(</span><em>label</em>, <em>pivots</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.process_directed_scans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.process_directed_scans" title="Permalink to this definition">¶</a></dt>
-<dd><p>Process all brute force rotors for a species and check the quality of the scan.</p>
+<dd><p>Process all directed rotors for a species and check the quality of the scan.</p>
 <p>rotors_dict structure (attribute of ARCSpecies):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: pivots_list,
-                  &#39;top&#39;: top_list,
-                  &#39;scan&#39;: scan_list,
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: ``list``,
+                  &#39;top&#39;: ``list``,
+                  &#39;scan&#39;: ``list``,
+                  &#39;number_of_running_jobs&#39;: ``int``,
                   &#39;success&#39;: ``bool``,
                   &#39;invalidation_reason&#39;: ``str``,
                   &#39;times_dihedral_set&#39;: ``int``,
                   &#39;scan_path&#39;: &lt;path to scan output file&gt;,
-                  &#39;max_e&#39;: ``float``,  # in kJ/mol},
+                  &#39;max_e&#39;: ``float``,  # in kJ/mol,
                   &#39;symmetry&#39;: ``int``,
-                  &#39;directed_scan&#39;: ``dict``,  # keys: dihedrals,
+                  &#39;dimensions&#39;: ``int``,
+                  &#39;original_dihedrals&#39;: ``list``,
+                  &#39;cont_indices&#39;: ``list``,
+                  &#39;directed_scan_type&#39;: ``str``,
+                  &#39;directed_scan&#39;: ``dict``,  # keys: tuples of dihedrals as strings,
                                               # values: dicts of energy, xyz, is_isomorphic, trsh
                  }
               2: {}, ...
@@ -1071,7 +1085,7 @@ If more than one conformer is available, they will be optimized at the DFT confo
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>label</strong> (<em>str</em>) – The species label.</li>
-<li><strong>pivots</strong> (<em>list</em><em>, </em><em>tuple</em>) – The rotor pivots.</li>
+<li><strong>pivots</strong> (<em>list</em>) – The rotor pivots.</li>
 </ul>
 </td>
 </tr>
@@ -1157,7 +1171,7 @@ If this was originally a composite job, run an appropriate separate freq job out
 
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.run_job">
-<code class="descname">run_job</code><span class="sig-paren">(</span><em>label</em>, <em>xyz</em>, <em>level_of_theory</em>, <em>job_type</em>, <em>fine=False</em>, <em>software=None</em>, <em>shift=u''</em>, <em>trsh=u''</em>, <em>memory=None</em>, <em>conformer=-1</em>, <em>ess_trsh_methods=None</em>, <em>scan=u''</em>, <em>pivots=None</em>, <em>occ=None</em>, <em>scan_trsh=u''</em>, <em>scan_res=None</em>, <em>max_job_time=None</em>, <em>confs=None</em>, <em>radius=None</em>, <em>directed_dihedral=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_job" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_job</code><span class="sig-paren">(</span><em>label</em>, <em>xyz</em>, <em>level_of_theory</em>, <em>job_type</em>, <em>fine=False</em>, <em>software=None</em>, <em>shift=u''</em>, <em>trsh=u''</em>, <em>memory=None</em>, <em>conformer=-1</em>, <em>ess_trsh_methods=None</em>, <em>scan=u''</em>, <em>pivots=None</em>, <em>occ=None</em>, <em>scan_trsh=u''</em>, <em>scan_res=None</em>, <em>max_job_time=None</em>, <em>confs=None</em>, <em>radius=None</em>, <em>directed_scan_type=None</em>, <em>directed_scans=None</em>, <em>directed_dihedrals=None</em>, <em>rotor_index=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for running (all) jobs.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1185,7 +1199,10 @@ but used to identify the rotor.</li>
 <li><strong>max_job_time</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximal allowed job time on the server in hours.</li>
 <li><strong>confs</strong> (<em>str</em><em>, </em><em>optional</em>) – A path to the YAML file conformer coordinates for a Gromacs MD job.</li>
 <li><strong>radius</strong> (<em>float</em><em>, </em><em>optional</em>) – The species radius in Angstrom.</li>
-<li><strong>directed_dihedral</strong> (<em>float</em><em>, </em><em>optional</em>) – The dihedral angle of a directed scan job (either continous or brute force).</li>
+<li><strong>directed_scan_type</strong> (<em>str</em>) – The type of the directed scan.</li>
+<li><strong>directed_scans</strong> (<em>list</em>) – Entries are lists of four-atom dihedral scan indices to constrain.</li>
+<li><strong>directed_dihedrals</strong> (<em>list</em>) – The dihedral angles of a directed scan job corresponding to <code class="docutils literal notranslate"><span class="pre">directed_scans</span></code>.</li>
+<li><strong>rotor_index</strong> (<em>int</em>) – The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</li>
 </ul>
 </td>
 </tr>
@@ -1239,7 +1256,7 @@ Currently supporting QChem for printing the orbitals, the output could be visual
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.run_scan_jobs">
 <code class="descname">run_scan_jobs</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_scan_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_scan_jobs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Spawn rotor scan jobs using ‘final_xyz’ for species or TS ‘label’.</p>
+<dd><p>Spawn rotor scan jobs using ‘final_xyz’ for species (or TS).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1293,17 +1310,19 @@ If the method is MRCI, first spawn a simple CCSD job, and use orbital determinat
 
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.spawn_directed_scan_jobs">
-<code class="descname">spawn_directed_scan_jobs</code><span class="sig-paren">(</span><em>label</em>, <em>scan</em>, <em>pivots</em>, <em>directed_scan_type</em>, <em>xyz=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_directed_scan_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_directed_scan_jobs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Spawn brute force scan jobs.</p>
+<code class="descname">spawn_directed_scan_jobs</code><span class="sig-paren">(</span><em>label</em>, <em>rotor_index</em>, <em>xyz=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_directed_scan_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_directed_scan_jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawn directed scan jobs.
+Directed scan types could be one of the following: ‘brute_force_sp’, ‘brute_force_opt’, ‘cont_opt’,
+‘brute_force_sp_diagonal’, ‘brute_force_opt_diagonal’, or ‘cont_opt_diagonal’.
+Here we treat <code class="docutils literal notranslate"><span class="pre">cont</span></code> and <code class="docutils literal notranslate"><span class="pre">brute_force</span></code> separately, and also consider the <code class="docutils literal notranslate"><span class="pre">diagonal</span></code> keyword.
+The differentiation between <code class="docutils literal notranslate"><span class="pre">sp</span></code> and <code class="docutils literal notranslate"><span class="pre">opt</span></code> is done in the Job module.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>label</strong> (<em>str</em>) – The species label.</li>
-<li><strong>scan</strong> (<em>list</em>) – The atom indices representing the dihedral.</li>
-<li><strong>pivots</strong> (<em>list</em>) – The pivotal atoms.</li>
-<li><strong>directed_scan_type</strong> (<em>str</em>) – Either ‘cont’ or ‘brute’ for continues brute force directed scans, respectively.</li>
+<li><strong>rotor_index</strong> (<em>int</em>) – The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</li>
 <li><strong>xyz</strong> (<em>str</em>) – The 3D coordinates for a continuous directed scan.</li>
 </ul>
 </td>

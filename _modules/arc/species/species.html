@@ -182,7 +182,7 @@
 <span class="kn">from</span> <span class="nn">rmgpy.statmech</span> <span class="k">import</span> <span class="n">NonlinearRotor</span><span class="p">,</span> <span class="n">LinearRotor</span>
 <span class="kn">from</span> <span class="nn">rmgpy.transport</span> <span class="k">import</span> <span class="n">TransportData</span>
 
-<span class="kn">from</span> <span class="nn">arc.arc_exceptions</span> <span class="k">import</span> <span class="n">SpeciesError</span><span class="p">,</span> <span class="n">RotorError</span><span class="p">,</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">TSError</span><span class="p">,</span> <span class="n">SanitizationError</span>
+<span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="k">import</span> <span class="n">SpeciesError</span><span class="p">,</span> <span class="n">RotorError</span><span class="p">,</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">TSError</span><span class="p">,</span> <span class="n">SanitizationError</span>
 <span class="kn">from</span> <span class="nn">arc.common</span> <span class="k">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">get_atom_radius</span><span class="p">,</span> <span class="n">determine_symmetry</span>
 <span class="kn">from</span> <span class="nn">arc.parser</span> <span class="k">import</span> <span class="n">parse_xyz_from_file</span><span class="p">,</span> <span class="n">parse_dipole_moment</span><span class="p">,</span> <span class="n">parse_polarizability</span><span class="p">,</span> <span class="n">process_conformers_file</span>
 <span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">default_ts_methods</span><span class="p">,</span> <span class="n">valid_chars</span><span class="p">,</span> <span class="n">minimum_barrier</span>
@@ -202,21 +202,25 @@
 
 <span class="sd">    Dictionary structure (initialized in conformers.find_internal_rotors)::</span>
 
-<span class="sd">        rotors_dict: {1: {&#39;pivots&#39;: pivots_list,</span>
-<span class="sd">                          &#39;top&#39;: top_list,</span>
-<span class="sd">                          &#39;scan&#39;: scan_list,</span>
-<span class="sd">                          &#39;success&#39;: ``bool``.</span>
-<span class="sd">                          &#39;invalidation_reason&#39;: ``str``,</span>
-<span class="sd">                          &#39;times_dihedral_set&#39;: ``int``,</span>
-<span class="sd">                          &#39;trsh_methods&#39;: ``list``,</span>
-<span class="sd">                          &#39;scan_path&#39;: &lt;path to scan output file&gt;,</span>
-<span class="sd">                          &#39;max_e&#39;: ``float``,  # in kJ/mol</span>
-<span class="sd">                          &#39;symmetry&#39;: ``int``,</span>
-<span class="sd">                          &#39;directed_scan&#39;: ``dict``,  # keys: dihedrals,</span>
-<span class="sd">                                                      # values: dicts of energy, xyz, is_isomorphic, trsh</span>
+<span class="sd">            rotors_dict: {1: {&#39;pivots&#39;: ``list``,</span>
+<span class="sd">                              &#39;top&#39;: ``list``,</span>
+<span class="sd">                              &#39;scan&#39;: ``list``,</span>
+<span class="sd">                              &#39;number_of_running_jobs&#39;: ``int``,</span>
+<span class="sd">                              &#39;success&#39;: ``bool``,</span>
+<span class="sd">                              &#39;invalidation_reason&#39;: ``str``,</span>
+<span class="sd">                              &#39;times_dihedral_set&#39;: ``int``,</span>
+<span class="sd">                              &#39;scan_path&#39;: &lt;path to scan output file&gt;,</span>
+<span class="sd">                              &#39;max_e&#39;: ``float``,  # in kJ/mol,</span>
+<span class="sd">                              &#39;symmetry&#39;: ``int``,</span>
+<span class="sd">                              &#39;dimensions&#39;: ``int``,</span>
+<span class="sd">                              &#39;original_dihedrals&#39;: ``list``,</span>
+<span class="sd">                              &#39;cont_indices&#39;: ``list``,</span>
+<span class="sd">                              &#39;directed_scan_type&#39;: ``str``,</span>
+<span class="sd">                              &#39;directed_scan&#39;: ``dict``,  # keys: tuples of dihedrals as strings,</span>
+<span class="sd">                                                          # values: dicts of energy, xyz, is_isomorphic, trsh</span>
+<span class="sd">                             }</span>
+<span class="sd">                          2: {}, ...</span>
 <span class="sd">                         }</span>
-<span class="sd">                      2: {}, ...</span>
-<span class="sd">                     }</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        label (str, optional): The species label.</span>
@@ -268,14 +272,35 @@
 <span class="sd">        bdes (list): Specifying for which bonds should bond dissociation energies be calculated.</span>
 <span class="sd">                     Entries are bonded atom indices tuples (1-indexed). An &#39;all_h&#39; string entry is also allowed,</span>
 <span class="sd">                     triggering BDE calculations for all hydrogen atoms in the molecule.</span>
-<span class="sd">        directed_rotors (dict): Execute a directed internal rotation scan (i.e., a series of constrained optimizations).</span>
-<span class="sd">                                Keys are either &#39;cont&#39; for a continues scan (each point in the scan is executed using</span>
-<span class="sd">                                the geometry of the previous converged point) or &#39;brute&#39; (all scan points are spawned at</span>
-<span class="sd">                                once by changing the respective dihedral). Values (for either key) are a list of pivots</span>
-<span class="sd">                                tuples for which internal rotation scans will be executed using the respective directed</span>
-<span class="sd">                                method (ARC will generate geometries using the ``rotor_scan_resolution`` in settings.py)</span>
+<span class="sd">        directed_rotors (dict): Execute a directed internal rotation scan (i.e., a series of sp or constrained opt jobs)</span>
+<span class="sd">                                for the pivots of interest. The optional primary keys are:</span>
+<span class="sd">                                - &#39;brute_force_sp&#39;</span>
+<span class="sd">                                - &#39;brute_force_opt&#39;</span>
+<span class="sd">                                - &#39;cont_opt&#39;</span>
+<span class="sd">                                The brute force methods will generate all the geometries in advance and submit all</span>
+<span class="sd">                                relevant jobs simultaneously. The continuous method will wait for the previous job</span>
+<span class="sd">                                to terminate, and use its geometry as the initial guess for the next job.</span>
+<span class="sd">                                Another set of three keys is allowed, adding `_diagonal&#39; to each of the above</span>
+<span class="sd">                                keys. the secondary keys are therefore:</span>
+<span class="sd">                                - &#39;brute_force_sp_diagonal&#39;</span>
+<span class="sd">                                - &#39;brute_force_opt_diagonal&#39;</span>
+<span class="sd">                                - &#39;cont_opt_diagonal&#39;</span>
+<span class="sd">                                Specifying &#39;_diagonal&#39; will increment all the respective dihedrals together,</span>
+<span class="sd">                                resulting in a 1D scan instead of an ND scan.</span>
+<span class="sd">                                Values are nested lists. Each value is a list where the entries are either pivot lists</span>
+<span class="sd">                                (e.g., [1,5]) or lists of pivot lists (e.g., [[1,5], [6,8]]), or a mix</span>
+<span class="sd">                                (e.g., [[4,8], [[6,9], [3, 4]]). The requested directed scan type will be executed</span>
+<span class="sd">                                separately for each list entry in the value. A list entry that contains only two pivots</span>
+<span class="sd">                                will result in a 1D scan, while a list entry with N pivots will consider all of them,</span>
+<span class="sd">                                and will result in an ND scan if &#39;_diagonal&#39; is not specified.</span>
+<span class="sd">                                ARC will generate geometries using the ``rotor_scan_resolution`` argument in settings.py</span>
 <span class="sd">                                Note: An &#39;all&#39; string entry is also allowed in the value list, triggering a directed</span>
-<span class="sd">                                internal rotation scans for all torsions in the molecule.</span>
+<span class="sd">                                internal rotation scan for all torsions in the molecule. If &#39;all&#39; is specified within</span>
+<span class="sd">                                a second level list, then all the dihedrals will be considered together.</span>
+<span class="sd">                                Currently ARC does not automatically identify torsions to be treated as ND, and this</span>
+<span class="sd">                                attribute must be specified by the user.</span>
+<span class="sd">                                An additional supported key is &#39;ess&#39;, in which case ARC will allow the ESS to take care</span>
+<span class="sd">                                of spawning the ND continuous constrained optimizations (not yet implemented).</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        label (str): The species&#39; label.</span>
@@ -302,7 +327,6 @@
 <span class="sd">                                  (otherwise, this job will be spawned if running Gromacs).</span>
 <span class="sd">        initial_xyz (dict): The initial geometry guess.</span>
 <span class="sd">        final_xyz (dict): The optimized species geometry.</span>
-<span class="sd">        cont_scan_xyz (dict): The geometry used for continuous directed scan jobs.</span>
 <span class="sd">        radius (float): The species radius in Angstrom.</span>
 <span class="sd">        opt_level (str): Level of theory for geometry optimization. Saved for archiving.</span>
 <span class="sd">        number_of_atoms (int): The number of atoms in the species/TS.</span>
@@ -355,13 +379,7 @@
 <span class="sd">                     Entries are bonded atom indices tuples (1-indexed). An &#39;all_h&#39; string entry is also allowed,</span>
 <span class="sd">                     triggering BDE calculations for all hydrogen atoms in the molecule.</span>
 <span class="sd">        directed_rotors (dict): Execute a directed internal rotation scan (i.e., a series of constrained optimizations).</span>
-<span class="sd">                                Keys are either &#39;cont&#39; for a continues scan (each point in the scan is executed using</span>
-<span class="sd">                                the geometry of the previous converged point) or &#39;brute&#39; (all scan points are spawned at</span>
-<span class="sd">                                once by changing the respective dihedral). Values (for either key) are a list of pivots</span>
-<span class="sd">                                tuples for which internal rotation scans will be executed using the respective directed</span>
-<span class="sd">                                method (ARC will generate geometries using the ``rotor_scan_resolution`` in settings.py)</span>
-<span class="sd">                                Note: An &#39;all&#39; string entry is also allowed in the value list, triggering a directed</span>
-<span class="sd">                                internal rotation scans for all torsions in the molecule.</span>
+<span class="sd">                                Data is in 3 levels of nested lists, converted from pivots to four-atom scan indices.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_ts</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rmg_species</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">smiles</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">adjlist</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">inchi</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">bond_corrections</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">generate_thermo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">species_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -410,7 +428,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">svpfit_output_file</span> <span class="o">=</span> <span class="n">svpfit_output_file</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">conf_is_isomorphic</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span> <span class="o">=</span> <span class="n">bdes</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cont_scan_xyz</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span> <span class="o">=</span> <span class="n">directed_rotors</span> <span class="k">if</span> <span class="n">directed_rotors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;The .bdes argument must be a list, got </span><span class="si">{0}</span><span class="s1"> which is a </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -544,10 +561,12 @@
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">char</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_chars</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Species label </span><span class="si">{0}</span><span class="s1"> contains an invalid character: &quot;</span><span class="si">{1}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">char</span><span class="p">))</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span> <span class="ow">and</span> <span class="s1">&#39;brute&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> \
-                <span class="ow">and</span> <span class="s1">&#39;cont&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-            <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Directed rotors were specified for species </span><span class="si">{0}</span><span class="s1">, yet ARC could not find &quot;cont&quot; or &#39;</span>
-                               <span class="s1">&#39;&quot;brute&quot; in the directed_rotors dictionary keys.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+        <span class="n">allowed_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;brute_force_sp&#39;</span><span class="p">,</span> <span class="s1">&#39;brute_force_opt&#39;</span><span class="p">,</span> <span class="s1">&#39;cont_opt&#39;</span><span class="p">,</span> <span class="s1">&#39;ess&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;brute_force_sp_diagonal&#39;</span><span class="p">,</span> <span class="s1">&#39;brute_force_opt_diagonal&#39;</span><span class="p">,</span> <span class="s1">&#39;cont_opt_diagonal&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_keys</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Allowed keys for directed_rotors are </span><span class="si">{0}</span><span class="s1">. Got for species </span><span class="si">{1}</span><span class="s1">: </span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">allowed_keys</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">number_of_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -627,7 +646,6 @@
         <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;charge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">charge</span>
         <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;generate_thermo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_thermo</span>
         <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;number_of_rotors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rotors</span>
-        <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;rotors_dict&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span>
         <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;external_symmetry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">external_symmetry</span>
         <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;optical_isomers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optical_isomers</span>
         <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;neg_freqs_trshed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neg_freqs_trshed</span>
@@ -667,8 +685,6 @@
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;initial_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;final_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cont_scan_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;cont_scan_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cont_scan_xyz</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;checkfile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">most_stable_conformer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -688,6 +704,26 @@
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;conformers_before_opt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">xyz_to_str</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span> <span class="k">for</span> <span class="n">conf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformers_before_opt</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;bdes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+            <span class="n">rotors_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">rotor_dict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">rotor_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;directed_scan&#39;</span><span class="p">:</span>
+                        <span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                        <span class="k">for</span> <span class="n">dihedrals</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="n">dihedrals</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                            <span class="k">for</span> <span class="n">result_key</span><span class="p">,</span> <span class="n">result_val</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                <span class="k">if</span> <span class="n">result_key</span> <span class="o">==</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span>
+                                    <span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="n">dihedrals</span><span class="p">][</span><span class="n">result_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">result_val</span><span class="p">)</span>
+                                <span class="k">elif</span> <span class="n">result_key</span> <span class="o">==</span> <span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
+                                    <span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="n">dihedrals</span><span class="p">][</span><span class="n">result_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="n">result_val</span><span class="p">)</span> \
+                                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result_val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">result_val</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="n">dihedrals</span><span class="p">][</span><span class="n">result_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result_val</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;rotors_dict&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rotors_dict</span>
         <span class="k">return</span> <span class="n">species_dict</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.from_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species_dict</span><span class="p">):</span>
@@ -745,7 +781,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">ts_methods</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="s1">&#39;xyz&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">process_xyz</span><span class="p">(</span><span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cont_scan_xyz</span> <span class="o">=</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;cont_scan_xyz&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;cont_scan_xyz&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">char</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_chars</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Species label </span><span class="si">{0}</span><span class="s1"> contains an invalid character: &quot;</span><span class="si">{1}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">char</span><span class="p">))</span>
@@ -760,7 +795,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">number_of_radicals</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;number_of_radicals&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;number_of_radicals&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">opt_level</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;opt_level&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;opt_level&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rotors</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;number_of_rotors&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;number_of_rotors&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;rotors_dict&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;rotors_dict&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">external_symmetry</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;external_symmetry&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;external_symmetry&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optical_isomers</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;optical_isomers&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;optical_isomers&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">neg_freqs_trshed</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;neg_freqs_trshed&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;neg_freqs_trshed&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
@@ -811,7 +845,25 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;bdes&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;bdes&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;The .bdes argument must be a list, got </span><span class="si">{0}</span><span class="s1"> which is a </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">)))</span></div>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;rotors_dict&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">rotor_dict</span> <span class="ow">in</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;rotors_dict&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">rotor_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;directed_scan&#39;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                        <span class="k">for</span> <span class="n">dihedrals</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="n">dihedrals</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                            <span class="k">for</span> <span class="n">directed_scan_key</span><span class="p">,</span> <span class="n">directed_scan_val</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                <span class="k">if</span> <span class="n">directed_scan_key</span> <span class="o">==</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="n">dihedrals</span><span class="p">][</span><span class="n">directed_scan_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">directed_scan_val</span><span class="p">)</span>
+                                <span class="k">elif</span> <span class="n">directed_scan_key</span> <span class="o">==</span> <span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="n">dihedrals</span><span class="p">][</span><span class="n">directed_scan_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">directed_scan_val</span><span class="p">)</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="n">dihedrals</span><span class="p">][</span><span class="n">directed_scan_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">directed_scan_val</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.from_yml_file"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.from_yml_file">[docs]</a>    <span class="k">def</span> <span class="nf">from_yml_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -965,9 +1017,124 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Found </span><span class="si">{0}</span><span class="s1"> possible rotors for </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rotors</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rotors</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pivot list(s) for </span><span class="si">{0}</span><span class="s1">: </span><span class="si">{1}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pivots&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rotors</span><span class="p">)]))</span></div>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pivots&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rotors</span><span class="p">)]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_directed_rotors</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.set_dihedral"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.set_dihedral">[docs]</a>    <span class="k">def</span> <span class="nf">set_dihedral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pivots</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">deg_increment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deg_abs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ARCSpecies.initialize_directed_rotors"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.initialize_directed_rotors">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_directed_rotors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize self.directed_rotors, correcting the input to nested lists and to scans instead of pivots.</span>
+<span class="sd">        Also modifies self.rotors_dict to remove respective 1D rotors dicts if appropriate and adds ND rotors dicts.</span>
+<span class="sd">        Principally, from this point we don&#39;t really need self.directed_rotors, self.rotors_dict should have all</span>
+<span class="sd">        relevant rotors info for the species, including directed and ND rotors.</span>
+
+<span class="sd">        Dictionary structure (initialized in conformers.find_internal_rotors)::</span>
+
+<span class="sd">                rotors_dict: {1: {&#39;pivots&#39;: ``list``,</span>
+<span class="sd">                                  &#39;top&#39;: ``list``,</span>
+<span class="sd">                                  &#39;scan&#39;: ``list``,</span>
+<span class="sd">                                  &#39;number_of_running_jobs&#39;: ``int``,</span>
+<span class="sd">                                  &#39;success&#39;: ``bool``,</span>
+<span class="sd">                                  &#39;invalidation_reason&#39;: ``str``,</span>
+<span class="sd">                                  &#39;times_dihedral_set&#39;: ``int``,</span>
+<span class="sd">                                  &#39;scan_path&#39;: &lt;path to scan output file&gt;,</span>
+<span class="sd">                                  &#39;max_e&#39;: ``float``,  # in kJ/mol,</span>
+<span class="sd">                                  &#39;symmetry&#39;: ``int``,</span>
+<span class="sd">                                  &#39;dimensions&#39;: ``int``,</span>
+<span class="sd">                                  &#39;original_dihedrals&#39;: ``list``,</span>
+<span class="sd">                                  &#39;cont_indices&#39;: ``list``,</span>
+<span class="sd">                                  &#39;directed_scan_type&#39;: ``str``,</span>
+<span class="sd">                                  &#39;directed_scan&#39;: ``dict``,  # keys: tuples of dihedrals as strings,</span>
+<span class="sd">                                                              # values: dicts of energy, xyz, is_isomorphic, trsh</span>
+<span class="sd">                                 }</span>
+<span class="sd">                              2: {}, ...</span>
+<span class="sd">                             }</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            SpeciesError: If the pivots don&#39;t represent a dihedral in the species.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span><span class="p">:</span>
+            <span class="n">all_pivots</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pivots&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rotors</span><span class="p">)]</span>
+            <span class="n">directed_rotors</span><span class="p">,</span> <span class="n">directed_rotors_scans</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># reformat as nested lists</span>
+                <span class="n">directed_rotors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">val1</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+                        <span class="n">corrected_val</span> <span class="o">=</span> <span class="n">val1</span> <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">val1</span><span class="p">)</span> <span class="ow">in</span> <span class="n">all_pivots</span> <span class="k">else</span> <span class="p">[</span><span class="n">val1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">val1</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                        <span class="n">directed_rotors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">corrected_val</span><span class="p">)])</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+                        <span class="n">directed_rotors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">val2</span> <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">val2</span><span class="p">)</span> <span class="ow">in</span> <span class="n">all_pivots</span> <span class="k">else</span> <span class="p">[</span><span class="n">val2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">val2</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+                                                     <span class="k">for</span> <span class="n">val2</span> <span class="ow">in</span> <span class="n">val1</span><span class="p">])</span>
+                    <span class="k">elif</span> <span class="n">val1</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+                        <span class="c1"># 1st level all, add all pivots, they will be treated separately</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rotors</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pivots&#39;</span><span class="p">]]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">directed_rotors</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+                                <span class="n">directed_rotors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pivots&#39;</span><span class="p">]])</span>
+                    <span class="k">elif</span> <span class="n">val1</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]:</span>
+                        <span class="c1"># 2nd level all, add all pivots, they will be treated together</span>
+                        <span class="n">directed_rotors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">all_pivots</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">vals1</span> <span class="ow">in</span> <span class="n">directed_rotors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># check</span>
+                <span class="k">for</span> <span class="n">vals2</span> <span class="ow">in</span> <span class="n">vals1</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">vals2</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_pivots</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;The pivots </span><span class="si">{0}</span><span class="s1"> do not represent a rotor in species </span><span class="si">{1}</span><span class="s1">. Valid rotors &#39;</span>
+                                               <span class="s1">&#39;are: </span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">all_pivots</span><span class="p">))</span>
+            <span class="c1"># Modify self.rotors_dict to remove respective 1D rotors dicts and add ND rotors dicts</span>
+            <span class="n">rotor_indices_to_del</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">directed_rotors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># an independent loop, so 1D *directed* scans won&#39;t be deleted (treated above)</span>
+                <span class="k">for</span> <span class="n">pivots_list</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+                    <span class="n">new_rotor</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pivots&#39;</span><span class="p">:</span> <span class="n">pivots_list</span><span class="p">,</span>
+                                 <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
+                                 <span class="s1">&#39;scan&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
+                                 <span class="s1">&#39;number_of_running_jobs&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                                 <span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                                 <span class="s1">&#39;invalidation_reason&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;times_dihedral_set&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                                 <span class="s1">&#39;trsh_methods&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
+                                 <span class="s1">&#39;scan_path&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;directed_scan_type&#39;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
+                                 <span class="s1">&#39;directed_scan&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>
+                                 <span class="s1">&#39;dimensions&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                                 <span class="s1">&#39;original_dihedrals&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
+                                 <span class="s1">&#39;cont_indices&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
+                                 <span class="p">}</span>
+                    <span class="k">for</span> <span class="n">pivots</span> <span class="ow">in</span> <span class="n">pivots_list</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">rotors_dict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="k">if</span> <span class="n">rotors_dict</span><span class="p">[</span><span class="s1">&#39;pivots&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">pivots</span><span class="p">:</span>
+                                <span class="n">new_rotor</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rotors_dict</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">])</span>
+                                <span class="n">new_rotor</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rotors_dict</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">])</span>
+                                <span class="n">new_rotor</span><span class="p">[</span><span class="s1">&#39;dimensions&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                                <span class="k">if</span> <span class="ow">not</span> <span class="n">rotors_dict</span><span class="p">[</span><span class="s1">&#39;directed_scan_type&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rotor_indices_to_del</span><span class="p">:</span>
+                                    <span class="c1"># remove this rotor dict, an ND one will be created instead</span>
+                                    <span class="n">rotor_indices_to_del</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                                <span class="k">break</span>
+                    <span class="k">if</span> <span class="n">new_rotor</span><span class="p">[</span><span class="s1">&#39;dimensions&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="k">pass</span>  <span class="c1"># Todo: consolidate top</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_rotor</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">rotor_indices_to_del</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;directed_scan_type&#39;</span><span class="p">]:</span>
+                    <span class="k">del</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+            <span class="c1"># renumber the keys so iterative looping will make sense</span>
+            <span class="n">new_rotors_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">rotor_dict</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                <span class="n">new_rotors_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rotor_dict</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span> <span class="o">=</span> <span class="n">new_rotors_dict</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rotors</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c1"># replace pivots with four-atom scans</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">directed_rotors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">directed_rotors_scans</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">pivots_list</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">rotors_dict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">rotors_dict</span><span class="p">[</span><span class="s1">&#39;pivots&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">pivots_list</span><span class="p">:</span>
+                            <span class="n">directed_rotors_scans</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rotors_dict</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">])</span>
+                            <span class="k">break</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span> <span class="o">=</span> <span class="n">directed_rotors_scans</span></div>
+
+<div class="viewcode-block" id="ARCSpecies.set_dihedral"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.set_dihedral">[docs]</a>    <span class="k">def</span> <span class="nf">set_dihedral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">deg_increment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deg_abs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generated an RDKit molecule object from either self.final_xyz or ``xyz``.</span>
 <span class="sd">        Increments the current dihedral angle between atoms i, j, k, l in the `scan` list by &#39;deg_increment` in degrees.</span>
@@ -975,13 +1142,13 @@
 <span class="sd">        All bonded atoms are moved accordingly. The result is saved in self.initial_xyz.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            pivots (list): The pivotal atoms.</span>
 <span class="sd">            scan (list): The atom indices representing the dihedral.</span>
 <span class="sd">            deg_increment (float, optional): The dihedral angle increment.</span>
 <span class="sd">            deg_abs (float, optional): The absolute desired dihedral angle.</span>
 <span class="sd">            count (bool, optional): Whether to increment the rotor&#39;s times_dihedral_set parameter. `True` to increment.</span>
 <span class="sd">            xyz (dict, optional): An alternative xyz to use instead of self.final_xyz.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pivots</span> <span class="o">=</span> <span class="n">scan</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="n">xyz</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span>
         <span class="k">if</span> <span class="n">deg_increment</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">deg_abs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Either deg_increment or deg_abs must be given.&#39;</span><span class="p">)</span>
@@ -1255,7 +1422,7 @@
 <span class="sd">            verbose (bool, optional): Whether to log isomorphism findings and errors.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            bool: Whether the perception of self.final_xyz is isomorphic with self.mol, `True` if it is.</span>
+<span class="sd">            bool: Whether the perception of self.final_xyz is isomorphic with self.mol, ``True`` if it is.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="n">xyz</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span>
         <span class="n">passed_test</span><span class="p">,</span> <span class="n">return_value</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
@@ -1291,8 +1458,11 @@
             <span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Species </span><span class="si">{0}</span><span class="s1"> was found to be isomorphic with the perception &#39;</span>
                             <span class="s1">&#39;of its optimized coordinates.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot check isomorphism for species </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot check isomorphism for species </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">allow_nonisomorphic_2d</span><span class="p">:</span>
+                <span class="n">return_value</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">return_value</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.scissors"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.scissors">[docs]</a>    <span class="k">def</span> <span class="nf">scissors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

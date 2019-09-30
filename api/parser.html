@@ -191,7 +191,25 @@
 <dl class="function">
 <dt id="arc.parser.parse_e_elect">
 <code class="descclassname">arc.parser.</code><code class="descname">parse_e_elect</code><span class="sig-paren">(</span><em>path</em>, <em>zpe_scale_factor=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_e_elect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_e_elect" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse the zero K energy, E0, from an sp job output file.</p>
+<dd><p>Parse the electronic energy from an sp job output file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>str</em>) – The ESS log file to parse from.</li>
+<li><strong>zpe_scale_factor</strong> – The ZPE scaling factor, used only for composite methods in Gaussian via Arkane.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The electronic energy in kJ/mol</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">e_elect (float)</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">

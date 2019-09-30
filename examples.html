@@ -185,7 +185,7 @@ Multiple species are defined using SMILES / an XYZ list / InChI:</p>
   <span class="o">-</span> <span class="n">server2</span>
 
 <span class="n">job_types</span><span class="p">:</span>
-  <span class="mi">1</span><span class="n">d_rotors</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">rotors</span><span class="p">:</span> <span class="n">true</span>
   <span class="n">conformers</span><span class="p">:</span> <span class="n">true</span>
   <span class="n">fine</span><span class="p">:</span> <span class="n">true</span>
   <span class="n">freq</span><span class="p">:</span> <span class="n">true</span>
@@ -276,7 +276,7 @@ be outputted.</p>
 
 <span class="n">arc0</span> <span class="o">=</span> <span class="n">ARC</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;arc_demo_1&#39;</span><span class="p">,</span>
            <span class="n">ess_settings</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;gaussian&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="s1">&#39;server1&#39;</span><span class="p">],</span> <span class="s1">&#39;molpro&#39;</span><span class="p">:</span> <span class="s1">&#39;server1&#39;</span><span class="p">,</span> <span class="s1">&#39;qchem&#39;</span><span class="p">:</span> <span class="s1">&#39;server2&#39;</span><span class="p">},</span>
-           <span class="n">job_types</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;1d_rotors&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;conformers&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;fine&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;opt&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="n">sp</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+           <span class="n">job_types</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rotors&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;conformers&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;fine&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;opt&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="n">sp</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
            <span class="n">max_job_time</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
            <span class="n">level_of_theory</span><span class="o">=</span><span class="s1">&#39;CCSD(T)-F12/cc-pVTZ-F12//wb97xd/def2tzvp&#39;</span><span class="p">,</span>
            <span class="n">scan_level</span><span class="o">=</span><span class="s1">&#39;wb97xd/def2tzvp&#39;</span><span class="p">,</span>

@@ -188,17 +188,21 @@ If the species is a transition state (TS), its <code class="docutils literal not
 <em class="property">class </em><code class="descclassname">arc.species.species.</code><code class="descname">ARCSpecies</code><span class="sig-paren">(</span><em>label=None</em>, <em>is_ts=False</em>, <em>rmg_species=None</em>, <em>mol=None</em>, <em>xyz=None</em>, <em>multiplicity=None</em>, <em>charge=None</em>, <em>smiles=u''</em>, <em>adjlist=u''</em>, <em>inchi=u''</em>, <em>bond_corrections=None</em>, <em>generate_thermo=True</em>, <em>species_dict=None</em>, <em>yml_path=None</em>, <em>ts_methods=None</em>, <em>ts_number=None</em>, <em>rxn_label=None</em>, <em>external_symmetry=None</em>, <em>optical_isomers=None</em>, <em>run_time=None</em>, <em>checkfile=None</em>, <em>number_of_radicals=None</em>, <em>force_field=u'MMFF94'</em>, <em>svpfit_output_file=None</em>, <em>bdes=None</em>, <em>directed_rotors=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class for representing stationary points.</p>
 <p>Dictionary structure (initialized in conformers.find_internal_rotors):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: pivots_list,
-                  &#39;top&#39;: top_list,
-                  &#39;scan&#39;: scan_list,
-                  &#39;success&#39;: ``bool``.
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: ``list``,
+                  &#39;top&#39;: ``list``,
+                  &#39;scan&#39;: ``list``,
+                  &#39;number_of_running_jobs&#39;: ``int``,
+                  &#39;success&#39;: ``bool``,
                   &#39;invalidation_reason&#39;: ``str``,
                   &#39;times_dihedral_set&#39;: ``int``,
-                  &#39;trsh_methods&#39;: ``list``,
                   &#39;scan_path&#39;: &lt;path to scan output file&gt;,
-                  &#39;max_e&#39;: ``float``,  # in kJ/mol
+                  &#39;max_e&#39;: ``float``,  # in kJ/mol,
                   &#39;symmetry&#39;: ``int``,
-                  &#39;directed_scan&#39;: ``dict``,  # keys: dihedrals,
+                  &#39;dimensions&#39;: ``int``,
+                  &#39;original_dihedrals&#39;: ``list``,
+                  &#39;cont_indices&#39;: ``list``,
+                  &#39;directed_scan_type&#39;: ``str``,
+                  &#39;directed_scan&#39;: ``dict``,  # keys: tuples of dihedrals as strings,
                                               # values: dicts of energy, xyz, is_isomorphic, trsh
                  }
               2: {}, ...
@@ -258,14 +262,35 @@ and the “old” RDKit embedding method will be used.</li>
 <li><strong>bdes</strong> (<em>list</em>) – Specifying for which bonds should bond dissociation energies be calculated.
 Entries are bonded atom indices tuples (1-indexed). An ‘all_h’ string entry is also allowed,
 triggering BDE calculations for all hydrogen atoms in the molecule.</li>
-<li><strong>directed_rotors</strong> (<em>dict</em>) – Execute a directed internal rotation scan (i.e., a series of constrained optimizations).
-Keys are either ‘cont’ for a continues scan (each point in the scan is executed using
-the geometry of the previous converged point) or ‘brute’ (all scan points are spawned at
-once by changing the respective dihedral). Values (for either key) are a list of pivots
-tuples for which internal rotation scans will be executed using the respective directed
-method (ARC will generate geometries using the <code class="docutils literal notranslate"><span class="pre">rotor_scan_resolution</span></code> in settings.py)
+<li><strong>directed_rotors</strong> (<em>dict</em>) – Execute a directed internal rotation scan (i.e., a series of sp or constrained opt jobs)
+for the pivots of interest. The optional primary keys are:
+- ‘brute_force_sp’
+- ‘brute_force_opt’
+- ‘cont_opt’
+The brute force methods will generate all the geometries in advance and submit all
+relevant jobs simultaneously. The continuous method will wait for the previous job
+to terminate, and use its geometry as the initial guess for the next job.
+Another set of three keys is allowed, adding <cite>_diagonal’ to each of the above
+keys. the secondary keys are therefore:
+- ‘brute_force_sp_diagonal’
+- ‘brute_force_opt_diagonal’
+- ‘cont_opt_diagonal’
+Specifying ‘_diagonal’ will increment all the respective dihedrals together,
+resulting in a 1D scan instead of an ND scan.
+Values are nested lists. Each value is a list where the entries are either pivot lists
+(e.g., [1,5]) or lists of pivot lists (e.g., [[1,5], [6,8]]), or a mix
+(e.g., [[4,8], [[6,9], [3, 4]]). The requested directed scan type will be executed
+separately for each list entry in the value. A list entry that contains only two pivots
+will result in a 1D scan, while a list entry with N pivots will consider all of them,
+and will result in an ND scan if ‘_diagonal’ is not specified.
+ARC will generate geometries using the ``rotor_scan_resolution`</cite> argument in settings.py
 Note: An ‘all’ string entry is also allowed in the value list, triggering a directed
-internal rotation scans for all torsions in the molecule.</li>
+internal rotation scan for all torsions in the molecule. If ‘all’ is specified within
+a second level list, then all the dihedrals will be considered together.
+Currently ARC does not automatically identify torsions to be treated as ND, and this
+attribute must be specified by the user.
+An additional supported key is ‘ess’, in which case ARC will allow the ESS to take care
+of spawning the ND continuous constrained optimizations (not yet implemented).</li>
 </ul>
 </td>
 </tr>
@@ -506,20 +531,6 @@ when the MD algorithm converges on a single structure.</p>
 <dt id="arc.species.species.ARCSpecies.final_xyz">
 <code class="descname">final_xyz</code><a class="headerlink" href="#arc.species.species.ARCSpecies.final_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>The optimized species geometry.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="arc.species.species.ARCSpecies.cont_scan_xyz">
-<code class="descname">cont_scan_xyz</code><a class="headerlink" href="#arc.species.species.ARCSpecies.cont_scan_xyz" title="Permalink to this definition">¶</a></dt>
-<dd><p>The geometry used for continuous directed scan jobs.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1027,13 +1038,7 @@ triggering BDE calculations for all hydrogen atoms in the molecule.</p>
 <dt id="arc.species.species.ARCSpecies.directed_rotors">
 <code class="descname">directed_rotors</code><a class="headerlink" href="#arc.species.species.ARCSpecies.directed_rotors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a directed internal rotation scan (i.e., a series of constrained optimizations).
-Keys are either ‘cont’ for a continues scan (each point in the scan is executed using
-the geometry of the previous converged point) or ‘brute’ (all scan points are spawned at
-once by changing the respective dihedral). Values (for either key) are a list of pivots
-tuples for which internal rotation scans will be executed using the respective directed
-method (ARC will generate geometries using the <code class="docutils literal notranslate"><span class="pre">rotor_scan_resolution</span></code> in settings.py)
-Note: An ‘all’ string entry is also allowed in the value list, triggering a directed
-internal rotation scans for all torsions in the molecule.</p>
+Data is in 3 levels of nested lists, converted from pivots to four-atom scan indices.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1066,7 +1071,7 @@ test fails. <cite>True</cite> to allow (default is <cite>False</cite>).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Whether the perception of self.final_xyz is isomorphic with self.mol, <cite>True</cite> if it is.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Whether the perception of self.final_xyz is isomorphic with self.mol, <code class="docutils literal notranslate"><span class="pre">True</span></code> if it is.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
@@ -1162,6 +1167,45 @@ the method will return None.</td>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The xyz coordinates.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.species.species.ARCSpecies.initialize_directed_rotors">
+<code class="descname">initialize_directed_rotors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.initialize_directed_rotors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.initialize_directed_rotors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.directed_rotors, correcting the input to nested lists and to scans instead of pivots.
+Also modifies self.rotors_dict to remove respective 1D rotors dicts if appropriate and adds ND rotors dicts.
+Principally, from this point we don’t really need self.directed_rotors, self.rotors_dict should have all
+relevant rotors info for the species, including directed and ND rotors.</p>
+<p>Dictionary structure (initialized in conformers.find_internal_rotors):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: ``list``,
+                  &#39;top&#39;: ``list``,
+                  &#39;scan&#39;: ``list``,
+                  &#39;number_of_running_jobs&#39;: ``int``,
+                  &#39;success&#39;: ``bool``,
+                  &#39;invalidation_reason&#39;: ``str``,
+                  &#39;times_dihedral_set&#39;: ``int``,
+                  &#39;scan_path&#39;: &lt;path to scan output file&gt;,
+                  &#39;max_e&#39;: ``float``,  # in kJ/mol,
+                  &#39;symmetry&#39;: ``int``,
+                  &#39;dimensions&#39;: ``int``,
+                  &#39;original_dihedrals&#39;: ``list``,
+                  &#39;cont_indices&#39;: ``list``,
+                  &#39;directed_scan_type&#39;: ``str``,
+                  &#39;directed_scan&#39;: ``dict``,  # keys: tuples of dihedrals as strings,
+                                              # values: dicts of energy, xyz, is_isomorphic, trsh
+                 }
+              2: {}, ...
+             }
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">SpeciesError</span></code> – If the pivots don’t represent a dihedral in the species.</td>
 </tr>
 </tbody>
 </table>
@@ -1264,7 +1308,7 @@ and the indices are 1-indexed.</p>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.set_dihedral">
-<code class="descname">set_dihedral</code><span class="sig-paren">(</span><em>pivots</em>, <em>scan</em>, <em>deg_increment=None</em>, <em>deg_abs=None</em>, <em>count=True</em>, <em>xyz=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.set_dihedral"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.set_dihedral" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_dihedral</code><span class="sig-paren">(</span><em>scan</em>, <em>deg_increment=None</em>, <em>deg_abs=None</em>, <em>count=True</em>, <em>xyz=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.set_dihedral"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.set_dihedral" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generated an RDKit molecule object from either self.final_xyz or <code class="docutils literal notranslate"><span class="pre">xyz</span></code>.
 Increments the current dihedral angle between atoms i, j, k, l in the <cite>scan</cite> list by ‘deg_increment` in degrees.
 Alternatively, specifying deg_abs will rotate to this desired dihedral.
@@ -1274,7 +1318,6 @@ All bonded atoms are moved accordingly. The result is saved in self.initial_xyz.
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>pivots</strong> (<em>list</em>) – The pivotal atoms.</li>
 <li><strong>scan</strong> (<em>list</em>) – The atom indices representing the dihedral.</li>
 <li><strong>deg_increment</strong> (<em>float</em><em>, </em><em>optional</em>) – The dihedral angle increment.</li>
 <li><strong>deg_abs</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute desired dihedral angle.</li>

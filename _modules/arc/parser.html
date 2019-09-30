@@ -175,7 +175,7 @@
 <span class="kn">from</span> <span class="nn">arkane.qchem</span> <span class="k">import</span> <span class="n">QChemLog</span>
 <span class="kn">from</span> <span class="nn">arkane.statmech</span> <span class="k">import</span> <span class="n">determine_qm_software</span>
 
-<span class="kn">from</span> <span class="nn">arc.arc_exceptions</span> <span class="k">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">ParserError</span>
+<span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="k">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">ParserError</span>
 <span class="kn">from</span> <span class="nn">arc.common</span> <span class="k">import</span> <span class="n">get_logger</span>
 <span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="k">import</span> <span class="n">xyz_from_data</span><span class="p">,</span> <span class="n">str_to_xyz</span>
 
@@ -236,7 +236,14 @@
 
 <div class="viewcode-block" id="parse_e_elect"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_e_elect">[docs]</a><span class="k">def</span> <span class="nf">parse_e_elect</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">zpe_scale_factor</span><span class="o">=</span><span class="mf">1.</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parse the zero K energy, E0, from an sp job output file.</span>
+<span class="sd">    Parse the electronic energy from an sp job output file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The ESS log file to parse from.</span>
+<span class="sd">        zpe_scale_factor: The ZPE scaling factor, used only for composite methods in Gaussian via Arkane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        e_elect (float): The electronic energy in kJ/mol</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Could not find file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>

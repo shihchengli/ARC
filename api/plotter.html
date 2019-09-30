@@ -337,6 +337,76 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 </dd></dl>
 
 <dl class="function">
+<dt id="arc.plotter.plot_1d_rotor_scan">
+<code class="descclassname">arc.plotter.</code><code class="descname">plot_1d_rotor_scan</code><span class="sig-paren">(</span><em>angles=None</em>, <em>energies=None</em>, <em>results=None</em>, <em>path=None</em>, <em>pivots=None</em>, <em>comment=u''</em>, <em>units=u'radians'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_1d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_1d_rotor_scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a 1D rotor PES for energy vs. angles. Either <code class="docutils literal notranslate"><span class="pre">angles</span></code> and <code class="docutils literal notranslate"><span class="pre">energies</span></code> or <code class="docutils literal notranslate"><span class="pre">results</span></code> must be given.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>angles</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>np.array</em><em>, </em><em>optional</em>) – Dihedral angles.</li>
+<li><strong>energies</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>np.array</em><em>, </em><em>optional</em>) – The energies in kJ/mol.</li>
+<li><strong>results</strong> (<em>dict</em><em>, </em><em>optional</em>) – The results dictionary, dihedrals are assumed to be in degrees (not radians).</li>
+<li><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The folder path for saving the rotor scan image and comments.</li>
+<li><strong>pivots</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>optional</em>) – The pivotal atoms of the scan.</li>
+<li><strong>comment</strong> (<em>str</em><em>, </em><em>optional</em>) – Reason for invalidating this rotor.</li>
+<li><strong>units</strong> (<em>str</em><em>, </em><em>optional</em>) – The <code class="docutils literal notranslate"><span class="pre">angle</span></code> units, either ‘degrees’ or ‘radians’.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">InputError</span></code> – If neither <cite>angles`</cite> and <code class="docutils literal notranslate"><span class="pre">energies</span></code> nor <code class="docutils literal notranslate"><span class="pre">results</span></code> were given.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.plotter.plot_2d_rotor_scan">
+<code class="descclassname">arc.plotter.</code><code class="descname">plot_2d_rotor_scan</code><span class="sig-paren">(</span><em>results</em>, <em>path=None</em>, <em>label=u''</em>, <em>cmap=u'Blues'</em>, <em>resolution=90</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_2d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_2d_rotor_scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a 2D rotor scan.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>results</strong> (<em>dict</em>) – The results dictionary, dihedrals are assumed to be in degrees (not radians).</li>
+<li><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The folder path to save this 2D image.</li>
+<li><strong>units</strong> (<em>str</em><em>, </em><em>optional</em>) – The dihedral angle units, either <cite>degrees</cite> or <cite>radians</cite>.</li>
+<li><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The species label.</li>
+<li><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – The color map to use. See optional arguments below.</li>
+<li><strong>resolution</strong> (<em>int</em><em>, </em><em>optional</em>) – The image resolution to produce.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code> – If <code class="docutils literal notranslate"><span class="pre">results</span></code> if of wrong type.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">InputError</span></code> – If <code class="docutils literal notranslate"><span class="pre">results</span></code> does not represent a 2D rotor.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Optional arguments for cmap:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Accent</span><span class="p">,</span> <span class="n">Accent_r</span><span class="p">,</span> <span class="n">Blues</span><span class="p">,</span> <span class="n">Blues_r</span><span class="p">,</span> <span class="n">BrBG</span><span class="p">,</span> <span class="n">BrBG_r</span><span class="p">,</span> <span class="n">BuGn</span><span class="p">,</span> <span class="n">BuGn_r</span><span class="p">,</span> <span class="n">BuPu</span><span class="p">,</span> <span class="n">BuPu_r</span><span class="p">,</span> <span class="n">CMRmap</span><span class="p">,</span> <span class="n">CMRmap_r</span><span class="p">,</span> <span class="n">Dark2</span><span class="p">,</span> <span class="n">Dark2_r</span><span class="p">,</span>
+<span class="n">GnBu</span><span class="p">,</span> <span class="n">GnBu_r</span><span class="p">,</span> <span class="n">Greens</span><span class="p">,</span> <span class="n">Greens_r</span><span class="p">,</span> <span class="n">Greys</span><span class="p">,</span> <span class="n">Greys_r</span><span class="p">,</span> <span class="n">OrRd</span><span class="p">,</span> <span class="n">OrRd_r</span><span class="p">,</span> <span class="n">Oranges</span><span class="p">,</span> <span class="n">Oranges_r</span><span class="p">,</span> <span class="n">PRGn</span><span class="p">,</span> <span class="n">PRGn_r</span><span class="p">,</span> <span class="n">Paired</span><span class="p">,</span>
+<span class="n">Paired_r</span><span class="p">,</span> <span class="n">Pastel1</span><span class="p">,</span> <span class="n">Pastel1_r</span><span class="p">,</span> <span class="n">Pastel2</span><span class="p">,</span> <span class="n">Pastel2_r</span><span class="p">,</span> <span class="n">PiYG</span><span class="p">,</span> <span class="n">PiYG_r</span><span class="p">,</span> <span class="n">PuBu</span><span class="p">,</span> <span class="n">PuBuGn</span><span class="p">,</span> <span class="n">PuBuGn_r</span><span class="p">,</span> <span class="n">PuBu_r</span><span class="p">,</span> <span class="n">PuOr</span><span class="p">,</span> <span class="n">PuOr_r</span><span class="p">,</span>
+<span class="n">PuRd</span><span class="p">,</span> <span class="n">PuRd_r</span><span class="p">,</span> <span class="n">Purples</span><span class="p">,</span> <span class="n">Purples_r</span><span class="p">,</span> <span class="n">RdBu</span><span class="p">,</span> <span class="n">RdBu_r</span><span class="p">,</span> <span class="n">RdGy</span><span class="p">,</span> <span class="n">RdGy_r</span><span class="p">,</span> <span class="n">RdPu</span><span class="p">,</span> <span class="n">RdPu_r</span><span class="p">,</span> <span class="n">RdYlBu</span><span class="p">,</span> <span class="n">RdYlBu_r</span><span class="p">,</span> <span class="n">RdYlGn</span><span class="p">,</span> <span class="n">RdYlGn_r</span><span class="p">,</span>
+<span class="n">Reds</span><span class="p">,</span> <span class="n">Reds_r</span><span class="p">,</span> <span class="n">Set1</span><span class="p">,</span> <span class="n">Set1_r</span><span class="p">,</span> <span class="n">Set2</span><span class="p">,</span> <span class="n">Set2_r</span><span class="p">,</span> <span class="n">Set3</span><span class="p">,</span> <span class="n">Set3_r</span><span class="p">,</span> <span class="n">Spectral</span><span class="p">,</span> <span class="n">Spectral_r</span><span class="p">,</span> <span class="n">Wistia</span><span class="p">,</span> <span class="n">Wistia_r</span><span class="p">,</span> <span class="n">YlGn</span><span class="p">,</span> <span class="n">YlGnBu</span><span class="p">,</span>
+<span class="n">YlGnBu_r</span><span class="p">,</span> <span class="n">YlGn_r</span><span class="p">,</span> <span class="n">YlOrBr</span><span class="p">,</span> <span class="n">YlOrBr_r</span><span class="p">,</span> <span class="n">YlOrRd</span><span class="p">,</span> <span class="n">YlOrRd_r</span><span class="p">,</span> <span class="n">afmhot</span><span class="p">,</span> <span class="n">afmhot_r</span><span class="p">,</span> <span class="n">autumn</span><span class="p">,</span> <span class="n">autumn_r</span><span class="p">,</span> <span class="n">binary</span><span class="p">,</span> <span class="n">binary_r</span><span class="p">,</span>
+<span class="n">bone</span><span class="p">,</span> <span class="n">bone_r</span><span class="p">,</span> <span class="n">brg</span><span class="p">,</span> <span class="n">brg_r</span><span class="p">,</span> <span class="n">bwr</span><span class="p">,</span> <span class="n">bwr_r</span><span class="p">,</span> <span class="n">cividis</span><span class="p">,</span> <span class="n">cividis_r</span><span class="p">,</span> <span class="n">cool</span><span class="p">,</span> <span class="n">cool_r</span><span class="p">,</span> <span class="n">coolwarm</span><span class="p">,</span> <span class="n">coolwarm_r</span><span class="p">,</span> <span class="n">copper</span><span class="p">,</span> <span class="n">copper_r</span><span class="p">,</span>
+<span class="n">cubehelix</span><span class="p">,</span> <span class="n">cubehelix_r</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">flag_r</span><span class="p">,</span> <span class="n">gist_earth</span><span class="p">,</span> <span class="n">gist_earth_r</span><span class="p">,</span> <span class="n">gist_gray</span><span class="p">,</span> <span class="n">gist_gray_r</span><span class="p">,</span> <span class="n">gist_heat</span><span class="p">,</span> <span class="n">gist_heat_r</span><span class="p">,</span>
+<span class="n">gist_ncar</span><span class="p">,</span> <span class="n">gist_ncar_r</span><span class="p">,</span> <span class="n">gist_rainbow</span><span class="p">,</span> <span class="n">gist_rainbow_r</span><span class="p">,</span> <span class="n">gist_stern</span><span class="p">,</span> <span class="n">gist_stern_r</span><span class="p">,</span> <span class="n">gist_yarg</span><span class="p">,</span> <span class="n">gist_yarg_r</span><span class="p">,</span> <span class="n">gnuplot</span><span class="p">,</span>
+<span class="n">gnuplot2</span><span class="p">,</span> <span class="n">gnuplot2_r</span><span class="p">,</span> <span class="n">gnuplot_r</span><span class="p">,</span> <span class="n">gray</span><span class="p">,</span> <span class="n">gray_r</span><span class="p">,</span> <span class="n">hot</span><span class="p">,</span> <span class="n">hot_r</span><span class="p">,</span> <span class="n">hsv</span><span class="p">,</span> <span class="n">hsv_r</span><span class="p">,</span> <span class="n">inferno</span><span class="p">,</span> <span class="n">inferno_r</span><span class="p">,</span> <span class="n">jet</span><span class="p">,</span> <span class="n">jet_r</span><span class="p">,</span> <span class="n">magma</span><span class="p">,</span>
+<span class="n">magma_r</span><span class="p">,</span> <span class="n">nipy_spectral</span><span class="p">,</span> <span class="n">nipy_spectral_r</span><span class="p">,</span> <span class="n">ocean</span><span class="p">,</span> <span class="n">ocean_r</span><span class="p">,</span> <span class="n">pink</span><span class="p">,</span> <span class="n">pink_r</span><span class="p">,</span> <span class="n">plasma</span><span class="p">,</span> <span class="n">plasma_r</span><span class="p">,</span> <span class="n">prism</span><span class="p">,</span> <span class="n">prism_r</span><span class="p">,</span>
+<span class="n">rainbow</span><span class="p">,</span> <span class="n">rainbow_r</span><span class="p">,</span> <span class="n">seismic</span><span class="p">,</span> <span class="n">seismic_r</span><span class="p">,</span> <span class="n">spring</span><span class="p">,</span> <span class="n">spring_r</span><span class="p">,</span> <span class="n">summer</span><span class="p">,</span> <span class="n">summer_r</span><span class="p">,</span> <span class="n">tab10</span><span class="p">,</span> <span class="n">tab10_r</span><span class="p">,</span> <span class="n">tab20</span><span class="p">,</span> <span class="n">tab20_r</span><span class="p">,</span>
+<span class="n">tab20b</span><span class="p">,</span> <span class="n">tab20b_r</span><span class="p">,</span> <span class="n">tab20c</span><span class="p">,</span> <span class="n">tab20c_r</span><span class="p">,</span> <span class="n">terrain</span><span class="p">,</span> <span class="n">terrain_r</span><span class="p">,</span> <span class="n">viridis</span><span class="p">,</span> <span class="n">viridis_r</span><span class="p">,</span> <span class="n">winter</span><span class="p">,</span> <span class="n">winter_r</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.plotter.plot_3d_mol_as_scatter">
 <code class="descclassname">arc.plotter.</code><code class="descname">plot_3d_mol_as_scatter</code><span class="sig-paren">(</span><em>xyz</em>, <em>path=None</em>, <em>plot_h=True</em>, <em>show_plot=True</em>, <em>name=u''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_3d_mol_as_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_3d_mol_as_scatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the molecule as scattered balls in space according to the supplied xyz coordinates.</p>
@@ -350,28 +420,6 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 <li><strong>plot_h</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to plot hydrogen atoms as well. <code class="docutils literal notranslate"><span class="pre">True</span></code> to plot them.</li>
 <li><strong>show_plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to show the plot. <code class="docutils literal notranslate"><span class="pre">True</span></code> to show.</li>
 <li><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – A name to be added to the saved file name.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="arc.plotter.plot_rotor_scan">
-<code class="descclassname">arc.plotter.</code><code class="descname">plot_rotor_scan</code><span class="sig-paren">(</span><em>angles</em>, <em>energies</em>, <em>path=None</em>, <em>pivots=None</em>, <em>comment=u''</em>, <em>units=u'radians'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_rotor_scan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots a 1D rotor PES for energy vs. angles.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>angles</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>np.array</em>) – Dihedral angles.</li>
-<li><strong>energies</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>np.array</em>) – The energies in kJ/mol.</li>
-<li><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The folder path for saving the rotor scan image and comments.</li>
-<li><strong>pivots</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>optional</em>) – The pivotal atoms of the scan.</li>
-<li><strong>comment</strong> (<em>str</em><em>, </em><em>optional</em>) – Reason for invalidating this rotor.</li>
-<li><strong>units</strong> (<em>str</em><em>, </em><em>optional</em>) – The <code class="docutils literal notranslate"><span class="pre">angle</span></code> units, either ‘degrees’ or ‘radians’.</li>
 </ul>
 </td>
 </tr>
@@ -443,6 +491,24 @@ If not given (None) then the Species.conformer_energies are used instead.</li>
 <cite>rxn_list</cite> is a list of ARCReaction objects.
 <cite>name</cite> is the library’s name (or project’s name).
 <cite>long_desc</cite> is a multiline string with level of theory description.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.plotter.save_nd_rotor_yaml">
+<code class="descclassname">arc.plotter.</code><code class="descname">save_nd_rotor_yaml</code><span class="sig-paren">(</span><em>results</em>, <em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_nd_rotor_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_nd_rotor_yaml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a text file summarizing a rotor scan, useful for brute force scans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>results</strong> (<em>dict</em>) – The respective scan dictionary to save.</li>
+<li><strong>path</strong> (<em>str</em>) – The path of the file to be saved.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">

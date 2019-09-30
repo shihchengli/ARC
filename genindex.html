@@ -416,8 +416,6 @@
       </ul></li>
       <li><a href="api/ssh.html#arc.job.ssh.SSHClient.connect">connect() (arc.job.ssh.SSHClient method)</a>
 </li>
-      <li><a href="api/species.html#arc.species.species.ARCSpecies.cont_scan_xyz">cont_scan_xyz (arc.species.species.ARCSpecies attribute)</a>
-</li>
       <li><a href="api/processor.html#arc.processor.Processor.copy_freq_output_for_ts">copy_freq_output_for_ts() (arc.processor.Processor method)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.cyclic_index_i_minus_1">cyclic_index_i_minus_1() (in module arc.species.species)</a>
@@ -480,10 +478,10 @@
 </li>
       <li><a href="api/rmgdb.html#arc.rmgdb.determine_rmg_kinetics">determine_rmg_kinetics() (in module arc.rmgdb)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/species.html#arc.species.species.determine_rotor_symmetry">determine_rotor_symmetry() (in module arc.species.species)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/species.html#arc.species.species.determine_rotor_type">determine_rotor_type() (in module arc.species.species)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.determine_rotors">determine_rotors() (arc.species.species.ARCSpecies method)</a>
@@ -516,9 +514,13 @@
 </li>
       <li><a href="api/reaction.html#arc.reaction.ARCReaction.dh_rxn298">dh_rxn298 (arc.reaction.ARCReaction attribute)</a>
 </li>
-      <li><a href="api/job.html#arc.job.job.Job.directed_dihedral">directed_dihedral (arc.job.job.Job attribute)</a>
+      <li><a href="api/job.html#arc.job.job.Job.directed_dihedrals">directed_dihedrals (arc.job.job.Job attribute)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.directed_rotors">directed_rotors (arc.species.species.ARCSpecies attribute)</a>
+</li>
+      <li><a href="api/job.html#arc.job.job.Job.directed_scan_type">directed_scan_type (arc.job.job.Job attribute)</a>
+</li>
+      <li><a href="api/job.html#arc.job.job.Job.directed_scans">directed_scans (arc.job.job.Job attribute)</a>
 </li>
       <li><a href="api/main.html#arc.main.ARC.dont_gen_confs">dont_gen_confs (arc.main.ARC attribute)</a>
 
@@ -736,6 +738,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/species.html#arc.species.species.ARCSpecies.initialize_directed_rotors">initialize_directed_rotors() (arc.species.species.ARCSpecies method)</a>
+</li>
       <li><a href="api/common.html#arc.common.initialize_job_types">initialize_job_types() (in module arc.common)</a>
 </li>
       <li><a href="api/common.html#arc.common.initialize_log">initialize_log() (in module arc.common)</a>
@@ -1006,9 +1010,11 @@
 </li>
       <li><a href="api/job.html#arc.job.job.Job.pivots">pivots (arc.job.job.Job attribute)</a>
 </li>
-      <li><a href="api/plotter.html#arc.plotter.plot_3d_mol_as_scatter">plot_3d_mol_as_scatter() (in module arc.plotter)</a>
+      <li><a href="api/plotter.html#arc.plotter.plot_1d_rotor_scan">plot_1d_rotor_scan() (in module arc.plotter)</a>
 </li>
-      <li><a href="api/plotter.html#arc.plotter.plot_rotor_scan">plot_rotor_scan() (in module arc.plotter)</a>
+      <li><a href="api/plotter.html#arc.plotter.plot_2d_rotor_scan">plot_2d_rotor_scan() (in module arc.plotter)</a>
+</li>
+      <li><a href="api/plotter.html#arc.plotter.plot_3d_mol_as_scatter">plot_3d_mol_as_scatter() (in module arc.plotter)</a>
 </li>
       <li><a href="api/plotter.html#arc.plotter.plot_torsion_angles">plot_torsion_angles() (in module arc.plotter)</a>
 </li>
@@ -1142,6 +1148,8 @@
       </ul></li>
       <li><a href="api/conformers.html#arc.species.conformers.rotate_vector">rotate_vector() (in module arc.species.conformers)</a>
 </li>
+      <li><a href="api/job.html#arc.job.job.Job.rotor_index">rotor_index (arc.job.job.Job attribute)</a>
+</li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.rotors_dict">rotors_dict (arc.species.species.ARCSpecies attribute)</a>
 </li>
       <li><a href="api/job.html#arc.job.job.Job.run">run() (arc.job.job.Job method)</a>
@@ -1203,6 +1211,8 @@
       <li><a href="api/plotter.html#arc.plotter.save_geo">save_geo() (in module arc.plotter)</a>
 </li>
       <li><a href="api/plotter.html#arc.plotter.save_kinetics_lib">save_kinetics_lib() (in module arc.plotter)</a>
+</li>
+      <li><a href="api/plotter.html#arc.plotter.save_nd_rotor_yaml">save_nd_rotor_yaml() (in module arc.plotter)</a>
 </li>
       <li><a href="api/main.html#arc.main.ARC.save_project_info_file">save_project_info_file() (arc.main.ARC method)</a>
 </li>
