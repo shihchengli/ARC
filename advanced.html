@@ -90,6 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Features</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#flexible-coordinates-xyz-input">Flexible coordinates (xyz) input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specify-a-particular-job-type">Specify a particular job type</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-a-fine-dft-grid-for-optimization">Using a fine DFT grid for optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rotor-scans">Rotor scans</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nd-rotor-scans">ND Rotor scans</a></li>
@@ -187,6 +188,14 @@ It could be a multiline string containing the coordinates, or a list of several 
 It could also contain valid file paths to ESS input files, output files,
 <a class="reference external" href="https://en.wikipedia.org/wiki/XYZ_file_format">XYZ format</a> files, or ARC’s conformers (before/after optimization) files.
 See <a class="reference internal" href="examples.html#examples"><span class="std std-ref">the examples</span></a>.</p>
+</div>
+<div class="section" id="specify-a-particular-job-type">
+<h2>Specify a particular job type<a class="headerlink" href="#specify-a-particular-job-type" title="Permalink to this headline">¶</a></h2>
+<p>To run ARC with a particular job type, set <code class="docutils literal notranslate"><span class="pre">specific_job_type</span></code> to the job type you want.
+Currently, ARC supports the following job types: <code class="docutils literal notranslate"><span class="pre">conformers</span></code>, <code class="docutils literal notranslate"><span class="pre">opt</span></code>, <code class="docutils literal notranslate"><span class="pre">fine</span></code>, <code class="docutils literal notranslate"><span class="pre">freq</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sp</span></code>, <code class="docutils literal notranslate"><span class="pre">rotors</span></code>, <code class="docutils literal notranslate"><span class="pre">onedmin</span></code>, <code class="docutils literal notranslate"><span class="pre">orbitals</span></code>, <code class="docutils literal notranslate"><span class="pre">bde</span></code>.</p>
+<p>Notice that <code class="docutils literal notranslate"><span class="pre">specific_job_type</span></code> takes higher precedence than <code class="docutils literal notranslate"><span class="pre">job_types</span></code>. If you specify both attributes, ARC will
+dismiss the given <code class="docutils literal notranslate"><span class="pre">job_types</span></code> and will only populate the <code class="docutils literal notranslate"><span class="pre">job_types</span></code> dictionary using given <code class="docutils literal notranslate"><span class="pre">specific_job_type</span></code>.</p>
 </div>
 <div class="section" id="using-a-fine-dft-grid-for-optimization">
 <h2>Using a fine DFT grid for optimization<a class="headerlink" href="#using-a-fine-dft-grid-for-optimization" title="Permalink to this headline">¶</a></h2>
