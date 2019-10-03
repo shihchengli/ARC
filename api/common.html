@@ -184,379 +184,365 @@
 <p>This module contains functions which are shared across multiple ARC modules.
 As such, it should not import any other ARC module (specifically ones that use the logger defined here)</p>
 <blockquote>
-<div>to avoid circular imports.</div></blockquote>
+<div><p>to avoid circular imports.</p>
+</div></blockquote>
 <p>VERSION is the full ARC version, using <a class="reference external" href="https://semver.org/">semantic versioning</a>.</p>
 <p>ATOM_RADII data taken from <a class="reference external" href="http://dx.doi.org/10.1039/b801115j">DOI 10.1039/b801115j</a>.</p>
 <dl class="function">
 <dt id="arc.common.almost_equal_coords">
-<code class="descclassname">arc.common.</code><code class="descname">almost_equal_coords</code><span class="sig-paren">(</span><em>xyz1</em>, <em>xyz2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_coords</code><span class="sig-paren">(</span><em class="sig-param">xyz1</em>, <em class="sig-param">xyz2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for checking two xyz’s are almost equal.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>xyz1</strong> (<em>dict</em>) – Coordinates.</li>
-<li><strong>xyz2</strong> (<em>dict</em>) – Coordinates.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyz1</strong> (<em>dict</em>) – Coordinates.</p></li>
+<li><p><strong>xyz2</strong> (<em>dict</em>) – Coordinates.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.almost_equal_coords_lists">
-<code class="descclassname">arc.common.</code><code class="descname">almost_equal_coords_lists</code><span class="sig-paren">(</span><em>xyz1</em>, <em>xyz2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords_lists" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_coords_lists</code><span class="sig-paren">(</span><em class="sig-param">xyz1</em>, <em class="sig-param">xyz2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords_lists" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for checking two lists of xyz’s has at least one entry in each that is almost equal.
 Useful for comparing xyz’s in unit tests.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xyz1</strong> (<em>list</em><em>, </em><em>dict</em>) – Either a dict-format xyz, or a list of them.</li>
-<li><strong>xyz2</strong> (<em>list</em><em>, </em><em>dict</em>) – Either a dict-format xyz, or a list of them.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyz1</strong> (<em>list</em><em>, </em><em>dict</em>) – Either a dict-format xyz, or a list of them.</p></li>
+<li><p><strong>xyz2</strong> (<em>list</em><em>, </em><em>dict</em>) – Either a dict-format xyz, or a list of them.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Whether at least one entry in each input xyz’s is almost equal to an entry in the other xyz.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether at least one entry in each input xyz’s is almost equal to an entry in the other xyz.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.calculate_dihedral_angle">
-<code class="descclassname">arc.common.</code><code class="descname">calculate_dihedral_angle</code><span class="sig-paren">(</span><em>coords</em>, <em>torsion</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#calculate_dihedral_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.calculate_dihedral_angle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">calculate_dihedral_angle</code><span class="sig-paren">(</span><em class="sig-param">coords</em>, <em class="sig-param">torsion</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#calculate_dihedral_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.calculate_dihedral_angle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a dihedral angle. Inspired by ASE Atoms.get_dihedral().</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>coords</strong> (<em>list</em><em>, </em><em>tuple</em>) – The array-format or tuple-format coordinates.</li>
-<li><strong>torsion</strong> (<em>list</em>) – The 4 atoms defining the dihedral angle, 1-indexed.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coords</strong> (<em>list</em><em>, </em><em>tuple</em>) – The array-format or tuple-format coordinates.</p></li>
+<li><p><strong>torsion</strong> (<em>list</em>) – The 4 atoms defining the dihedral angle, 1-indexed.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The dihedral angle.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The dihedral angle.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.check_ess_settings">
-<code class="descclassname">arc.common.</code><code class="descname">check_ess_settings</code><span class="sig-paren">(</span><em>ess_settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#check_ess_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.check_ess_settings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">check_ess_settings</code><span class="sig-paren">(</span><em class="sig-param">ess_settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#check_ess_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.check_ess_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function to convert servers in the ess_settings dict to lists
 Assists in troubleshooting job and trying a different server
 Also check ESS and servers.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ess_settings</strong> (<em>dict</em><em>, </em><em>optional</em>) – ARC’s ESS settings dictionary.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An updated ARC ESS dictionary.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ess_settings</strong> (<em>dict</em><em>, </em><em>optional</em>) – ARC’s ESS settings dictionary.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An updated ARC ESS dictionary.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.determine_ess">
-<code class="descclassname">arc.common.</code><code class="descname">determine_ess</code><span class="sig-paren">(</span><em>log_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_ess" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_ess</code><span class="sig-paren">(</span><em class="sig-param">log_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_ess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the ESS to which the log file belongs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log_file</strong> (<em>str</em>) – The ESS log file path.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The ESS (either ‘gaussian’, ‘qchem’, or ‘molpro’).</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>log_file</strong> (<em>str</em>) – The ESS log file path.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The ESS (either ‘gaussian’, ‘qchem’, or ‘molpro’).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.determine_symmetry">
-<code class="descclassname">arc.common.</code><code class="descname">determine_symmetry</code><span class="sig-paren">(</span><em>xyz</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_symmetry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_symmetry</code><span class="sig-paren">(</span><em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_symmetry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine external symmetry and chirality (optical isomers) of the species.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xyz</strong> (<em>dict</em>) – The 3D coordinates.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The external symmetry number.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1 if no chiral centers are present, 2 if chiral centers are present.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>xyz</strong> (<em>dict</em>) – The 3D coordinates.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The external symmetry number.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 if no chiral centers are present, 2 if chiral centers are present.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.get_atom_radius">
-<code class="descclassname">arc.common.</code><code class="descname">get_atom_radius</code><span class="sig-paren">(</span><em>symbol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_atom_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_atom_radius" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_atom_radius</code><span class="sig-paren">(</span><em class="sig-param">symbol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_atom_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_atom_radius" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the atom covalent radius in Angstroms, data in the ATOM_RADII dict.
 (Change to QCElemental after transitioning to Py3)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>symbol</strong> (<em>str</em>) – The atomic symbol.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The atomic covalent radius (None if not found).</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – The atomic symbol.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The atomic covalent radius (None if not found).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.get_git_branch">
-<code class="descclassname">arc.common.</code><code class="descname">get_git_branch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_git_branch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_git_branch" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_git_branch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_git_branch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_git_branch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the git branch to be logged.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The git branch name.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The git branch name.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.get_git_commit">
-<code class="descclassname">arc.common.</code><code class="descname">get_git_commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_git_commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_git_commit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_git_commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_git_commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_git_commit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the recent git commit to be logged.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Returns empty strings if hash and date cannot be determined.</p>
+<p class="admonition-title">Note</p>
+<p>Returns empty strings if hash and date cannot be determined.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The git HEAD commit hash and the git HEAD commit date, each as a string.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The git HEAD commit hash and the git HEAD commit date, each as a string.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.get_logger">
-<code class="descclassname">arc.common.</code><code class="descname">get_logger</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_logger" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_logger</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_logger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the ARC logger (avoid having multiple entries of the logger).</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.get_ordinal_indicator">
-<code class="descclassname">arc.common.</code><code class="descname">get_ordinal_indicator</code><span class="sig-paren">(</span><em>number</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_ordinal_indicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_ordinal_indicator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_ordinal_indicator</code><span class="sig-paren">(</span><em class="sig-param">number</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_ordinal_indicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_ordinal_indicator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the ordinal indicator for an integer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>number</strong> (<em>int</em>) – An integer for which the ordinal indicator will be determined.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The integer’s ordinal indicator.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number</strong> (<em>int</em>) – An integer for which the ordinal indicator will be determined.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The integer’s ordinal indicator.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.initialize_job_types">
-<code class="descclassname">arc.common.</code><code class="descname">initialize_job_types</code><span class="sig-paren">(</span><em>job_types</em>, <em>specific_job_type=u''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#initialize_job_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_job_types" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">initialize_job_types</code><span class="sig-paren">(</span><em class="sig-param">job_types</em>, <em class="sig-param">specific_job_type=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#initialize_job_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_job_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for initializing job_types.
 Returns the comprehensive (default values for missing job types) job types for ARC.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>job_types</strong> (<em>dict</em>) – Keys are job types, values are booleans of whether or not to consider this job type.</li>
-<li><strong>specific_job_type</strong> (<em>str</em>) – Specific job type to execute. Legal strings are job types (keys of job_types dict).</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_types</strong> (<em>dict</em>) – Keys are job types, values are booleans of whether or not to consider this job type.</p></li>
+<li><p><strong>specific_job_type</strong> (<em>str</em>) – Specific job type to execute. Legal strings are job types (keys of job_types dict).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An updated (comprehensive) job type dictionary.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">job_types (dict)</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An updated (comprehensive) job type dictionary.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>job_types (dict)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.initialize_log">
-<code class="descclassname">arc.common.</code><code class="descname">initialize_log</code><span class="sig-paren">(</span><em>log_file</em>, <em>project</em>, <em>project_directory=None</em>, <em>verbose=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#initialize_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_log" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">initialize_log</code><span class="sig-paren">(</span><em class="sig-param">log_file</em>, <em class="sig-param">project</em>, <em class="sig-param">project_directory=None</em>, <em class="sig-param">verbose=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#initialize_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set up a logger for ARC.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>log_file</strong> (<em>str</em>) – The log file name.</li>
-<li><strong>project</strong> (<em>str</em>) – A name for the project.</li>
-<li><strong>project_directory</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to the project directory.</li>
-<li><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Specify the amount of log text seen.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log_file</strong> (<em>str</em>) – The log file name.</p></li>
+<li><p><strong>project</strong> (<em>str</em>) – A name for the project.</p></li>
+<li><p><strong>project_directory</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to the project directory.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Specify the amount of log text seen.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.log_footer">
-<code class="descclassname">arc.common.</code><code class="descname">log_footer</code><span class="sig-paren">(</span><em>execution_time</em>, <em>level=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#log_footer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_footer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">log_footer</code><span class="sig-paren">(</span><em class="sig-param">execution_time</em>, <em class="sig-param">level=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#log_footer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_footer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output a footer for the log.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>execution_time</strong> (<em>str</em>) – The overall execution time for ARC.</li>
-<li><strong>level</strong> – The desired logging level.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>execution_time</strong> (<em>str</em>) – The overall execution time for ARC.</p></li>
+<li><p><strong>level</strong> – The desired logging level.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.log_header">
-<code class="descclassname">arc.common.</code><code class="descname">log_header</code><span class="sig-paren">(</span><em>project</em>, <em>level=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#log_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_header" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">log_header</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">level=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#log_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_header" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output a header containing identifying information about ARC to the log.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<em>str</em>) – The ARC project name to be logged in the header.</li>
-<li><strong>level</strong> – The desired logging level.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>str</em>) – The ARC project name to be logged in the header.</p></li>
+<li><p><strong>level</strong> – The desired logging level.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.min_list">
-<code class="descclassname">arc.common.</code><code class="descname">min_list</code><span class="sig-paren">(</span><em>lst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#min_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.min_list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">min_list</code><span class="sig-paren">(</span><em class="sig-param">lst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#min_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.min_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for finding the minimum of a list of integers where some of the entries might be None.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lst</strong> (<em>list</em>) – The list.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The entry with the minimal value.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lst</strong> (<em>list</em>) – The list.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The entry with the minimal value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.read_yaml_file">
-<code class="descclassname">arc.common.</code><code class="descname">read_yaml_file</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#read_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.read_yaml_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">read_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#read_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.read_yaml_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a YAML file (usually an input / restart file, but also conformers file)
 and return the parameters as python variables.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) – The YAML file path to read.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The content read from the file.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict or list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The YAML file path to read.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The content read from the file.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict or list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.save_yaml_file">
-<code class="descclassname">arc.common.</code><code class="descname">save_yaml_file</code><span class="sig-paren">(</span><em>path</em>, <em>content</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#save_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.save_yaml_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">save_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">content</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#save_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.save_yaml_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a YAML file (usually an input / restart file, but also conformers file)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path</strong> (<em>str</em>) – The YAML file path to save.</li>
-<li><strong>content</strong> (<em>list</em><em>, </em><em>dict</em>) – The content to save.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – The YAML file path to save.</p></li>
+<li><p><strong>content</strong> (<em>list</em><em>, </em><em>dict</em>) – The content to save.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.common.sort_two_lists_by_the_first">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">sort_two_lists_by_the_first</code><span class="sig-paren">(</span><em class="sig-param">list1</em>, <em class="sig-param">list2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#sort_two_lists_by_the_first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.sort_two_lists_by_the_first" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort two lists in increasing order by the values of the first list.
+Ignoring None entries from list1 and their respective entries in list2.
+The function was written in this format rather the more pytonic <code class="docutils literal notranslate"><span class="pre">zip(*sorted(zip(list1,</span> <span class="pre">list2)))</span></code> method
+to accommodate for dictionaries as entries of list2, otherwise a
+<code class="docutils literal notranslate"><span class="pre">TypeError:</span> <span class="pre">'&lt;'</span> <span class="pre">not</span> <span class="pre">supported</span> <span class="pre">between</span> <span class="pre">instances</span> <span class="pre">of</span> <span class="pre">'dict'</span> <span class="pre">and</span> <span class="pre">'dict'</span></code> error is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list1</strong> (<em>list</em><em>, </em><em>tuple</em>) – Entries are floats or ints (could also be None).</p></li>
+<li><p><strong>list2</strong> (<em>list</em><em>, </em><em>tuple</em>) – Entries could be anything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sorted values from list1, ignoring None entries.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Respective entries from list2.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If types are wrong, or lists are not the same length.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.string_representer">
-<code class="descclassname">arc.common.</code><code class="descname">string_representer</code><span class="sig-paren">(</span><em>dumper</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#string_representer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.string_representer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">string_representer</code><span class="sig-paren">(</span><em class="sig-param">dumper</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#string_representer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.string_representer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a custom string representer to use block literals for multiline strings.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.common.time_lapse">
-<code class="descclassname">arc.common.</code><code class="descname">time_lapse</code><span class="sig-paren">(</span><em>t0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#time_lapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.time_lapse" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">time_lapse</code><span class="sig-paren">(</span><em class="sig-param">t0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#time_lapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.time_lapse" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function returning the elapsed time since t0.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>t0</strong> (<em>time.pyi</em>) – The initial time the count starts from.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A “D HH:MM:SS” formatted time difference between now and t0.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="arc.common.unicode_representer">
-<code class="descclassname">arc.common.</code><code class="descname">unicode_representer</code><span class="sig-paren">(</span><em>dumper</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#unicode_representer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.unicode_representer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a custom unicode representer to use block literals for multiline strings in unicode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t0</strong> (<em>time.pyi</em>) – The initial time the count starts from.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A “D HH:MM:SS” formatted time difference between now and t0.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

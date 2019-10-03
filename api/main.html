@@ -190,646 +190,531 @@ To run ARC through its API, first make an instance of the ARC class, then call t
 <p>Where <code class="docutils literal notranslate"><span class="pre">spc0</span></code>, <code class="docutils literal notranslate"><span class="pre">spc1</span></code>, and <code class="docutils literal notranslate"><span class="pre">spc2</span></code> in the above example are <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p>
 <dl class="class">
 <dt id="arc.main.ARC">
-<em class="property">class </em><code class="descclassname">arc.main.</code><code class="descname">ARC</code><span class="sig-paren">(</span><em>input_dict=None</em>, <em>project=None</em>, <em>arc_species_list=None</em>, <em>arc_rxn_list=None</em>, <em>level_of_theory=u''</em>, <em>conformer_level=u''</em>, <em>composite_method=u''</em>, <em>opt_level=u''</em>, <em>freq_level=u''</em>, <em>sp_level=u''</em>, <em>scan_level=u''</em>, <em>ts_guess_level=u''</em>, <em>use_bac=True</em>, <em>job_types=None</em>, <em>model_chemistry=u''</em>, <em>initial_trsh=None</em>, <em>t_min=None</em>, <em>t_max=None</em>, <em>t_count=None</em>, <em>verbose=20</em>, <em>project_directory=None</em>, <em>max_job_time=120</em>, <em>allow_nonisomorphic_2d=False</em>, <em>job_memory=14</em>, <em>ess_settings=None</em>, <em>bath_gas=None</em>, <em>adaptive_levels=None</em>, <em>freq_scale_factor=None</em>, <em>calc_freq_factor=True</em>, <em>confs_to_dft=5</em>, <em>keep_checks=False</em>, <em>dont_gen_confs=None</em>, <em>specific_job_type=u''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.main.</code><code class="sig-name descname">ARC</code><span class="sig-paren">(</span><em class="sig-param">input_dict=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">arc_species_list=None</em>, <em class="sig-param">arc_rxn_list=None</em>, <em class="sig-param">level_of_theory=''</em>, <em class="sig-param">conformer_level=''</em>, <em class="sig-param">composite_method=''</em>, <em class="sig-param">opt_level=''</em>, <em class="sig-param">freq_level=''</em>, <em class="sig-param">sp_level=''</em>, <em class="sig-param">scan_level=''</em>, <em class="sig-param">ts_guess_level=''</em>, <em class="sig-param">use_bac=True</em>, <em class="sig-param">job_types=None</em>, <em class="sig-param">model_chemistry=''</em>, <em class="sig-param">initial_trsh=None</em>, <em class="sig-param">t_min=None</em>, <em class="sig-param">t_max=None</em>, <em class="sig-param">t_count=None</em>, <em class="sig-param">verbose=20</em>, <em class="sig-param">project_directory=None</em>, <em class="sig-param">max_job_time=120</em>, <em class="sig-param">allow_nonisomorphic_2d=False</em>, <em class="sig-param">job_memory=14</em>, <em class="sig-param">ess_settings=None</em>, <em class="sig-param">bath_gas=None</em>, <em class="sig-param">adaptive_levels=None</em>, <em class="sig-param">freq_scale_factor=None</em>, <em class="sig-param">calc_freq_factor=True</em>, <em class="sig-param">confs_to_dft=5</em>, <em class="sig-param">keep_checks=False</em>, <em class="sig-param">dont_gen_confs=None</em>, <em class="sig-param">specific_job_type=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC" title="Permalink to this definition">¶</a></dt>
 <dd><p>The main ARC class.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>input_dict</strong> (<em>dict</em><em>, </em><em>str</em><em>, </em><em>optional</em>) – Either a dictionary from which to recreate this object, or the path to an ARC
-input/restart YAML file.</li>
-<li><strong>project</strong> (<em>str</em><em>, </em><em>optional</em>) – The project’s name. Used for naming the working directory.</li>
-<li><strong>arc_species_list</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</li>
-<li><strong>arc_rxn_list</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of <a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> objects.</li>
-<li><strong>level_of_theory</strong> (<em>str</em><em>, </em><em>optional</em>) – A string representing either sp//geometry levels or a composite method, e.g.
-‘CBS-QB3’, ‘CCSD(T)-F12a/aug-cc-pVTZ//B3LYP/6-311++G(3df,3pd)’…</li>
-<li><strong>conformer_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for conformer searches.</li>
-<li><strong>composite_method</strong> (<em>str</em><em>, </em><em>optional</em>) – Composite method.</li>
-<li><strong>opt_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for geometry optimization.</li>
-<li><strong>freq_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for frequency calculations.</li>
-<li><strong>sp_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for single point calculations.</li>
-<li><strong>scan_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for rotor scans.</li>
-<li><strong>ts_guess_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for comparisons of TS guesses between different methods.</li>
-<li><strong>use_bac</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to use bond additivity corrections for thermo calculations.</li>
-<li><strong>job_types</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of job types to execute. Keys are job types, values are boolean.</li>
-<li><strong>model_chemistry</strong> (<em>str</em><em>, </em><em>optional</em>) – The model chemistry in Arkane for energy corrections (AE, BAC) and
-frequencies/ZPE scaling factor. Can usually be determined automatically.</li>
-<li><strong>initial_trsh</strong> (<em>dict</em><em>, </em><em>optional</em>) – Troubleshooting methods to try by default. Keys are ESS software, values are
-trshs.</li>
-<li><strong>t_min</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The minimum temperature for kinetics computations, e.g., (500, str(‘K’)).</li>
-<li><strong>t_max</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The maximum temperature for kinetics computations, e.g., (3000, str(‘K’)).</li>
-<li><strong>t_count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of temperature points between t_min and t_max for kinetics computations.</li>
-<li><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – The logging level to use.</li>
-<li><strong>project_directory</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to the project directory.</li>
-<li><strong>max_job_time</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximal allowed job time on the server in hours.</li>
-<li><strong>allow_nonisomorphic_2d</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to optimize species even if they do not have a 3D conformer
-that is isomorphic to the 2D graph representation.</li>
-<li><strong>job_memory</strong> (<em>int</em><em>, </em><em>optional</em>) – The total allocated job memory in GB (14 by default to be lower than 90% * 16 GB).</li>
-<li><strong>ess_settings</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of available ESS (keys) and a corresponding server list (values).</li>
-<li><strong>bath_gas</strong> (<em>str</em><em>, </em><em>optional</em>) – A bath gas. Currently used in OneDMin to calc L-J parameters.
-Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</li>
-<li><strong>adaptive_levels</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of levels of theory for ranges of the number of heavy atoms in
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_dict</strong> (<em>dict</em><em>, </em><em>str</em><em>, </em><em>optional</em>) – Either a dictionary from which to recreate this object, or the path to an ARC
+input/restart YAML file.</p></li>
+<li><p><strong>project</strong> (<em>str</em><em>, </em><em>optional</em>) – The project’s name. Used for naming the working directory.</p></li>
+<li><p><strong>arc_species_list</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p></li>
+<li><p><strong>arc_rxn_list</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of <a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> objects.</p></li>
+<li><p><strong>level_of_theory</strong> (<em>str</em><em>, </em><em>optional</em>) – A string representing either sp//geometry levels or a composite method, e.g.
+‘CBS-QB3’, ‘CCSD(T)-F12a/aug-cc-pVTZ//B3LYP/6-311++G(3df,3pd)’…</p></li>
+<li><p><strong>conformer_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for conformer searches.</p></li>
+<li><p><strong>composite_method</strong> (<em>str</em><em>, </em><em>optional</em>) – Composite method.</p></li>
+<li><p><strong>opt_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for geometry optimization.</p></li>
+<li><p><strong>freq_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for frequency calculations.</p></li>
+<li><p><strong>sp_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for single point calculations.</p></li>
+<li><p><strong>scan_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for rotor scans.</p></li>
+<li><p><strong>ts_guess_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for comparisons of TS guesses between different methods.</p></li>
+<li><p><strong>use_bac</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to use bond additivity corrections for thermo calculations.</p></li>
+<li><p><strong>job_types</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of job types to execute. Keys are job types, values are boolean.</p></li>
+<li><p><strong>model_chemistry</strong> (<em>str</em><em>, </em><em>optional</em>) – The model chemistry in Arkane for energy corrections (AE, BAC) and
+frequencies/ZPE scaling factor. Can usually be determined automatically.</p></li>
+<li><p><strong>initial_trsh</strong> (<em>dict</em><em>, </em><em>optional</em>) – Troubleshooting methods to try by default. Keys are ESS software, values are
+trshs.</p></li>
+<li><p><strong>t_min</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The minimum temperature for kinetics computations, e.g., (500, str(‘K’)).</p></li>
+<li><p><strong>t_max</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The maximum temperature for kinetics computations, e.g., (3000, str(‘K’)).</p></li>
+<li><p><strong>t_count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of temperature points between t_min and t_max for kinetics computations.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – The logging level to use.</p></li>
+<li><p><strong>project_directory</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to the project directory.</p></li>
+<li><p><strong>max_job_time</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximal allowed job time on the server in hours.</p></li>
+<li><p><strong>allow_nonisomorphic_2d</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to optimize species even if they do not have a 3D conformer
+that is isomorphic to the 2D graph representation.</p></li>
+<li><p><strong>job_memory</strong> (<em>int</em><em>, </em><em>optional</em>) – The total allocated job memory in GB (14 by default to be lower than 90% * 16 GB).</p></li>
+<li><p><strong>ess_settings</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of available ESS (keys) and a corresponding server list (values).</p></li>
+<li><p><strong>bath_gas</strong> (<em>str</em><em>, </em><em>optional</em>) – A bath gas. Currently used in OneDMin to calc L-J parameters.
+Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p></li>
+<li><p><strong>adaptive_levels</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of levels of theory for ranges of the number of heavy atoms in
 the molecule. Keys are tuples of (min_num_atoms, max_num_atoms), values are
 dictionaries with <code class="docutils literal notranslate"><span class="pre">optfreq</span></code> and <code class="docutils literal notranslate"><span class="pre">sp</span></code> as keys and levels of theory as
-values.</li>
-<li><strong>freq_scale_factor</strong> (<em>float</em><em>, </em><em>optional</em>) – The harmonic frequencies scaling factor. Could be automatically determined
-if not available in Arkane and not provided by the user.</li>
-<li><strong>calc_freq_factor</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to calculate the frequencies scaling factor using Truhlar’s method if
+values.</p></li>
+<li><p><strong>freq_scale_factor</strong> (<em>float</em><em>, </em><em>optional</em>) – The harmonic frequencies scaling factor. Could be automatically determined
+if not available in Arkane and not provided by the user.</p></li>
+<li><p><strong>calc_freq_factor</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to calculate the frequencies scaling factor using Truhlar’s method if
 it was not given by the user and could not be determined by Arkane. True to
-calculate, False to use user input / Arkane’s value / Arkane’s default.</li>
-<li><strong>confs_to_dft</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of lowest MD conformers to DFT at the conformers_level.</li>
-<li><strong>keep_checks</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep all Gaussian checkfiles when ARC terminates. True to keep,
-default is False.</li>
-<li><strong>dont_gen_confs</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of species labels for which conformer generation should be avoided
-if xyz is given.</li>
+calculate, False to use user input / Arkane’s value / Arkane’s default.</p></li>
+<li><p><strong>confs_to_dft</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of lowest MD conformers to DFT at the conformers_level.</p></li>
+<li><p><strong>keep_checks</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep all Gaussian checkfiles when ARC terminates. True to keep,
+default is False.</p></li>
+<li><p><strong>dont_gen_confs</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of species labels for which conformer generation should be avoided
+if xyz is given.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="arc.main.ARC.project">
-<code class="descname">project</code><a class="headerlink" href="#arc.main.ARC.project" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">project</code><a class="headerlink" href="#arc.main.ARC.project" title="Permalink to this definition">¶</a></dt>
 <dd><p>The project’s name. Used for naming the working directory.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.project_directory">
-<code class="descname">project_directory</code><a class="headerlink" href="#arc.main.ARC.project_directory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">project_directory</code><a class="headerlink" href="#arc.main.ARC.project_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The path to the project directory.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.arc_species_list">
-<code class="descname">arc_species_list</code><a class="headerlink" href="#arc.main.ARC.arc_species_list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">arc_species_list</code><a class="headerlink" href="#arc.main.ARC.arc_species_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.arc_rxn_list">
-<code class="descname">arc_rxn_list</code><a class="headerlink" href="#arc.main.ARC.arc_rxn_list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">arc_rxn_list</code><a class="headerlink" href="#arc.main.ARC.arc_rxn_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of <a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.conformer_level">
-<code class="descname">conformer_level</code><a class="headerlink" href="#arc.main.ARC.conformer_level" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">conformer_level</code><a class="headerlink" href="#arc.main.ARC.conformer_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for conformer searches.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.composite_method">
-<code class="descname">composite_method</code><a class="headerlink" href="#arc.main.ARC.composite_method" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">composite_method</code><a class="headerlink" href="#arc.main.ARC.composite_method" title="Permalink to this definition">¶</a></dt>
 <dd><p>Composite method.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.opt_level">
-<code class="descname">opt_level</code><a class="headerlink" href="#arc.main.ARC.opt_level" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">opt_level</code><a class="headerlink" href="#arc.main.ARC.opt_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for geometry optimization.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.freq_level">
-<code class="descname">freq_level</code><a class="headerlink" href="#arc.main.ARC.freq_level" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">freq_level</code><a class="headerlink" href="#arc.main.ARC.freq_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for frequency calculations.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.sp_level">
-<code class="descname">sp_level</code><a class="headerlink" href="#arc.main.ARC.sp_level" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">sp_level</code><a class="headerlink" href="#arc.main.ARC.sp_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for single point calculations.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.scan_level">
-<code class="descname">scan_level</code><a class="headerlink" href="#arc.main.ARC.scan_level" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">scan_level</code><a class="headerlink" href="#arc.main.ARC.scan_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for rotor scans.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.ts_guess_level">
-<code class="descname">ts_guess_level</code><a class="headerlink" href="#arc.main.ARC.ts_guess_level" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_guess_level</code><a class="headerlink" href="#arc.main.ARC.ts_guess_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for comparisons of TS guesses between different methods.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.adaptive_levels">
-<code class="descname">adaptive_levels</code><a class="headerlink" href="#arc.main.ARC.adaptive_levels" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">adaptive_levels</code><a class="headerlink" href="#arc.main.ARC.adaptive_levels" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of levels of theory for ranges of the number of heavy atoms in the
 molecule. Keys are tuples of (min_num_atoms, max_num_atoms), values are dictionaries
 with <code class="docutils literal notranslate"><span class="pre">optfreq</span></code> and <code class="docutils literal notranslate"><span class="pre">sp</span></code> as keys and levels of theory as values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.output">
-<code class="descname">output</code><a class="headerlink" href="#arc.main.ARC.output" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">output</code><a class="headerlink" href="#arc.main.ARC.output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output dictionary with status and final QM file paths for all species. Only used for restarting,
 the actual object used is in the Scheduler class.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.use_bac">
-<code class="descname">use_bac</code><a class="headerlink" href="#arc.main.ARC.use_bac" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">use_bac</code><a class="headerlink" href="#arc.main.ARC.use_bac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not to use bond additivity corrections for thermo calculations.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.model_chemistry">
-<code class="descname">model_chemistry</code><a class="headerlink" href="#arc.main.ARC.model_chemistry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">model_chemistry</code><a class="headerlink" href="#arc.main.ARC.model_chemistry" title="Permalink to this definition">¶</a></dt>
 <dd><p>The model chemistry in Arkane for energy corrections (AE, BAC) and frequencies/ZPE
 scaling factor. Can usually be determined automatically.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.freq_scale_factor">
-<code class="descname">freq_scale_factor</code><a class="headerlink" href="#arc.main.ARC.freq_scale_factor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">freq_scale_factor</code><a class="headerlink" href="#arc.main.ARC.freq_scale_factor" title="Permalink to this definition">¶</a></dt>
 <dd><p>The harmonic frequencies scaling factor. Could be automatically determined if not
 available in Arkane and not provided by the user.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.calc_freq_factor">
-<code class="descname">calc_freq_factor</code><a class="headerlink" href="#arc.main.ARC.calc_freq_factor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">calc_freq_factor</code><a class="headerlink" href="#arc.main.ARC.calc_freq_factor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to calculate the frequencies scaling factor using Truhlar’s method if it was
 not given by the user and could not be determined by Arkane. True to calculate, False
 to use user input / Arkane’s value / Arkane’s default.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.ess_settings">
-<code class="descname">ess_settings</code><a class="headerlink" href="#arc.main.ARC.ess_settings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ess_settings</code><a class="headerlink" href="#arc.main.ARC.ess_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of available ESS (keys) and a corresponding server list (values).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.initial_trsh">
-<code class="descname">initial_trsh</code><a class="headerlink" href="#arc.main.ARC.initial_trsh" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">initial_trsh</code><a class="headerlink" href="#arc.main.ARC.initial_trsh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshooting methods to try by default. Keys are ESS software, values are trshs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.t0">
-<code class="descname">t0</code><a class="headerlink" href="#arc.main.ARC.t0" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">t0</code><a class="headerlink" href="#arc.main.ARC.t0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initial time when the project was spawned.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.confs_to_dft">
-<code class="descname">confs_to_dft</code><a class="headerlink" href="#arc.main.ARC.confs_to_dft" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">confs_to_dft</code><a class="headerlink" href="#arc.main.ARC.confs_to_dft" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of lowest MD conformers to DFT at the conformers_level.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.execution_time">
-<code class="descname">execution_time</code><a class="headerlink" href="#arc.main.ARC.execution_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">execution_time</code><a class="headerlink" href="#arc.main.ARC.execution_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overall execution time.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.lib_long_desc">
-<code class="descname">lib_long_desc</code><a class="headerlink" href="#arc.main.ARC.lib_long_desc" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">lib_long_desc</code><a class="headerlink" href="#arc.main.ARC.lib_long_desc" title="Permalink to this definition">¶</a></dt>
 <dd><p>A multiline description of levels of theory for the outputted RMG libraries.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.running_jobs">
-<code class="descname">running_jobs</code><a class="headerlink" href="#arc.main.ARC.running_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">running_jobs</code><a class="headerlink" href="#arc.main.ARC.running_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of jobs submitted in a precious ARC instance, used for restarting ARC.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.t_min">
-<code class="descname">t_min</code><a class="headerlink" href="#arc.main.ARC.t_min" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">t_min</code><a class="headerlink" href="#arc.main.ARC.t_min" title="Permalink to this definition">¶</a></dt>
 <dd><p>The minimum temperature for kinetics computations, e.g., (500, str(‘K’)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">tuple</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.t_max">
-<code class="descname">t_max</code><a class="headerlink" href="#arc.main.ARC.t_max" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">t_max</code><a class="headerlink" href="#arc.main.ARC.t_max" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximum temperature for kinetics computations, e.g., (3000, str(‘K’)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">tuple</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.t_count">
-<code class="descname">t_count</code><a class="headerlink" href="#arc.main.ARC.t_count" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">t_count</code><a class="headerlink" href="#arc.main.ARC.t_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of temperature points between t_min and t_max for kinetics computations.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.max_job_time">
-<code class="descname">max_job_time</code><a class="headerlink" href="#arc.main.ARC.max_job_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">max_job_time</code><a class="headerlink" href="#arc.main.ARC.max_job_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximal allowed job time on the server in hours.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.rmgdb">
-<code class="descname">rmgdb</code><a class="headerlink" href="#arc.main.ARC.rmgdb" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rmgdb</code><a class="headerlink" href="#arc.main.ARC.rmgdb" title="Permalink to this definition">¶</a></dt>
 <dd><p>The RMG database object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">RMGDatabase</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>RMGDatabase</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.allow_nonisomorphic_2d">
-<code class="descname">allow_nonisomorphic_2d</code><a class="headerlink" href="#arc.main.ARC.allow_nonisomorphic_2d" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">allow_nonisomorphic_2d</code><a class="headerlink" href="#arc.main.ARC.allow_nonisomorphic_2d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to optimize species even if they do not have a 3D conformer that is
 isomorphic to the 2D graph representation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.memory">
-<code class="descname">memory</code><a class="headerlink" href="#arc.main.ARC.memory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">memory</code><a class="headerlink" href="#arc.main.ARC.memory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The total allocated job memory in GB (14 by default to be lower than 90% * 16 GB).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.job_types">
-<code class="descname">job_types</code><a class="headerlink" href="#arc.main.ARC.job_types" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">job_types</code><a class="headerlink" href="#arc.main.ARC.job_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of job types to execute. Keys are job types, values are boolean.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.specific_job_type">
-<code class="descname">specific_job_type</code><a class="headerlink" href="#arc.main.ARC.specific_job_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">specific_job_type</code><a class="headerlink" href="#arc.main.ARC.specific_job_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specific job type to execute. Legal strings are job types (keys of job_types dict).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.bath_gas">
-<code class="descname">bath_gas</code><a class="headerlink" href="#arc.main.ARC.bath_gas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">bath_gas</code><a class="headerlink" href="#arc.main.ARC.bath_gas" title="Permalink to this definition">¶</a></dt>
 <dd><p>A bath gas. Currently used in OneDMin to calc L-J parameters.
 Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.keep_checks">
-<code class="descname">keep_checks</code><a class="headerlink" href="#arc.main.ARC.keep_checks" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">keep_checks</code><a class="headerlink" href="#arc.main.ARC.keep_checks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to keep all Gaussian checkfiles when ARC terminates. True to keep, default is False.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.main.ARC.dont_gen_confs">
-<code class="descname">dont_gen_confs</code><a class="headerlink" href="#arc.main.ARC.dont_gen_confs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">dont_gen_confs</code><a class="headerlink" href="#arc.main.ARC.dont_gen_confs" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of species labels for which conformer generation should be avoided
 if xyz is given.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.add_hydrogen_for_bde">
-<code class="descname">add_hydrogen_for_bde</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.add_hydrogen_for_bde"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.add_hydrogen_for_bde" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_hydrogen_for_bde</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.add_hydrogen_for_bde"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.add_hydrogen_for_bde" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make sure ARC has a hydrogen species labeled as ‘H’ for the final processing of bde jobs (if not, create one).</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.as_dict">
-<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.as_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.as_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for dumping this object as a dictionary in a YAML file for restarting ARC.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.check_freq_scaling_factor">
-<code class="descname">check_freq_scaling_factor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.check_freq_scaling_factor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.check_freq_scaling_factor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_freq_scaling_factor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.check_freq_scaling_factor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.check_freq_scaling_factor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that the harmonic frequencies scaling factor is known,
 otherwise spawn a calculation for it if calc_freq_factor is set to True.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.check_project_name">
-<code class="descname">check_project_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.check_project_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.check_project_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_project_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.check_project_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.check_project_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check the validity of the project name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.delete_check_files">
-<code class="descname">delete_check_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.delete_check_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.delete_check_files" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_check_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.delete_check_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.delete_check_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete the Gaussian checkfiles, the usually take up lots of space and are not needed after ARC terminates.
 Pass True to the keep_checks flag to avoid deleting check files.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.determine_ess_settings">
-<code class="descname">determine_ess_settings</code><span class="sig-paren">(</span><em>diagnostics=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.determine_ess_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.determine_ess_settings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_ess_settings</code><span class="sig-paren">(</span><em class="sig-param">diagnostics=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.determine_ess_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.determine_ess_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine where each ESS is available, locally (in running on a server) and/or on remote servers.
 if <cite>diagnostics</cite> is True, this method will not raise errors, and will print its findings.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.determine_model_chemistry">
-<code class="descname">determine_model_chemistry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.determine_model_chemistry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.determine_model_chemistry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_model_chemistry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.determine_model_chemistry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.determine_model_chemistry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the model_chemistry to be used in Arkane.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.determine_unique_species_labels">
-<code class="descname">determine_unique_species_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.determine_unique_species_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.determine_unique_species_labels" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_unique_species_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.determine_unique_species_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.determine_unique_species_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine unique species labels.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – If a non-unique species is found.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If a non-unique species is found.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.execute">
-<code class="descname">execute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.execute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">execute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.execute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute ARC.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.from_dict">
-<code class="descname">from_dict</code><span class="sig-paren">(</span><em>input_dict</em>, <em>project=None</em>, <em>project_directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.from_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">input_dict</em>, <em class="sig-param">project=None</em>, <em class="sig-param">project_directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.from_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for loading this object from a dictionary in a YAML file for restarting ARC.
 If <cite>project</cite> name and <cite>ess_settings</cite> are given as well to __init__, they will override the respective values
 in the restart dictionary.</p>
@@ -837,28 +722,25 @@ in the restart dictionary.</p>
 
 <dl class="method">
 <dt id="arc.main.ARC.save_project_info_file">
-<code class="descname">save_project_info_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.save_project_info_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.save_project_info_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_project_info_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.save_project_info_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.save_project_info_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a project info file.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.summary">
-<code class="descname">summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.summary" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.summary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Report status and data of all species / reactions.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.main.ARC.write_input_file">
-<code class="descname">write_input_file</code><span class="sig-paren">(</span><em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.write_input_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.write_input_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_input_file</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.write_input_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.write_input_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the current attributes as an ARC input file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The full path for the generated input file.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The full path for the generated input file.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

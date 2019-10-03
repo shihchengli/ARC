@@ -158,7 +158,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for arc.common</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python</span>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># encoding: utf-8</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -171,7 +171,6 @@
 <span class="sd">ATOM_RADII data taken from `DOI 10.1039/b801115j &lt;http://dx.doi.org/10.1039/b801115j&gt;`_.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -187,8 +186,8 @@
 <span class="kn">from</span> <span class="nn">arkane.gaussian</span> <span class="k">import</span> <span class="n">GaussianLog</span>
 <span class="kn">from</span> <span class="nn">arkane.molpro</span> <span class="k">import</span> <span class="n">MolproLog</span>
 <span class="kn">from</span> <span class="nn">arkane.qchem</span> <span class="k">import</span> <span class="n">QChemLog</span>
-<span class="kn">from</span> <span class="nn">arkane.statmech</span> <span class="k">import</span> <span class="n">determine_qm_software</span>
-<span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="k">import</span> <span class="n">getElement</span>
+<span class="kn">from</span> <span class="nn">arkane.util</span> <span class="k">import</span> <span class="n">determine_qm_software</span>
+<span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="k">import</span> <span class="n">get_element</span>
 <span class="kn">from</span> <span class="nn">rmgpy.qm.qmdata</span> <span class="k">import</span> <span class="n">QMData</span>
 <span class="kn">from</span> <span class="nn">rmgpy.qm.symmetry</span> <span class="k">import</span> <span class="n">PointGroupCalculator</span>
 
@@ -238,11 +237,11 @@
         <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">settings</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">software</span><span class="p">,</span> <span class="n">server_list</span> <span class="ow">in</span> <span class="n">ess_settings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server_list</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server_list</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">settings</span><span class="p">[</span><span class="n">software</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">server_list</span><span class="p">]</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">server_list</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="s1">&#39;Server name could only be a string. &#39;</span>
                                         <span class="s1">&#39;Got </span><span class="si">{0}</span><span class="s1"> which is </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">server</span><span class="p">)))</span>
                 <span class="n">settings</span><span class="p">[</span><span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">server_list</span>
@@ -255,7 +254,7 @@
             <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="s1">&#39;Recognized ESS software are Gaussian, QChem, Molpro, Orca or OneDMin. &#39;</span>
                                 <span class="s1">&#39;Got: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ess</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">server_list</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">server</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">servers</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">server</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">servers</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
                 <span class="n">server_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">servers</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
                 <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="s1">&#39;Recognized servers are </span><span class="si">{0}</span><span class="s1">. Got: </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">server_names</span><span class="p">,</span> <span class="n">server</span><span class="p">))</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Using the following ESS settings:</span><span class="se">\n</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">settings</span><span class="p">))</span>
@@ -404,8 +403,8 @@
         <span class="k">except</span> <span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">):</span>
             <span class="k">return</span> <span class="s1">&#39;&#39;</span>
         <span class="k">for</span> <span class="n">branch_name</span> <span class="ow">in</span> <span class="n">branch_list</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">branch_name</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">branch_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">branch_name</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">branch_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
 
@@ -437,9 +436,8 @@
 <span class="sd">        content (list, dict): The content to save.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">string_representer</span><span class="p">)</span>
-    <span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="n">unicode</span><span class="p">,</span> <span class="n">unicode_representer</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Creating a restart file...&#39;</span><span class="p">)</span>
-    <span class="n">content</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">content</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -455,15 +453,6 @@
     <span class="k">return</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_scalar</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;tag:yaml.org,2002:str&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="unicode_representer"><a class="viewcode-back" href="../../api/common.html#arc.common.unicode_representer">[docs]</a><span class="k">def</span> <span class="nf">unicode_representer</span><span class="p">(</span><span class="n">dumper</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Add a custom unicode representer to use block literals for multiline strings in unicode.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">ScalarNode</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;tag:yaml.org,2002:str&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">ScalarNode</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;tag:yaml.org,2002:str&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="get_ordinal_indicator"><a class="viewcode-back" href="../../api/common.html#arc.common.get_ordinal_indicator">[docs]</a><span class="k">def</span> <span class="nf">get_ordinal_indicator</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the ordinal indicator for an integer.</span>
@@ -477,7 +466,7 @@
     <span class="n">ordinal_dict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;st&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;nd&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;rd&#39;</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">13</span><span class="p">:</span>
         <span class="n">number</span> <span class="o">%=</span> <span class="mi">10</span>
-    <span class="k">if</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">ordinal_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ordinal_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
         <span class="k">return</span> <span class="n">ordinal_dict</span><span class="p">[</span><span class="n">number</span><span class="p">]</span>
     <span class="k">return</span> <span class="s1">&#39;th&#39;</span></div>
 
@@ -505,7 +494,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        float: The atomic covalent radius (None if not found).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;the symbol argument must be string, got </span><span class="si">{0}</span><span class="s1"> which is a </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">symbol</span><span class="p">)))</span>
 
     <span class="k">if</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">ATOM_RADII</span><span class="p">:</span>
@@ -528,11 +517,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">atom_numbers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># List of atomic numbers</span>
     <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]:</span>
-        <span class="n">atom_numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">getElement</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">symbol</span><span class="p">))</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
+        <span class="n">atom_numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_element</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
     <span class="c1"># coords is an N x 3 numpy.ndarray of atomic coordinates in the same order as `atom_numbers`</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="n">unique_id</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>  <span class="c1"># Just some name that the SYMMETRY code gives to one of its jobs</span>
-    <span class="n">scr_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">arc_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;scratch&#39;</span><span class="p">))</span>  <span class="c1"># Scratch directory that the SYMMETRY code writes its files in</span>
+    <span class="n">scr_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">arc_path</span><span class="p">,</span> <span class="s1">&#39;scratch&#39;</span><span class="p">)</span>  <span class="c1"># Scratch directory that the SYMMETRY code writes its files in</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">scr_dir</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">scr_dir</span><span class="p">)</span>
     <span class="n">symmetry</span> <span class="o">=</span> <span class="n">optical_isomers</span> <span class="o">=</span> <span class="mi">1</span>
@@ -540,14 +529,14 @@
         <span class="n">groundStateDegeneracy</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Only needed to check if valid QMData</span>
         <span class="n">numberOfAtoms</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">atom_numbers</span><span class="p">),</span>
         <span class="n">atomicNumbers</span><span class="o">=</span><span class="n">atom_numbers</span><span class="p">,</span>
-        <span class="n">atomCoords</span><span class="o">=</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;angstrom&#39;</span><span class="p">)),</span>
-        <span class="n">energy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;kcal/mol&#39;</span><span class="p">))</span>  <span class="c1"># Only needed to avoid error</span>
+        <span class="n">atomCoords</span><span class="o">=</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="s1">&#39;angstrom&#39;</span><span class="p">),</span>
+        <span class="n">energy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;kcal/mol&#39;</span><span class="p">)</span>  <span class="c1"># Only needed to avoid error</span>
     <span class="p">)</span>
-    <span class="n">settings</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">(),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">symmetryPath</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;symmetry&#39;</span><span class="p">),</span> <span class="n">scratchDirectory</span><span class="o">=</span><span class="n">scr_dir</span><span class="p">))()</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">(),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">symmetryPath</span><span class="o">=</span><span class="s1">&#39;symmetry&#39;</span><span class="p">,</span> <span class="n">scratchDirectory</span><span class="o">=</span><span class="n">scr_dir</span><span class="p">))()</span>
     <span class="n">pgc</span> <span class="o">=</span> <span class="n">PointGroupCalculator</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">unique_id</span><span class="p">,</span> <span class="n">qmdata</span><span class="p">)</span>
     <span class="n">pg</span> <span class="o">=</span> <span class="n">pgc</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">pg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">symmetry</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">symmetryNumber</span>
+        <span class="n">symmetry</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">symmetry_number</span>
         <span class="n">optical_isomers</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">pg</span><span class="o">.</span><span class="n">chiral</span> <span class="k">else</span> <span class="n">optical_isomers</span>
     <span class="k">return</span> <span class="n">symmetry</span><span class="p">,</span> <span class="n">optical_isomers</span></div>
 
@@ -619,7 +608,7 @@
             <span class="k">if</span> <span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;1d_rotors&#39;</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Note: The `1d_rotors` job type was renamed to simply `rotors`. &quot;</span>
                               <span class="s2">&quot;Please modify your input accordingly (see ARC&#39;s documentation for examples).&quot;</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Job type &#39;</span><span class="si">{0}</span><span class="s2">&#39; not supported. Check the job types dictionary &quot;</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Job type &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not supported. Check the job types dictionary &quot;</span>
                              <span class="s2">&quot;(either in ARC&#39;s input or in default_job_types under settings).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_type</span><span class="p">))</span>
     <span class="n">job_types_report</span> <span class="o">=</span> <span class="p">[</span><span class="n">job_type</span> <span class="k">for</span> <span class="n">job_type</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">job_types</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">val</span><span class="p">]</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Considering the following job types: </span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_types_report</span><span class="p">))</span>
@@ -718,6 +707,52 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="sort_two_lists_by_the_first"><a class="viewcode-back" href="../../api/common.html#arc.common.sort_two_lists_by_the_first">[docs]</a><span class="k">def</span> <span class="nf">sort_two_lists_by_the_first</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sort two lists in increasing order by the values of the first list.</span>
+<span class="sd">    Ignoring None entries from list1 and their respective entries in list2.</span>
+<span class="sd">    The function was written in this format rather the more pytonic ``zip(*sorted(zip(list1, list2)))`` method</span>
+<span class="sd">    to accommodate for dictionaries as entries of list2, otherwise a</span>
+<span class="sd">    ``TypeError: &#39;&lt;&#39; not supported between instances of &#39;dict&#39; and &#39;dict&#39;`` error is raised.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        list1 (list, tuple): Entries are floats or ints (could also be None).</span>
+<span class="sd">        list2 (list, tuple): Entries could be anything.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Sorted values from list1, ignoring None entries.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Respective entries from list2.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        InputError: If types are wrong, or lists are not the same length.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">list2</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Arguments must be lists, got: {type(list1)} and {type(list2)}&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">list1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="ow">and</span> <span class="n">entry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Entries of list1 must be either floats or integers, got: {type(entry)}.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Both lists must be the same length, got {len(list1)} and {len(list2)}&#39;</span><span class="p">)</span>
+
+    <span class="c1"># remove None entries from list1 and their respective entries from list2:</span>
+    <span class="n">new_list1</span><span class="p">,</span> <span class="n">new_list2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">entry1</span><span class="p">,</span> <span class="n">entry2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">entry1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_list1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry1</span><span class="p">)</span>
+            <span class="n">new_list2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry2</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new_list1</span><span class="p">)))</span>
+
+    <span class="n">zipped_lists</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">new_list1</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+    <span class="n">sorted_lists</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">zipped_lists</span><span class="p">)</span>
+    <span class="n">sorted_list1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">sorted_lists</span><span class="p">]</span>
+    <span class="n">sorted_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sorted_lists</span><span class="p">]</span>
+    <span class="n">sorted_list2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_list2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">counter</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sorted_indices</span><span class="p">):</span>
+        <span class="n">sorted_list2</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_list2</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">sorted_list1</span><span class="p">,</span> <span class="n">sorted_list2</span></div>
 </pre></div>
 
            </div>

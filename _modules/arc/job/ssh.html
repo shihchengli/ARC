@@ -158,7 +158,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for arc.job.ssh</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python</span>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># encoding: utf-8</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -169,20 +169,18 @@
 <span class="sd">    * delete scratch files of a failed job: ssh nodeXX; rm scratch/dhdhdhd/job_number</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">import</span> <span class="nn">paramiko</span>
 
 <span class="kn">from</span> <span class="nn">arc.common</span> <span class="k">import</span> <span class="n">get_logger</span>
-<span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">servers</span><span class="p">,</span> <span class="n">check_status_command</span><span class="p">,</span> <span class="n">submit_command</span><span class="p">,</span> <span class="n">submit_filename</span><span class="p">,</span> <span class="n">delete_command</span>
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="k">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">ServerError</span>
+<span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">servers</span><span class="p">,</span> <span class="n">check_status_command</span><span class="p">,</span> <span class="n">submit_command</span><span class="p">,</span> <span class="n">submit_filename</span><span class="p">,</span> <span class="n">delete_command</span>
 
-<span class="c1">##################################################################</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
 
@@ -215,7 +213,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send commands to server. `command` is either a sting or an array of string commands to send.</span>
 <span class="sd">        If remote_path is not an empty string, the command will be executed in the directory path it points to.</span>
-<span class="sd">        Returns lists of stdin, stdout, stderr corresponding to the commands sent.</span>
+<span class="sd">        Returns lists of stdout, stderr corresponding to the commands sent.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ssh</span> <span class="o">=</span> <span class="n">paramiko</span><span class="o">.</span><span class="n">SSHClient</span><span class="p">()</span>
         <span class="n">ssh</span><span class="o">.</span><span class="n">set_missing_host_key_policy</span><span class="p">(</span><span class="n">paramiko</span><span class="o">.</span><span class="n">AutoAddPolicy</span><span class="p">())</span>
@@ -316,7 +314,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sftp</span><span class="p">,</span> <span class="n">ssh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
         <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remote_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">sftp</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_remote</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">sftp</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_remote</span><span class="p">:</span>
             <span class="n">content</span> <span class="o">=</span> <span class="n">f_remote</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         <span class="n">sftp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="n">ssh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -471,7 +469,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        job_id (int): the job ID recognized by the server.</span>
-<span class="sd">        stdout (str): The output of a queue status check.</span>
+<span class="sd">        stdout (list, str): The output of a queue status check.</span>
 <span class="sd">        server (str): The server name.</span>
 
 <span class="sd">    Returns:</span>

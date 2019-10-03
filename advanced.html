@@ -235,20 +235,20 @@ All of the above settings can be modified in the settings.py file.</p>
 <h2>ND Rotor scans<a class="headerlink" href="#nd-rotor-scans" title="Permalink to this headline">¶</a></h2>
 <p>ARC also supports ND (N dimensional, N &gt;= 1) rotor scans. There are seven different ND types to execute:</p>
 <ul class="simple">
-<li><ol class="first upperalpha">
-<li>Generate all geometries in advance (brute force)</li>
+<li><ol class="upperalpha simple">
+<li><p>Generate all geometries in advance (brute force)</p></li>
 </ol>
 </li>
-<li><ul class="first">
-<li>A1. Just calculate single point energies</li>
+<li><ul>
+<li><p>A1. Just calculate single point energies</p></li>
 </ul>
 </li>
-<li><ul class="first">
-<li>A2. Constraint optimization</li>
+<li><ul>
+<li><p>A2. Constraint optimization</p></li>
 </ul>
 </li>
-<li><ol class="first upperalpha" start="2">
-<li>Derive the geometry from the previous point (continuous constrained optimization)</li>
+<li><ol class="upperalpha simple" start="2">
+<li><p>Derive the geometry from the previous point (continuous constrained optimization)</p></li>
 </ol>
 </li>
 </ul>
@@ -257,18 +257,18 @@ All of the above settings can be modified in the settings.py file.</p>
 the ND scan, which is similar to option B.</p>
 <p>The optional primary keys are:</p>
 <ul class="simple">
-<li><cite>brute_force_sp</cite></li>
-<li><cite>brute_force_opt</cite></li>
-<li><cite>cont_opt</cite></li>
+<li><p><cite>brute_force_sp</cite></p></li>
+<li><p><cite>brute_force_opt</cite></p></li>
+<li><p><cite>cont_opt</cite></p></li>
 </ul>
 <p>The brute force methods will generate all the geometries in advance and submit all relevant jobs simultaneously.
 The continuous method will wait for the previous job to terminate, and use its geometry as the initial guess for
 the next job.</p>
 <p>Another set of three keys is allowed, adding <cite>_diagonal</cite> to each of the above keys. the secondary keys are therefore:</p>
 <ul class="simple">
-<li><cite>brute_force_sp_diagonal</cite></li>
-<li><cite>brute_force_opt_diagonal</cite></li>
-<li><cite>cont_opt_diagonal</cite></li>
+<li><p><cite>brute_force_sp_diagonal</cite></p></li>
+<li><p><cite>brute_force_opt_diagonal</cite></p></li>
+<li><p><cite>cont_opt_diagonal</cite></p></li>
 </ul>
 <p>Specifying <cite>_diagonal</cite> will increment all the respective dihedrals together, resulting in a 1D scan instead of
 an ND scan. Values are nested lists. Each value is a list where the entries are either pivot lists (e.g., [1,5])
@@ -299,7 +299,7 @@ Next, set the <code class="docutils literal notranslate"><span class="pre">direc
 </pre></div>
 </div>
 <ul class="simple">
-<li>Note: ND rotors are still <strong>not</strong> incorporated into the molecular partition function,</li>
+<li><p>Note: ND rotors are still <strong>not</strong> incorporated into the molecular partition function,</p></li>
 </ul>
 <p>so currently will not affect thermo or rates.
 - Note: Any torsion defined as part of an ND rotor scan will <strong>not</strong> be spawned for that species as a separate 1D scan.
@@ -311,16 +311,16 @@ individual jobs being submit to your server queue system.</p>
 <p>ARC currently supports the following electronic structure software (ESS):</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference external" href="http://gaussian.com/">Gaussian</a></li>
-<li><a class="reference external" href="https://www.molpro.net/">Molpro</a></li>
-<li><a class="reference external" href="https://www.q-chem.com/">QChem</a></li>
+<li><p><a class="reference external" href="http://gaussian.com/">Gaussian</a></p></li>
+<li><p><a class="reference external" href="https://www.molpro.net/">Molpro</a></p></li>
+<li><p><a class="reference external" href="https://www.q-chem.com/">QChem</a></p></li>
 </ul>
 </div></blockquote>
 <p>ARC also supports the following (non-ESS) software:</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference external" href="https://tcg.cse.anl.gov/papr/codes/onedmin.html">OneDMin</a> for Lennard-Jones transport coefficient calculations.</li>
-<li><a class="reference external" href="http://www.gromacs.org/">Gromacs</a> for molecular dynamics simulations.</li>
+<li><p><a class="reference external" href="https://tcg.cse.anl.gov/papr/codes/onedmin.html">OneDMin</a> for Lennard-Jones transport coefficient calculations.</p></li>
+<li><p><a class="reference external" href="http://www.gromacs.org/">Gromacs</a> for molecular dynamics simulations.</p></li>
 </ul>
 </div></blockquote>
 <p>You may pass an ESS settings dictionary to direct ARC where to find each software:</p>
@@ -366,7 +366,7 @@ jobs for the same species. When ARC terminates it will attempt to delete all dow
 <h2>Frequency scaling factors<a class="headerlink" href="#frequency-scaling-factors" title="Permalink to this headline">¶</a></h2>
 <p>ARC will look for appropriate available frequency scaling factors in <a class="reference external" href="http://reactionmechanismgenerator.github.io/RMG-Py/users/arkane/input.html">Arkane</a>
 for the respective <code class="docutils literal notranslate"><span class="pre">freq_level</span></code>. If a frequency scaling factor isn’t available, ARC will attempt
-to determine it using <a class="reference external" href="https://dx.doi.org/10.1021/ct100326h">Truhlar’s method</a>. This involves spawning fine optimizations anf frequency
+to determine it using <a href="#id9"><span class="problematic" id="id10">`Truhlar's method`__</span></a>. This involves spawning fine optimizations anf frequency
 calculations for a dataset of 15 small molecules. To avoid this, either pass a known frequency scaling
 factor using the <code class="docutils literal notranslate"><span class="pre">freq_scale_factor</span></code> attribute (see <a class="reference internal" href="examples.html#examples"><span class="std std-ref">examples</span></a>), or set the
 <code class="docutils literal notranslate"><span class="pre">calc_freq_factor</span></code> attribute to <code class="docutils literal notranslate"><span class="pre">False</span></code> (it is <code class="docutils literal notranslate"><span class="pre">True</span></code> by default).</p>

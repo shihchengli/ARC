@@ -184,389 +184,325 @@
 <p>A module for representing a reaction.</p>
 <dl class="class">
 <dt id="arc.reaction.ARCReaction">
-<em class="property">class </em><code class="descclassname">arc.reaction.</code><code class="descname">ARCReaction</code><span class="sig-paren">(</span><em>label=u''</em>, <em>reactants=None</em>, <em>products=None</em>, <em>ts_label=None</em>, <em>rmg_reaction=None</em>, <em>ts_methods=None</em>, <em>ts_xyz_guess=None</em>, <em>multiplicity=None</em>, <em>charge=0</em>, <em>reaction_dict=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.reaction.</code><code class="sig-name descname">ARCReaction</code><span class="sig-paren">(</span><em class="sig-param">label=''</em>, <em class="sig-param">reactants=None</em>, <em class="sig-param">products=None</em>, <em class="sig-param">ts_label=None</em>, <em class="sig-param">rmg_reaction=None</em>, <em class="sig-param">ts_methods=None</em>, <em class="sig-param">ts_xyz_guess=None</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">charge=0</em>, <em class="sig-param">reaction_dict=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class for representing a chemical reaction.</p>
 <p>Either give reactants and products (just list of labels corresponding to <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>),
 a reaction label, or an RMG Reaction object.
 If the reactants and products in the RMG Reaction aren’t ARCSpecies, they will be created.</p>
 <p>The ARCReaction object stores the labels corresponding to the reactants, products and TS ARCSpecies objects
 as self.reactants, self.products, and self.ts_label, respectively.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The reaction’s label in the format <cite>r1 + r2 &lt;=&gt; p1 + p2</cite>
-(or unimolecular on either side, as appropriate).</li>
-<li><strong>reactants</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of reactants labels corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</li>
-<li><strong>products</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of products labels corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</li>
-<li><strong>ts_label</strong> (<em>str</em><em>, </em><em>optional</em>) – The <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> label of the respective TS.</li>
-<li><strong>rmg_reaction</strong> (<em>Reaction</em><em>, </em><em>optional</em>) – An RMG Reaction class.</li>
-<li><strong>ts_methods</strong> (<em>list</em><em>, </em><em>optional</em>) – Methods to try for generating TS guesses. If an ARCSpecies is a TS and ts_methods
-is empty (passing an empty list), then xyz (user guess) must be given.</li>
-<li><strong>ts_xyz_guess</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of TS XYZ user guesses, each in a string format.</li>
-<li><strong>multiplicity</strong> (<em>int</em><em>, </em><em>optional</em>) – The reaction surface multiplicity. A trivial guess will be made unless provided.</li>
-<li><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The reaction surface charge.</li>
-<li><strong>reaction_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The reaction’s label in the format <cite>r1 + r2 &lt;=&gt; p1 + p2</cite>
+(or unimolecular on either side, as appropriate).</p></li>
+<li><p><strong>reactants</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of reactants labels corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</p></li>
+<li><p><strong>products</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of products labels corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</p></li>
+<li><p><strong>ts_label</strong> (<em>str</em><em>, </em><em>optional</em>) – The <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> label of the respective TS.</p></li>
+<li><p><strong>rmg_reaction</strong> (<em>Reaction</em><em>, </em><em>optional</em>) – An RMG Reaction class.</p></li>
+<li><p><strong>ts_methods</strong> (<em>list</em><em>, </em><em>optional</em>) – Methods to try for generating TS guesses. If an ARCSpecies is a TS and ts_methods
+is empty (passing an empty list), then xyz (user guess) must be given.</p></li>
+<li><p><strong>ts_xyz_guess</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of TS XYZ user guesses, each in a string format.</p></li>
+<li><p><strong>multiplicity</strong> (<em>int</em><em>, </em><em>optional</em>) – The reaction surface multiplicity. A trivial guess will be made unless provided.</p></li>
+<li><p><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The reaction surface charge.</p></li>
+<li><p><strong>reaction_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.label">
-<code class="descname">label</code><a class="headerlink" href="#arc.reaction.ARCReaction.label" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">label</code><a class="headerlink" href="#arc.reaction.ARCReaction.label" title="Permalink to this definition">¶</a></dt>
 <dd><p>The reaction’s label in the format <cite>r1 + r2 &lt;=&gt; p1 + p2</cite>
 (or unimolecular on either side, as appropriate).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.family">
-<code class="descname">family</code><a class="headerlink" href="#arc.reaction.ARCReaction.family" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">family</code><a class="headerlink" href="#arc.reaction.ARCReaction.family" title="Permalink to this definition">¶</a></dt>
 <dd><p>The RMG kinetic family, if applicable.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.family_own_reverse">
-<code class="descname">family_own_reverse</code><a class="headerlink" href="#arc.reaction.ARCReaction.family_own_reverse" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">family_own_reverse</code><a class="headerlink" href="#arc.reaction.ARCReaction.family_own_reverse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether the RMG family is its own reverse.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.reactants">
-<code class="descname">reactants</code><a class="headerlink" href="#arc.reaction.ARCReaction.reactants" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reactants</code><a class="headerlink" href="#arc.reaction.ARCReaction.reactants" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of reactants labels corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.products">
-<code class="descname">products</code><a class="headerlink" href="#arc.reaction.ARCReaction.products" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">products</code><a class="headerlink" href="#arc.reaction.ARCReaction.products" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of products labels corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.r_species">
-<code class="descname">r_species</code><a class="headerlink" href="#arc.reaction.ARCReaction.r_species" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">r_species</code><a class="headerlink" href="#arc.reaction.ARCReaction.r_species" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of reactants <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.p_species">
-<code class="descname">p_species</code><a class="headerlink" href="#arc.reaction.ARCReaction.p_species" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">p_species</code><a class="headerlink" href="#arc.reaction.ARCReaction.p_species" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of products <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.ts_species">
-<code class="descname">ts_species</code><a class="headerlink" href="#arc.reaction.ARCReaction.ts_species" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_species</code><a class="headerlink" href="#arc.reaction.ARCReaction.ts_species" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> corresponding to the reaction’s TS.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies">ARCSpecies</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies">ARCSpecies</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.dh_rxn298">
-<code class="descname">dh_rxn298</code><a class="headerlink" href="#arc.reaction.ARCReaction.dh_rxn298" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">dh_rxn298</code><a class="headerlink" href="#arc.reaction.ARCReaction.dh_rxn298" title="Permalink to this definition">¶</a></dt>
 <dd><p>The heat of reaction at 298K.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.kinetics">
-<code class="descname">kinetics</code><a class="headerlink" href="#arc.reaction.ARCReaction.kinetics" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">kinetics</code><a class="headerlink" href="#arc.reaction.ARCReaction.kinetics" title="Permalink to this definition">¶</a></dt>
 <dd><p>The kinetics calculated by ARC.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Arrhenius</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Arrhenius</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.rmg_kinetics">
-<code class="descname">rmg_kinetics</code><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_kinetics" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rmg_kinetics</code><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_kinetics" title="Permalink to this definition">¶</a></dt>
 <dd><p>The kinetics generated by RMG, for reality-check.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Arrhenius</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Arrhenius</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.rmg_reaction">
-<code class="descname">rmg_reaction</code><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_reaction" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rmg_reaction</code><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_reaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>An RMG Reaction class.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Reaction</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Reaction</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.rmg_reactions">
-<code class="descname">rmg_reactions</code><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_reactions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rmg_reactions</code><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_reactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of RMG Reaction objects with RMG rates for comparisons.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.long_kinetic_description">
-<code class="descname">long_kinetic_description</code><a class="headerlink" href="#arc.reaction.ARCReaction.long_kinetic_description" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">long_kinetic_description</code><a class="headerlink" href="#arc.reaction.ARCReaction.long_kinetic_description" title="Permalink to this definition">¶</a></dt>
 <dd><p>A description for the species entry in the thermo library outputted.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.ts_methods">
-<code class="descname">ts_methods</code><a class="headerlink" href="#arc.reaction.ARCReaction.ts_methods" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_methods</code><a class="headerlink" href="#arc.reaction.ARCReaction.ts_methods" title="Permalink to this definition">¶</a></dt>
 <dd><p>Methods to try for generating TS guesses. If an ARCSpecies is a TS and ts_methods
 is empty (passing an empty list), then xyz (user guess) must be given.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.ts_xyz_guess">
-<code class="descname">ts_xyz_guess</code><a class="headerlink" href="#arc.reaction.ARCReaction.ts_xyz_guess" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_xyz_guess</code><a class="headerlink" href="#arc.reaction.ARCReaction.ts_xyz_guess" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of TS XYZ user guesses, each in a string format.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.multiplicity">
-<code class="descname">multiplicity</code><a class="headerlink" href="#arc.reaction.ARCReaction.multiplicity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">multiplicity</code><a class="headerlink" href="#arc.reaction.ARCReaction.multiplicity" title="Permalink to this definition">¶</a></dt>
 <dd><p>The reaction surface multiplicity. A trivial guess will be made unless provided.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.charge">
-<code class="descname">charge</code><a class="headerlink" href="#arc.reaction.ARCReaction.charge" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">charge</code><a class="headerlink" href="#arc.reaction.ARCReaction.charge" title="Permalink to this definition">¶</a></dt>
 <dd><p>The reaction surface charge.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.index">
-<code class="descname">index</code><a class="headerlink" href="#arc.reaction.ARCReaction.index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">index</code><a class="headerlink" href="#arc.reaction.ARCReaction.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>An auto-generated index associating the ARCReaction object with the
 corresponding TS <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.reaction.ARCReaction.ts_label">
-<code class="descname">ts_label</code><a class="headerlink" href="#arc.reaction.ARCReaction.ts_label" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_label</code><a class="headerlink" href="#arc.reaction.ARCReaction.ts_label" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> label of the respective TS.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.arc_species_from_rmg_reaction">
-<code class="descname">arc_species_from_rmg_reaction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.arc_species_from_rmg_reaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.arc_species_from_rmg_reaction" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">arc_species_from_rmg_reaction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.arc_species_from_rmg_reaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.arc_species_from_rmg_reaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for generating the ARC Species (.r_species and .p_species) from the RMG Reaction object</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.as_dict">
-<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.as_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.as_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for dumping this object as a dictionary in a YAML file for restarting ARC</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.check_attributes">
-<code class="descname">check_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.check_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.check_attributes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.check_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.check_attributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that the Reaction object is defined correctly</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.check_ts">
-<code class="descname">check_ts</code><span class="sig-paren">(</span><em>log=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.check_ts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.check_ts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_ts</code><span class="sig-paren">(</span><em class="sig-param">log=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.check_ts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.check_ts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that the TS E0 is above both reactants and products wells
 Return <code class="docutils literal notranslate"><span class="pre">False</span></code> if this test fails, else <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.determine_family">
-<code class="descname">determine_family</code><span class="sig-paren">(</span><em>rmgdatabase</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.determine_family"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.determine_family" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_family</code><span class="sig-paren">(</span><em class="sig-param">rmgdatabase</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.determine_family"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.determine_family" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the RMG family and saves the (family, own reverse) tuple in the <code class="docutils literal notranslate"><span class="pre">family</span></code> attribute</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.determine_rxn_charge">
-<code class="descname">determine_rxn_charge</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.determine_rxn_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.determine_rxn_charge" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_rxn_charge</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.determine_rxn_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.determine_rxn_charge" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for determining the surface charge</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.determine_rxn_multiplicity">
-<code class="descname">determine_rxn_multiplicity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.determine_rxn_multiplicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.determine_rxn_multiplicity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_rxn_multiplicity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.determine_rxn_multiplicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.determine_rxn_multiplicity" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for determining the surface multiplicity</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.from_dict">
-<code class="descname">from_dict</code><span class="sig-paren">(</span><em>reaction_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.from_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">reaction_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.from_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for loading this object from a dictionary in a YAML file for restarting ARC</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.rmg_reaction_from_arc_species">
-<code class="descname">rmg_reaction_from_arc_species</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.rmg_reaction_from_arc_species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_reaction_from_arc_species" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rmg_reaction_from_arc_species</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.rmg_reaction_from_arc_species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_reaction_from_arc_species" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for generating the RMG Reaction object from ARCSpecies
 Used for determining the family</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.rmg_reaction_from_str">
-<code class="descname">rmg_reaction_from_str</code><span class="sig-paren">(</span><em>reaction_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.rmg_reaction_from_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_reaction_from_str" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rmg_reaction_from_str</code><span class="sig-paren">(</span><em class="sig-param">reaction_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.rmg_reaction_from_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_reaction_from_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for regenerating the RMG Reaction object from a string representation</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.rmg_reaction_to_str">
-<code class="descname">rmg_reaction_to_str</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.rmg_reaction_to_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_reaction_to_str" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rmg_reaction_to_str</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.rmg_reaction_to_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.rmg_reaction_to_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for dumping the RMG Reaction object as a string for the YAML restart dictionary</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.set_label_reactants_products">
-<code class="descname">set_label_reactants_products</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.set_label_reactants_products"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.set_label_reactants_products" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_label_reactants_products</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.set_label_reactants_products"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.set_label_reactants_products" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for settings the label, reactants, and products attributes for a Reaction</p>
 </dd></dl>
 

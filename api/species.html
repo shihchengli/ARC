@@ -185,7 +185,7 @@
 If the species is a transition state (TS), its <code class="docutils literal notranslate"><span class="pre">ts_guesses</span></code> attribute will have one or more <code class="docutils literal notranslate"><span class="pre">TSGuess</span></code> objects.</p>
 <dl class="class">
 <dt id="arc.species.species.ARCSpecies">
-<em class="property">class </em><code class="descclassname">arc.species.species.</code><code class="descname">ARCSpecies</code><span class="sig-paren">(</span><em>label=None</em>, <em>is_ts=False</em>, <em>rmg_species=None</em>, <em>mol=None</em>, <em>xyz=None</em>, <em>multiplicity=None</em>, <em>charge=None</em>, <em>smiles=u''</em>, <em>adjlist=u''</em>, <em>inchi=u''</em>, <em>bond_corrections=None</em>, <em>generate_thermo=True</em>, <em>species_dict=None</em>, <em>yml_path=None</em>, <em>ts_methods=None</em>, <em>ts_number=None</em>, <em>rxn_label=None</em>, <em>external_symmetry=None</em>, <em>optical_isomers=None</em>, <em>run_time=None</em>, <em>checkfile=None</em>, <em>number_of_radicals=None</em>, <em>force_field=u'MMFF94'</em>, <em>svpfit_output_file=None</em>, <em>bdes=None</em>, <em>directed_rotors=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">ARCSpecies</code><span class="sig-paren">(</span><em class="sig-param">label=None</em>, <em class="sig-param">is_ts=False</em>, <em class="sig-param">rmg_species=None</em>, <em class="sig-param">mol=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">charge=None</em>, <em class="sig-param">smiles=''</em>, <em class="sig-param">adjlist=''</em>, <em class="sig-param">inchi=''</em>, <em class="sig-param">bond_corrections=None</em>, <em class="sig-param">generate_thermo=True</em>, <em class="sig-param">species_dict=None</em>, <em class="sig-param">yml_path=None</em>, <em class="sig-param">ts_methods=None</em>, <em class="sig-param">ts_number=None</em>, <em class="sig-param">rxn_label=None</em>, <em class="sig-param">external_symmetry=None</em>, <em class="sig-param">optical_isomers=None</em>, <em class="sig-param">run_time=None</em>, <em class="sig-param">checkfile=None</em>, <em class="sig-param">number_of_radicals=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">svpfit_output_file=None</em>, <em class="sig-param">bdes=None</em>, <em class="sig-param">directed_rotors=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class for representing stationary points.</p>
 <p>Dictionary structure (initialized in conformers.find_internal_rotors):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: ``list``,
@@ -209,60 +209,58 @@ If the species is a transition state (TS), its <code class="docutils literal not
              }
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The species label.</li>
-<li><strong>is_ts</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not the species represents a transition state.</li>
-<li><strong>rmg_species</strong> (<em>Species</em><em>, </em><em>optional</em>) – An RMG Species object to be converted to an ARCSpecies object.</li>
-<li><strong>mol</strong> (<em>Molecule</em><em>, </em><em>optional</em>) – An <code class="docutils literal notranslate"><span class="pre">RMG</span> <span class="pre">Molecule</span></code> object used for BAC determination.
-Atom order corresponds to the order in .initial_xyz</li>
-<li><strong>xyz</strong> (<em>list</em><em>, </em><em>str</em><em>, </em><em>dict</em><em>, </em><em>optional</em>) – Entries are either string-format coordinates, file paths, or ARC’s dict format.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The species label.</p></li>
+<li><p><strong>is_ts</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not the species represents a transition state.</p></li>
+<li><p><strong>rmg_species</strong> (<em>Species</em><em>, </em><em>optional</em>) – An RMG Species object to be converted to an ARCSpecies object.</p></li>
+<li><p><strong>mol</strong> (<em>Molecule</em><em>, </em><em>optional</em>) – An <code class="docutils literal notranslate"><span class="pre">RMG</span> <span class="pre">Molecule</span></code> object used for BAC determination.
+Atom order corresponds to the order in .initial_xyz</p></li>
+<li><p><strong>xyz</strong> (<em>list</em><em>, </em><em>str</em><em>, </em><em>dict</em><em>, </em><em>optional</em>) – Entries are either string-format coordinates, file paths, or ARC’s dict format.
 (If there’s only one entry, it could be given directly, not in a list).
 The file paths could direct to either a .xyz file, ARC conformers
-(w/ or w/o energies), or an ESS log/input files.</li>
-<li><strong>multiplicity</strong> (<em>int</em><em>, </em><em>optional</em>) – The species’ electron spin multiplicity. Can be determined from the
-adjlist/smiles/xyz (If unspecified, assumed to be either a singlet or a doublet).</li>
-<li><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The species’ net charge. Assumed to be 0 if unspecified.</li>
-<li><strong>smiles</strong> (<em>str</em><em>, </em><em>optional</em>) – A <a class="reference external" href="https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system">SMILES</a>
-representation for the species 2D graph.</li>
-<li><strong>adjlist</strong> (<em>str</em><em>, </em><em>optional</em>) – An <a class="reference external" href="http://reactionmechanismgenerator.github.io/RMG-Py/reference/molecule/adjlist.html">RMG adjacency list</a>
-representation for the species 2D graph.</li>
-<li><strong>inchi</strong> (<em>str</em><em>, </em><em>optional</em>) – An <a class="reference external" href="https://www.inchi-trust.org/">InChI</a> representation for the species 2D graph.</li>
-<li><strong>bond_corrections</strong> (<em>dict</em><em>, </em><em>optional</em>) – The bond additivity corrections (BAC) to be used. Determined from the
-structure if not directly given.</li>
-<li><strong>generate_thermo</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether ot not to calculate thermodynamic properties for this species.</li>
-<li><strong>species_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</li>
-<li><strong>yml_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to an Arkane YAML file representing a species (for loading the object).</li>
-<li><strong>ts_methods</strong> (<em>list</em><em>, </em><em>optional</em>) – Methods to try for generating TS guesses. If Species is a TS and <cite>ts_methods</cite> is an
+(w/ or w/o energies), or an ESS log/input files.</p></li>
+<li><p><strong>multiplicity</strong> (<em>int</em><em>, </em><em>optional</em>) – The species’ electron spin multiplicity. Can be determined from the
+adjlist/smiles/xyz (If unspecified, assumed to be either a singlet or a doublet).</p></li>
+<li><p><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The species’ net charge. Assumed to be 0 if unspecified.</p></li>
+<li><p><strong>smiles</strong> (<em>str</em><em>, </em><em>optional</em>) – A <a class="reference external" href="https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system">SMILES</a>
+representation for the species 2D graph.</p></li>
+<li><p><strong>adjlist</strong> (<em>str</em><em>, </em><em>optional</em>) – An <a class="reference external" href="http://reactionmechanismgenerator.github.io/RMG-Py/reference/molecule/adjlist.html">RMG adjacency list</a>
+representation for the species 2D graph.</p></li>
+<li><p><strong>inchi</strong> (<em>str</em><em>, </em><em>optional</em>) – An <a class="reference external" href="https://www.inchi-trust.org/">InChI</a> representation for the species 2D graph.</p></li>
+<li><p><strong>bond_corrections</strong> (<em>dict</em><em>, </em><em>optional</em>) – The bond additivity corrections (BAC) to be used. Determined from the
+structure if not directly given.</p></li>
+<li><p><strong>generate_thermo</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether ot not to calculate thermodynamic properties for this species.</p></li>
+<li><p><strong>species_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</p></li>
+<li><p><strong>yml_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to an Arkane YAML file representing a species (for loading the object).</p></li>
+<li><p><strong>ts_methods</strong> (<em>list</em><em>, </em><em>optional</em>) – Methods to try for generating TS guesses. If Species is a TS and <cite>ts_methods</cite> is an
 empty list, then xyz (user guess) must be given. If <cite>ts_methods</cite> is None, it will
-be set to the default methods.</li>
-<li><strong>ts_number</strong> (<em>int</em><em>, </em><em>optional</em>) – An auto-generated number associating the TS ARCSpecies object with the corresponding
-<a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> object.</li>
-<li><strong>rxn_label</strong> (<em>str</em><em>, </em><em>optional</em>) – The reaction string (relevant for TSs).</li>
-<li><strong>external_symmetry</strong> (<em>int</em><em>, </em><em>optional</em>) – The external symmetry of the species (not including rotor symmetries).</li>
-<li><strong>optical_isomers</strong> (<em>int</em><em>, </em><em>optional</em>) – Whether (=2) or not (=1) the species has chiral center/s.</li>
-<li><strong>run_time</strong> (<em>timedelta</em><em>, </em><em>optional</em>) – Overall species execution time.</li>
-<li><strong>checkfile</strong> (<em>str</em><em>, </em><em>optional</em>) – The local path to the latest checkfile by Gaussian for the species.</li>
-<li><strong>number_of_radicals</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of radicals (inputted by the user, ARC won’t attempt to determine
+be set to the default methods.</p></li>
+<li><p><strong>ts_number</strong> (<em>int</em><em>, </em><em>optional</em>) – An auto-generated number associating the TS ARCSpecies object with the corresponding
+<a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> object.</p></li>
+<li><p><strong>rxn_label</strong> (<em>str</em><em>, </em><em>optional</em>) – The reaction string (relevant for TSs).</p></li>
+<li><p><strong>external_symmetry</strong> (<em>int</em><em>, </em><em>optional</em>) – The external symmetry of the species (not including rotor symmetries).</p></li>
+<li><p><strong>optical_isomers</strong> (<em>int</em><em>, </em><em>optional</em>) – Whether (=2) or not (=1) the species has chiral center/s.</p></li>
+<li><p><strong>run_time</strong> (<em>timedelta</em><em>, </em><em>optional</em>) – Overall species execution time.</p></li>
+<li><p><strong>checkfile</strong> (<em>str</em><em>, </em><em>optional</em>) – The local path to the latest checkfile by Gaussian for the species.</p></li>
+<li><p><strong>number_of_radicals</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of radicals (inputted by the user, ARC won’t attempt to determine
 it). Defaults to None. Important, e.g., if a Species is a bi-rad singlet,
 in which case the job should be unrestricted, but the multiplicity does not
-have the required information to make that decision (r vs. u).</li>
-<li><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The force field to be used for conformer screening. The default is MMFF94.
-Other optional force fields are MMFF94s, UFF, or GAFF (not recommended, slow).
-If ‘fit’ is specified for this parameter, some initial MMFF94 conformers will be
+have the required information to make that decision (r vs. u).</p></li>
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The force field to be used for conformer screening. The default is MMFF94s.
+Other optional force fields are MMFF94, UFF, or GAFF (not recommended, slow).
+If ‘fit’ is specified for this parameter, some initial MMFF94s conformers will be
 generated, then force field parameters will be fitted for this molecule and
 conformers will be re-run with the fitted force field (recommended for drug-like
 species and species with many heteroatoms). Another option is specifying ‘cheap’,
-and the “old” RDKit embedding method will be used.</li>
-<li><strong>svpfit_output_file</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to a Gaussian output file of an SVP Fit job if previously ran
-(otherwise, this job will be spawned if running Gromacs).</li>
-<li><strong>bdes</strong> (<em>list</em>) – Specifying for which bonds should bond dissociation energies be calculated.
+and the “old” RDKit embedding method will be used.</p></li>
+<li><p><strong>svpfit_output_file</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to a Gaussian output file of an SVP Fit job if previously ran
+(otherwise, this job will be spawned if running Gromacs).</p></li>
+<li><p><strong>bdes</strong> (<em>list</em>) – Specifying for which bonds should bond dissociation energies be calculated.
 Entries are bonded atom indices tuples (1-indexed). An ‘all_h’ string entry is also allowed,
-triggering BDE calculations for all hydrogen atoms in the molecule.</li>
-<li><strong>directed_rotors</strong> (<em>dict</em>) – Execute a directed internal rotation scan (i.e., a series of sp or constrained opt jobs)
+triggering BDE calculations for all hydrogen atoms in the molecule.</p></li>
+<li><p><strong>directed_rotors</strong> (<em>dict</em>) – Execute a directed internal rotation scan (i.e., a series of sp or constrained opt jobs)
 for the pivots of interest. The optional primary keys are:
 - ‘brute_force_sp’
 - ‘brute_force_opt’
@@ -290,806 +288,644 @@ a second level list, then all the dihedrals will be considered together.
 Currently ARC does not automatically identify torsions to be treated as ND, and this
 attribute must be specified by the user.
 An additional supported key is ‘ess’, in which case ARC will allow the ESS to take care
-of spawning the ND continuous constrained optimizations (not yet implemented).</li>
+of spawning the ND continuous constrained optimizations (not yet implemented).</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.label">
-<code class="descname">label</code><a class="headerlink" href="#arc.species.species.ARCSpecies.label" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">label</code><a class="headerlink" href="#arc.species.species.ARCSpecies.label" title="Permalink to this definition">¶</a></dt>
 <dd><p>The species’ label.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.multiplicity">
-<code class="descname">multiplicity</code><a class="headerlink" href="#arc.species.species.ARCSpecies.multiplicity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">multiplicity</code><a class="headerlink" href="#arc.species.species.ARCSpecies.multiplicity" title="Permalink to this definition">¶</a></dt>
 <dd><p>The species’ electron spin multiplicity. Can be determined from the adjlist/smiles/xyz
 (If unspecified, assumed to be either a singlet or a doublet).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.charge">
-<code class="descname">charge</code><a class="headerlink" href="#arc.species.species.ARCSpecies.charge" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">charge</code><a class="headerlink" href="#arc.species.species.ARCSpecies.charge" title="Permalink to this definition">¶</a></dt>
 <dd><p>The species’ net charge. Assumed to be 0 if unspecified.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.number_of_radicals">
-<code class="descname">number_of_radicals</code><a class="headerlink" href="#arc.species.species.ARCSpecies.number_of_radicals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">number_of_radicals</code><a class="headerlink" href="#arc.species.species.ARCSpecies.number_of_radicals" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of radicals (inputted by the user, ARC won’t attempt to determine it).
 Defaults to None. Important, e.g., if a Species is a bi-rad singlet, in which case
 the job should be unrestricted, but the multiplicity does not have the required
 information to make that decision (r vs. u).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.e_elect">
-<code class="descname">e_elect</code><a class="headerlink" href="#arc.species.species.ARCSpecies.e_elect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">e_elect</code><a class="headerlink" href="#arc.species.species.ARCSpecies.e_elect" title="Permalink to this definition">¶</a></dt>
 <dd><p>The total electronic energy (without ZPE) at the chosen sp level, in kJ/mol.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.e0">
-<code class="descname">e0</code><a class="headerlink" href="#arc.species.species.ARCSpecies.e0" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">e0</code><a class="headerlink" href="#arc.species.species.ARCSpecies.e0" title="Permalink to this definition">¶</a></dt>
 <dd><p>The 0 Kelvin energy (total electronic energy plus ZPE) at the chosen sp level, in kJ/mol.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.is_ts">
-<code class="descname">is_ts</code><a class="headerlink" href="#arc.species.species.ARCSpecies.is_ts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_ts</code><a class="headerlink" href="#arc.species.species.ARCSpecies.is_ts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether the species represents a transition state. <cite>True</cite> if it does.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.number_of_rotors">
-<code class="descname">number_of_rotors</code><a class="headerlink" href="#arc.species.species.ARCSpecies.number_of_rotors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">number_of_rotors</code><a class="headerlink" href="#arc.species.species.ARCSpecies.number_of_rotors" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of potential rotors to scan.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.rotors_dict">
-<code class="descname">rotors_dict</code><a class="headerlink" href="#arc.species.species.ARCSpecies.rotors_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rotors_dict</code><a class="headerlink" href="#arc.species.species.ARCSpecies.rotors_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of rotors. structure given below.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.conformers">
-<code class="descname">conformers</code><a class="headerlink" href="#arc.species.species.ARCSpecies.conformers" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">conformers</code><a class="headerlink" href="#arc.species.species.ARCSpecies.conformers" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of selected conformers XYZs (dict format).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.conformer_energies">
-<code class="descname">conformer_energies</code><a class="headerlink" href="#arc.species.species.ARCSpecies.conformer_energies" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">conformer_energies</code><a class="headerlink" href="#arc.species.species.ARCSpecies.conformer_energies" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of conformers E0 (in kJ/mol).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.cheap_conformer">
-<code class="descname">cheap_conformer</code><a class="headerlink" href="#arc.species.species.ARCSpecies.cheap_conformer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">cheap_conformer</code><a class="headerlink" href="#arc.species.species.ARCSpecies.cheap_conformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>A string format xyz of a cheap conformer (not necessarily the best/lowest one).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.most_stable_conformer">
-<code class="descname">most_stable_conformer</code><a class="headerlink" href="#arc.species.species.ARCSpecies.most_stable_conformer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">most_stable_conformer</code><a class="headerlink" href="#arc.species.species.ARCSpecies.most_stable_conformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>The index of the best/lowest conformer in self.conformers.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.recent_md_conformer">
-<code class="descname">recent_md_conformer</code><a class="headerlink" href="#arc.species.species.ARCSpecies.recent_md_conformer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">recent_md_conformer</code><a class="headerlink" href="#arc.species.species.ARCSpecies.recent_md_conformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>A length three list containing the coordinates of the recent conformer
 generated by MD, the energy in kJ/mol, and the number of MD runs. Used to detect
 when the MD algorithm converges on a single structure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.svpfit_output_file">
-<code class="descname">svpfit_output_file</code><a class="headerlink" href="#arc.species.species.ARCSpecies.svpfit_output_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">svpfit_output_file</code><a class="headerlink" href="#arc.species.species.ARCSpecies.svpfit_output_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>The path to a Gaussian output file of an SVP Fit job if previously ran
 (otherwise, this job will be spawned if running Gromacs).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.initial_xyz">
-<code class="descname">initial_xyz</code><a class="headerlink" href="#arc.species.species.ARCSpecies.initial_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">initial_xyz</code><a class="headerlink" href="#arc.species.species.ARCSpecies.initial_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>The initial geometry guess.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.final_xyz">
-<code class="descname">final_xyz</code><a class="headerlink" href="#arc.species.species.ARCSpecies.final_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">final_xyz</code><a class="headerlink" href="#arc.species.species.ARCSpecies.final_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>The optimized species geometry.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="arc.species.species.ARCSpecies.radius">
-<code class="descname">radius</code><a class="headerlink" href="#arc.species.species.ARCSpecies.radius" title="Permalink to this definition">¶</a></dt>
+<dt id="arc.species.species.ARCSpecies._radius">
+<code class="sig-name descname">_radius</code><a class="headerlink" href="#arc.species.species.ARCSpecies._radius" title="Permalink to this definition">¶</a></dt>
 <dd><p>The species radius in Angstrom.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.opt_level">
-<code class="descname">opt_level</code><a class="headerlink" href="#arc.species.species.ARCSpecies.opt_level" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">opt_level</code><a class="headerlink" href="#arc.species.species.ARCSpecies.opt_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for geometry optimization. Saved for archiving.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="arc.species.species.ARCSpecies.number_of_atoms">
-<code class="descname">number_of_atoms</code><a class="headerlink" href="#arc.species.species.ARCSpecies.number_of_atoms" title="Permalink to this definition">¶</a></dt>
+<dt id="arc.species.species.ARCSpecies._number_of_atoms">
+<code class="sig-name descname">_number_of_atoms</code><a class="headerlink" href="#arc.species.species.ARCSpecies._number_of_atoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of atoms in the species/TS.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.mol">
-<code class="descname">mol</code><a class="headerlink" href="#arc.species.species.ARCSpecies.mol" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mol</code><a class="headerlink" href="#arc.species.species.ARCSpecies.mol" title="Permalink to this definition">¶</a></dt>
 <dd><p>An <code class="docutils literal notranslate"><span class="pre">RMG</span> <span class="pre">Molecule</span></code> object used for BAC determination.
 Atom order corresponds to the order in .initial_xyz</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Molecule</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Molecule</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.mol_list">
-<code class="descname">mol_list</code><a class="headerlink" href="#arc.species.species.ARCSpecies.mol_list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mol_list</code><a class="headerlink" href="#arc.species.species.ARCSpecies.mol_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of localized structures generated from ‘mol’, if possible.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.rmg_species">
-<code class="descname">rmg_species</code><a class="headerlink" href="#arc.species.species.ARCSpecies.rmg_species" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rmg_species</code><a class="headerlink" href="#arc.species.species.ARCSpecies.rmg_species" title="Permalink to this definition">¶</a></dt>
 <dd><p>An RMG Species object to be converted to an ARCSpecies object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Species</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Species</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.bond_corrections">
-<code class="descname">bond_corrections</code><a class="headerlink" href="#arc.species.species.ARCSpecies.bond_corrections" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">bond_corrections</code><a class="headerlink" href="#arc.species.species.ARCSpecies.bond_corrections" title="Permalink to this definition">¶</a></dt>
 <dd><p>The bond additivity corrections (BAC) to be used. Determined from the structure
 if not directly given.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.run_time">
-<code class="descname">run_time</code><a class="headerlink" href="#arc.species.species.ARCSpecies.run_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_time</code><a class="headerlink" href="#arc.species.species.ARCSpecies.run_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overall species execution time.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">timedelta</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>timedelta</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.t1">
-<code class="descname">t1</code><a class="headerlink" href="#arc.species.species.ARCSpecies.t1" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">t1</code><a class="headerlink" href="#arc.species.species.ARCSpecies.t1" title="Permalink to this definition">¶</a></dt>
 <dd><p>The T1 diagnostic parameter from Molpro.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.neg_freqs_trshed">
-<code class="descname">neg_freqs_trshed</code><a class="headerlink" href="#arc.species.species.ARCSpecies.neg_freqs_trshed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">neg_freqs_trshed</code><a class="headerlink" href="#arc.species.species.ARCSpecies.neg_freqs_trshed" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of negative frequencies this species was troubleshooted for.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.generate_thermo">
-<code class="descname">generate_thermo</code><a class="headerlink" href="#arc.species.species.ARCSpecies.generate_thermo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">generate_thermo</code><a class="headerlink" href="#arc.species.species.ARCSpecies.generate_thermo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether ot not to calculate thermodynamic properties for this species.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.thermo">
-<code class="descname">thermo</code><a class="headerlink" href="#arc.species.species.ARCSpecies.thermo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">thermo</code><a class="headerlink" href="#arc.species.species.ARCSpecies.thermo" title="Permalink to this definition">¶</a></dt>
 <dd><p>The thermodata calculated by ARC.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">HeatCapacityModel</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>HeatCapacityModel</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.rmg_thermo">
-<code class="descname">rmg_thermo</code><a class="headerlink" href="#arc.species.species.ARCSpecies.rmg_thermo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rmg_thermo</code><a class="headerlink" href="#arc.species.species.ARCSpecies.rmg_thermo" title="Permalink to this definition">¶</a></dt>
 <dd><p>The thermodata generated by RMG for comparison.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">HeatCapacityModel</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>HeatCapacityModel</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.long_thermo_description">
-<code class="descname">long_thermo_description</code><a class="headerlink" href="#arc.species.species.ARCSpecies.long_thermo_description" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">long_thermo_description</code><a class="headerlink" href="#arc.species.species.ARCSpecies.long_thermo_description" title="Permalink to this definition">¶</a></dt>
 <dd><p>A description for the species entry in the thermo library outputed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.ts_methods">
-<code class="descname">ts_methods</code><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_methods" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_methods</code><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_methods" title="Permalink to this definition">¶</a></dt>
 <dd><p>Methods to try for generating TS guesses. If Species is a TS and <cite>ts_methods</cite> is an empty
 list, then xyz (user guess) must be given. If <cite>ts_methods</cite> is None, it will be set to the
 default methods.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.ts_guesses">
-<code class="descname">ts_guesses</code><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_guesses" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_guesses</code><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_guesses" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of TSGuess objects for each of the specified methods.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.successful_methods">
-<code class="descname">successful_methods</code><a class="headerlink" href="#arc.species.species.ARCSpecies.successful_methods" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">successful_methods</code><a class="headerlink" href="#arc.species.species.ARCSpecies.successful_methods" title="Permalink to this definition">¶</a></dt>
 <dd><p>Methods used to generate a TS guess that successfully generated an XYZ guess.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.unsuccessful_methods">
-<code class="descname">unsuccessful_methods</code><a class="headerlink" href="#arc.species.species.ARCSpecies.unsuccessful_methods" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">unsuccessful_methods</code><a class="headerlink" href="#arc.species.species.ARCSpecies.unsuccessful_methods" title="Permalink to this definition">¶</a></dt>
 <dd><p>Methods used to generate a TS guess that were unsuccessfully.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.chosen_ts">
-<code class="descname">chosen_ts</code><a class="headerlink" href="#arc.species.species.ARCSpecies.chosen_ts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">chosen_ts</code><a class="headerlink" href="#arc.species.species.ARCSpecies.chosen_ts" title="Permalink to this definition">¶</a></dt>
 <dd><p>The TSGuess index corresponding to the chosen TS conformer used for optimization.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.chosen_ts_method">
-<code class="descname">chosen_ts_method</code><a class="headerlink" href="#arc.species.species.ARCSpecies.chosen_ts_method" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">chosen_ts_method</code><a class="headerlink" href="#arc.species.species.ARCSpecies.chosen_ts_method" title="Permalink to this definition">¶</a></dt>
 <dd><p>The TS method that was actually used for optimization.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.ts_conf_spawned">
-<code class="descname">ts_conf_spawned</code><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_conf_spawned" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_conf_spawned</code><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_conf_spawned" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether conformers were already spawned for the Species (representing a TS) based on its
 TSGuess objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.ts_number">
-<code class="descname">ts_number</code><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_number" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_number</code><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>An auto-generated number associating the TS ARCSpecies object with the corresponding
 <a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.ts_report">
-<code class="descname">ts_report</code><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_report" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_report</code><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_report" title="Permalink to this definition">¶</a></dt>
 <dd><p>A description of all methods used for guessing a TS and their ranking.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.rxn_label">
-<code class="descname">rxn_label</code><a class="headerlink" href="#arc.species.species.ARCSpecies.rxn_label" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rxn_label</code><a class="headerlink" href="#arc.species.species.ARCSpecies.rxn_label" title="Permalink to this definition">¶</a></dt>
 <dd><p>The reaction string (relevant for TSs).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.arkane_file">
-<code class="descname">arkane_file</code><a class="headerlink" href="#arc.species.species.ARCSpecies.arkane_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">arkane_file</code><a class="headerlink" href="#arc.species.species.ARCSpecies.arkane_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path to the Arkane Species file generated in Processor.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.yml_path">
-<code class="descname">yml_path</code><a class="headerlink" href="#arc.species.species.ARCSpecies.yml_path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">yml_path</code><a class="headerlink" href="#arc.species.species.ARCSpecies.yml_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path to an Arkane YAML file representing a species (for loading the object).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.checkfile">
-<code class="descname">checkfile</code><a class="headerlink" href="#arc.species.species.ARCSpecies.checkfile" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">checkfile</code><a class="headerlink" href="#arc.species.species.ARCSpecies.checkfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>The local path to the latest checkfile by Gaussian for the species.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.external_symmetry">
-<code class="descname">external_symmetry</code><a class="headerlink" href="#arc.species.species.ARCSpecies.external_symmetry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">external_symmetry</code><a class="headerlink" href="#arc.species.species.ARCSpecies.external_symmetry" title="Permalink to this definition">¶</a></dt>
 <dd><p>The external symmetry of the species (not including rotor symmetries).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.optical_isomers">
-<code class="descname">optical_isomers</code><a class="headerlink" href="#arc.species.species.ARCSpecies.optical_isomers" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">optical_isomers</code><a class="headerlink" href="#arc.species.species.ARCSpecies.optical_isomers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether (=2) or not (=1) the species has chiral center/s.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.transport_data">
-<code class="descname">transport_data</code><a class="headerlink" href="#arc.species.species.ARCSpecies.transport_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transport_data</code><a class="headerlink" href="#arc.species.species.ARCSpecies.transport_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>A placeholder for updating transport properties after Lennard-Jones
 calculation (using OneDMin).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TransportData</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>TransportData</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.force_field">
-<code class="descname">force_field</code><a class="headerlink" href="#arc.species.species.ARCSpecies.force_field" title="Permalink to this definition">¶</a></dt>
-<dd><p>The force field to be used for conformer screening. The default is MMFF94.
-Other optional force fields are MMFF94s, UFF, or GAFF (not recommended, slow).
-If ‘fit’ is specified for this parameter, some initial MMFF94 conformers will be generated,
+<code class="sig-name descname">force_field</code><a class="headerlink" href="#arc.species.species.ARCSpecies.force_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>The force field to be used for conformer screening. The default is MMFF94s.
+Other optional force fields are MMFF94, UFF, or GAFF (not recommended, slow).
+If ‘fit’ is specified for this parameter, some initial MMFF94s conformers will be generated,
 then force field parameters will be fitted for this molecule and conformers will be re-run
 with the fitted force field (recommended for drug-like species and species with many
 heteroatoms). Another option is specifying ‘cheap’, and the “old” RDKit embedding method
 will be used.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.conf_is_isomorphic">
-<code class="descname">conf_is_isomorphic</code><a class="headerlink" href="#arc.species.species.ARCSpecies.conf_is_isomorphic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">conf_is_isomorphic</code><a class="headerlink" href="#arc.species.species.ARCSpecies.conf_is_isomorphic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether the lowest conformer is isomorphic with the 2D graph representation
 of the species. <cite>True</cite> if it is. Defaults to <cite>None</cite>. If <cite>True</cite>, an isomorphism check
 will be strictly enforced for the final optimized coordinates.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.conformers_before_opt">
-<code class="descname">conformers_before_opt</code><a class="headerlink" href="#arc.species.species.ARCSpecies.conformers_before_opt" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">conformers_before_opt</code><a class="headerlink" href="#arc.species.species.ARCSpecies.conformers_before_opt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Conformers XYZs of a species before optimization.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">tuple</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.bdes">
-<code class="descname">bdes</code><a class="headerlink" href="#arc.species.species.ARCSpecies.bdes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">bdes</code><a class="headerlink" href="#arc.species.species.ARCSpecies.bdes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specifying for which bonds should bond dissociation energies be calculated.
 Entries are bonded atom indices tuples (1-indexed). An ‘all_h’ string entry is also allowed,
 triggering BDE calculations for all hydrogen atoms in the molecule.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.directed_rotors">
-<code class="descname">directed_rotors</code><a class="headerlink" href="#arc.species.species.ARCSpecies.directed_rotors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">directed_rotors</code><a class="headerlink" href="#arc.species.species.ARCSpecies.directed_rotors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a directed internal rotation scan (i.e., a series of constrained optimizations).
 Data is in 3 levels of nested lists, converted from pivots to four-atom scan indices.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.as_dict">
-<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.as_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.as_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for dumping this object as a dictionary in a YAML file for restarting ARC</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.check_xyz_isomorphism">
-<code class="descname">check_xyz_isomorphism</code><span class="sig-paren">(</span><em>allow_nonisomorphic_2d=False</em>, <em>xyz=None</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.check_xyz_isomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.check_xyz_isomorphism" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_xyz_isomorphism</code><span class="sig-paren">(</span><em class="sig-param">allow_nonisomorphic_2d=False</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.check_xyz_isomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.check_xyz_isomorphism" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether the perception of self.final_xyz or <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is isomorphic with self.mol.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>allow_nonisomorphic_2d</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to continue spawning jobs for the species even if this
-test fails. <cite>True</cite> to allow (default is <cite>False</cite>).</li>
-<li><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – The coordinates to check (will use self.final_xyz if not given).</li>
-<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to log isomorphism findings and errors.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allow_nonisomorphic_2d</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to continue spawning jobs for the species even if this
+test fails. <cite>True</cite> to allow (default is <cite>False</cite>).</p></li>
+<li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – The coordinates to check (will use self.final_xyz if not given).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to log isomorphism findings and errors.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Whether the perception of self.final_xyz is isomorphic with self.mol, <code class="docutils literal notranslate"><span class="pre">True</span></code> if it is.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether the perception of self.final_xyz is isomorphic with self.mol, <code class="docutils literal notranslate"><span class="pre">True</span></code> if it is.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.determine_multiplicity">
-<code class="descname">determine_multiplicity</code><span class="sig-paren">(</span><em>smiles</em>, <em>adjlist</em>, <em>mol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.determine_multiplicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.determine_multiplicity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_multiplicity</code><span class="sig-paren">(</span><em class="sig-param">smiles</em>, <em class="sig-param">adjlist</em>, <em class="sig-param">mol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.determine_multiplicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.determine_multiplicity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the spin multiplicity of the species</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.determine_rotors">
-<code class="descname">determine_rotors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.determine_rotors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.determine_rotors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_rotors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.determine_rotors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.determine_rotors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine possible unique rotors in the species to be treated as hindered rotors,
 taking into account all localized structures.
 The resulting rotors are saved in {‘pivots’: [1, 3], ‘top’: [3, 7], ‘scan’: [2, 1, 3, 7]} format
@@ -1098,83 +934,76 @@ in self.species_dict[species.label][‘rotors_dict’]. Also updates ‘number_o
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.determine_symmetry">
-<code class="descname">determine_symmetry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.determine_symmetry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_symmetry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.determine_symmetry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine external symmetry and chirality (optical isomers) of the species.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.from_dict">
-<code class="descname">from_dict</code><span class="sig-paren">(</span><em>species_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.from_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">species_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.from_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for loading this object from a dictionary in a YAML file for restarting ARC</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.from_yml_file">
-<code class="descname">from_yml_file</code><span class="sig-paren">(</span><em>label=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.from_yml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.from_yml_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">from_yml_file</code><span class="sig-paren">(</span><em class="sig-param">label=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.from_yml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.from_yml_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load important species attributes such as label and final_xyz from an Arkane YAML file.
 Actual QM data parsing is done later when processing thermo and kinetics.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The specie label.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – If the adjlist cannot be read.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The specie label.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the adjlist cannot be read.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.generate_conformers">
-<code class="descname">generate_conformers</code><span class="sig-paren">(</span><em>confs_to_dft=5</em>, <em>plot_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.generate_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.generate_conformers" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">generate_conformers</code><span class="sig-paren">(</span><em class="sig-param">confs_to_dft=5</em>, <em class="sig-param">plot_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.generate_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.generate_conformers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate conformers</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>confs_to_dft</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of conformers to store in the .conformers attribute of the species
-that will later be DFT’ed at the conformers_level.</li>
-<li><strong>plot_path</strong> (<em>str</em><em>, </em><em>optional</em>) – A folder path in which the plot will be saved.
-If None, the plot will not be shown (nor saved).</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>confs_to_dft</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of conformers to store in the .conformers attribute of the species
+that will later be DFT’ed at the conformers_level.</p></li>
+<li><p><strong>plot_path</strong> (<em>str</em><em>, </em><em>optional</em>) – A folder path in which the plot will be saved.
+If None, the plot will not be shown (nor saved).</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.get_cheap_conformer">
-<code class="descname">get_cheap_conformer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.get_cheap_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.get_cheap_conformer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_cheap_conformer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.get_cheap_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.get_cheap_conformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cheaply (limiting the number of possible conformers) get a reasonable conformer,
 this could very well not be the best (lowest) one.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.get_xyz">
-<code class="descname">get_xyz</code><span class="sig-paren">(</span><em>generate=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.get_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.get_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_xyz</code><span class="sig-paren">(</span><em class="sig-param">generate=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.get_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.get_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the highest quality xyz the species has. If it doesn’t have any 3D information, cheaply generate it.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>generate</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to cheaply generate an FF conformer if no xyz is found.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>generate</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to cheaply generate an FF conformer if no xyz is found.
 <code class="docutils literal notranslate"><span class="pre">True</span></code> to generate. If generate is <code class="docutils literal notranslate"><span class="pre">False</span></code> and the species has no xyz data,
-the method will return None.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The xyz coordinates.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+the method will return None.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The xyz coordinates.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.initialize_directed_rotors">
-<code class="descname">initialize_directed_rotors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.initialize_directed_rotors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.initialize_directed_rotors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">initialize_directed_rotors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.initialize_directed_rotors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.initialize_directed_rotors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.directed_rotors, correcting the input to nested lists and to scans instead of pivots.
 Also modifies self.rotors_dict to remove respective 1D rotors dicts if appropriate and adds ND rotors dicts.
 Principally, from this point we don’t really need self.directed_rotors, self.rotors_dict should have all
@@ -1201,162 +1030,140 @@ relevant rotors info for the species, including directed and ND rotors.</p>
              }
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">SpeciesError</span></code> – If the pivots don’t represent a dihedral in the species.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>SpeciesError</strong> – If the pivots don’t represent a dihedral in the species.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.make_ts_report">
-<code class="descname">make_ts_report</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.make_ts_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.make_ts_report" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">make_ts_report</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.make_ts_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.make_ts_report" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function to write content into the .ts_report attribute</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.mol_from_xyz">
-<code class="descname">mol_from_xyz</code><span class="sig-paren">(</span><em>xyz=None</em>, <em>get_cheap=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.mol_from_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.mol_from_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mol_from_xyz</code><span class="sig-paren">(</span><em class="sig-param">xyz=None</em>, <em class="sig-param">get_cheap=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.mol_from_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.mol_from_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make sure atom order in self.mol corresponds to xyz.
 Important for TS discovery and for identifying rotor indices.</p>
 <p>This works by generating a molecule from xyz and using the
 2D structure to confirm that the perceived molecule is correct.
 Resonance structures are generated and saved to self.mol_list.
 If <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is not given, the species xyz will be used.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – Alternative coordinates to use.</li>
-<li><strong>get_cheap</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to generate conformers if the species has no xyz data.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – Alternative coordinates to use.</p></li>
+<li><p><strong>get_cheap</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to generate conformers if the species has no xyz data.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
-<dt>
-<code class="descname">number_of_atoms</code></dt>
+<dl class="method">
+<dt id="arc.species.species.ARCSpecies.number_of_atoms">
+<em class="property">property </em><code class="sig-name descname">number_of_atoms</code><a class="headerlink" href="#arc.species.species.ARCSpecies.number_of_atoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of atoms in the species</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="arc.species.species.ARCSpecies.number_of_heavy_atoms">
-<code class="descname">number_of_heavy_atoms</code><a class="headerlink" href="#arc.species.species.ARCSpecies.number_of_heavy_atoms" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">number_of_heavy_atoms</code><a class="headerlink" href="#arc.species.species.ARCSpecies.number_of_heavy_atoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of heavy (non hydrogen) atoms in the species</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.process_xyz">
-<code class="descname">process_xyz</code><span class="sig-paren">(</span><em>xyz_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.process_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.process_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">process_xyz</code><span class="sig-paren">(</span><em class="sig-param">xyz_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.process_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.process_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process the user’s input and add either to the .conformers attribute or to .ts_guesses.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xyz_list</strong> (<em>list</em><em>, </em><em>str</em><em>, </em><em>dict</em>) – Entries are either string-format, dict-format coordinates or file paths.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>xyz_list</strong> (<em>list</em><em>, </em><em>str</em><em>, </em><em>dict</em>) – Entries are either string-format, dict-format coordinates or file paths.
 (If there’s only one entry, it could be given directly, not in a list)
 The file paths could direct to either a .xyz file, ARC conformers (w/ or w/o
-energies), or an ESS log/input files, making this method extremely flexible.</td>
-</tr>
-</tbody>
-</table>
+energies), or an ESS log/input files, making this method extremely flexible.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
-<dt>
-<code class="descname">radius</code></dt>
+<dl class="method">
+<dt id="arc.species.species.ARCSpecies.radius">
+<em class="property">property </em><code class="sig-name descname">radius</code><a class="headerlink" href="#arc.species.species.ARCSpecies.radius" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the largest distance from the coordinate system origin attributed to one of the molecule’s
 atoms in 3D space.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Radius in are Angstrom.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Radius in are Angstrom.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.scissors">
-<code class="descname">scissors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.scissors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.scissors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">scissors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.scissors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.scissors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cut chemical bonds to create new species from the original one according to the .bdes attribute,
 preserving the 3D geometry other than the splitted bond.
 If one of the scission-resulting species is a hydrogen atom, it will be returned last, labeled as ‘H’.
 Other species labels will be &lt;original species label&gt;_BDE_index1_index2_X, where “X” is either “A” or “B”,
 and the indices are 1-indexed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The scission-resulting species.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The scission-resulting species.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.set_dihedral">
-<code class="descname">set_dihedral</code><span class="sig-paren">(</span><em>scan</em>, <em>deg_increment=None</em>, <em>deg_abs=None</em>, <em>count=True</em>, <em>xyz=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.set_dihedral"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.set_dihedral" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_dihedral</code><span class="sig-paren">(</span><em class="sig-param">scan</em>, <em class="sig-param">deg_increment=None</em>, <em class="sig-param">deg_abs=None</em>, <em class="sig-param">count=True</em>, <em class="sig-param">xyz=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.set_dihedral"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.set_dihedral" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generated an RDKit molecule object from either self.final_xyz or <code class="docutils literal notranslate"><span class="pre">xyz</span></code>.
 Increments the current dihedral angle between atoms i, j, k, l in the <cite>scan</cite> list by ‘deg_increment` in degrees.
 Alternatively, specifying deg_abs will rotate to this desired dihedral.
 All bonded atoms are moved accordingly. The result is saved in self.initial_xyz.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>scan</strong> (<em>list</em>) – The atom indices representing the dihedral.</li>
-<li><strong>deg_increment</strong> (<em>float</em><em>, </em><em>optional</em>) – The dihedral angle increment.</li>
-<li><strong>deg_abs</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute desired dihedral angle.</li>
-<li><strong>count</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to increment the rotor’s times_dihedral_set parameter. <cite>True</cite> to increment.</li>
-<li><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – An alternative xyz to use instead of self.final_xyz.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scan</strong> (<em>list</em>) – The atom indices representing the dihedral.</p></li>
+<li><p><strong>deg_increment</strong> (<em>float</em><em>, </em><em>optional</em>) – The dihedral angle increment.</p></li>
+<li><p><strong>deg_abs</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute desired dihedral angle.</p></li>
+<li><p><strong>count</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to increment the rotor’s times_dihedral_set parameter. <cite>True</cite> to increment.</p></li>
+<li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – An alternative xyz to use instead of self.final_xyz.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.set_transport_data">
-<code class="descname">set_transport_data</code><span class="sig-paren">(</span><em>lj_path</em>, <em>opt_path</em>, <em>bath_gas</em>, <em>opt_level</em>, <em>freq_path=u''</em>, <em>freq_level=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.set_transport_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.set_transport_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_transport_data</code><span class="sig-paren">(</span><em class="sig-param">lj_path</em>, <em class="sig-param">opt_path</em>, <em class="sig-param">bath_gas</em>, <em class="sig-param">opt_level</em>, <em class="sig-param">freq_path=''</em>, <em class="sig-param">freq_level=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.set_transport_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.set_transport_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the species.transport_data attribute after a Lennard-Jones calculation (via OneDMin).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>lj_path</strong> (<em>str</em>) – The path to a oneDMin job output file.</li>
-<li><strong>opt_path</strong> (<em>str</em>) – The path to an opt job output file.</li>
-<li><strong>bath_gas</strong> (<em>str</em>) – The oneDMin job bath gas.</li>
-<li><strong>opt_level</strong> (<em>str</em>) – The optimization level of theory.</li>
-<li><strong>freq_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to a frequencies job output file.</li>
-<li><strong>freq_level</strong> (<em>str</em><em>, </em><em>optional</em>) – The frequencies level of theory.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lj_path</strong> (<em>str</em>) – The path to a oneDMin job output file.</p></li>
+<li><p><strong>opt_path</strong> (<em>str</em>) – The path to an opt job output file.</p></li>
+<li><p><strong>bath_gas</strong> (<em>str</em>) – The oneDMin job bath gas.</p></li>
+<li><p><strong>opt_level</strong> (<em>str</em>) – The optimization level of theory.</p></li>
+<li><p><strong>freq_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to a frequencies job output file.</p></li>
+<li><p><strong>freq_level</strong> (<em>str</em><em>, </em><em>optional</em>) – The frequencies level of theory.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="arc.species.species.TSGuess">
-<em class="property">class </em><code class="descclassname">arc.species.species.</code><code class="descname">TSGuess</code><span class="sig-paren">(</span><em>method=None</em>, <em>reactants_xyz=None</em>, <em>products_xyz=None</em>, <em>family=None</em>, <em>xyz=None</em>, <em>rmg_reaction=None</em>, <em>ts_dict=None</em>, <em>energy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">TSGuess</code><span class="sig-paren">(</span><em class="sig-param">method=None</em>, <em class="sig-param">reactants_xyz=None</em>, <em class="sig-param">products_xyz=None</em>, <em class="sig-param">family=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">rmg_reaction=None</em>, <em class="sig-param">ts_dict=None</em>, <em class="sig-param">energy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess" title="Permalink to this definition">¶</a></dt>
 <dd><p>TSGuess class</p>
 <p>The user can define xyz directly, and the default <cite>method</cite> will be ‘User guess’.
 Alternatively, either ARC or the user can provide reactant/s and product/s geometries with a specified <cite>method</cite>.
@@ -1366,206 +1173,166 @@ Alternatively, either ARC or the user can provide reactant/s and product/s geome
 - NEB (not implemented)
 - Kinbot: requires the RMG family, only works for H,C,O,S (not implemented)
 - AutoTST</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – The method/source used for the xyz guess.</li>
-<li><strong>reactants_xyz</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of tuples, each containing:
-(reactant label, reactant geometry in string format).</li>
-<li><strong>products_xyz</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of tuples, each containing:
-(product label, product geometry in string format).</li>
-<li><strong>family</strong> (<em>str</em><em>, </em><em>optional</em>) – The RMG family that corresponds to the reaction, if applicable.</li>
-<li><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em><em>, </em><em>optional</em>) – The 3D coordinates guess.</li>
-<li><strong>rmg_reaction</strong> (<em>Reaction</em><em>, </em><em>optional</em>) – An RMG Reaction object.</li>
-<li><strong>ts_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</li>
-<li><strong>energy</strong> (<em>float</em>) – Relative energy of all TS conformers in kJ/mol.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – The method/source used for the xyz guess.</p></li>
+<li><p><strong>reactants_xyz</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of tuples, each containing:
+(reactant label, reactant geometry in string format).</p></li>
+<li><p><strong>products_xyz</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of tuples, each containing:
+(product label, product geometry in string format).</p></li>
+<li><p><strong>family</strong> (<em>str</em><em>, </em><em>optional</em>) – The RMG family that corresponds to the reaction, if applicable.</p></li>
+<li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em><em>, </em><em>optional</em>) – The 3D coordinates guess.</p></li>
+<li><p><strong>rmg_reaction</strong> (<em>Reaction</em><em>, </em><em>optional</em>) – An RMG Reaction object.</p></li>
+<li><p><strong>ts_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</p></li>
+<li><p><strong>energy</strong> (<em>float</em>) – Relative energy of all TS conformers in kJ/mol.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.initial_xyz">
-<code class="descname">initial_xyz</code><a class="headerlink" href="#arc.species.species.TSGuess.initial_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">initial_xyz</code><a class="headerlink" href="#arc.species.species.TSGuess.initial_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>The 3D coordinates guess.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.opt_xyz">
-<code class="descname">opt_xyz</code><a class="headerlink" href="#arc.species.species.TSGuess.opt_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">opt_xyz</code><a class="headerlink" href="#arc.species.species.TSGuess.opt_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>The 3D coordinates after optimization at the ts_guesses level.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.method">
-<code class="descname">method</code><a class="headerlink" href="#arc.species.species.TSGuess.method" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">method</code><a class="headerlink" href="#arc.species.species.TSGuess.method" title="Permalink to this definition">¶</a></dt>
 <dd><p>The method/source used for the xyz guess.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.reactants_xyz">
-<code class="descname">reactants_xyz</code><a class="headerlink" href="#arc.species.species.TSGuess.reactants_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reactants_xyz</code><a class="headerlink" href="#arc.species.species.TSGuess.reactants_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of tuples, each containing:
 (reactant label, reactant xyz).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.products_xyz">
-<code class="descname">products_xyz</code><a class="headerlink" href="#arc.species.species.TSGuess.products_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">products_xyz</code><a class="headerlink" href="#arc.species.species.TSGuess.products_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of tuples, each containing:
 (product label, product xyz).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.family">
-<code class="descname">family</code><a class="headerlink" href="#arc.species.species.TSGuess.family" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">family</code><a class="headerlink" href="#arc.species.species.TSGuess.family" title="Permalink to this definition">¶</a></dt>
 <dd><p>The RMG family that corresponds to the reaction, if applicable.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.rmg_reaction">
-<code class="descname">rmg_reaction</code><a class="headerlink" href="#arc.species.species.TSGuess.rmg_reaction" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rmg_reaction</code><a class="headerlink" href="#arc.species.species.TSGuess.rmg_reaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>An RMG Reaction object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Reaction</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Reaction</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.t0">
-<code class="descname">t0</code><a class="headerlink" href="#arc.species.species.TSGuess.t0" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">t0</code><a class="headerlink" href="#arc.species.species.TSGuess.t0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initial time of spawning the guess job.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.execution_time">
-<code class="descname">execution_time</code><a class="headerlink" href="#arc.species.species.TSGuess.execution_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">execution_time</code><a class="headerlink" href="#arc.species.species.TSGuess.execution_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overall execution time for the TS guess method.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.success">
-<code class="descname">success</code><a class="headerlink" href="#arc.species.species.TSGuess.success" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">success</code><a class="headerlink" href="#arc.species.species.TSGuess.success" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether the TS guess method succeeded in generating an XYZ guess or not.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.energy">
-<code class="descname">energy</code><a class="headerlink" href="#arc.species.species.TSGuess.energy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">energy</code><a class="headerlink" href="#arc.species.species.TSGuess.energy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Relative energy of all TS conformers in kJ/mol.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.species.species.TSGuess.index">
-<code class="descname">index</code><a class="headerlink" href="#arc.species.species.TSGuess.index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">index</code><a class="headerlink" href="#arc.species.species.TSGuess.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>An index corresponding to the conformer jobs spawned for each TSGuess object.
 Assigned only if self.success is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.TSGuess.as_dict">
-<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.as_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.as_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for dumping this object as a dictionary in a YAML file for restarting ARC</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.TSGuess.autotst">
-<code class="descname">autotst</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.autotst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.autotst" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">autotst</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.autotst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.autotst" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine a TS guess using AutoTST for the following RMG families:
 Current supported families are:
 - H_Abstraction
@@ -1577,53 +1344,51 @@ Near-future supported families might be:
 
 <dl class="method">
 <dt id="arc.species.species.TSGuess.degsm">
-<code class="descname">degsm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.degsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.degsm" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">degsm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.degsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.degsm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine a TS guess using DEGSM</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.TSGuess.execute_ts_guess_method">
-<code class="descname">execute_ts_guess_method</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.execute_ts_guess_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.execute_ts_guess_method" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">execute_ts_guess_method</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.execute_ts_guess_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.execute_ts_guess_method" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a TS guess method</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.TSGuess.from_dict">
-<code class="descname">from_dict</code><span class="sig-paren">(</span><em>ts_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.from_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">ts_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.from_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for loading this object from a dictionary in a YAML file for restarting ARC</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.TSGuess.kinbot">
-<code class="descname">kinbot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.kinbot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.kinbot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">kinbot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.kinbot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.kinbot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine a TS guess using Kinbot for RMG’s unimolecular families</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.TSGuess.neb">
-<code class="descname">neb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.neb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.neb" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">neb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.neb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.neb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine a TS guess using NEB</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.TSGuess.process_xyz">
-<code class="descname">process_xyz</code><span class="sig-paren">(</span><em>xyz</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.process_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.process_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">process_xyz</code><span class="sig-paren">(</span><em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.process_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.process_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process the user’s input. If <code class="docutils literal notranslate"><span class="pre">xyz</span></code> represents a file path, parse it.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em>) – The coordinates in a dict/string form or a path to a file containing the coordinates.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">InputError</span></code> – If xyz is of wrong type.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em>) – The coordinates in a dict/string form or a path to a file containing the coordinates.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If xyz is of wrong type.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.species.species.TSGuess.qst2">
-<code class="descname">qst2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.qst2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.qst2" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">qst2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.qst2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.TSGuess.qst2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine a TS guess using QST2</p>
 </dd></dl>
 
@@ -1631,121 +1396,112 @@ Near-future supported families might be:
 
 <dl class="function">
 <dt id="arc.species.species.check_xyz">
-<code class="descclassname">arc.species.species.</code><code class="descname">check_xyz</code><span class="sig-paren">(</span><em>xyz</em>, <em>multiplicity</em>, <em>charge</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#check_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.check_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">check_xyz</code><span class="sig-paren">(</span><em class="sig-param">xyz</em>, <em class="sig-param">multiplicity</em>, <em class="sig-param">charge</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#check_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.check_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks xyz for electronic consistency with the spin multiplicity and charge.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xyz</strong> (<em>dict</em>) – The species coordinates.</li>
-<li><strong>multiplicity</strong> (<em>int</em>) – The species spin multiplicity.</li>
-<li><strong>charge</strong> (<em>int</em>) – The species net charge.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyz</strong> (<em>dict</em>) – The species coordinates.</p></li>
+<li><p><strong>multiplicity</strong> (<em>int</em>) – The species spin multiplicity.</p></li>
+<li><p><strong>charge</strong> (<em>int</em>) – The species net charge.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Whether the input arguments are all in agreement. True if they are.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether the input arguments are all in agreement. True if they are.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.species.species.cyclic_index_i_minus_1">
-<code class="descclassname">arc.species.species.</code><code class="descname">cyclic_index_i_minus_1</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#cyclic_index_i_minus_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.cyclic_index_i_minus_1" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">cyclic_index_i_minus_1</code><span class="sig-paren">(</span><em class="sig-param">i</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#cyclic_index_i_minus_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.cyclic_index_i_minus_1" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for cyclic indexing rotor scans</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.species.species.cyclic_index_i_plus_1">
-<code class="descclassname">arc.species.species.</code><code class="descname">cyclic_index_i_plus_1</code><span class="sig-paren">(</span><em>i</em>, <em>length</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#cyclic_index_i_plus_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.cyclic_index_i_plus_1" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">cyclic_index_i_plus_1</code><span class="sig-paren">(</span><em class="sig-param">i</em>, <em class="sig-param">length</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#cyclic_index_i_plus_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.cyclic_index_i_plus_1" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for cyclic indexing rotor scans</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.species.species.determine_occ">
-<code class="descclassname">arc.species.species.</code><code class="descname">determine_occ</code><span class="sig-paren">(</span><em>xyz</em>, <em>charge</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#determine_occ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.determine_occ" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">determine_occ</code><span class="sig-paren">(</span><em class="sig-param">xyz</em>, <em class="sig-param">charge</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#determine_occ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.determine_occ" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines the number of occupied orbitals for an MRCI calculation.</p>
 <p>Todo</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.species.species.determine_rotor_symmetry">
-<code class="descclassname">arc.species.species.</code><code class="descname">determine_rotor_symmetry</code><span class="sig-paren">(</span><em>label</em>, <em>pivots</em>, <em>rotor_path=u''</em>, <em>energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#determine_rotor_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.determine_rotor_symmetry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">determine_rotor_symmetry</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">pivots</em>, <em class="sig-param">rotor_path=''</em>, <em class="sig-param">energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#determine_rotor_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.determine_rotor_symmetry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the rotor symmetry number from a potential energy scan.
 The <em>worst</em> resolution for each peak and valley is determined.
 The first criterion for a symmetric rotor is that the highest peak and the lowest peak must be within the
 worst peak resolution (and the same is checked for valleys).
 A second criterion for a symmetric rotor is that the highest and lowest peaks must be within 10% of
 the highest peak value. This is only applied if the highest peak is above 2 kJ/mol.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>rotor_path</strong> (<em>str</em>) – The path to an ESS output rotor scan file.</li>
-<li><strong>label</strong> (<em>str</em>) – The species label (used for error messages).</li>
-<li><strong>pivots</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of two atom indices representing the torsion pivots.</li>
-<li><strong>energies</strong> (<em>list</em><em>, </em><em>optional</em>) – THe list of energies in the scan in kJ/mol.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rotor_path</strong> (<em>str</em>) – The path to an ESS output rotor scan file.</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – The species label (used for error messages).</p></li>
+<li><p><strong>pivots</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of two atom indices representing the torsion pivots.</p></li>
+<li><p><strong>energies</strong> (<em>list</em><em>, </em><em>optional</em>) – The list of energies in the scan in kJ/mol.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The symmetry number (int)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The highest torsional energy barrier in kJ/mol.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">float</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">InputError</span></code> – If both or none of the rotor_path and energy arguments are given,</li>
-<li>or if rotor_path does not point to an existing file.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The symmetry number (int)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The highest torsional energy barrier in kJ/mol.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>InputError</strong> – If both or none of the rotor_path and energy arguments are given,</p></li>
+<li><p><strong>or if rotor_path does not point to an existing file.</strong> – </p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.species.species.determine_rotor_type">
-<code class="descclassname">arc.species.species.</code><code class="descname">determine_rotor_type</code><span class="sig-paren">(</span><em>rotor_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#determine_rotor_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.determine_rotor_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">determine_rotor_type</code><span class="sig-paren">(</span><em class="sig-param">rotor_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#determine_rotor_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.determine_rotor_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine whether this rotor should be treated as a HinderedRotor of a FreeRotor
 according to it’s maximum peak</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.species.species.enumerate_bonds">
-<code class="descclassname">arc.species.species.</code><code class="descname">enumerate_bonds</code><span class="sig-paren">(</span><em>mol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#enumerate_bonds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.enumerate_bonds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">enumerate_bonds</code><span class="sig-paren">(</span><em class="sig-param">mol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#enumerate_bonds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.enumerate_bonds" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for calling Molecule.enumerate_bonds.
 First, get the Kekulized molecule (get the Kekule version with alternating single and double bonds if the molecule
 is aromatic), since we don’t have implementation for aromatic bond additivity corrections.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mol</strong> (<em>Molecule</em>) – The 2D graph representation of the molecule.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Keys are bond types (elements and bond order symbol), values are number of occurrences per bond type.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mol</strong> (<em>Molecule</em>) – The 2D graph representation of the molecule.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Keys are bond types (elements and bond order symbol), values are number of occurrences per bond type.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.species.species.nearly_equal">
-<code class="descclassname">arc.species.species.</code><code class="descname">nearly_equal</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>sig_fig=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#nearly_equal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.nearly_equal" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">nearly_equal</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">b</em>, <em class="sig-param">sig_fig=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#nearly_equal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.nearly_equal" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function to determine whether two floats are nearly equal.
 Can be replaced by math.isclose in Py3</p>
 </dd></dl>

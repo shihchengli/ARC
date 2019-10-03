@@ -171,117 +171,126 @@
 <div class="section" id="arc-1-1-0">
 <h2>ARC 1.1.0<a class="headerlink" href="#arc-1-1-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>New features:<ul>
-<li>Project name validity check #58</li>
-<li>Added Free Rotors #59</li>
-<li>Report the git head in the log file #63</li>
-<li>Determine rotor symmetry using a cyclic energy scan list #66</li>
-<li>Improve SGE submit file #68</li>
-<li>Improved restart #64</li>
-<li>Parse xyz for a species from file #70</li>
-<li>Troubleshoot conformer jobs if they all fail #77</li>
-<li>Changed rotor inconsistency_ab #78</li>
-<li>Don’t crush ARC if it couldn’t troubleshoot a job #79</li>
-<li>Make xyz to 2D more robust (catch errors) #80</li>
-<li>Check isomorphism for conformers  #84</li>
-<li>Improve submit files #81</li>
-<li>Troubleshoot rotor scans #85</li>
-<li>Generate resonance structures before checking molecule isomorphism #87</li>
-<li>Standardize xyz #88</li>
-<li>Copy the frequency output file for a TS #89</li>
-<li>Save the generated conformers in the species geometry folder #90</li>
-<li>Allow nonisomorphic 2d #91</li>
-<li>Improved management and report of job time #94</li>
-<li>Don’t use applyAtomEnergyCorrections for kinetics #95</li>
-<li>Fix to xyz/2D loading and atom reordering in ARCSpecies #96</li>
-<li>Preserve multiplicity throughout Species representations #99</li>
-<li>Archive log and restart files #97</li>
-<li>Run and save molecular orbitals #102</li>
-<li>Allow ARCSpecies to be initialized with a conformer list file #104</li>
-<li>Set default max stepsize for optimization in Gaussian #108</li>
-<li>Save unconverged species (labels) #98</li>
-<li>Use the Gaussian check file #100</li>
-<li>Allow birad singlet to be defined and run as unrestricted #114</li>
-<li>Update determine_qm_software to new Arkane #111</li>
-<li>Calculating Lennard-Jones coefficients #117</li>
-<li>Allow the user to define adaptive levels of theory (by heavy atoms) #119</li>
-<li>Set the 1d_rotors settings directive to True by default #121</li>
-<li>Updated submit scripts #123</li>
-<li>Allow defining a TS species simply with .xyz guesses #124</li>
-<li>Save conformer jobs in the restart file #125</li>
-<li>Parse Molpro frequencies #127</li>
-<li>Run ARC on a server #128</li>
-<li>Activate the job_types flags for opt, freq, and sp #132</li>
-<li>Modifications to how the model chemistry is treated to be consistent with Arkane #134</li>
-<li>Organized job memory handling #137</li>
-<li>Consider the requested job types for species already defined with xyz #139</li>
-<li>Added a ZPE/freq scaling factor script to utils #136</li>
-<li>Added a function to save an input file (and not run ARC on spot) #140</li>
-<li>Added some Job methods and reorganized init #142</li>
-<li>Added NIST to kinetics plots (off by default) #146</li>
-<li>A new way of thinking about conformers #143</li>
-<li>Improved ESS troubleshooting #147</li>
-<li>Adapt Processor to the new Arkane output #148</li>
+<li><p>New features:</p>
+<ul>
+<li><p>Project name validity check #58</p></li>
+<li><p>Added Free Rotors #59</p></li>
+<li><p>Report the git head in the log file #63</p></li>
+<li><p>Determine rotor symmetry using a cyclic energy scan list #66</p></li>
+<li><p>Improve SGE submit file #68</p></li>
+<li><p>Improved restart #64</p></li>
+<li><p>Parse xyz for a species from file #70</p></li>
+<li><p>Troubleshoot conformer jobs if they all fail #77</p></li>
+<li><p>Changed rotor inconsistency_ab #78</p></li>
+<li><p>Don’t crush ARC if it couldn’t troubleshoot a job #79</p></li>
+<li><p>Make xyz to 2D more robust (catch errors) #80</p></li>
+<li><p>Check isomorphism for conformers  #84</p></li>
+<li><p>Improve submit files #81</p></li>
+<li><p>Troubleshoot rotor scans #85</p></li>
+<li><p>Generate resonance structures before checking molecule isomorphism #87</p></li>
+<li><p>Standardize xyz #88</p></li>
+<li><p>Copy the frequency output file for a TS #89</p></li>
+<li><p>Save the generated conformers in the species geometry folder #90</p></li>
+<li><p>Allow nonisomorphic 2d #91</p></li>
+<li><p>Improved management and report of job time #94</p></li>
+<li><p>Don’t use applyAtomEnergyCorrections for kinetics #95</p></li>
+<li><p>Fix to xyz/2D loading and atom reordering in ARCSpecies #96</p></li>
+<li><p>Preserve multiplicity throughout Species representations #99</p></li>
+<li><p>Archive log and restart files #97</p></li>
+<li><p>Run and save molecular orbitals #102</p></li>
+<li><p>Allow ARCSpecies to be initialized with a conformer list file #104</p></li>
+<li><p>Set default max stepsize for optimization in Gaussian #108</p></li>
+<li><p>Save unconverged species (labels) #98</p></li>
+<li><p>Use the Gaussian check file #100</p></li>
+<li><p>Allow birad singlet to be defined and run as unrestricted #114</p></li>
+<li><p>Update determine_qm_software to new Arkane #111</p></li>
+<li><p>Calculating Lennard-Jones coefficients #117</p></li>
+<li><p>Allow the user to define adaptive levels of theory (by heavy atoms) #119</p></li>
+<li><p>Set the 1d_rotors settings directive to True by default #121</p></li>
+<li><p>Updated submit scripts #123</p></li>
+<li><p>Allow defining a TS species simply with .xyz guesses #124</p></li>
+<li><p>Save conformer jobs in the restart file #125</p></li>
+<li><p>Parse Molpro frequencies #127</p></li>
+<li><p>Run ARC on a server #128</p></li>
+<li><p>Activate the job_types flags for opt, freq, and sp #132</p></li>
+<li><p>Modifications to how the model chemistry is treated to be consistent with Arkane #134</p></li>
+<li><p>Organized job memory handling #137</p></li>
+<li><p>Consider the requested job types for species already defined with xyz #139</p></li>
+<li><p>Added a ZPE/freq scaling factor script to utils #136</p></li>
+<li><p>Added a function to save an input file (and not run ARC on spot) #140</p></li>
+<li><p>Added some Job methods and reorganized init #142</p></li>
+<li><p>Added NIST to kinetics plots (off by default) #146</p></li>
+<li><p>A new way of thinking about conformers #143</p></li>
+<li><p>Improved ESS troubleshooting #147</p></li>
+<li><p>Adapt Processor to the new Arkane output #148</p></li>
 </ul>
 </li>
-<li>Documentation:<ul>
-<li>Added ARC’s documentation #152</li>
+<li><p>Documentation:</p>
+<ul>
+<li><p>Added ARC’s documentation #152</p></li>
 </ul>
 </li>
-<li>Bug fixes:<ul>
-<li>Plot kinetics even if no RMG reaction matches #62</li>
-<li>Treat same scan point at 0 and 360 deg correctly #67</li>
-<li>Fix bug with loading molecule statmech during Rate jobs #73</li>
-<li>If statement in model chemistry #101</li>
-<li>Don’t lose track of jobs in ‘qw’ status on SGE #103</li>
-<li>Don’t overwrite self.mol if self.mol_from_xyz is None #106</li>
-<li>Remove extra parentheses in gaussian input file #120</li>
-<li>Don’t run a fine opt in Molpro #122</li>
-<li>Set the memory per cpu slightly higher than the ESS memory #144</li>
-<li>File compatibility with MAC OS (skip .DS_Store files) #145</li>
-<li>Improved ARC’s sleeping habits when experiencing connection errors #149</li>
-<li>Minor conformers/xyz files fixes #150</li>
-<li>Correcly move the Arkane YAML file #151</li>
+<li><p>Bug fixes:</p>
+<ul>
+<li><p>Plot kinetics even if no RMG reaction matches #62</p></li>
+<li><p>Treat same scan point at 0 and 360 deg correctly #67</p></li>
+<li><p>Fix bug with loading molecule statmech during Rate jobs #73</p></li>
+<li><p>If statement in model chemistry #101</p></li>
+<li><p>Don’t lose track of jobs in ‘qw’ status on SGE #103</p></li>
+<li><p>Don’t overwrite self.mol if self.mol_from_xyz is None #106</p></li>
+<li><p>Remove extra parentheses in gaussian input file #120</p></li>
+<li><p>Don’t run a fine opt in Molpro #122</p></li>
+<li><p>Set the memory per cpu slightly higher than the ESS memory #144</p></li>
+<li><p>File compatibility with MAC OS (skip .DS_Store files) #145</p></li>
+<li><p>Improved ARC’s sleeping habits when experiencing connection errors #149</p></li>
+<li><p>Minor conformers/xyz files fixes #150</p></li>
+<li><p>Correcly move the Arkane YAML file #151</p></li>
 </ul>
 </li>
-<li>Miscellaneous:<ul>
-<li>#109:<ul>
-<li>Added <cite>examples</cite> to .gitignore</li>
-<li>Allow users to specify the number of cpu’s to use per server</li>
-<li>Download additional info re failed jobs (out.txt, err.txt, slurm.out)</li>
-<li>Don’t run orbitals jobs by default</li>
-<li>Make servers in ess_settings a list</li>
-<li>Allow users to specify a <cite>levels_ess</cite> dictionary associating levels of theory (or partial phrases of methods or basis sets) with an ESS</li>
-<li>Added ess_settings to settings.py instead of the API</li>
-<li>Tests: functions in main</li>
-<li>Additional minor fixes</li>
+<li><p>Miscellaneous:</p>
+<ul>
+<li><p>#109:</p>
+<ul>
+<li><p>Added <cite>examples</cite> to .gitignore</p></li>
+<li><p>Allow users to specify the number of cpu’s to use per server</p></li>
+<li><p>Download additional info re failed jobs (out.txt, err.txt, slurm.out)</p></li>
+<li><p>Don’t run orbitals jobs by default</p></li>
+<li><p>Make servers in ess_settings a list</p></li>
+<li><p>Allow users to specify a <cite>levels_ess</cite> dictionary associating levels of theory (or partial phrases of methods or basis sets) with an ESS</p></li>
+<li><p>Added ess_settings to settings.py instead of the API</p></li>
+<li><p>Tests: functions in main</p></li>
+<li><p>Additional minor fixes</p></li>
 </ul>
 </li>
-<li>#112:<ul>
-<li>Load ess_settings correctly from dict</li>
-<li>Improved species logging in project info file</li>
-<li>Don’t plot kinetics if it is None</li>
-<li>Improved error message if rxn energetics are problematic</li>
-<li>Added min_list() to Scheduler</li>
-<li>Improve converter xyz functions</li>
-<li>Improved xyz handling in Species (<cite>xyz</cite> can now be a list)</li>
+<li><p>#112:</p>
+<ul>
+<li><p>Load ess_settings correctly from dict</p></li>
+<li><p>Improved species logging in project info file</p></li>
+<li><p>Don’t plot kinetics if it is None</p></li>
+<li><p>Improved error message if rxn energetics are problematic</p></li>
+<li><p>Added min_list() to Scheduler</p></li>
+<li><p>Improve converter xyz functions</p></li>
+<li><p>Improved xyz handling in Species (<cite>xyz</cite> can now be a list)</p></li>
 </ul>
 </li>
-<li>#133:<ul>
-<li>Updated isomorphic species check method name in rmgdb</li>
-<li>Corrected local server check</li>
-<li>Updated ESS check function name in iPython notebook</li>
+<li><p>#133:</p>
+<ul>
+<li><p>Updated isomorphic species check method name in rmgdb</p></li>
+<li><p>Corrected local server check</p></li>
+<li><p>Updated ESS check function name in iPython notebook</p></li>
 </ul>
 </li>
-<li>#141:<ul>
-<li>Added an iPy notebook with an xyz to SMILES script</li>
-<li>Don’t load the RMG database if not necessary</li>
+<li><p>#141:</p>
+<ul>
+<li><p>Added an iPy notebook with an xyz to SMILES script</p></li>
+<li><p>Don’t load the RMG database if not necessary</p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li>New dependencies:<ul>
-<li>scikit-learn #116</li>
+<li><p>New dependencies:</p>
+<ul>
+<li><p>scikit-learn #116</p></li>
 </ul>
 </li>
 </ul>

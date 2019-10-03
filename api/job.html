@@ -184,493 +184,399 @@
 <p>The ARC Job module</p>
 <dl class="class">
 <dt id="arc.job.job.Job">
-<em class="property">class </em><code class="descclassname">arc.job.job.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>project=u''</em>, <em>ess_settings=None</em>, <em>species_name=u''</em>, <em>xyz=None</em>, <em>job_type=u''</em>, <em>level_of_theory=u''</em>, <em>multiplicity=None</em>, <em>project_directory=u''</em>, <em>charge=0</em>, <em>conformer=-1</em>, <em>fine=False</em>, <em>shift=u''</em>, <em>software=None</em>, <em>is_ts=False</em>, <em>scan=None</em>, <em>pivots=None</em>, <em>memory=14</em>, <em>comments=u''</em>, <em>trsh=u''</em>, <em>scan_trsh=u''</em>, <em>job_dict=None</em>, <em>ess_trsh_methods=None</em>, <em>bath_gas=None</em>, <em>initial_trsh=None</em>, <em>job_num=None</em>, <em>job_server_name=None</em>, <em>job_name=None</em>, <em>job_id=None</em>, <em>server=None</em>, <em>initial_time=None</em>, <em>occ=None</em>, <em>max_job_time=120</em>, <em>scan_res=None</em>, <em>checkfile=None</em>, <em>number_of_radicals=None</em>, <em>conformers=None</em>, <em>radius=None</em>, <em>directed_scan_type=None</em>, <em>directed_scans=None</em>, <em>directed_dihedrals=None</em>, <em>rotor_index=None</em>, <em>testing=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.job.job.</code><code class="sig-name descname">Job</code><span class="sig-paren">(</span><em class="sig-param">project=''</em>, <em class="sig-param">ess_settings=None</em>, <em class="sig-param">species_name=''</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">job_type=''</em>, <em class="sig-param">level_of_theory=''</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">project_directory=''</em>, <em class="sig-param">charge=0</em>, <em class="sig-param">conformer=-1</em>, <em class="sig-param">fine=False</em>, <em class="sig-param">shift=''</em>, <em class="sig-param">software=None</em>, <em class="sig-param">is_ts=False</em>, <em class="sig-param">scan=None</em>, <em class="sig-param">pivots=None</em>, <em class="sig-param">memory=14</em>, <em class="sig-param">comments=''</em>, <em class="sig-param">trsh=''</em>, <em class="sig-param">scan_trsh=''</em>, <em class="sig-param">job_dict=None</em>, <em class="sig-param">ess_trsh_methods=None</em>, <em class="sig-param">bath_gas=None</em>, <em class="sig-param">initial_trsh=None</em>, <em class="sig-param">job_num=None</em>, <em class="sig-param">job_server_name=None</em>, <em class="sig-param">job_name=None</em>, <em class="sig-param">job_id=None</em>, <em class="sig-param">server=None</em>, <em class="sig-param">initial_time=None</em>, <em class="sig-param">occ=None</em>, <em class="sig-param">max_job_time=120</em>, <em class="sig-param">scan_res=None</em>, <em class="sig-param">checkfile=None</em>, <em class="sig-param">number_of_radicals=None</em>, <em class="sig-param">conformers=None</em>, <em class="sig-param">radius=None</em>, <em class="sig-param">directed_scan_type=None</em>, <em class="sig-param">directed_scans=None</em>, <em class="sig-param">directed_dihedrals=None</em>, <em class="sig-param">rotor_index=None</em>, <em class="sig-param">testing=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job" title="Permalink to this definition">¶</a></dt>
 <dd><p>ARC’s Job class.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<em>str</em>) – The project’s name. Used for naming the directory.</li>
-<li><strong>project_directory</strong> (<em>str</em>) – The path to the project directory.</li>
-<li><strong>ess_settings</strong> (<em>dict</em>) – A dictionary of available ESS and a corresponding server list.</li>
-<li><strong>species_name</strong> (<em>str</em>) – The species/TS name. Used for naming the directory.</li>
-<li><strong>xyz</strong> (<em>dict</em>) – The xyz geometry. Used for the calculation.</li>
-<li><strong>job_type</strong> (<em>str</em>) – The job’s type.</li>
-<li><strong>level_of_theory</strong> (<em>str</em>) – Level of theory, e.g. ‘CBS-QB3’, ‘CCSD(T)-F12a/aug-cc-pVTZ’, ‘B3LYP/6-311++G(3df,3pd)’…</li>
-<li><strong>multiplicity</strong> (<em>int</em>) – The species multiplicity.</li>
-<li><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The species net charge. Default is 0.</li>
-<li><strong>conformer</strong> (<em>int</em><em>, </em><em>optional</em>) – Conformer number if optimizing conformers.</li>
-<li><strong>fine</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use fine geometry optimization parameters.</li>
-<li><strong>shift</strong> (<em>str</em><em>, </em><em>optional</em>) – A string representation alpha- and beta-spin orbitals shifts (molpro only).</li>
-<li><strong>software</strong> (<em>str</em><em>, </em><em>optional</em>) – The electronic structure software to be used.</li>
-<li><strong>is_ts</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether this species represents a transition structure.</li>
-<li><strong>scan</strong> (<em>list</em><em>, </em><em>optional</em>) – A list representing atom labels for the dihedral scan
-(e.g., “2 1 3 5” as a string or [2, 1, 3, 5] as a list of integers).</li>
-<li><strong>pivots</strong> (<em>list</em><em>, </em><em>optional</em>) – The rotor scan pivots, if the job type is scan. Not used directly in these methods,
-but used to identify the rotor.</li>
-<li><strong>memory</strong> (<em>int</em><em>, </em><em>optional</em>) – The total job allocated memory in GB.</li>
-<li><strong>comments</strong> (<em>str</em><em>, </em><em>optional</em>) – Job comments (archived, not used).</li>
-<li><strong>trsh</strong> (<em>str</em><em>, </em><em>optional</em>) – A troubleshooting keyword to be used in input files.</li>
-<li><strong>scan_trsh</strong> (<em>str</em><em>, </em><em>optional</em>) – A troubleshooting method for rotor scans.</li>
-<li><strong>ess_trsh_methods</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of troubleshooting methods already tried out for ESS convergence.</li>
-<li><strong>bath_gas</strong> (<em>str</em><em>, </em><em>optional</em>) – A bath gas. Currently used in OneDMin to calc L-J parameters.
-Allowed values are He, Ne, Ar, Kr, H2, N2, O2</li>
-<li><strong>initial_trsh</strong> (<em>dict</em><em>, </em><em>optional</em>) – Troubleshooting methods to try by default. Keys are ESS software,
-values are trshs.</li>
-<li><strong>job_num</strong> (<em>int</em><em>, </em><em>optional</em>) – Used as the entry number in the database, as well as the job name on the server.</li>
-<li><strong>job_server_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Job’s name on the server (e.g., ‘a103’).</li>
-<li><strong>job_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Job’s name for internal usage (e.g., ‘opt_a103’).</li>
-<li><strong>job_id</strong> (<em>int</em><em>, </em><em>optional</em>) – The job’s ID determined by the server.</li>
-<li><strong>server</strong> (<em>str</em><em>, </em><em>optional</em>) – Server’s name.</li>
-<li><strong>initial_time</strong> (<em>datetime</em><em>, </em><em>optional</em>) – The date-time this job was initiated.</li>
-<li><strong>occ</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of occupied orbitals (core + val) from a molpro CCSD sp calc.</li>
-<li><strong>max_job_time</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximal allowed job time on the server in hours.</li>
-<li><strong>scan_res</strong> (<em>int</em><em>, </em><em>optional</em>) – The rotor scan resolution in degrees.</li>
-<li><strong>checkfile</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to a previous Gaussian checkfile to be used in the current job.</li>
-<li><strong>number_of_radicals</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of radicals (inputted by the user, ARC won’t attempt to
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>str</em>) – The project’s name. Used for naming the directory.</p></li>
+<li><p><strong>project_directory</strong> (<em>str</em>) – The path to the project directory.</p></li>
+<li><p><strong>ess_settings</strong> (<em>dict</em>) – A dictionary of available ESS and a corresponding server list.</p></li>
+<li><p><strong>species_name</strong> (<em>str</em>) – The species/TS name. Used for naming the directory.</p></li>
+<li><p><strong>xyz</strong> (<em>dict</em>) – The xyz geometry. Used for the calculation.</p></li>
+<li><p><strong>job_type</strong> (<em>str</em>) – The job’s type.</p></li>
+<li><p><strong>level_of_theory</strong> (<em>str</em>) – Level of theory, e.g. ‘CBS-QB3’, ‘CCSD(T)-F12a/aug-cc-pVTZ’, ‘B3LYP/6-311++G(3df,3pd)’…</p></li>
+<li><p><strong>multiplicity</strong> (<em>int</em>) – The species multiplicity.</p></li>
+<li><p><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The species net charge. Default is 0.</p></li>
+<li><p><strong>conformer</strong> (<em>int</em><em>, </em><em>optional</em>) – Conformer number if optimizing conformers.</p></li>
+<li><p><strong>fine</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use fine geometry optimization parameters.</p></li>
+<li><p><strong>shift</strong> (<em>str</em><em>, </em><em>optional</em>) – A string representation alpha- and beta-spin orbitals shifts (molpro only).</p></li>
+<li><p><strong>software</strong> (<em>str</em><em>, </em><em>optional</em>) – The electronic structure software to be used.</p></li>
+<li><p><strong>is_ts</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether this species represents a transition structure.</p></li>
+<li><p><strong>scan</strong> (<em>list</em><em>, </em><em>optional</em>) – A list representing atom labels for the dihedral scan
+(e.g., “2 1 3 5” as a string or [2, 1, 3, 5] as a list of integers).</p></li>
+<li><p><strong>pivots</strong> (<em>list</em><em>, </em><em>optional</em>) – The rotor scan pivots, if the job type is scan. Not used directly in these methods,
+but used to identify the rotor.</p></li>
+<li><p><strong>memory</strong> (<em>int</em><em>, </em><em>optional</em>) – The total job allocated memory in GB.</p></li>
+<li><p><strong>comments</strong> (<em>str</em><em>, </em><em>optional</em>) – Job comments (archived, not used).</p></li>
+<li><p><strong>trsh</strong> (<em>str</em><em>, </em><em>optional</em>) – A troubleshooting keyword to be used in input files.</p></li>
+<li><p><strong>scan_trsh</strong> (<em>str</em><em>, </em><em>optional</em>) – A troubleshooting method for rotor scans.</p></li>
+<li><p><strong>ess_trsh_methods</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of troubleshooting methods already tried out for ESS convergence.</p></li>
+<li><p><strong>bath_gas</strong> (<em>str</em><em>, </em><em>optional</em>) – A bath gas. Currently used in OneDMin to calc L-J parameters.
+Allowed values are He, Ne, Ar, Kr, H2, N2, O2</p></li>
+<li><p><strong>initial_trsh</strong> (<em>dict</em><em>, </em><em>optional</em>) – Troubleshooting methods to try by default. Keys are ESS software,
+values are trshs.</p></li>
+<li><p><strong>job_num</strong> (<em>int</em><em>, </em><em>optional</em>) – Used as the entry number in the database, as well as the job name on the server.</p></li>
+<li><p><strong>job_server_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Job’s name on the server (e.g., ‘a103’).</p></li>
+<li><p><strong>job_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Job’s name for internal usage (e.g., ‘opt_a103’).</p></li>
+<li><p><strong>job_id</strong> (<em>int</em><em>, </em><em>optional</em>) – The job’s ID determined by the server.</p></li>
+<li><p><strong>server</strong> (<em>str</em><em>, </em><em>optional</em>) – Server’s name.</p></li>
+<li><p><strong>initial_time</strong> (<em>datetime</em><em>, </em><em>optional</em>) – The date-time this job was initiated.</p></li>
+<li><p><strong>occ</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of occupied orbitals (core + val) from a molpro CCSD sp calc.</p></li>
+<li><p><strong>max_job_time</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximal allowed job time on the server in hours.</p></li>
+<li><p><strong>scan_res</strong> (<em>int</em><em>, </em><em>optional</em>) – The rotor scan resolution in degrees.</p></li>
+<li><p><strong>checkfile</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to a previous Gaussian checkfile to be used in the current job.</p></li>
+<li><p><strong>number_of_radicals</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of radicals (inputted by the user, ARC won’t attempt to
 determine it). Defaults to None. Important, e.g., if a Species is a bi-rad
 singlet, in which case the job should be unrestricted with
-multiplicity = 1.</li>
-<li><strong>conformers</strong> (<em>str</em><em>, </em><em>optional</em>) – A path to the YAML file conformer coordinates for a Gromacs MD job.</li>
-<li><strong>radius</strong> (<em>float</em><em>, </em><em>optional</em>) – The species radius in Angstrom.</li>
-<li><strong>directed_scans</strong> (<em>list</em>) – Entries are lists of four-atom dihedral scan indices to constrain during a directed scan.</li>
-<li><strong>directed_dihedrals</strong> (<em>list</em>) – The dihedral angles of a directed scan job corresponding to <code class="docutils literal notranslate"><span class="pre">directed_scans</span></code>.</li>
-<li><strong>directed_scan_type</strong> (<em>str</em>) – The type of the directed scan.</li>
-<li><strong>rotor_index</strong> (<em>int</em>) – The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</li>
-<li><strong>job_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</li>
-<li><strong>testing</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the object is generated for testing purposes, True if it is.</li>
+multiplicity = 1.</p></li>
+<li><p><strong>conformers</strong> (<em>str</em><em>, </em><em>optional</em>) – A path to the YAML file conformer coordinates for a Gromacs MD job.</p></li>
+<li><p><strong>radius</strong> (<em>float</em><em>, </em><em>optional</em>) – The species radius in Angstrom.</p></li>
+<li><p><strong>directed_scans</strong> (<em>list</em>) – Entries are lists of four-atom dihedral scan indices to constrain during a directed scan.</p></li>
+<li><p><strong>directed_dihedrals</strong> (<em>list</em>) – The dihedral angles of a directed scan job corresponding to <code class="docutils literal notranslate"><span class="pre">directed_scans</span></code>.</p></li>
+<li><p><strong>directed_scan_type</strong> (<em>str</em>) – The type of the directed scan.</p></li>
+<li><p><strong>rotor_index</strong> (<em>int</em>) – The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</p></li>
+<li><p><strong>job_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</p></li>
+<li><p><strong>testing</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the object is generated for testing purposes, True if it is.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="arc.job.job.Job.project">
-<code class="descname">project</code><a class="headerlink" href="#arc.job.job.Job.project" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">project</code><a class="headerlink" href="#arc.job.job.Job.project" title="Permalink to this definition">¶</a></dt>
 <dd><p>The project’s name. Used for naming the directory.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.ess_settings">
-<code class="descname">ess_settings</code><a class="headerlink" href="#arc.job.job.Job.ess_settings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ess_settings</code><a class="headerlink" href="#arc.job.job.Job.ess_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of available ESS and a corresponding server list.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.species_name">
-<code class="descname">species_name</code><a class="headerlink" href="#arc.job.job.Job.species_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">species_name</code><a class="headerlink" href="#arc.job.job.Job.species_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>The species/TS name. Used for naming the directory.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.charge">
-<code class="descname">charge</code><a class="headerlink" href="#arc.job.job.Job.charge" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">charge</code><a class="headerlink" href="#arc.job.job.Job.charge" title="Permalink to this definition">¶</a></dt>
 <dd><p>The species net charge. Default is 0.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.multiplicity">
-<code class="descname">multiplicity</code><a class="headerlink" href="#arc.job.job.Job.multiplicity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">multiplicity</code><a class="headerlink" href="#arc.job.job.Job.multiplicity" title="Permalink to this definition">¶</a></dt>
 <dd><p>The species multiplicity.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.number_of_radicals">
-<code class="descname">number_of_radicals</code><a class="headerlink" href="#arc.job.job.Job.number_of_radicals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">number_of_radicals</code><a class="headerlink" href="#arc.job.job.Job.number_of_radicals" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of radicals (inputted by the user, ARC won’t attempt to determine it).
 Defaults to None. Important, e.g., if a Species is a bi-rad singlet, in which case
 the job should be unrestricted with multiplicity = 1.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.spin">
-<code class="descname">spin</code><a class="headerlink" href="#arc.job.job.Job.spin" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">spin</code><a class="headerlink" href="#arc.job.job.Job.spin" title="Permalink to this definition">¶</a></dt>
 <dd><p>The spin. automatically derived from the multiplicity.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.xyz">
-<code class="descname">xyz</code><a class="headerlink" href="#arc.job.job.Job.xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">xyz</code><a class="headerlink" href="#arc.job.job.Job.xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>The xyz geometry. Used for the calculation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.radius">
-<code class="descname">radius</code><a class="headerlink" href="#arc.job.job.Job.radius" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">radius</code><a class="headerlink" href="#arc.job.job.Job.radius" title="Permalink to this definition">¶</a></dt>
 <dd><p>The species radius in Angstrom.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.n_atoms">
-<code class="descname">n_atoms</code><a class="headerlink" href="#arc.job.job.Job.n_atoms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">n_atoms</code><a class="headerlink" href="#arc.job.job.Job.n_atoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of atoms in self.xyz.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.conformer">
-<code class="descname">conformer</code><a class="headerlink" href="#arc.job.job.Job.conformer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">conformer</code><a class="headerlink" href="#arc.job.job.Job.conformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Conformer number if optimizing conformers.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.conformers">
-<code class="descname">conformers</code><a class="headerlink" href="#arc.job.job.Job.conformers" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">conformers</code><a class="headerlink" href="#arc.job.job.Job.conformers" title="Permalink to this definition">¶</a></dt>
 <dd><p>A path to the YAML file conformer coordinates for a Gromacs MD job.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.is_ts">
-<code class="descname">is_ts</code><a class="headerlink" href="#arc.job.job.Job.is_ts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_ts</code><a class="headerlink" href="#arc.job.job.Job.is_ts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether this species represents a transition structure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.level_of_theory">
-<code class="descname">level_of_theory</code><a class="headerlink" href="#arc.job.job.Job.level_of_theory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">level_of_theory</code><a class="headerlink" href="#arc.job.job.Job.level_of_theory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory, e.g. ‘CBS-QB3’, ‘CCSD(T)-F12a/aug-cc-pVTZ’, ‘B3LYP/6-311++G(3df,3pd)’…</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.job_type">
-<code class="descname">job_type</code><a class="headerlink" href="#arc.job.job.Job.job_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">job_type</code><a class="headerlink" href="#arc.job.job.Job.job_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>The job’s type.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.scan">
-<code class="descname">scan</code><a class="headerlink" href="#arc.job.job.Job.scan" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">scan</code><a class="headerlink" href="#arc.job.job.Job.scan" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list representing atom labels for the dihedral scan (e.g., [2, 1, 3, 5]).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.pivots">
-<code class="descname">pivots</code><a class="headerlink" href="#arc.job.job.Job.pivots" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pivots</code><a class="headerlink" href="#arc.job.job.Job.pivots" title="Permalink to this definition">¶</a></dt>
 <dd><p>The rotor scan pivots, if the job type is scan. Not used directly in these methods,
 but used to identify the rotor.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.scan_res">
-<code class="descname">scan_res</code><a class="headerlink" href="#arc.job.job.Job.scan_res" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">scan_res</code><a class="headerlink" href="#arc.job.job.Job.scan_res" title="Permalink to this definition">¶</a></dt>
 <dd><p>The rotor scan resolution in degrees.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.software">
-<code class="descname">software</code><a class="headerlink" href="#arc.job.job.Job.software" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">software</code><a class="headerlink" href="#arc.job.job.Job.software" title="Permalink to this definition">¶</a></dt>
 <dd><p>The electronic structure software to be used.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.server_nodes">
-<code class="descname">server_nodes</code><a class="headerlink" href="#arc.job.job.Job.server_nodes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">server_nodes</code><a class="headerlink" href="#arc.job.job.Job.server_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of nodes this job was submitted to (for troubleshooting).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.memory_gb">
-<code class="descname">memory_gb</code><a class="headerlink" href="#arc.job.job.Job.memory_gb" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">memory_gb</code><a class="headerlink" href="#arc.job.job.Job.memory_gb" title="Permalink to this definition">¶</a></dt>
 <dd><p>The total job allocated memory in GB (14 by default).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.memory">
-<code class="descname">memory</code><a class="headerlink" href="#arc.job.job.Job.memory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">memory</code><a class="headerlink" href="#arc.job.job.Job.memory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The total job allocated memory in appropriate units per ESS.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.method">
-<code class="descname">method</code><a class="headerlink" href="#arc.job.job.Job.method" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">method</code><a class="headerlink" href="#arc.job.job.Job.method" title="Permalink to this definition">¶</a></dt>
 <dd><p>The calculation method (e.g., ‘B3LYP’, ‘CCSD(T)’, ‘CBS-QB3’…).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.basis_set">
-<code class="descname">basis_set</code><a class="headerlink" href="#arc.job.job.Job.basis_set" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">basis_set</code><a class="headerlink" href="#arc.job.job.Job.basis_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>The basis set (e.g., ‘6-311++G(d,p)’, ‘aug-cc-pVTZ’…).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.fine">
-<code class="descname">fine</code><a class="headerlink" href="#arc.job.job.Job.fine" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fine</code><a class="headerlink" href="#arc.job.job.Job.fine" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to use fine geometry optimization parameters.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.shift">
-<code class="descname">shift</code><a class="headerlink" href="#arc.job.job.Job.shift" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">shift</code><a class="headerlink" href="#arc.job.job.Job.shift" title="Permalink to this definition">¶</a></dt>
 <dd><p>A string representation alpha- and beta-spin orbitals shifts (molpro only).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.comments">
-<code class="descname">comments</code><a class="headerlink" href="#arc.job.job.Job.comments" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">comments</code><a class="headerlink" href="#arc.job.job.Job.comments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Job comments (archived, not used).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.initial_time">
-<code class="descname">initial_time</code><a class="headerlink" href="#arc.job.job.Job.initial_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">initial_time</code><a class="headerlink" href="#arc.job.job.Job.initial_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>The date-time this job was initiated.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">datetime</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.final_time">
-<code class="descname">final_time</code><a class="headerlink" href="#arc.job.job.Job.final_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">final_time</code><a class="headerlink" href="#arc.job.job.Job.final_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>The date-time this job was initiated.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">datetime</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.run_time">
-<code class="descname">run_time</code><a class="headerlink" href="#arc.job.job.Job.run_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_time</code><a class="headerlink" href="#arc.job.job.Job.run_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Job execution time.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">timedelta</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>timedelta</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.job_status">
-<code class="descname">job_status</code><a class="headerlink" href="#arc.job.job.Job.job_status" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">job_status</code><a class="headerlink" href="#arc.job.job.Job.job_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>The job’s server and ESS statuses.
 The job server status is in job.job_status[0] and can be either ‘initializing’ / ‘running’
 / ‘errored’ / ‘done’. The job ESS status is in job.job_status[1] is a dictionary of
@@ -678,434 +584,350 @@ The job server status is in job.job_status[0] and can be either ‘initializing�
 The values of ‘status’ can be either <cite>initializing</cite>, <cite>running</cite>, <cite>errored</cite>, <cite>unconverged</cite>,
 or <cite>done</cite>. If the status is ‘errored’, then standardized error keywords, the error
 description and the identified error line from the ESS log file will be given as well.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.job_server_name">
-<code class="descname">job_server_name</code><a class="headerlink" href="#arc.job.job.Job.job_server_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">job_server_name</code><a class="headerlink" href="#arc.job.job.Job.job_server_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Job’s name on the server (e.g., ‘a103’).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.job_name">
-<code class="descname">job_name</code><a class="headerlink" href="#arc.job.job.Job.job_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">job_name</code><a class="headerlink" href="#arc.job.job.Job.job_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Job’s name for internal usage (e.g., ‘opt_a103’).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.job_id">
-<code class="descname">job_id</code><a class="headerlink" href="#arc.job.job.Job.job_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">job_id</code><a class="headerlink" href="#arc.job.job.Job.job_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>The job’s ID determined by the server.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.job_num">
-<code class="descname">job_num</code><a class="headerlink" href="#arc.job.job.Job.job_num" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">job_num</code><a class="headerlink" href="#arc.job.job.Job.job_num" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used as the entry number in the database, as well as the job name on the server.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.local_path">
-<code class="descname">local_path</code><a class="headerlink" href="#arc.job.job.Job.local_path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">local_path</code><a class="headerlink" href="#arc.job.job.Job.local_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Local path to job’s folder.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.local_path_to_output_file">
-<code class="descname">local_path_to_output_file</code><a class="headerlink" href="#arc.job.job.Job.local_path_to_output_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">local_path_to_output_file</code><a class="headerlink" href="#arc.job.job.Job.local_path_to_output_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>The local path to the output.out file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.local_path_to_orbitals_file">
-<code class="descname">local_path_to_orbitals_file</code><a class="headerlink" href="#arc.job.job.Job.local_path_to_orbitals_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">local_path_to_orbitals_file</code><a class="headerlink" href="#arc.job.job.Job.local_path_to_orbitals_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>The local path to the orbitals.fchk file (only for orbitals jobs).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.local_path_to_check_file">
-<code class="descname">local_path_to_check_file</code><a class="headerlink" href="#arc.job.job.Job.local_path_to_check_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">local_path_to_check_file</code><a class="headerlink" href="#arc.job.job.Job.local_path_to_check_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>The local path to the Gaussian check file of the current job (downloaded).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.local_path_to_lj_file">
-<code class="descname">local_path_to_lj_file</code><a class="headerlink" href="#arc.job.job.Job.local_path_to_lj_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">local_path_to_lj_file</code><a class="headerlink" href="#arc.job.job.Job.local_path_to_lj_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>The local path to the lennard_jones data file (from OneDMin).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.checkfile">
-<code class="descname">checkfile</code><a class="headerlink" href="#arc.job.job.Job.checkfile" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">checkfile</code><a class="headerlink" href="#arc.job.job.Job.checkfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>The path to a previous Gaussian checkfile to be used in the current job.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.remote_path">
-<code class="descname">remote_path</code><a class="headerlink" href="#arc.job.job.Job.remote_path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">remote_path</code><a class="headerlink" href="#arc.job.job.Job.remote_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remote path to job’s folder.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.submit">
-<code class="descname">submit</code><a class="headerlink" href="#arc.job.job.Job.submit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">submit</code><a class="headerlink" href="#arc.job.job.Job.submit" title="Permalink to this definition">¶</a></dt>
 <dd><p>The submit script. Created automatically.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.input">
-<code class="descname">input</code><a class="headerlink" href="#arc.job.job.Job.input" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">input</code><a class="headerlink" href="#arc.job.job.Job.input" title="Permalink to this definition">¶</a></dt>
 <dd><p>The input file. Created automatically.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.server">
-<code class="descname">server</code><a class="headerlink" href="#arc.job.job.Job.server" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">server</code><a class="headerlink" href="#arc.job.job.Job.server" title="Permalink to this definition">¶</a></dt>
 <dd><p>Server’s name.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.trsh">
-<code class="descname">trsh</code><a class="headerlink" href="#arc.job.job.Job.trsh" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">trsh</code><a class="headerlink" href="#arc.job.job.Job.trsh" title="Permalink to this definition">¶</a></dt>
 <dd><p>A troubleshooting keyword to be used in input files.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.ess_trsh_methods">
-<code class="descname">ess_trsh_methods</code><a class="headerlink" href="#arc.job.job.Job.ess_trsh_methods" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ess_trsh_methods</code><a class="headerlink" href="#arc.job.job.Job.ess_trsh_methods" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of troubleshooting methods already tried out for ESS convergence.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.initial_trsh">
-<code class="descname">initial_trsh</code><a class="headerlink" href="#arc.job.job.Job.initial_trsh" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">initial_trsh</code><a class="headerlink" href="#arc.job.job.Job.initial_trsh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshooting methods to try by default. Keys are ESS software, values are trshs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.scan_trsh">
-<code class="descname">scan_trsh</code><a class="headerlink" href="#arc.job.job.Job.scan_trsh" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">scan_trsh</code><a class="headerlink" href="#arc.job.job.Job.scan_trsh" title="Permalink to this definition">¶</a></dt>
 <dd><p>A troubleshooting method for rotor scans.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.occ">
-<code class="descname">occ</code><a class="headerlink" href="#arc.job.job.Job.occ" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">occ</code><a class="headerlink" href="#arc.job.job.Job.occ" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of occupied orbitals (core + val) from a molpro CCSD sp calc.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.project_directory">
-<code class="descname">project_directory</code><a class="headerlink" href="#arc.job.job.Job.project_directory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">project_directory</code><a class="headerlink" href="#arc.job.job.Job.project_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The path to the project directory.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.max_job_time">
-<code class="descname">max_job_time</code><a class="headerlink" href="#arc.job.job.Job.max_job_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">max_job_time</code><a class="headerlink" href="#arc.job.job.Job.max_job_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximal allowed job time on the server in hours.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.bath_gas">
-<code class="descname">bath_gas</code><a class="headerlink" href="#arc.job.job.Job.bath_gas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">bath_gas</code><a class="headerlink" href="#arc.job.job.Job.bath_gas" title="Permalink to this definition">¶</a></dt>
 <dd><p>A bath gas. Currently used in OneDMin to calc L-J parameters.
 Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.directed_scans">
-<code class="descname">directed_scans</code><a class="headerlink" href="#arc.job.job.Job.directed_scans" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">directed_scans</code><a class="headerlink" href="#arc.job.job.Job.directed_scans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Entries are lists of four-atom dihedral scan indices to constrain during a directed scan.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.directed_dihedrals">
-<code class="descname">directed_dihedrals</code><a class="headerlink" href="#arc.job.job.Job.directed_dihedrals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">directed_dihedrals</code><a class="headerlink" href="#arc.job.job.Job.directed_dihedrals" title="Permalink to this definition">¶</a></dt>
 <dd><p>The dihedral angles of a directed scan job corresponding to <code class="docutils literal notranslate"><span class="pre">directed_scans</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.directed_scan_type">
-<code class="descname">directed_scan_type</code><a class="headerlink" href="#arc.job.job.Job.directed_scan_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">directed_scan_type</code><a class="headerlink" href="#arc.job.job.Job.directed_scan_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>The type of the directed scan.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.job.job.Job.rotor_index">
-<code class="descname">rotor_index</code><a class="headerlink" href="#arc.job.job.Job.rotor_index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rotor_index</code><a class="headerlink" href="#arc.job.job.Job.rotor_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.as_dict">
-<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.as_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.as_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for dumping this object as a dictionary in a YAML file for restarting ARC.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.deduce_software">
-<code class="descname">deduce_software</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.deduce_software"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.deduce_software" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">deduce_software</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.deduce_software"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.deduce_software" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deduce the software to be used based on heuristics.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.delete" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete a running Job.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.determine_job_status">
-<code class="descname">determine_job_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.determine_job_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.determine_job_status" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_job_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.determine_job_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.determine_job_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the Job’s status. Updates self.job_status.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">IOError</span></code> – If the output file and any additional server information cannot be found.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>IOError</strong> – If the output file and any additional server information cannot be found.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.determine_run_time">
-<code class="descname">determine_run_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.determine_run_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.determine_run_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_run_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.determine_run_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.determine_run_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the run time. Update self.run_time and round to seconds.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.from_dict">
-<code class="descname">from_dict</code><span class="sig-paren">(</span><em>job_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.from_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">job_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.from_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for loading this object from a dictionary in a YAML file for restarting ARC</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the Job.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.set_cpu_and_mem">
-<code class="descname">set_cpu_and_mem</code><span class="sig-paren">(</span><em>memory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.set_cpu_and_mem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.set_cpu_and_mem" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_cpu_and_mem</code><span class="sig-paren">(</span><em class="sig-param">memory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.set_cpu_and_mem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.set_cpu_and_mem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the number of cpu’s and the job’s memory.
 self.memory is the actual memory allocated to the ESS.
 self.mem_per_cpu is the cluster software allocated memory.
@@ -1114,32 +936,32 @@ self.mem_per_cpu is the cluster software allocated memory.
 
 <dl class="method">
 <dt id="arc.job.job.Job.set_file_paths">
-<code class="descname">set_file_paths</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.set_file_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.set_file_paths" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_file_paths</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.set_file_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.set_file_paths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set local and remote job file paths.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.troubleshoot_server">
-<code class="descname">troubleshoot_server</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.troubleshoot_server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.troubleshoot_server" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">troubleshoot_server</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.troubleshoot_server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.troubleshoot_server" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshoot server errors.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.write_completed_job_to_csv_file">
-<code class="descname">write_completed_job_to_csv_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.write_completed_job_to_csv_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.write_completed_job_to_csv_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_completed_job_to_csv_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.write_completed_job_to_csv_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.write_completed_job_to_csv_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a completed ARCJob into the completed_jobs.csv file.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.write_input_file">
-<code class="descname">write_input_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.write_input_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.write_input_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_input_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.write_input_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.write_input_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a software-specific, job-specific input file.
 Save the file locally and also upload it to the server.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.job.job.Job.write_submit_script">
-<code class="descname">write_submit_script</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.write_submit_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.write_submit_script" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_submit_script</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.write_submit_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.write_submit_script" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the Job’s submit script.</p>
 </dd></dl>
 

@@ -184,98 +184,130 @@
 <p>A module for parsing information from various files.</p>
 <dl class="function">
 <dt id="arc.parser.parse_dipole_moment">
-<code class="descclassname">arc.parser.</code><code class="descname">parse_dipole_moment</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_dipole_moment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_dipole_moment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_dipole_moment</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_dipole_moment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_dipole_moment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the dipole moment in Debye from an opt job output file.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.parser.parse_e_elect">
-<code class="descclassname">arc.parser.</code><code class="descname">parse_e_elect</code><span class="sig-paren">(</span><em>path</em>, <em>zpe_scale_factor=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_e_elect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_e_elect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_e_elect</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">zpe_scale_factor=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_e_elect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_e_elect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the electronic energy from an sp job output file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> (<em>str</em>) – The ESS log file to parse from.</li>
-<li><strong>zpe_scale_factor</strong> – The ZPE scaling factor, used only for composite methods in Gaussian via Arkane.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – The ESS log file to parse from.</p></li>
+<li><p><strong>zpe_scale_factor</strong> – The ZPE scaling factor, used only for composite methods in Gaussian via Arkane.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The electronic energy in kJ/mol</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">e_elect (float)</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The electronic energy in kJ/mol</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>e_elect (float)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.parser.parse_frequencies">
-<code class="descclassname">arc.parser.</code><code class="descname">parse_frequencies</code><span class="sig-paren">(</span><em>path</em>, <em>software</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_frequencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_frequencies" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_frequencies</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">software</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_frequencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_frequencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the frequencies from a freq job output file.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.parser.parse_polarizability">
-<code class="descclassname">arc.parser.</code><code class="descname">parse_polarizability</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_polarizability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_polarizability" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_polarizability</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_polarizability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_polarizability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the polarizability from a freq job output file, returns the value in Angstrom^3.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="arc.parser.parse_scan_energies">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_scan_energies</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_scan_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_scan_energies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the torsion scan energies from an ESS log file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The ESS log file to parse from.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The electronic energy in kJ/mol.
+angles (list): The scan angles in degrees.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>energies (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.parser.parse_t1">
-<code class="descclassname">arc.parser.</code><code class="descname">parse_t1</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_t1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_t1" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_t1</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_t1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_t1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the T1 parameter from a Molpro coupled cluster calculation.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.parser.parse_xyz_from_file">
-<code class="descclassname">arc.parser.</code><code class="descname">parse_xyz_from_file</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_xyz_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_xyz_from_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_xyz_from_file</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_xyz_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_xyz_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse xyz coordinated from:
 - .xyz: XYZ file
 - .gjf: Gaussian input file
 - .out or .log: ESS output file (Gaussian, QChem, Molpro)
 - other: Molpro or QChem input file</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) – The file path.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">THe parsed coordinates.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">xyz (dict)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The file path.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The parsed coordinates.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>xyz (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.parser.parse_zpe">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_zpe</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_zpe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_zpe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the calculated ZPE from a frequency output file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to a frequency calculation output file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The calculated zero point energy in kJ/mol.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.parser.process_conformers_file">
-<code class="descclassname">arc.parser.</code><code class="descname">process_conformers_file</code><span class="sig-paren">(</span><em>conformers_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#process_conformers_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.process_conformers_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">process_conformers_file</code><span class="sig-paren">(</span><em class="sig-param">conformers_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#process_conformers_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.process_conformers_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse coordinates and energies from an ARC conformers file of either species or TSs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>conformers_path</strong> (<em>str</em>) – The path to an ARC conformers file
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>conformers_path</strong> (<em>str</em>) – The path to an ARC conformers file
 (either a “conformers_before_optimization” or
-a “conformers_after_optimization” file).</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Entries are conformer coordinates in a dict format.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">xyz (list)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Entries float numbers representing the energies in kJ/mol.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">energies (list)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">InputError</span></code> – If the file could not be found.</td>
-</tr>
-</tbody>
-</table>
+a “conformers_after_optimization” file).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Entries are conformer coordinates in a dict format.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>xyz (list)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Entries float numbers representing the energies in kJ/mol.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>energies (list)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If the file could not be found.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

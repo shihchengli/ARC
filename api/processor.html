@@ -184,264 +184,217 @@
 <p>Processor module for outputting thermoproperties and rates.</p>
 <dl class="class">
 <dt id="arc.processor.Processor">
-<em class="property">class </em><code class="descclassname">arc.processor.</code><code class="descname">Processor</code><span class="sig-paren">(</span><em>project</em>, <em>project_directory</em>, <em>species_dict</em>, <em>rxn_list</em>, <em>output</em>, <em>use_bac</em>, <em>model_chemistry</em>, <em>lib_long_desc</em>, <em>rmgdatabase</em>, <em>t_min=None</em>, <em>t_max=None</em>, <em>t_count=None</em>, <em>freq_scale_factor=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">Processor</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">project_directory</em>, <em class="sig-param">species_dict</em>, <em class="sig-param">rxn_list</em>, <em class="sig-param">output</em>, <em class="sig-param">use_bac</em>, <em class="sig-param">model_chemistry</em>, <em class="sig-param">lib_long_desc</em>, <em class="sig-param">rmgdatabase</em>, <em class="sig-param">t_min=None</em>, <em class="sig-param">t_max=None</em>, <em class="sig-param">t_count=None</em>, <em class="sig-param">freq_scale_factor=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor" title="Permalink to this definition">¶</a></dt>
 <dd><p>ARC Processor class. Post processes results in Arkane.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<em>str</em>) – The project’s name. Used for naming the directory.</li>
-<li><strong>project_directory</strong> (<em>str</em>) – The path of the ARC project directory.</li>
-<li><strong>species_dict</strong> (<em>dict</em>) – Keys are labels, values are ARCSpecies objects.</li>
-<li><strong>rxn_list</strong> (<em>list</em>) – List of ARCReaction objects.</li>
-<li><strong>output</strong> (<em>dict</em>) – Keys are labels, values are output file paths.</li>
-<li><strong>use_bac</strong> (<em>bool</em>) – Whether or not to use bond additivity corrections for thermo calculations.</li>
-<li><strong>model_chemistry</strong> (<em>str</em>) – The level of theory used in the sp//freq form (or a composite method).</li>
-<li><strong>lib_long_desc</strong> (<em>str</em>) – A multiline description of levels of theory for the outputted RMG libraries.</li>
-<li><strong>rmgdatabase</strong> (<em>RMGDatabase</em><em>, </em><em>optional</em>) – The RMG database object.</li>
-<li><strong>t_min</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The minimum temperature for kinetics computations, e.g., (500, str(‘K’)).</li>
-<li><strong>t_max</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The maximum temperature for kinetics computations, e.g., (3000, str(‘K’)).</li>
-<li><strong>t_count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of temperature points between t_min and t_max for kinetics computations.</li>
-<li><strong>freq_scale_factor</strong> (<em>float</em><em>, </em><em>optional</em>) – The harmonic frequencies scaling factor. Could be automatically determined
-if not available in Arkane and not provided by the user.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>str</em>) – The project’s name. Used for naming the directory.</p></li>
+<li><p><strong>project_directory</strong> (<em>str</em>) – The path of the ARC project directory.</p></li>
+<li><p><strong>species_dict</strong> (<em>dict</em>) – Keys are labels, values are ARCSpecies objects.</p></li>
+<li><p><strong>rxn_list</strong> (<em>list</em>) – List of ARCReaction objects.</p></li>
+<li><p><strong>output</strong> (<em>dict</em>) – Keys are labels, values are output file paths.</p></li>
+<li><p><strong>use_bac</strong> (<em>bool</em>) – Whether or not to use bond additivity corrections for thermo calculations.</p></li>
+<li><p><strong>model_chemistry</strong> (<em>str</em>) – The level of theory used in the sp//freq form (or a composite method).</p></li>
+<li><p><strong>lib_long_desc</strong> (<em>str</em>) – A multiline description of levels of theory for the outputted RMG libraries.</p></li>
+<li><p><strong>rmgdatabase</strong> (<em>RMGDatabase</em><em>, </em><em>optional</em>) – The RMG database object.</p></li>
+<li><p><strong>t_min</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The minimum temperature for kinetics computations, e.g., (500, ‘K’).</p></li>
+<li><p><strong>t_max</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The maximum temperature for kinetics computations, e.g., (3000, ‘K’).</p></li>
+<li><p><strong>t_count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of temperature points between t_min and t_max for kinetics computations.</p></li>
+<li><p><strong>freq_scale_factor</strong> (<em>float</em><em>, </em><em>optional</em>) – The harmonic frequencies scaling factor. Could be automatically determined
+if not available in Arkane and not provided by the user.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="arc.processor.Processor.project">
-<code class="descname">project</code><a class="headerlink" href="#arc.processor.Processor.project" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">project</code><a class="headerlink" href="#arc.processor.Processor.project" title="Permalink to this definition">¶</a></dt>
 <dd><p>The project’s name. Used for naming the directory.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.project_directory">
-<code class="descname">project_directory</code><a class="headerlink" href="#arc.processor.Processor.project_directory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">project_directory</code><a class="headerlink" href="#arc.processor.Processor.project_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The path of the ARC project directory.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.species_dict">
-<code class="descname">species_dict</code><a class="headerlink" href="#arc.processor.Processor.species_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">species_dict</code><a class="headerlink" href="#arc.processor.Processor.species_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keys are labels, values are ARCSpecies objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.rxn_list">
-<code class="descname">rxn_list</code><a class="headerlink" href="#arc.processor.Processor.rxn_list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rxn_list</code><a class="headerlink" href="#arc.processor.Processor.rxn_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of ARCReaction objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.output">
-<code class="descname">output</code><a class="headerlink" href="#arc.processor.Processor.output" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">output</code><a class="headerlink" href="#arc.processor.Processor.output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keys are labels, values are output file paths. Structure specified in Scheduler.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.use_bac">
-<code class="descname">use_bac</code><a class="headerlink" href="#arc.processor.Processor.use_bac" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">use_bac</code><a class="headerlink" href="#arc.processor.Processor.use_bac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not to use bond additivity corrections for thermo calculations.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.sp_level">
-<code class="descname">sp_level</code><a class="headerlink" href="#arc.processor.Processor.sp_level" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">sp_level</code><a class="headerlink" href="#arc.processor.Processor.sp_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The single point level of theory, used for atom and bond corrections in Arkane.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.freq_level">
-<code class="descname">freq_level</code><a class="headerlink" href="#arc.processor.Processor.freq_level" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">freq_level</code><a class="headerlink" href="#arc.processor.Processor.freq_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The frequency level of theory, used for the frequency scaling factor in Arkane
 if <cite>freq_scale_factor</cite> is not given.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.freq_scale_factor">
-<code class="descname">freq_scale_factor</code><a class="headerlink" href="#arc.processor.Processor.freq_scale_factor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">freq_scale_factor</code><a class="headerlink" href="#arc.processor.Processor.freq_scale_factor" title="Permalink to this definition">¶</a></dt>
 <dd><p>The harmonic frequencies scaling factor. Could be automatically determined
 if not available in Arkane and not provided by the user.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.lib_long_desc">
-<code class="descname">lib_long_desc</code><a class="headerlink" href="#arc.processor.Processor.lib_long_desc" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">lib_long_desc</code><a class="headerlink" href="#arc.processor.Processor.lib_long_desc" title="Permalink to this definition">¶</a></dt>
 <dd><p>A multiline description of levels of theory for the outputted RMG libraries.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.t_min">
-<code class="descname">t_min</code><a class="headerlink" href="#arc.processor.Processor.t_min" title="Permalink to this definition">¶</a></dt>
-<dd><p>The minimum temperature for kinetics computations, e.g., (500, str(‘K’)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">tuple</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">t_min</code><a class="headerlink" href="#arc.processor.Processor.t_min" title="Permalink to this definition">¶</a></dt>
+<dd><p>The minimum temperature for kinetics computations, e.g., (500, ‘K’).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.t_max">
-<code class="descname">t_max</code><a class="headerlink" href="#arc.processor.Processor.t_max" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum temperature for kinetics computations, e.g., (3000, str(‘K’)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">tuple</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">t_max</code><a class="headerlink" href="#arc.processor.Processor.t_max" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum temperature for kinetics computations, e.g., (3000, ‘K’).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.t_count">
-<code class="descname">t_count</code><a class="headerlink" href="#arc.processor.Processor.t_count" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">t_count</code><a class="headerlink" href="#arc.processor.Processor.t_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of temperature points between t_min and t_max for kinetics computations.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="arc.processor.Processor.rmgdb">
-<code class="descname">rmgdb</code><a class="headerlink" href="#arc.processor.Processor.rmgdb" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rmgdb</code><a class="headerlink" href="#arc.processor.Processor.rmgdb" title="Permalink to this definition">¶</a></dt>
 <dd><p>The RMG database object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">RMGDatabase</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>RMGDatabase</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.processor.Processor.copy_freq_output_for_ts">
-<code class="descname">copy_freq_output_for_ts</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor.copy_freq_output_for_ts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor.copy_freq_output_for_ts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">copy_freq_output_for_ts</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor.copy_freq_output_for_ts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor.copy_freq_output_for_ts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy the frequency job output file into the TS geometry folder.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.processor.Processor.load_rmg_db">
-<code class="descname">load_rmg_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor.load_rmg_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor.load_rmg_db" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_rmg_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor.load_rmg_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor.load_rmg_db" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the RMG database</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.processor.Processor.process">
-<code class="descname">process</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor.process" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor.process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process ARC outputs and generate thermo and kinetics.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.processor.Processor.process_bdes">
-<code class="descname">process_bdes</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor.process_bdes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor.process_bdes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">process_bdes</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor.process_bdes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor.process_bdes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process bond dissociation energies for a single parent species represented by <cite>label</cite>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label</strong> (<em>str</em>) – The species label.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The BDE report for a single species. Keys are pivots, values are energies in kJ/mol.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bde_report (dict)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The BDE report for a single species. Keys are pivots, values are energies in kJ/mol.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bde_report (dict)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
