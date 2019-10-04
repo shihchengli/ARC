@@ -1557,7 +1557,12 @@
             <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Attempted to remove a nonexistent bond.&#39;</span><span class="p">)</span>
         <span class="n">bond</span> <span class="o">=</span> <span class="n">mol_copy</span><span class="o">.</span><span class="n">get_bond</span><span class="p">(</span><span class="n">atom1</span><span class="p">,</span> <span class="n">atom2</span><span class="p">)</span>
         <span class="n">mol_copy</span><span class="o">.</span><span class="n">remove_bond</span><span class="p">(</span><span class="n">bond</span><span class="p">)</span>
-        <span class="n">mol1</span><span class="p">,</span> <span class="n">mol2</span> <span class="o">=</span> <span class="n">mol_copy</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">mol_splits</span> <span class="o">=</span> <span class="n">mol_copy</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol_splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">mol1</span><span class="p">,</span> <span class="n">mol2</span> <span class="o">=</span> <span class="n">mol_splits</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Could not split </span><span class="si">{self.label}</span><span class="s1"> between indices </span><span class="si">{indices}</span><span class="s1">.&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
 
         <span class="n">used_a_label</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol1</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">mol1</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">is_hydrogen</span><span class="p">():</span>

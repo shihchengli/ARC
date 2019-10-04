@@ -314,13 +314,14 @@ first commit these changes to a git branch.:</p>
 </div>
 <div class="section" id="add-arc-aliases-to-your-bashrc-for-convenience">
 <span id="aliases"></span><h2>Add ARC aliases to your .bashrc (for convenience)<a class="headerlink" href="#add-arc-aliases-to-your-bashrc-for-convenience" title="Permalink to this headline">¶</a></h2>
-<p>Below are optional aliases to make ARC (even) more convenient (make sure to change <cite>~/Path/to/ARC/</cite> accordingly):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export arc_path=$HOME&#39;~/Path/to/ARC/&#39;
+<p>Below are optional aliases to make ARC (even) more convenient (make sure to change <cite>~/Path/to/ARC/</cite> accordingly).
+Add these to your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> file (edit it by typing, e.g., <code class="docutils literal notranslate"><span class="pre">nano</span> <span class="pre">~/.bashrc</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export arc_path=$HOME&#39;/Path/to/ARC/&#39;
 alias arce=&#39;source activate arc_env&#39;
-alias arc=&#39;source activate arc_env &amp;&amp; python $arc_path/ARC.py input.yml&#39;
-alias arcrestart=&#39;source activate arc_env &amp;&amp; python $arc_path/ARC.py restart.yml&#39;
+alias arc=&#39;python $arc_path/ARC.py input.yml&#39;
+alias arcrestart=&#39;python $arc_path/ARC.py restart.yml&#39;
 alias arcode=&#39;cd $arc_path&#39;
-alias j=&#39;cd $arc_path/ipython/ &amp;&amp; arce &amp;&amp; jupyter notebook&#39;
+alias j=&#39;cd $arc_path/ipython/ &amp;&amp; jupyter notebook&#39;
 </pre></div>
 </div>
 </div>
