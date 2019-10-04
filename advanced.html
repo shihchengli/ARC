@@ -196,6 +196,22 @@ Currently, ARC supports the following job types: <code class="docutils literal n
 <code class="docutils literal notranslate"><span class="pre">sp</span></code>, <code class="docutils literal notranslate"><span class="pre">rotors</span></code>, <code class="docutils literal notranslate"><span class="pre">onedmin</span></code>, <code class="docutils literal notranslate"><span class="pre">orbitals</span></code>, <code class="docutils literal notranslate"><span class="pre">bde</span></code>.</p>
 <p>Notice that <code class="docutils literal notranslate"><span class="pre">specific_job_type</span></code> takes higher precedence than <code class="docutils literal notranslate"><span class="pre">job_types</span></code>. If you specify both attributes, ARC will
 dismiss the given <code class="docutils literal notranslate"><span class="pre">job_types</span></code> and will only populate the <code class="docutils literal notranslate"><span class="pre">job_types</span></code> dictionary using given <code class="docutils literal notranslate"><span class="pre">specific_job_type</span></code>.</p>
+<p>For bond dissociation energy calculation, the following two <code class="docutils literal notranslate"><span class="pre">job_types</span></code> specifications are equivalent:</p>
+<p>Specification 1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_types</span><span class="p">:</span>
+  <span class="n">rotors</span><span class="p">:</span> <span class="n">false</span>
+  <span class="n">conformers</span><span class="p">:</span> <span class="n">false</span>
+  <span class="n">fine_grid</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">freq</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">opt</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">sp</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">bde</span><span class="p">:</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>Specification 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">specific_job_type</span> <span class="p">:</span> <span class="n">bde</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="using-a-fine-dft-grid-for-optimization">
 <h2>Using a fine DFT grid for optimization<a class="headerlink" href="#using-a-fine-dft-grid-for-optimization" title="Permalink to this headline">¶</a></h2>
@@ -643,6 +659,31 @@ Below is an example requesting all hydrogen BDEs in ethanol including the <cite>
   <span class="n">opt</span><span class="p">:</span> <span class="n">true</span>
   <span class="n">sp</span><span class="p">:</span> <span class="n">true</span>
   <span class="n">bde</span><span class="p">:</span> <span class="n">true</span>
+
+<span class="n">species</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">label</span><span class="p">:</span> <span class="n">ethanol</span>
+  <span class="n">smiles</span><span class="p">:</span> <span class="n">CCO</span>
+  <span class="n">xyz</span><span class="p">:</span> <span class="o">|</span>
+    <span class="n">O</span>       <span class="mf">1.20823797</span>   <span class="o">-</span><span class="mf">0.43654321</span>    <span class="mf">0.79046266</span>
+    <span class="n">C</span>       <span class="mf">0.38565457</span>    <span class="mf">0.37473766</span>   <span class="o">-</span><span class="mf">0.03466399</span>
+    <span class="n">C</span>      <span class="o">-</span><span class="mf">0.94122817</span>   <span class="o">-</span><span class="mf">0.32248828</span>   <span class="o">-</span><span class="mf">0.24592109</span>
+    <span class="n">H</span>       <span class="mf">0.89282946</span>    <span class="mf">0.53292877</span>   <span class="o">-</span><span class="mf">0.99112072</span>
+    <span class="n">H</span>       <span class="mf">0.23767951</span>    <span class="mf">1.34108205</span>    <span class="mf">0.45660206</span>
+    <span class="n">H</span>      <span class="o">-</span><span class="mf">0.79278514</span>   <span class="o">-</span><span class="mf">1.30029213</span>   <span class="o">-</span><span class="mf">0.71598886</span>
+    <span class="n">H</span>      <span class="o">-</span><span class="mf">1.43922693</span>   <span class="o">-</span><span class="mf">0.50288055</span>    <span class="mf">0.71249177</span>
+    <span class="n">H</span>      <span class="o">-</span><span class="mf">1.60098471</span>    <span class="mf">0.27712988</span>   <span class="o">-</span><span class="mf">0.87920708</span>
+    <span class="n">H</span>       <span class="mf">2.04982343</span>    <span class="mf">0.03632579</span>    <span class="mf">0.90734524</span>
+  <span class="n">bdes</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">all_h</span>
+  <span class="o">-</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="o">-</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>Note: In the above example, the BDE calculation is not based on the geometry specified by the given xyz,
+but on the optimal geometry determined by ARC. To calculate the same BDEs in ethanol using specified geometry, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="p">:</span> <span class="n">ethanol_BDEs_specific_geometry</span>
+
+<span class="n">specific_job_type</span> <span class="p">:</span> <span class="n">bde</span>
 
 <span class="n">species</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">label</span><span class="p">:</span> <span class="n">ethanol</span>
