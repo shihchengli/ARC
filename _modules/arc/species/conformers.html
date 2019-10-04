@@ -204,7 +204,6 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">heapq</span> <span class="k">import</span> <span class="n">nsmallest</span>
 
 <span class="kn">import</span> <span class="nn">openbabel</span> <span class="k">as</span> <span class="nn">ob</span>
 <span class="kn">import</span> <span class="nn">pybel</span> <span class="k">as</span> <span class="nn">pyb</span>
@@ -349,9 +348,9 @@
     <span class="n">conformers</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_conformers</span><span class="p">)</span>
 
     <span class="n">num_confs_to_return</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">num_confs_to_return</span><span class="p">,</span> <span class="n">hypothetical_num_comb</span><span class="p">)</span>  <span class="c1"># don&#39;t return more than we have</span>
-    <span class="n">lowest_confs</span> <span class="o">=</span> <span class="n">get_lowest_confs</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">conformers</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">num_confs_to_return</span><span class="p">)</span>
+    <span class="n">lowest_confs</span> <span class="o">=</span> <span class="n">get_lowest_confs</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">new_conformers</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">num_confs_to_return</span><span class="p">)</span>
 
-    <span class="n">lowest_conf</span> <span class="o">=</span> <span class="n">get_lowest_confs</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">conformers</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">lowest_conf</span> <span class="o">=</span> <span class="n">get_lowest_confs</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">new_conformers</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">enantiomeric_xyzs</span> <span class="o">=</span> <span class="n">generate_all_enantiomers</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xyz</span><span class="o">=</span><span class="n">lowest_conf</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])</span>
 
     <span class="k">for</span> <span class="n">enantiomeric_xyz</span> <span class="ow">in</span> <span class="n">enantiomeric_xyzs</span><span class="p">:</span>
@@ -517,7 +516,8 @@
         <span class="c1"># just generate all combinations and get their FF energies</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;hypothetical_num_comb for </span><span class="si">{0}</span><span class="s1"> is &lt; </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">combination_threshold</span><span class="p">))</span>
         <span class="n">new_conformers</span> <span class="o">=</span> <span class="n">generate_all_combinations</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">base_xyz</span><span class="p">,</span> <span class="n">multiple_tors</span><span class="p">,</span> <span class="n">multiple_sampling_points</span><span class="p">,</span>
-                                                   <span class="n">len_conformers</span><span class="o">=</span><span class="n">len_conformers</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">)</span>
+                                                   <span class="n">len_conformers</span><span class="o">=</span><span class="n">len_conformers</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span>
+                                                   <span class="n">torsions</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">torsion_angles</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
     <span class="k">return</span> <span class="n">new_conformers</span></div>
 
 
@@ -614,7 +614,7 @@
 
 
 <div class="viewcode-block" id="generate_all_combinations"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.generate_all_combinations">[docs]</a><span class="k">def</span> <span class="nf">generate_all_combinations</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">base_xyz</span><span class="p">,</span> <span class="n">multiple_tors</span><span class="p">,</span> <span class="n">multiple_sampling_points</span><span class="p">,</span> <span class="n">len_conformers</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-                              <span class="n">force_field</span><span class="o">=</span><span class="s1">&#39;MMFF94s&#39;</span><span class="p">):</span>
+                              <span class="n">torsions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s1">&#39;MMFF94s&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate all combinations of torsion wells from a base conformer.</span>
 <span class="sd">    untested</span>
@@ -628,6 +628,7 @@
 <span class="sd">                                         to torsions in multiple_tors.</span>
 <span class="sd">        len_conformers (int, optional): The length of the existing conformers list (for consecutive numbering).</span>
 <span class="sd">        force_field (str, optional): The type of force field to use.</span>
+<span class="sd">        torsions (list, optional): A list of all possible torsions in the molecule. Will be determined if not given.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: New conformer combinations, entries are conformer dictionaries.</span>
@@ -654,6 +655,9 @@
                                <span class="s1">&#39;xyz&#39;</span><span class="p">:</span> <span class="n">base_xyz</span><span class="p">,</span>
                                <span class="s1">&#39;FF energy&#39;</span><span class="p">:</span> <span class="n">energy</span><span class="p">,</span>
                                <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;Generated all combinations from scan map (trivial case)&#39;</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">torsions</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">torsions</span> <span class="o">=</span> <span class="n">determine_rotors</span><span class="p">([</span><span class="n">mol</span><span class="p">])</span>
+    <span class="n">new_conformers</span> <span class="o">=</span> <span class="n">determine_dihedrals</span><span class="p">(</span><span class="n">new_conformers</span><span class="p">,</span> <span class="n">torsions</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">new_conformers</span></div>
 
 
@@ -757,22 +761,23 @@
         <span class="n">new_dihedrals</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_dihedrals</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="n">dihedrals</span> <span class="ow">in</span> <span class="n">new_dihedrals</span><span class="p">:</span>
+        <span class="n">xyz_dihedrals</span> <span class="o">=</span> <span class="n">xyz</span>
         <span class="k">for</span> <span class="n">torsion</span><span class="p">,</span> <span class="n">dihedral</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">torsions</span><span class="p">,</span> <span class="n">dihedrals</span><span class="p">):</span>
-            <span class="n">conf</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">index_map</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">rdkit_conf_from_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">xyz</span><span class="p">)</span>
+            <span class="n">conf</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">index_map</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">rdkit_conf_from_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">xyz_dihedrals</span><span class="p">)</span>
             <span class="n">rd_torsion</span> <span class="o">=</span> <span class="p">[</span><span class="n">index_map</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">torsion</span><span class="p">]</span>  <span class="c1"># convert the atom indices in the torsion to RDKit indices</span>
             <span class="n">xyz_dihedrals</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">set_rdkit_dihedrals</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">index_map</span><span class="p">,</span> <span class="n">rd_torsion</span><span class="p">,</span> <span class="n">deg_abs</span><span class="o">=</span><span class="n">dihedral</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">force_field</span> <span class="o">!=</span> <span class="s1">&#39;gromacs&#39;</span><span class="p">:</span>
-                <span class="n">xyz_</span><span class="p">,</span> <span class="n">energy</span> <span class="o">=</span> <span class="n">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz_dihedrals</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                        <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">energy</span> <span class="ow">and</span> <span class="n">xyz_</span><span class="p">:</span>
-                    <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">energy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                    <span class="k">if</span> <span class="n">optimize</span><span class="p">:</span>
-                        <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz_</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz_dihedrals</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-                <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz_dihedrals</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">force_field</span> <span class="o">!=</span> <span class="s1">&#39;gromacs&#39;</span><span class="p">:</span>
+            <span class="n">xyz_</span><span class="p">,</span> <span class="n">energy</span> <span class="o">=</span> <span class="n">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz_dihedrals</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                    <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">energy</span> <span class="ow">and</span> <span class="n">xyz_</span><span class="p">:</span>
+                <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">energy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">optimize</span><span class="p">:</span>
+                    <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz_</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz_dihedrals</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz_dihedrals</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span></div>
 
 
@@ -1013,14 +1018,25 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">confs</span> <span class="ow">or</span> <span class="n">confs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ConformerError</span><span class="p">(</span><span class="s1">&#39;get_lowest_confs() got no conformers for </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">confs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">confs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">conformer_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">confs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">entry</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">conformer_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;xyz&#39;</span><span class="p">:</span> <span class="n">entry</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">energy</span><span class="p">:</span> <span class="n">entry</span><span class="p">[</span><span class="mi">1</span><span class="p">]})</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">confs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">conformer_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">conformer</span> <span class="k">for</span> <span class="n">conformer</span> <span class="ow">in</span> <span class="n">confs</span> <span class="k">if</span> <span class="n">energy</span> <span class="ow">in</span> <span class="n">conformer</span> <span class="ow">and</span> <span class="n">conformer</span><span class="p">[</span><span class="n">energy</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">nsmallest</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">conformer_list</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">conf</span><span class="p">:</span> <span class="n">conf</span><span class="p">[</span><span class="n">energy</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">confs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">nsmallest</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">confs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">conf</span><span class="p">:</span> <span class="n">conf</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ConformerError</span><span class="p">(</span><span class="s2">&quot;confs could either be a list of dictionaries or a list of lists. &quot;</span>
-                             <span class="s2">&quot;Got a list of </span><span class="si">{0}</span><span class="s2">&#39;s for </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">confs</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">label</span><span class="p">))</span></div>
+                             <span class="s2">&quot;Got a list of </span><span class="si">{0}</span><span class="s2">&#39;s for </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">confs</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">label</span><span class="p">))</span>
+    <span class="n">conformer_list</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">conformer</span><span class="p">:</span> <span class="n">conformer</span><span class="p">[</span><span class="n">energy</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">n_lowest_confs</span> <span class="o">=</span> <span class="p">[</span><span class="n">conformer_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">conformer_list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">compare_xyz</span><span class="p">(</span><span class="n">n_lowest_confs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;xyz&#39;</span><span class="p">],</span> <span class="n">conformer_list</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;xyz&#39;</span><span class="p">]):</span>
+            <span class="n">n_lowest_confs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conformer_list</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+            <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">n_lowest_confs</span></div>
 
 
 <div class="viewcode-block" id="get_torsion_angles"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.get_torsion_angles">[docs]</a><span class="k">def</span> <span class="nf">get_torsion_angles</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">conformers</span><span class="p">,</span> <span class="n">torsions</span><span class="p">):</span>
@@ -1634,7 +1650,7 @@
 <span class="sd">        bool: Whether the coordinates represent the same conformer within the given ``precision``, ``True`` if they do.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        InputError: If ``xyz1`` and ``xyz2`` arer of wrong type or have different elements (not considering isotopes).</span>
+<span class="sd">        InputError: If ``xyz1`` and ``xyz2`` are of wrong type or have different elements (not considering isotopes).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="p">[</span><span class="n">xyz1</span><span class="p">,</span> <span class="n">xyz2</span><span class="p">]):</span>
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;xyz1 and xyz2 must be dictionaries, got </span><span class="si">{0}</span><span class="s1"> and </span><span class="si">{1}</span><span class="s1">, respectively&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
