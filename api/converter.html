@@ -416,12 +416,6 @@ If <cite>multiplicity</cite> is given, the returned species multiplicity will be
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>RDMol</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Atom index map. Keys are atom indices in the RMG Molecule, values are atom indices in the RDKit Molecule.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -496,7 +490,7 @@ it’ll be used to set radicals (useful if bond orders aren’t known for a mole
 
 <dl class="function">
 <dt id="arc.species.converter.set_rdkit_dihedrals">
-<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">set_rdkit_dihedrals</code><span class="sig-paren">(</span><em class="sig-param">conf</em>, <em class="sig-param">rd_mol</em>, <em class="sig-param">index_map</em>, <em class="sig-param">rd_scan</em>, <em class="sig-param">deg_increment=None</em>, <em class="sig-param">deg_abs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#set_rdkit_dihedrals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.set_rdkit_dihedrals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">set_rdkit_dihedrals</code><span class="sig-paren">(</span><em class="sig-param">conf</em>, <em class="sig-param">rd_mol</em>, <em class="sig-param">torsion</em>, <em class="sig-param">deg_increment=None</em>, <em class="sig-param">deg_abs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#set_rdkit_dihedrals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.set_rdkit_dihedrals" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for setting dihedral angles using RDKit.
 Either <code class="docutils literal notranslate"><span class="pre">deg_increment</span></code> or <code class="docutils literal notranslate"><span class="pre">deg_abs</span></code> must be specified.</p>
 <dl class="field-list simple">
@@ -504,8 +498,7 @@ Either <code class="docutils literal notranslate"><span class="pre">deg_incremen
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>conf</strong> – The RDKit conformer with the current xyz information.</p></li>
 <li><p><strong>rd_mol</strong> – The respective RDKit molecule.</p></li>
-<li><p><strong>index_map</strong> (<em>dict</em>) – An atom index mapping dictionary, keys are xyz_index, values are rd_index.</p></li>
-<li><p><strong>rd_scan</strong> (<em>list</em>) – The four-atom torsion scan indices corresponding to the RDKit conformer indices.</p></li>
+<li><p><strong>torsion</strong> (<em>list</em><em>, </em><em>tuple</em>) – The 0-indexed atom indices of the four atoms defining the torsion.</p></li>
 <li><p><strong>deg_increment</strong> (<em>float</em><em>, </em><em>optional</em>) – The required dihedral increment in degrees.</p></li>
 <li><p><strong>deg_abs</strong> (<em>float</em><em>, </em><em>optional</em>) – The required dihedral in degrees.</p></li>
 </ul>
@@ -546,7 +539,9 @@ option is ‘gaussian’.</p></li>
 <dl class="function">
 <dt id="arc.species.converter.str_to_xyz">
 <code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">str_to_xyz</code><span class="sig-paren">(</span><em class="sig-param">xyz_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#str_to_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.str_to_xyz" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a string xyz format with optional Gaussian-style isotope specification, e.g.:</p>
+<dd><p>Convert a string xyz format to the ARC dict xyz style.
+Note: The <code class="docutils literal notranslate"><span class="pre">xyz_str</span></code> argument could also direct to a file path to parse the data from.
+The xyz string format may have optional Gaussian-style isotope specification, e.g.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">(</span><span class="n">Iso</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>    <span class="mf">0.6616514836</span>    <span class="mf">0.4027481525</span>   <span class="o">-</span><span class="mf">0.4847382281</span>
 <span class="n">N</span>           <span class="o">-</span><span class="mf">0.6039793084</span>    <span class="mf">0.6637270105</span>    <span class="mf">0.0671637135</span>
 <span class="n">H</span>           <span class="o">-</span><span class="mf">1.4226865648</span>   <span class="o">-</span><span class="mf">0.4973210697</span>   <span class="o">-</span><span class="mf">0.2238712255</span>
@@ -555,7 +550,7 @@ option is ‘gaussian’.</p></li>
 <span class="n">H</span>           <span class="o">-</span><span class="mf">1.8113671395</span>   <span class="o">-</span><span class="mf">0.3268900681</span>   <span class="o">-</span><span class="mf">1.1468957003</span>
 </pre></div>
 </div>
-<p>into the ARC xyz dictionary format, e.g.:</p>
+<p>which will also be parsed into the ARC xyz dictionary format, e.g.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">),</span>
  <span class="s1">&#39;isotopes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
  <span class="s1">&#39;coords&#39;</span><span class="p">:</span> <span class="p">((</span><span class="mf">0.6616514836</span><span class="p">,</span> <span class="mf">0.4027481525</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4847382281</span><span class="p">),</span>
@@ -584,7 +579,7 @@ option is ‘gaussian’.</p></li>
 
 <dl class="function">
 <dt id="arc.species.converter.to_rdkit_mol">
-<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">to_rdkit_mol</code><span class="sig-paren">(</span><em class="sig-param">mol</em>, <em class="sig-param">remove_h=False</em>, <em class="sig-param">return_mapping=True</em>, <em class="sig-param">sanitize=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#to_rdkit_mol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.to_rdkit_mol" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">to_rdkit_mol</code><span class="sig-paren">(</span><em class="sig-param">mol</em>, <em class="sig-param">remove_h=False</em>, <em class="sig-param">sanitize=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#to_rdkit_mol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.to_rdkit_mol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a molecular structure to an RDKit RDMol object. Uses
 <a class="reference external" href="http://rdkit.org/">RDKit</a> to perform the conversion.
 Perceives aromaticity.
@@ -593,9 +588,8 @@ Adopted from rmgpy/molecule/converter.py</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mol</strong> (<em>Molecule</em>) – An RMG Molecule object for the conversion.</p></li>
-<li><p><strong>remove_h</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to remove hydrogen atoms from the molecule, True to remove.</p></li>
-<li><p><strong>return_mapping</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the atom mapping, True to return.</p></li>
-<li><p><strong>sanitize</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to sanitize the RDKit molecule, True to sanitize.</p></li>
+<li><p><strong>remove_h</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to remove hydrogen atoms from the molecule, <code class="docutils literal notranslate"><span class="pre">True</span></code> to remove.</p></li>
+<li><p><strong>sanitize</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to sanitize the RDKit molecule, <code class="docutils literal notranslate"><span class="pre">True</span></code> to sanitize.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -603,12 +597,6 @@ Adopted from rmgpy/molecule/converter.py</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>RDMol</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>An atom mapping dictionary. Keys are Atom objects of ‘mol’, values are atom indices in the RDKit Mol.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>

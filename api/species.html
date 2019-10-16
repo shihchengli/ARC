@@ -185,7 +185,7 @@
 If the species is a transition state (TS), its <code class="docutils literal notranslate"><span class="pre">ts_guesses</span></code> attribute will have one or more <code class="docutils literal notranslate"><span class="pre">TSGuess</span></code> objects.</p>
 <dl class="class">
 <dt id="arc.species.species.ARCSpecies">
-<em class="property">class </em><code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">ARCSpecies</code><span class="sig-paren">(</span><em class="sig-param">label=None</em>, <em class="sig-param">is_ts=False</em>, <em class="sig-param">rmg_species=None</em>, <em class="sig-param">mol=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">charge=None</em>, <em class="sig-param">smiles=''</em>, <em class="sig-param">adjlist=''</em>, <em class="sig-param">inchi=''</em>, <em class="sig-param">bond_corrections=None</em>, <em class="sig-param">generate_thermo=True</em>, <em class="sig-param">species_dict=None</em>, <em class="sig-param">yml_path=None</em>, <em class="sig-param">ts_methods=None</em>, <em class="sig-param">ts_number=None</em>, <em class="sig-param">rxn_label=None</em>, <em class="sig-param">external_symmetry=None</em>, <em class="sig-param">optical_isomers=None</em>, <em class="sig-param">run_time=None</em>, <em class="sig-param">checkfile=None</em>, <em class="sig-param">number_of_radicals=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">svpfit_output_file=None</em>, <em class="sig-param">bdes=None</em>, <em class="sig-param">directed_rotors=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">ARCSpecies</code><span class="sig-paren">(</span><em class="sig-param">label=None</em>, <em class="sig-param">is_ts=False</em>, <em class="sig-param">rmg_species=None</em>, <em class="sig-param">mol=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">charge=None</em>, <em class="sig-param">smiles=''</em>, <em class="sig-param">adjlist=''</em>, <em class="sig-param">inchi=''</em>, <em class="sig-param">bond_corrections=None</em>, <em class="sig-param">generate_thermo=True</em>, <em class="sig-param">species_dict=None</em>, <em class="sig-param">yml_path=None</em>, <em class="sig-param">ts_methods=None</em>, <em class="sig-param">ts_number=None</em>, <em class="sig-param">rxn_label=None</em>, <em class="sig-param">external_symmetry=None</em>, <em class="sig-param">optical_isomers=None</em>, <em class="sig-param">run_time=None</em>, <em class="sig-param">checkfile=None</em>, <em class="sig-param">number_of_radicals=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">svpfit_output_file=None</em>, <em class="sig-param">bdes=None</em>, <em class="sig-param">directed_rotors=None</em>, <em class="sig-param">consider_all_diastereomers=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class for representing stationary points.</p>
 <p>Dictionary structure (initialized in conformers.find_internal_rotors):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: ``list``,
@@ -257,9 +257,9 @@ species and species with many heteroatoms). Another option is specifying ‘chea
 and the “old” RDKit embedding method will be used.</p></li>
 <li><p><strong>svpfit_output_file</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to a Gaussian output file of an SVP Fit job if previously ran
 (otherwise, this job will be spawned if running Gromacs).</p></li>
-<li><p><strong>bdes</strong> (<em>list</em>) – Specifying for which bonds should bond dissociation energies be calculated.
-Entries are bonded atom indices tuples (1-indexed). An ‘all_h’ string entry is also allowed,
-triggering BDE calculations for all hydrogen atoms in the molecule.</p></li>
+<li><p><strong>bdes</strong> (<em>list</em><em>, </em><em>optional</em>) – Specifying for which bonds should bond dissociation energies be calculated.
+Entries are bonded atom indices tuples (1-indexed). An ‘all_h’ string entry is also
+allowed, triggering BDE calculations for all hydrogen atoms in the molecule.</p></li>
 <li><p><strong>directed_rotors</strong> (<em>dict</em>) – Execute a directed internal rotation scan (i.e., a series of sp or constrained opt jobs)
 for the pivots of interest. The optional primary keys are:
 - ‘brute_force_sp’
@@ -289,6 +289,12 @@ Currently ARC does not automatically identify torsions to be treated as ND, and 
 attribute must be specified by the user.
 An additional supported key is ‘ess’, in which case ARC will allow the ESS to take care
 of spawning the ND continuous constrained optimizations (not yet implemented).</p></li>
+<li><p><strong>consider_all_diastereomers</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to consider all different chiralities (tetrahydral carbon
+centers, nitrogen inversions, and cis/trans double bonds) when
+generating conformers. <code class="docutils literal notranslate"><span class="pre">True</span></code> to consider all. If no 3D
+coordinates are given for the species, all diaestereomers will be
+considered, otherwise the chirality specified by the given
+coordinates will be preserved.</p></li>
 </ul>
 </dd>
 </dl>
@@ -889,6 +895,19 @@ Data is in 3 levels of nested lists, converted from pivots to four-atom scan ind
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="arc.species.species.ARCSpecies.consider_all_diastereomers">
+<code class="sig-name descname">consider_all_diastereomers</code><a class="headerlink" href="#arc.species.species.ARCSpecies.consider_all_diastereomers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to consider all different chiralities (tetrahydral carbon
+centers, nitrogen inversions, and cis/trans double bonds) when
+generating conformers. <code class="docutils literal notranslate"><span class="pre">True</span></code> to consider all.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.as_dict">
 <code class="sig-name descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.as_dict" title="Permalink to this definition">¶</a></dt>
@@ -985,7 +1004,9 @@ this could very well not be the best (lowest) one.</p>
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.get_xyz">
 <code class="sig-name descname">get_xyz</code><span class="sig-paren">(</span><em class="sig-param">generate=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.get_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.get_xyz" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the highest quality xyz the species has. If it doesn’t have any 3D information, cheaply generate it.</p>
+<dd><p>Get the highest quality xyz the species has.
+If it doesn’t have any 3D information, and if <code class="docutils literal notranslate"><span class="pre">generate</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, cheaply generate it.
+Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if no xyz can be retrieved nor generated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>generate</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to cheaply generate an FF conformer if no xyz is found.
@@ -1131,7 +1152,7 @@ All bonded atoms are moved accordingly. The result is saved in self.initial_xyz.
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>scan</strong> (<em>list</em>) – The atom indices representing the dihedral.</p></li>
+<li><p><strong>scan</strong> (<em>list</em>) – The atom indices (1-indexed) representing the dihedral.</p></li>
 <li><p><strong>deg_increment</strong> (<em>float</em><em>, </em><em>optional</em>) – The dihedral angle increment.</p></li>
 <li><p><strong>deg_abs</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute desired dihedral angle.</p></li>
 <li><p><strong>count</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to increment the rotor’s times_dihedral_set parameter. <cite>True</cite> to increment.</p></li>
