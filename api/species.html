@@ -187,7 +187,7 @@ If the species is a transition state (TS), its <code class="docutils literal not
 <dt id="arc.species.species.ARCSpecies">
 <em class="property">class </em><code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">ARCSpecies</code><span class="sig-paren">(</span><em class="sig-param">label=None</em>, <em class="sig-param">is_ts=False</em>, <em class="sig-param">rmg_species=None</em>, <em class="sig-param">mol=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">charge=None</em>, <em class="sig-param">smiles=''</em>, <em class="sig-param">adjlist=''</em>, <em class="sig-param">inchi=''</em>, <em class="sig-param">bond_corrections=None</em>, <em class="sig-param">generate_thermo=True</em>, <em class="sig-param">species_dict=None</em>, <em class="sig-param">yml_path=None</em>, <em class="sig-param">ts_methods=None</em>, <em class="sig-param">ts_number=None</em>, <em class="sig-param">rxn_label=None</em>, <em class="sig-param">external_symmetry=None</em>, <em class="sig-param">optical_isomers=None</em>, <em class="sig-param">run_time=None</em>, <em class="sig-param">checkfile=None</em>, <em class="sig-param">number_of_radicals=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">svpfit_output_file=None</em>, <em class="sig-param">bdes=None</em>, <em class="sig-param">directed_rotors=None</em>, <em class="sig-param">consider_all_diastereomers=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class for representing stationary points.</p>
-<p>Dictionary structure (initialized in conformers.find_internal_rotors):</p>
+<p>Structures (rotors_dict is initialized in conformers.find_internal_rotors; pivots/scan/top values are 1-indexed):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: ``list``,
                   &#39;top&#39;: ``list``,
                   &#39;scan&#39;: ``list``,
@@ -292,7 +292,7 @@ of spawning the ND continuous constrained optimizations (not yet implemented).</
 <li><p><strong>consider_all_diastereomers</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to consider all different chiralities (tetrahydral carbon
 centers, nitrogen inversions, and cis/trans double bonds) when
 generating conformers. <code class="docutils literal notranslate"><span class="pre">True</span></code> to consider all. If no 3D
-coordinates are given for the species, all diaestereomers will be
+coordinates are given for the species, all diastereomers will be
 considered, otherwise the chirality specified by the given
 coordinates will be preserved.</p></li>
 </ul>
@@ -1071,8 +1071,7 @@ relevant rotors info for the species, including directed and ND rotors.</p>
 Important for TS discovery and for identifying rotor indices.</p>
 <p>This works by generating a molecule from xyz and using the
 2D structure to confirm that the perceived molecule is correct.
-Resonance structures are generated and saved to self.mol_list.
-If <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is not given, the species xyz will be used.</p>
+If <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is not given, the species xyz attribute will be used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1160,6 +1159,13 @@ All bonded atoms are moved accordingly. The result is saved in self.initial_xyz.
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.species.species.ARCSpecies.set_mol_list">
+<code class="sig-name descname">set_mol_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.set_mol_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.set_mol_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the .mol_list attribute from self.mol by generating resonance structures, preserving atom order.
+The mol_list attribute is used for identifying rotors and generating conformers,</p>
 </dd></dl>
 
 <dl class="method">

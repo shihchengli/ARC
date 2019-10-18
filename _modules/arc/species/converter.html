@@ -827,6 +827,9 @@
 <span class="sd">        ref_mol (Molecule): The reference Molecule object.</span>
 <span class="sd">        mol_list (list): Entries are Molecule objects whos atoms will be reordered according to the reference.</span>
 
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Whether the reordering was successful, ``True`` if it was.</span>
+
 <span class="sd">    Raises:</span>
 <span class="sd">        SanitizationError: If atoms could not be re-ordered.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -837,8 +840,11 @@
             <span class="k">except</span> <span class="n">SanitizationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not order atoms in</span><span class="se">\n</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">Got the following error:&#39;</span>
                                <span class="s1">&#39;</span><span class="se">\n</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+                <span class="k">return</span> <span class="kc">False</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not order atoms&#39;</span><span class="p">)</span></div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not order atoms&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="order_atoms"><a class="viewcode-back" href="../../../api/converter.html#arc.species.converter.order_atoms">[docs]</a><span class="k">def</span> <span class="nf">order_atoms</span><span class="p">(</span><span class="n">ref_mol</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
