@@ -575,6 +575,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">specific_job_type</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Specific_job_type </span><span class="si">{specific_job_type}</span><span class="s1"> is given by user.&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">job_types</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Both job_types and specific_job_type are given, ARC will only use specific_job_type to &#39;</span>
                            <span class="s1">&#39;populate the job_types dictionary.&#39;</span><span class="p">)</span>
@@ -582,7 +583,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">job_types</span><span class="p">[</span><span class="n">specific_job_type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Specified job type &quot;</span><span class="si">{0}</span><span class="s1">&quot; is not supported&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">specific_job_type</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Specified job type </span><span class="si">{specific_job_type}</span><span class="s1"> is not supported.&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">specific_job_type</span> <span class="o">==</span> <span class="s1">&#39;bde&#39;</span><span class="p">:</span>
         <span class="n">bde_default</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;opt&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;fine_grid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;sp&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
@@ -592,6 +593,9 @@
     <span class="n">defaults_to_false</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;onedmin&#39;</span><span class="p">,</span> <span class="s1">&#39;orbitals&#39;</span><span class="p">,</span> <span class="s1">&#39;bde&#39;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">job_types</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">job_types</span> <span class="o">=</span> <span class="n">default_job_types</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Job types were not specified, using default values from ARC settings&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;the following job types were specified: </span><span class="si">{job_types}</span><span class="s1">.&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="s1">&#39;lennard_jones&#39;</span> <span class="ow">in</span> <span class="n">job_types</span><span class="p">:</span>
         <span class="c1"># rename lennard_jones to OneDMin</span>
         <span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;onedmin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;lennard_jones&#39;</span><span class="p">]</span>
@@ -613,10 +617,10 @@
             <span class="k">if</span> <span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;1d_rotors&#39;</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Note: The `1d_rotors` job type was renamed to simply `rotors`. &quot;</span>
                               <span class="s2">&quot;Please modify your input accordingly (see ARC&#39;s documentation for examples).&quot;</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Job type &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not supported. Check the job types dictionary &quot;</span>
-                             <span class="s2">&quot;(either in ARC&#39;s input or in default_job_types under settings).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_type</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Job type &#39;</span><span class="si">{job_type}</span><span class="s2">&#39; is not supported. Check the job types dictionary &quot;</span>
+                             <span class="s2">&quot;(either in ARC&#39;s input or in default_job_types under settings).&quot;</span><span class="p">)</span>
     <span class="n">job_types_report</span> <span class="o">=</span> <span class="p">[</span><span class="n">job_type</span> <span class="k">for</span> <span class="n">job_type</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">job_types</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">val</span><span class="p">]</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Considering the following job types: </span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_types_report</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Considering the following job types: </span><span class="si">{job_types_report}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">job_types</span></div>
 
 
