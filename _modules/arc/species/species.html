@@ -1640,10 +1640,10 @@
 
         <span class="n">spc1</span> <span class="o">=</span> <span class="n">ARCSpecies</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label1</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol1</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz1</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="n">mol1</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span>
                           <span class="n">charge</span><span class="o">=</span><span class="n">mol1</span><span class="o">.</span><span class="n">get_net_charge</span><span class="p">(),</span> <span class="n">generate_thermo</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">spc1</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">xyz1</span>
+        <span class="n">spc1</span><span class="o">.</span><span class="n">generate_conformers</span><span class="p">()</span>
         <span class="n">spc2</span> <span class="o">=</span> <span class="n">ARCSpecies</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label2</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol2</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz2</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="n">mol2</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span>
                           <span class="n">charge</span><span class="o">=</span><span class="n">mol2</span><span class="o">.</span><span class="n">get_net_charge</span><span class="p">(),</span> <span class="n">generate_thermo</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">spc2</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">xyz2</span>
+        <span class="n">spc2</span><span class="o">.</span><span class="n">generate_conformers</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="p">[</span><span class="n">spc1</span><span class="p">,</span> <span class="n">spc2</span><span class="p">]</span></div>
 

@@ -958,10 +958,17 @@ Important for the restart feature so long jobs won’t be ran twice.</p>
 
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.run_conformer_jobs">
-<code class="sig-name descname">run_conformer_jobs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_conformer_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_conformer_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_conformer_jobs</code><span class="sig-paren">(</span><em class="sig-param">labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_conformer_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_conformer_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select the most stable conformer for each species using molecular dynamics (force fields) and subsequently
 spawning opt jobs at the conformer level of theory, usually a reasonable yet cheap DFT, e.g., b97d3/6-31+g(d,p).
 The resulting conformer is saved in a string format xyz in the Species initial_xyz attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>labels</strong> (<em>list</em>) – Labels of specific species to run conformer jobs for.
+If None, conformer jobs will be spawned for all species corresponding to labels in
+self.unique_species_labels.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
