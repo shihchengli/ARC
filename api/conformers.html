@@ -267,17 +267,24 @@ generated conformer are kept.</p>
 <dl class="function">
 <dt id="arc.species.conformers.check_special_non_rotor_cases">
 <code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">check_special_non_rotor_cases</code><span class="sig-paren">(</span><em class="sig-param">mol</em>, <em class="sig-param">top1</em>, <em class="sig-param">top2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#check_special_non_rotor_cases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.check_special_non_rotor_cases" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check whether one of the tops correspond to a special case which could not be rotated
-<cite>mol</cite> is the RMG Molecule to diagnose
-<cite>top1</cite> and <cite>top2</cite> are indices of atoms on each side of the pivots, the first index corresponds to one of the pivots</p>
-<p>Special cases considered are:</p>
-<ul class="simple">
-<li><p>cyano groups: <code class="docutils literal notranslate"><span class="pre">R-C#N</span></code></p></li>
-<li><p>azide groups: <code class="docutils literal notranslate"><span class="pre">N-N#N</span></code></p></li>
+<dd><p>Check whether one of the tops correspond to a special case which does not have a torsional mode.
+Checking for <code class="docutils literal notranslate"><span class="pre">R-[C,N]#[N,[CH],[C]]</span></code> groups, such as: in cyano groups (<cite>R-C#N`</cite>),
+C#C groups (<code class="docutils literal notranslate"><span class="pre">R-C#CH</span></code> or <code class="docutils literal notranslate"><span class="pre">R-C#[C]</span></code>), and azide groups: (<code class="docutils literal notranslate"><span class="pre">R-N#N</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>Molecule</em>) – The RMG molecule.</p></li>
+<li><p><strong>top1</strong> (<em>list</em>) – Entries are atom indices (1-indexed) on one side of the torsion, inc. one of the pivotal atoms.</p></li>
+<li><p><strong>top2</strong> (<em>list</em>) – Entries are atom indices (1-indexed) on the other side of the torsion, inc. the other pivotal atom.</p></li>
 </ul>
-<p>These cases have a 180 degree angle and torsion is meaningless, but they are identified by our methods since they
-have a single bond
-Returns <cite>True</cite> if this is indeed a special case which should not be treated as a rotor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if this is indeed a special case which should <strong>not</strong> be treated as a torsional mode.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">

@@ -188,7 +188,7 @@ If the species is a transition state (TS), its <code class="docutils literal not
 <em class="property">class </em><code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">ARCSpecies</code><span class="sig-paren">(</span><em class="sig-param">label=None</em>, <em class="sig-param">is_ts=False</em>, <em class="sig-param">rmg_species=None</em>, <em class="sig-param">mol=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">charge=None</em>, <em class="sig-param">smiles=''</em>, <em class="sig-param">adjlist=''</em>, <em class="sig-param">inchi=''</em>, <em class="sig-param">bond_corrections=None</em>, <em class="sig-param">generate_thermo=True</em>, <em class="sig-param">species_dict=None</em>, <em class="sig-param">yml_path=None</em>, <em class="sig-param">ts_methods=None</em>, <em class="sig-param">ts_number=None</em>, <em class="sig-param">rxn_label=None</em>, <em class="sig-param">external_symmetry=None</em>, <em class="sig-param">optical_isomers=None</em>, <em class="sig-param">run_time=None</em>, <em class="sig-param">checkfile=None</em>, <em class="sig-param">number_of_radicals=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">svpfit_output_file=None</em>, <em class="sig-param">bdes=None</em>, <em class="sig-param">directed_rotors=None</em>, <em class="sig-param">consider_all_diastereomers=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class for representing stationary points.</p>
 <p>Structures (rotors_dict is initialized in conformers.find_internal_rotors; pivots/scan/top values are 1-indexed):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: ``list``,
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {0: {&#39;pivots&#39;: ``list``,
                   &#39;top&#39;: ``list``,
                   &#39;scan&#39;: ``list``,
                   &#39;number_of_running_jobs&#39;: ``int``,
@@ -205,7 +205,7 @@ If the species is a transition state (TS), its <code class="docutils literal not
                   &#39;directed_scan&#39;: ``dict``,  # keys: tuples of dihedrals as strings,
                                               # values: dicts of energy, xyz, is_isomorphic, trsh
                  }
-              2: {}, ...
+              1: {}, ...
              }
 </pre></div>
 </div>
