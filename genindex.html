@@ -437,6 +437,8 @@
 </li>
       <li><a href="api/processor.html#arc.processor.Processor.copy_freq_output_for_ts">copy_freq_output_for_ts() (arc.processor.Processor method)</a>
 </li>
+      <li><a href="api/job.html#arc.job.job.Job.cpu_cores">cpu_cores (arc.job.job.Job attribute)</a>
+</li>
       <li><a href="api/species.html#arc.species.species.cyclic_index_i_minus_1">cyclic_index_i_minus_1() (in module arc.species.species)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.cyclic_index_i_plus_1">cyclic_index_i_plus_1() (in module arc.species.species)</a>
@@ -769,6 +771,8 @@
 </li>
       <li><a href="api/job.html#arc.job.job.Job.input">input (arc.job.job.Job attribute)</a>
 </li>
+      <li><a href="api/job.html#arc.job.job.Job.input_file_memory">input_file_memory (arc.job.job.Job attribute)</a>
+</li>
       <li><a href="api/conformers.html#arc.species.conformers.inverse_chirality_symbol">inverse_chirality_symbol() (in module arc.species.conformers)</a>
 </li>
       <li><a href="api/job.html#arc.job.job.Job.is_ts">is_ts (arc.job.job.Job attribute)</a>
@@ -897,16 +901,12 @@
         <li><a href="api/scheduler.html#arc.scheduler.Scheduler.max_job_time">(arc.scheduler.Scheduler attribute)</a>
 </li>
       </ul></li>
-      <li><a href="api/job.html#arc.job.job.Job.memory">memory (arc.job.job.Job attribute)</a>
+      <li><a href="api/main.html#arc.main.ARC.memory">memory (arc.main.ARC attribute)</a>
 
       <ul>
-        <li><a href="api/main.html#arc.main.ARC.memory">(arc.main.ARC attribute)</a>
-</li>
         <li><a href="api/scheduler.html#arc.scheduler.Scheduler.memory">(arc.scheduler.Scheduler attribute)</a>
 </li>
       </ul></li>
-      <li><a href="api/job.html#arc.job.job.Job.memory_gb">memory_gb (arc.job.job.Job attribute)</a>
-</li>
       <li><a href="api/job.html#arc.job.job.Job.method">method (arc.job.job.Job attribute)</a>
 
       <ul>
@@ -1291,10 +1291,10 @@
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.set_mol_list">set_mol_list() (arc.species.species.ARCSpecies method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/converter.html#arc.species.converter.set_multiplicity">set_multiplicity() (in module arc.species.converter)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/converter.html#arc.species.converter.set_radicals_by_map">set_radicals_by_map() (in module arc.species.converter)</a>
 </li>
       <li><a href="api/converter.html#arc.species.converter.set_rdkit_dihedrals">set_rdkit_dihedrals() (in module arc.species.converter)</a>
@@ -1351,6 +1351,8 @@
         <li><a href="api/local.html#arc.job.local.submit_job">(in module arc.job.local)</a>
 </li>
       </ul></li>
+      <li><a href="api/job.html#arc.job.job.Job.submit_script_memory">submit_script_memory (arc.job.job.Job attribute)</a>
+</li>
       <li><a href="api/species.html#arc.species.species.TSGuess.success">success (arc.species.species.TSGuess attribute)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.successful_methods">successful_methods (arc.species.species.ARCSpecies attribute)</a>
@@ -1405,16 +1407,18 @@
 </li>
       <li><a href="api/converter.html#arc.species.converter.to_rdkit_mol">to_rdkit_mol() (in module arc.species.converter)</a>
 </li>
+      <li><a href="api/job.html#arc.job.job.Job.total_job_memory_gb">total_job_memory_gb (arc.job.job.Job attribute)</a>
+</li>
       <li><a href="api/conformers.html#arc.species.conformers.translate_group">translate_group() (in module arc.species.conformers)</a>
 </li>
       <li><a href="api/conformers.html#arc.species.conformers.translate_groups">translate_groups() (in module arc.species.conformers)</a>
 </li>
       <li><a href="api/converter.html#arc.species.converter.translate_to_center_of_mass">translate_to_center_of_mass() (in module arc.species.converter)</a>
 </li>
-      <li><a href="api/species.html#arc.species.species.ARCSpecies.transport_data">transport_data (arc.species.species.ARCSpecies attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/species.html#arc.species.species.ARCSpecies.transport_data">transport_data (arc.species.species.ARCSpecies attribute)</a>
+</li>
       <li><a href="api/scheduler.html#arc.scheduler.Scheduler.troubleshoot_conformer_isomorphism">troubleshoot_conformer_isomorphism() (arc.scheduler.Scheduler method)</a>
 </li>
       <li><a href="api/scheduler.html#arc.scheduler.Scheduler.troubleshoot_ess">troubleshoot_ess() (arc.scheduler.Scheduler method)</a>

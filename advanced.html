@@ -91,6 +91,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Features</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#flexible-coordinates-xyz-input">Flexible coordinates (xyz) input</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#specify-a-particular-job-type">Specify a particular job type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#control-job-memory-allocation">Control job memory allocation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-a-fine-dft-grid-for-optimization">Using a fine DFT grid for optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rotor-scans">Rotor scans</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nd-rotor-scans">ND Rotor scans</a></li>
@@ -213,6 +214,16 @@ dismiss the given <code class="docutils literal notranslate"><span class="pre">j
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">specific_job_type</span> <span class="p">:</span> <span class="n">bde</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="control-job-memory-allocation">
+<h2>Control job memory allocation<a class="headerlink" href="#control-job-memory-allocation" title="Permalink to this headline">¶</a></h2>
+<p>To specify the amount of memory for all jobs in an ARC project, set <code class="docutils literal notranslate"><span class="pre">job_memory</span></code> with positive integer values in GB.</p>
+<p>Notice that user can change the total memory per node by setting the value of <code class="docutils literal notranslate"><span class="pre">memory</span></code> key in the servers dictionary
+under settings.py. This value will be treated as the maximum allowable memory, and memory-related troubleshooting
+methods will not be allowed to request more than this value.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">job_memory</span></code> is not defined, ARC will initialize each job using 14 GB memory by default. In case a job crashes due
+to insufficient memory, ARC will try to resubmit that job asking for a higher memory allocation up to the specified
+maximal node <code class="docutils literal notranslate"><span class="pre">memory</span></code>.</p>
 </div>
 <div class="section" id="using-a-fine-dft-grid-for-optimization">
 <h2>Using a fine DFT grid for optimization<a class="headerlink" href="#using-a-fine-dft-grid-for-optimization" title="Permalink to this headline">¶</a></h2>
