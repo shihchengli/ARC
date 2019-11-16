@@ -255,7 +255,7 @@ values are trshs.</p></li>
 <li><p><strong>bath_gas</strong> (<em>str</em><em>, </em><em>optional</em>) – A bath gas. Currently used in OneDMin to calc L-J parameters.
 Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p></li>
 <li><p><strong>restart_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A restart dictionary parsed from a YAML restart file.</p></li>
-<li><p><strong>max_job_time</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximal allowed job time on the server in hours.</p></li>
+<li><p><strong>max_job_time</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximal allowed job time on the server in hours (can be fractional).</p></li>
 <li><p><strong>allow_nonisomorphic_2d</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to optimize species even if they do not have a 3D conformer
 that is isomorphic to the 2D graph representation.</p></li>
 <li><p><strong>memory</strong> (<em>int</em><em>, </em><em>optional</em>) – The total allocated job memory in GB (14 by default).</p></li>
@@ -462,10 +462,10 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <dl class="attribute">
 <dt id="arc.scheduler.Scheduler.max_job_time">
 <code class="sig-name descname">max_job_time</code><a class="headerlink" href="#arc.scheduler.Scheduler.max_job_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximal allowed job time on the server in hours.</p>
+<dd><p>The maximal allowed job time on the server in hours (can be fractional).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>

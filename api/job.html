@@ -223,7 +223,7 @@ values are trshs.</p></li>
 <li><p><strong>server</strong> (<em>str</em><em>, </em><em>optional</em>) – Server’s name.</p></li>
 <li><p><strong>initial_time</strong> (<em>datetime</em><em>, </em><em>optional</em>) – The date-time this job was initiated.</p></li>
 <li><p><strong>occ</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of occupied orbitals (core + val) from a molpro CCSD sp calc.</p></li>
-<li><p><strong>max_job_time</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximal allowed job time on the server in hours.</p></li>
+<li><p><strong>max_job_time</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximal allowed job time on the server in hours (can be fractional).</p></li>
 <li><p><strong>scan_res</strong> (<em>int</em><em>, </em><em>optional</em>) – The rotor scan resolution in degrees.</p></li>
 <li><p><strong>checkfile</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to a previous Gaussian checkfile to be used in the current job.</p></li>
 <li><p><strong>number_of_radicals</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of radicals (inputted by the user, ARC won’t attempt to
@@ -845,10 +845,10 @@ description and the identified error line from the ESS log file will be given as
 <dl class="attribute">
 <dt id="arc.job.job.Job.max_job_time">
 <code class="sig-name descname">max_job_time</code><a class="headerlink" href="#arc.job.job.Job.max_job_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximal allowed job time on the server in hours.</p>
+<dd><p>The maximal allowed job time on the server in hours (can be fractional).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -942,6 +942,23 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <dt id="arc.job.job.Job.determine_run_time">
 <code class="sig-name descname">determine_run_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.determine_run_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.determine_run_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the run time. Update self.run_time and round to seconds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.job.job.Job.format_max_job_time">
+<code class="sig-name descname">format_max_job_time</code><span class="sig-paren">(</span><em class="sig-param">time_format</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.format_max_job_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.format_max_job_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the max_job_time attribute into the format supported by the server submission script</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>time_format</strong> (<em>str</em>) – Either ‘days’ (e.g., 5-0:00:00) or ‘hours’ (e.g., 120:00:00)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The formatted maximum job time string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

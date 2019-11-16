@@ -226,7 +226,7 @@
 <span class="sd">        server (str, optional): Server&#39;s name.</span>
 <span class="sd">        initial_time (datetime, optional): The date-time this job was initiated.</span>
 <span class="sd">        occ (int, optional): The number of occupied orbitals (core + val) from a molpro CCSD sp calc.</span>
-<span class="sd">        max_job_time (int, optional): The maximal allowed job time on the server in hours.</span>
+<span class="sd">        max_job_time (float, optional): The maximal allowed job time on the server in hours (can be fractional).</span>
 <span class="sd">        scan_res (int, optional): The rotor scan resolution in degrees.</span>
 <span class="sd">        checkfile (str, optional): The path to a previous Gaussian checkfile to be used in the current job.</span>
 <span class="sd">        number_of_radicals (int, optional): The number of radicals (inputted by the user, ARC won&#39;t attempt to</span>
@@ -314,7 +314,7 @@
 <span class="sd">        scan_trsh (str): A troubleshooting method for rotor scans.</span>
 <span class="sd">        occ (int): The number of occupied orbitals (core + val) from a molpro CCSD sp calc.</span>
 <span class="sd">        project_directory (str): The path to the project directory.</span>
-<span class="sd">        max_job_time (int): The maximal allowed job time on the server in hours.</span>
+<span class="sd">        max_job_time (float): The maximal allowed job time on the server in hours (can be fractional).</span>
 <span class="sd">        bath_gas (str): A bath gas. Currently used in OneDMin to calc L-J parameters.</span>
 <span class="sd">                        Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</span>
 <span class="sd">        directed_scans (list): Entries are lists of four-atom dihedral scan indices to constrain during a directed scan.</span>
@@ -643,6 +643,31 @@
                    <span class="bp">self</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ess_trsh_methods</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="p">]</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Job.format_max_job_time"><a class="viewcode-back" href="../../../api/job.html#arc.job.job.Job.format_max_job_time">[docs]</a>    <span class="k">def</span> <span class="nf">format_max_job_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_format</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the max_job_time attribute into the format supported by the server submission script</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            time_format (str): Either &#39;days&#39; (e.g., 5-0:00:00) or &#39;hours&#39; (e.g., 120:00:00)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The formatted maximum job time string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">t_delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_job_time</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">time_format</span> <span class="o">==</span> <span class="s1">&#39;days&#39;</span><span class="p">:</span>
+            <span class="c1"># e.g., 5-0:00:00</span>
+            <span class="n">t_max</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">-</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_delta</span><span class="o">.</span><span class="n">days</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">t_delta</span><span class="o">.</span><span class="n">seconds</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">time_format</span> <span class="o">==</span> <span class="s1">&#39;hours&#39;</span><span class="p">:</span>
+            <span class="c1"># e.g., 120:00:00</span>
+            <span class="n">h</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">t_delta</span><span class="o">.</span><span class="n">seconds</span><span class="p">,</span> <span class="mi">3600</span><span class="p">)</span>
+            <span class="n">h</span> <span class="o">+=</span> <span class="n">t_delta</span><span class="o">.</span><span class="n">days</span> <span class="o">*</span> <span class="mi">24</span>
+            <span class="n">t_max</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">:</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">s</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JobError</span><span class="p">(</span><span class="s1">&#39;Could not determine format for maximal job time.</span><span class="se">\n</span><span class="s1"> Format is determined by </span><span class="si">{0}</span><span class="s1">, but &#39;</span>
+                           <span class="s1">&#39;got </span><span class="si">{1}</span><span class="s1"> for </span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_max_format</span><span class="p">,</span> <span class="n">servers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">][</span><span class="s1">&#39;cluster_soft&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">t_max</span></div>
+
 <div class="viewcode-block" id="Job.write_submit_script"><a class="viewcode-back" href="../../../api/job.html#arc.job.job.Job.write_submit_script">[docs]</a>    <span class="k">def</span> <span class="nf">write_submit_script</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write the Job&#39;s submit script.</span>
@@ -652,16 +677,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_job_time</span> <span class="o">&gt;</span> <span class="mi">9999</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_job_time</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Setting max_job_time to 120 hours&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">max_job_time</span> <span class="o">=</span> <span class="mi">120</span>
-        <span class="k">if</span> <span class="n">t_max_format</span><span class="p">[</span><span class="n">servers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">][</span><span class="s1">&#39;cluster_soft&#39;</span><span class="p">]]</span> <span class="o">==</span> <span class="s1">&#39;days&#39;</span><span class="p">:</span>
-            <span class="c1"># e.g., 5-0:00:00</span>
-            <span class="n">d</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_job_time</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
-            <span class="n">t_max</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">-</span><span class="si">{1}</span><span class="s1">:00:00&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">t_max_format</span><span class="p">[</span><span class="n">servers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">][</span><span class="s1">&#39;cluster_soft&#39;</span><span class="p">]]</span> <span class="o">==</span> <span class="s1">&#39;hours&#39;</span><span class="p">:</span>
-            <span class="c1"># e.g., 120:00:00</span>
-            <span class="n">t_max</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">:00:00&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_job_time</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">JobError</span><span class="p">(</span><span class="s1">&#39;Could not determine format for maximal job time.</span><span class="se">\n</span><span class="s1"> Format is determined by </span><span class="si">{0}</span><span class="s1">, but &#39;</span>
-                           <span class="s1">&#39;got </span><span class="si">{1}</span><span class="s1"> for </span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_max_format</span><span class="p">,</span> <span class="n">servers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">][</span><span class="s1">&#39;cluster_soft&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">))</span>
+        <span class="n">t_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_max_job_time</span><span class="p">(</span><span class="n">time_format</span><span class="o">=</span><span class="n">t_max_format</span><span class="p">[</span><span class="n">servers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">][</span><span class="s1">&#39;cluster_soft&#39;</span><span class="p">]])</span>
         <span class="n">architecture</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;pharos&#39;</span><span class="p">:</span>
             <span class="c1"># here we&#39;re hard-coding ARC for Pharos, a Green Group server</span>
