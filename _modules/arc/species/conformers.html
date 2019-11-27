@@ -210,6 +210,7 @@
 <span class="kn">from</span> <span class="nn">rdkit.Chem.rdchem</span> <span class="k">import</span> <span class="n">EditableMol</span> <span class="k">as</span> <span class="n">RDMol</span>
 
 <span class="kn">import</span> <span class="nn">rmgpy.molecule.group</span> <span class="k">as</span> <span class="nn">gr</span>
+<span class="kn">from</span> <span class="nn">rmgpy.exceptions</span> <span class="k">import</span> <span class="n">ILPSolutionError</span><span class="p">,</span> <span class="n">ResonanceError</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.converter</span> <span class="k">import</span> <span class="n">to_ob_mol</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.molecule</span> <span class="k">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Bond</span><span class="p">,</span> <span class="n">Molecule</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="k">import</span> <span class="n">C</span> <span class="k">as</span> <span class="n">C_ELEMENT</span><span class="p">,</span> <span class="n">H</span> <span class="k">as</span> <span class="n">H_ELEMENT</span><span class="p">,</span> <span class="n">F</span> <span class="k">as</span> <span class="n">F_ELEMENT</span><span class="p">,</span> <span class="n">Cl</span> <span class="k">as</span> <span class="n">Cl_ELEMENT</span><span class="p">,</span> <span class="n">I</span> <span class="k">as</span> <span class="n">I_ELEMENT</span>
@@ -314,7 +315,18 @@
     <span class="n">combination_threshold</span> <span class="o">=</span> <span class="n">combination_threshold</span> <span class="ow">or</span> <span class="n">COMBINATION_THRESHOLD</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol_list</span><span class="p">,</span> <span class="n">Molecule</span><span class="p">):</span>
-        <span class="n">mol_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">mol</span> <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">mol_list</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">()</span> <span class="k">if</span> <span class="n">mol</span><span class="o">.</span><span class="n">reactive</span><span class="p">]</span>
+        <span class="c1"># try generating resonance structures, but strictly keep atom order</span>
+        <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">new_mol_list</span> <span class="o">=</span> <span class="n">mol_list</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                                                                  <span class="n">filter_structures</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">order_atoms_in_mol_list</span><span class="p">(</span><span class="n">ref_mol</span><span class="o">=</span><span class="n">mol_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">mol_list</span><span class="o">=</span><span class="n">new_mol_list</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">ILPSolutionError</span><span class="p">,</span> <span class="n">ResonanceError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Could not generate resonance structures for species </span><span class="si">{label}</span><span class="s1">. Got: </span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+            <span class="n">mol_list</span> <span class="o">=</span> <span class="n">new_mol_list</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mol_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">mol_list</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;The `mol_list` argument must be a list, got </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">mol_list</span><span class="p">)))</span>
         <span class="k">return</span> <span class="kc">None</span>
@@ -533,7 +545,7 @@
                                                 <span class="n">torsion_angles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">multiple_sampling_points_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                                 <span class="n">wells_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">de_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_path</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Iteratively modify dihedrals in the lowest conformer (each iteration deduce a new lowest conformer),</span>
+<span class="sd">    Iteratively modify dihedrals in the lowest conformer (each iteration deduces a new lowest conformer),</span>
 <span class="sd">    until convergence.</span>
 
 <span class="sd">    Args:</span>
@@ -2197,7 +2209,7 @@
 <span class="sd">    Returns the element count for the molecule considering only the atom indices in ``top``.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        mol (Molecule): THe molecule to consider.</span>
+<span class="sd">        mol (Molecule): The molecule to consider.</span>
 <span class="sd">        top (list): The atom indices to consider.</span>
 
 <span class="sd">    Returns:</span>

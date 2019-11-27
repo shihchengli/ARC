@@ -281,38 +281,38 @@ All of the above settings can be modified in the settings.py file.</p>
 </li>
 </ul>
 <p>Each of the options above can be either “nested” (considering all ND dihedral combinations) or “diagonal”
-(resulting in a unique 1D rotor scan across several dimensions). THe last option is to allow the ESS to control
-the ND scan, which is similar to option B.</p>
+(resulting in a unique 1D rotor scan across several dimensions). The seventh option is to allow the ESS to control
+the ND scan, which is similar in principal to option B.</p>
 <p>The optional primary keys are:</p>
 <ul class="simple">
-<li><p><cite>brute_force_sp</cite></p></li>
-<li><p><cite>brute_force_opt</cite></p></li>
-<li><p><cite>cont_opt</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brute_force_sp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brute_force_opt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cont_opt</span></code></p></li>
 </ul>
 <p>The brute force methods will generate all the geometries in advance and submit all relevant jobs simultaneously.
 The continuous method will wait for the previous job to terminate, and use its geometry as the initial guess for
 the next job.</p>
-<p>Another set of three keys is allowed, adding <cite>_diagonal</cite> to each of the above keys. the secondary keys are therefore:</p>
+<p>Another set of three keys is allowed, adding <code class="docutils literal notranslate"><span class="pre">_diagonal</span></code> to each of the above keys. the secondary keys are therefore:</p>
 <ul class="simple">
-<li><p><cite>brute_force_sp_diagonal</cite></p></li>
-<li><p><cite>brute_force_opt_diagonal</cite></p></li>
-<li><p><cite>cont_opt_diagonal</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brute_force_sp_diagonal</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brute_force_opt_diagonal</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cont_opt_diagonal</span></code></p></li>
 </ul>
-<p>Specifying <cite>_diagonal</cite> will increment all the respective dihedrals together, resulting in a 1D scan instead of
-an ND scan. Values are nested lists. Each value is a list where the entries are either pivot lists (e.g., [1,5])
-or lists of pivot lists (e.g., [[1,5], [6,8]]), or a mix (e.g., [[4,8], [[6,9], [3, 4]]). The requested directed
-scan type will be executed separately for each list entry in the value. A list entry that contains only two pivots
+<p>Specifying <code class="docutils literal notranslate"><span class="pre">_diagonal</span></code> will increment all the respective dihedrals together, resulting in a 1D scan instead of
+an ND scan. Values are nested lists. Each value is a list where the entries are either pivot lists (e.g., <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">5]</span></code>)
+or lists of pivot lists (e.g., <code class="docutils literal notranslate"><span class="pre">[[1,</span> <span class="pre">5],</span> <span class="pre">[6,</span> <span class="pre">8]]</span></code>), or a mix (e.g., <code class="docutils literal notranslate"><span class="pre">[[4,</span> <span class="pre">8],</span> <span class="pre">[[6,</span> <span class="pre">9],</span> <span class="pre">[3,</span> <span class="pre">4]]</span></code>). The requested
+directed scan type will be executed separately for each list entry. A list entry that contains only two pivots
 will result in a 1D scan, while a list entry with N pivots will consider all of them, and will result in an ND scan
-if ‘_diagonal’ is not specified.</p>
-<p>ARC will generate geometries using the <code class="docutils literal notranslate"><span class="pre">rotor_scan_resolution</span></code> argument in settings.py</p>
-<p>Note: An ‘all’ string entry is also allowed in the value list, triggering a directed internal rotation scan for all
-torsions in the molecule. If ‘all’ is specified within a second level list, then all the dihedrals will be considered
+(if <code class="docutils literal notranslate"><span class="pre">_diagonal</span></code> is not specified).</p>
+<p>ARC will generate geometries using the <code class="docutils literal notranslate"><span class="pre">rotor_scan_resolution</span></code> argument in <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>.</p>
+<p>Note: An <code class="docutils literal notranslate"><span class="pre">'all'</span></code> string entry is also allowed in the value list, triggering a directed internal rotation scan for all
+torsions in the molecule. If <code class="docutils literal notranslate"><span class="pre">'all'</span></code> is specified within a second level list, then all the dihedrals will be considered
 together. Currently ARC does not automatically identify torsions to be treated as ND, and this attribute must be
 specified by the user. An additional supported key is ‘ess’, in which case ARC will allow the ESS to take care of
 spawning the ND continuous constrained optimizations.</p>
-<p>To execute ND rotor scans, first set the <code class="docutils literal notranslate"><span class="pre">`rotors</span></code> job type to <code class="docutils literal notranslate"><span class="pre">True</span></code>.
+<p>To execute ND rotor scans, first set the <code class="docutils literal notranslate"><span class="pre">rotors</span></code> job type to <code class="docutils literal notranslate"><span class="pre">True</span></code>.
 Next, set the <code class="docutils literal notranslate"><span class="pre">directed_rotors</span></code> attribute of the relevant species. Below are several examples.</p>
-<p>To run all dihedral scans of a species separately (each as 1D):</p>
+<p>To run all dihedral scans of a species separately using brute force sp (each as 1D):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spc1</span> <span class="o">=</span> <span class="n">ARCSpecies</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;some_label&#39;</span><span class="p">,</span> <span class="n">smiles</span><span class="o">=</span><span class="s1">&#39;species_smiles&#39;</span><span class="p">,</span> <span class="n">directed_rotors</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;brute_force_sp&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]})</span>
 </pre></div>
 </div>
@@ -320,19 +320,19 @@ Next, set the <code class="docutils literal notranslate"><span class="pre">direc
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spc1</span> <span class="o">=</span> <span class="n">ARCSpecies</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;some_label&#39;</span><span class="p">,</span> <span class="n">smiles</span><span class="o">=</span><span class="s1">&#39;species_smiles&#39;</span><span class="p">,</span> <span class="n">directed_rotors</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;cont_opt&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;all&#39;</span><span class="p">]]})</span>
 </pre></div>
 </div>
-<p>Note in the above example the change in list level (<code class="docutils literal notranslate"><span class="pre">all</span></code> is either within one or two nested lists).</p>
+<p>Note the change in list level (<code class="docutils literal notranslate"><span class="pre">all</span></code> is either within one or two nested lists) in the above examples.</p>
 <p>To run specific dihedrals as ND (here all 2D combinations for a species with 3 torsions):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spc1</span> <span class="o">=</span> <span class="n">ARCSpecies</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;C4O2&#39;</span><span class="p">,</span> <span class="n">smiles</span><span class="o">=</span><span class="s1">&#39;[O]CCCC=O&#39;</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span>
                   <span class="n">directed_rotors</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;brute_force_opt&#39;</span><span class="p">:</span> <span class="p">[[[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]]})</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Note: ND rotors are still <strong>not</strong> incorporated into the molecular partition function,</p></li>
+<li><p>Note: ND rotors are still <strong>not</strong> incorporated into the molecular partition function,
+so currently will not affect thermo or rates.</p></li>
+<li><p>Note: Any torsion defined as part of an ND rotor scan will <strong>not</strong> be spawned for that species as a separate 1D scan.</p></li>
+<li><p>Warning: Job arrays have not been incorporated into ARC yet. Spawning ND rotor scans will result in <strong>many</strong>
+individual jobs being submit to your server queue system.</p></li>
 </ul>
-<p>so currently will not affect thermo or rates.
-- Note: Any torsion defined as part of an ND rotor scan will <strong>not</strong> be spawned for that species as a separate 1D scan.
-- Warning: Job arrays have not been incorporated into ARC yet. Spawning ND rotor scans will result in <strong>many</strong>
-individual jobs being submit to your server queue system.</p>
 </div>
 <div class="section" id="electronic-structure-software-settings">
 <h2>Electronic Structure Software Settings<a class="headerlink" href="#electronic-structure-software-settings" title="Permalink to this headline">¶</a></h2>
