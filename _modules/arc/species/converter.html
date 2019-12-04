@@ -169,17 +169,17 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">pybel</span>
-<span class="kn">from</span> <span class="nn">rdkit</span> <span class="k">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="k">import</span> <span class="n">rdMolTransforms</span> <span class="k">as</span> <span class="n">rdMT</span>
+<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdMolTransforms</span> <span class="k">as</span> <span class="n">rdMT</span>
 
-<span class="kn">from</span> <span class="nn">arkane.common</span> <span class="k">import</span> <span class="n">symbol_by_number</span><span class="p">,</span> <span class="n">mass_by_symbol</span><span class="p">,</span> <span class="n">get_element_mass</span>
-<span class="kn">from</span> <span class="nn">rmgpy.exceptions</span> <span class="k">import</span> <span class="n">AtomTypeError</span>
-<span class="kn">from</span> <span class="nn">rmgpy.molecule.molecule</span> <span class="k">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Bond</span><span class="p">,</span> <span class="n">Molecule</span>
-<span class="kn">from</span> <span class="nn">rmgpy.species</span> <span class="k">import</span> <span class="n">Species</span>
+<span class="kn">from</span> <span class="nn">arkane.common</span> <span class="kn">import</span> <span class="n">symbol_by_number</span><span class="p">,</span> <span class="n">mass_by_symbol</span><span class="p">,</span> <span class="n">get_element_mass</span>
+<span class="kn">from</span> <span class="nn">rmgpy.exceptions</span> <span class="kn">import</span> <span class="n">AtomTypeError</span>
+<span class="kn">from</span> <span class="nn">rmgpy.molecule.molecule</span> <span class="kn">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Bond</span><span class="p">,</span> <span class="n">Molecule</span>
+<span class="kn">from</span> <span class="nn">rmgpy.species</span> <span class="kn">import</span> <span class="n">Species</span>
 
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="k">import</span> <span class="n">get_logger</span>
-<span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="k">import</span> <span class="n">SpeciesError</span><span class="p">,</span> <span class="n">SanitizationError</span><span class="p">,</span> <span class="n">InputError</span>
-<span class="kn">from</span> <span class="nn">arc.species.xyz_to_2d</span> <span class="k">import</span> <span class="n">MolGraph</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">SpeciesError</span><span class="p">,</span> <span class="n">SanitizationError</span><span class="p">,</span> <span class="n">InputError</span>
+<span class="kn">from</span> <span class="nn">arc.species.xyz_to_2d</span> <span class="kn">import</span> <span class="n">MolGraph</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
@@ -221,7 +221,7 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Expected a string input, got </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">)))</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">arc.parser</span> <span class="k">import</span> <span class="n">parse_xyz_from_file</span>
+        <span class="kn">from</span> <span class="nn">arc.parser</span> <span class="kn">import</span> <span class="n">parse_xyz_from_file</span>
         <span class="k">return</span> <span class="n">parse_xyz_from_file</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">)</span>
     <span class="n">xyz_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(),</span> <span class="s1">&#39;isotopes&#39;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(),</span> <span class="s1">&#39;coords&#39;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">()}</span>
     <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">==</span> <span class="mi">6</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">xyz_str</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()]):</span>
@@ -503,7 +503,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">xyz_dict</span> <span class="o">=</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">xyz</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Expected a dictionary, got {type(xyz_dict)}&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expected a dictionary, got {type(xyz_dict)}&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="s1">&#39;symbols&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">xyz_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;XYZ dictionary is missing symbols. Got:</span><span class="se">\n</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">))</span>
     <span class="k">if</span> <span class="s1">&#39;coords&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">xyz_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -644,7 +644,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">mol_s1</span> <span class="o">=</span> <span class="n">s_bonds_mol_from_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>  <span class="c1"># An RMG Molecule with single bonds, atom order corresponds to xyz</span>
     <span class="k">if</span> <span class="n">mol_s1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Could not create a 2D graph representation from xyz:</span><span class="se">\n</span><span class="s1">{xyz_to_str(xyz)}&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not create a 2D graph representation from xyz:</span><span class="se">\n</span><span class="s1">{xyz_to_str(xyz)}&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">multiplicity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">mol_s1</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="n">multiplicity</span>

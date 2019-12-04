@@ -1138,11 +1138,15 @@ The differentiation between <code class="docutils literal notranslate"><span cla
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>rotor_index</strong> (<em>int</em>) – The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</p></li>
-<li><p><strong>xyz</strong> (<em>str</em>) – The 3D coordinates for a continuous directed scan.</p></li>
+<li><p><strong>xyz</strong> (<em>str</em><em>, </em><em>optional</em>) – The 3D coordinates for a continuous directed scan.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>InputError</strong> – If job_type has an unexpected value.</p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>InputError</strong> – If the species directed scan type has an unexpected value,
+    or if <code class="docutils literal notranslate"><span class="pre">xyz</span></code> wasn’t given for a cont_opt job.</p></li>
+<li><p><strong>SchedulerError</strong> – If the rotor scan resolution as defined in settings.py is illegal.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

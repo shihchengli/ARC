@@ -1463,7 +1463,7 @@ Near-future supported families might be:
 
 <dl class="function">
 <dt id="arc.species.species.determine_rotor_symmetry">
-<code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">determine_rotor_symmetry</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">pivots</em>, <em class="sig-param">rotor_path=''</em>, <em class="sig-param">energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#determine_rotor_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.determine_rotor_symmetry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">determine_rotor_symmetry</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">pivots</em>, <em class="sig-param">rotor_path=''</em>, <em class="sig-param">energies=None</em>, <em class="sig-param">return_num_wells=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#determine_rotor_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.determine_rotor_symmetry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the rotor symmetry number from a potential energy scan.
 The <em>worst</em> resolution for each peak and valley is determined.
 The first criterion for a symmetric rotor is that the highest peak and the lowest peak must be within the
@@ -1477,6 +1477,8 @@ the highest peak value. This is only applied if the highest peak is above 2 kJ/m
 <li><p><strong>label</strong> (<em>str</em>) – The species label (used for error messages).</p></li>
 <li><p><strong>pivots</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of two atom indices representing the torsion pivots.</p></li>
 <li><p><strong>energies</strong> (<em>list</em><em>, </em><em>optional</em>) – The list of energies in the scan in kJ/mol.</p></li>
+<li><p><strong>return_num_wells</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to also return the number of wells, <code class="docutils literal notranslate"><span class="pre">True</span></code> to return,
+default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1490,6 +1492,12 @@ the highest peak value. This is only applied if the highest peak is above 2 kJ/m
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The number of peaks, only returned if <code class="docutils literal notranslate"><span class="pre">return_len_peaks</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int (optional)</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">

@@ -315,7 +315,7 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 
 <dl class="function">
 <dt id="arc.plotter.plot_1d_rotor_scan">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_1d_rotor_scan</code><span class="sig-paren">(</span><em class="sig-param">angles=None</em>, <em class="sig-param">energies=None</em>, <em class="sig-param">results=None</em>, <em class="sig-param">path=None</em>, <em class="sig-param">pivots=None</em>, <em class="sig-param">comment=''</em>, <em class="sig-param">units='degrees'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_1d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_1d_rotor_scan" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_1d_rotor_scan</code><span class="sig-paren">(</span><em class="sig-param">angles=None</em>, <em class="sig-param">energies=None</em>, <em class="sig-param">results=None</em>, <em class="sig-param">path=None</em>, <em class="sig-param">scan=None</em>, <em class="sig-param">comment=''</em>, <em class="sig-param">units='degrees'</em>, <em class="sig-param">original_dihedral=None</em>, <em class="sig-param">label=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_1d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_1d_rotor_scan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots a 1D rotor PES for energy vs. angles. Either <code class="docutils literal notranslate"><span class="pre">angles</span></code> and <code class="docutils literal notranslate"><span class="pre">energies</span></code> or <code class="docutils literal notranslate"><span class="pre">results</span></code> must be given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -324,9 +324,11 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 <li><p><strong>energies</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>np.array</em><em>, </em><em>optional</em>) – The energies in kJ/mol.</p></li>
 <li><p><strong>results</strong> (<em>dict</em><em>, </em><em>optional</em>) – The results dictionary, dihedrals are assumed to be in degrees (not radians).</p></li>
 <li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The folder path for saving the rotor scan image and comments.</p></li>
-<li><p><strong>pivots</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>optional</em>) – The pivotal atoms of the scan.</p></li>
+<li><p><strong>scan</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>optional</em>) – The pivotal atoms of the scan.</p></li>
 <li><p><strong>comment</strong> (<em>str</em><em>, </em><em>optional</em>) – Reason for invalidating this rotor.</p></li>
 <li><p><strong>units</strong> (<em>str</em><em>, </em><em>optional</em>) – The <code class="docutils literal notranslate"><span class="pre">angle</span></code> units, either ‘degrees’ or ‘radians’.</p></li>
+<li><p><strong>original_dihedral</strong> (<em>float</em><em>, </em><em>optional</em>) – The actual dihedral angle of this torsion before the scan.</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The species label.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>

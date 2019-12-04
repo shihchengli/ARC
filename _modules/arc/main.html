@@ -176,27 +176,27 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">distutils.spawn</span> <span class="k">import</span> <span class="n">find_executable</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">distutils.spawn</span> <span class="kn">import</span> <span class="n">find_executable</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
 
-<span class="kn">from</span> <span class="nn">arkane.statmech</span> <span class="k">import</span> <span class="n">assign_frequency_scale_factor</span>
-<span class="kn">from</span> <span class="nn">rmgpy.reaction</span> <span class="k">import</span> <span class="n">Reaction</span>
-<span class="kn">from</span> <span class="nn">rmgpy.species</span> <span class="k">import</span> <span class="n">Species</span>
+<span class="kn">from</span> <span class="nn">arkane.statmech</span> <span class="kn">import</span> <span class="n">assign_frequency_scale_factor</span>
+<span class="kn">from</span> <span class="nn">rmgpy.reaction</span> <span class="kn">import</span> <span class="n">Reaction</span>
+<span class="kn">from</span> <span class="nn">rmgpy.species</span> <span class="kn">import</span> <span class="n">Species</span>
 
 <span class="kn">import</span> <span class="nn">arc.rmgdb</span> <span class="k">as</span> <span class="nn">rmgdb</span>
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="k">import</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">read_yaml_file</span><span class="p">,</span> <span class="n">time_lapse</span><span class="p">,</span> <span class="n">check_ess_settings</span><span class="p">,</span> <span class="n">initialize_log</span><span class="p">,</span> <span class="n">log_footer</span><span class="p">,</span> <span class="n">get_logger</span><span class="p">,</span>\
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">read_yaml_file</span><span class="p">,</span> <span class="n">time_lapse</span><span class="p">,</span> <span class="n">check_ess_settings</span><span class="p">,</span> <span class="n">initialize_log</span><span class="p">,</span> <span class="n">log_footer</span><span class="p">,</span> <span class="n">get_logger</span><span class="p">,</span>\
     <span class="n">save_yaml_file</span><span class="p">,</span> <span class="n">initialize_job_types</span>
-<span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="k">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">SettingsError</span><span class="p">,</span> <span class="n">SpeciesError</span>
-<span class="kn">from</span> <span class="nn">arc.job.ssh</span> <span class="k">import</span> <span class="n">SSHClient</span>
-<span class="kn">from</span> <span class="nn">arc.processor</span> <span class="k">import</span> <span class="n">Processor</span>
-<span class="kn">from</span> <span class="nn">arc.reaction</span> <span class="k">import</span> <span class="n">ARCReaction</span>
-<span class="kn">from</span> <span class="nn">arc.scheduler</span> <span class="k">import</span> <span class="n">Scheduler</span>
-<span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">arc_path</span><span class="p">,</span> <span class="n">default_levels_of_theory</span><span class="p">,</span> <span class="n">servers</span><span class="p">,</span> <span class="n">valid_chars</span><span class="p">,</span> <span class="n">default_job_types</span>
-<span class="kn">from</span> <span class="nn">arc.species.species</span> <span class="k">import</span> <span class="n">ARCSpecies</span>
-<span class="kn">from</span> <span class="nn">arc.utils.scale</span> <span class="k">import</span> <span class="n">determine_scaling_factors</span>
+<span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">SettingsError</span><span class="p">,</span> <span class="n">SpeciesError</span>
+<span class="kn">from</span> <span class="nn">arc.job.ssh</span> <span class="kn">import</span> <span class="n">SSHClient</span>
+<span class="kn">from</span> <span class="nn">arc.processor</span> <span class="kn">import</span> <span class="n">Processor</span>
+<span class="kn">from</span> <span class="nn">arc.reaction</span> <span class="kn">import</span> <span class="n">ARCReaction</span>
+<span class="kn">from</span> <span class="nn">arc.scheduler</span> <span class="kn">import</span> <span class="n">Scheduler</span>
+<span class="kn">from</span> <span class="nn">arc.settings</span> <span class="kn">import</span> <span class="n">arc_path</span><span class="p">,</span> <span class="n">default_levels_of_theory</span><span class="p">,</span> <span class="n">servers</span><span class="p">,</span> <span class="n">valid_chars</span><span class="p">,</span> <span class="n">default_job_types</span>
+<span class="kn">from</span> <span class="nn">arc.species.species</span> <span class="kn">import</span> <span class="n">ARCSpecies</span>
+<span class="kn">from</span> <span class="nn">arc.utils.scale</span> <span class="kn">import</span> <span class="n">determine_scaling_factors</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">arc.settings</span> <span class="k">import</span> <span class="n">global_ess_settings</span>
+    <span class="kn">from</span> <span class="nn">arc.settings</span> <span class="kn">import</span> <span class="n">global_ess_settings</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">global_ess_settings</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -306,7 +306,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">arc_species_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">arc_rxn_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level_of_theory</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">arc_species_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">arc_rxn_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level_of_theory</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
                  <span class="n">conformer_level</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">composite_method</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">opt_level</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">freq_level</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sp_level</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">scan_level</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
                  <span class="n">ts_guess_level</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">use_bac</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">job_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_chemistry</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">initial_trsh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">t_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_count</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">project_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_job_time</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
