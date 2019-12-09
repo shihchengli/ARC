@@ -262,37 +262,25 @@ All of the above settings can be modified in the settings.py file.</p>
 <div class="section" id="nd-rotor-scans">
 <h2>ND Rotor scans<a class="headerlink" href="#nd-rotor-scans" title="Permalink to this headline">¶</a></h2>
 <p>ARC also supports ND (N dimensional, N &gt;= 1) rotor scans. There are seven different ND types to execute:</p>
-<ul class="simple">
-<li><ol class="upperalpha simple">
-<li><p>Generate all geometries in advance (brute force)</p></li>
-</ol>
-</li>
-<li><ul>
-<li><p>A1. Just calculate single point energies</p></li>
-</ul>
-</li>
-<li><ul>
-<li><p>A2. Constraint optimization</p></li>
-</ul>
-</li>
-<li><ol class="upperalpha simple" start="2">
-<li><p>Derive the geometry from the previous point (continuous constrained optimization)</p></li>
-</ol>
-</li>
-</ul>
-<p>Each of the options above can be either “nested” (considering all ND dihedral combinations) or “diagonal”
-(resulting in a unique 1D rotor scan across several dimensions). The seventh option is to allow the ESS to control
-the ND scan, which is similar in principal to option B.</p>
+<p>A. Generate all geometries in advance (brute force)
+- A1. Just calculate single point energies (nested or diagonalized)
+- A2. Constraint optimization (nested or diagonalized)
+B. Derive the geometry from the previous point (continuous constrained optimization) (nested or diagonalized)
+C. ESS</p>
+<p>Each of the options above (A or B) can be either “nested” (considering all ND dihedral combinations) or “diagonal”
+(resulting in a unique 1D rotor scan across several dimensions). The seventh option (C) allows the ESS to control
+the ND scan, which is similar in principal to option B, but not directly controlled by ARC.</p>
 <p>The optional primary keys are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">brute_force_sp</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">brute_force_opt</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">cont_opt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ess</span></code></p></li>
 </ul>
 <p>The brute force methods will generate all the geometries in advance and submit all relevant jobs simultaneously.
 The continuous method will wait for the previous job to terminate, and use its geometry as the initial guess for
 the next job.</p>
-<p>Another set of three keys is allowed, adding <code class="docutils literal notranslate"><span class="pre">_diagonal</span></code> to each of the above keys. the secondary keys are therefore:</p>
+<p>Another set of three keys is allowed, adding <code class="docutils literal notranslate"><span class="pre">_diagonal</span></code> to each of the above keys. The secondary keys are therefore:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">brute_force_sp_diagonal</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">brute_force_opt_diagonal</span></code></p></li>

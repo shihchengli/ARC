@@ -277,6 +277,7 @@
 <span class="sd">                                - &#39;brute_force_sp&#39;</span>
 <span class="sd">                                - &#39;brute_force_opt&#39;</span>
 <span class="sd">                                - &#39;cont_opt&#39;</span>
+<span class="sd">                                - &#39;ess&#39;</span>
 <span class="sd">                                The brute force methods will generate all the geometries in advance and submit all</span>
 <span class="sd">                                relevant jobs simultaneously. The continuous method will wait for the previous job</span>
 <span class="sd">                                to terminate, and use its geometry as the initial guess for the next job.</span>
@@ -562,8 +563,7 @@
                         <span class="s1">&#39;brute_force_sp_diagonal&#39;</span><span class="p">,</span> <span class="s1">&#39;brute_force_opt_diagonal&#39;</span><span class="p">,</span> <span class="s1">&#39;cont_opt_diagonal&#39;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_keys</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Allowed keys for directed_rotors are </span><span class="si">{0}</span><span class="s1">. Got for species </span><span class="si">{1}</span><span class="s1">: </span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">allowed_keys</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Allowed keys for directed_rotors are </span><span class="si">{allowed_keys}</span><span class="s1">. Got </span><span class="si">{key}</span><span class="s1"> for </span><span class="si">{self.label}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_mol_list</span><span class="p">()</span>
