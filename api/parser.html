@@ -215,6 +215,35 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="arc.parser.parse_normal_displacement_modes">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_normal_displacement_modes</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">software=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_normal_displacement_modes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_normal_displacement_modes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse frequencies and normal displacement modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – The path to the log file.</p></li>
+<li><p><strong>software</strong> (<em>str</em><em>, </em><em>optional</em>) – The software to used to generate the log file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The frequencies (cm^-1)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The normal displacement modes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – If the parser is not implemented for the ESS this log file belongs to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.parser.parse_polarizability">
 <code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_polarizability</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_polarizability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_polarizability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the polarizability from a freq job output file, returns the value in Angstrom^3.</p>
