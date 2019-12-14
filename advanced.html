@@ -262,11 +262,18 @@ All of the above settings can be modified in the settings.py file.</p>
 <div class="section" id="nd-rotor-scans">
 <h2>ND Rotor scans<a class="headerlink" href="#nd-rotor-scans" title="Permalink to this headline">¶</a></h2>
 <p>ARC also supports ND (N dimensional, N &gt;= 1) rotor scans. There are seven different ND types to execute:</p>
-<p>A. Generate all geometries in advance (brute force)
-- A1. Just calculate single point energies (nested or diagonalized)
-- A2. Constraint optimization (nested or diagonalized)
-B. Derive the geometry from the previous point (continuous constrained optimization) (nested or diagonalized)
-C. ESS</p>
+<ul class="simple">
+<li><p>A1. Generate all geometries in advance (brute force), and calculate single point energies (nested or diagonalized).</p></li>
+<li><p>A2. Generate all geometries in advance (brute force), and run constraint optimizations (nested or diagonalized).</p></li>
+<li><ol class="upperalpha simple" start="2">
+<li><p>Derive the geometry from the previous point (continuous) and run constraint optimizations (nested or diagonalized).</p></li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="3">
+<li><p>Let the ESS guide the optimizations.</p></li>
+</ol>
+</li>
+</ul>
 <p>Each of the options above (A or B) can be either “nested” (considering all ND dihedral combinations) or “diagonal”
 (resulting in a unique 1D rotor scan across several dimensions). The seventh option (C) allows the ESS to control
 the ND scan, which is similar in principal to option B, but not directly controlled by ARC.</p>

@@ -183,6 +183,27 @@
 <span id="arc-parser"></span><span id="parser"></span><h1>arc.parser<a class="headerlink" href="#module-arc.parser" title="Permalink to this headline">¶</a></h1>
 <p>A module for parsing information from various files.</p>
 <dl class="function">
+<dt id="arc.parser.parse_1d_scan_energies">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_1d_scan_energies</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_1d_scan_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_1d_scan_energies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the 1D torsion scan energies from an ESS log file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The ESS log file to parse from.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The electronic energy in kJ/mol.
+angles (list): The scan angles in degrees.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>energies (list)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">path</span></code> is invalid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.parser.parse_dipole_moment">
 <code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_dipole_moment</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_dipole_moment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_dipole_moment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the dipole moment in Debye from an opt job output file.</p>
@@ -212,6 +233,49 @@
 <dt id="arc.parser.parse_frequencies">
 <code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_frequencies</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">software</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_frequencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_frequencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the frequencies from a freq job output file.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.parser.parse_nd_scan_energies">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_nd_scan_energies</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">software='gaussian'</em>, <em class="sig-param">return_original_dihedrals=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_nd_scan_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_nd_scan_energies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the ND torsion scan energies from an ESS log file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – The ESS log file to parse from.</p></li>
+<li><p><strong>software</strong> (<em>str</em><em>, </em><em>optional</em>) – The software used to run this scan, default is ‘gaussian’.</p></li>
+<li><p><strong>return_original_dihedrals</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the dihedral angles of the original conformer.
+<code class="docutils literal notranslate"><span class="pre">True</span></code> to return, default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>The “results” dictionary, which has the following structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;directed_scan_type&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">str</span><span class="p">,</span> <span class="n">used</span> <span class="k">for</span> <span class="n">the</span> <span class="n">fig</span> <span class="n">name</span><span class="o">&gt;</span><span class="p">,</span>
+           <span class="s1">&#39;scans&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">list</span><span class="p">,</span> <span class="n">entries</span> <span class="n">are</span> <span class="n">lists</span> <span class="n">of</span> <span class="n">torsion</span> <span class="n">indices</span><span class="o">&gt;</span><span class="p">,</span>
+           <span class="s1">&#39;directed_scan&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">dict</span><span class="p">,</span> <span class="n">keys</span> <span class="n">are</span> <span class="n">tuples</span> <span class="n">of</span> <span class="s1">&#39;</span><span class="si">{0:.2f}</span><span class="s1">&#39;</span> <span class="n">formatted</span> <span class="n">dihedrals</span><span class="p">,</span>
+                             <span class="n">values</span> <span class="n">are</span> <span class="n">dictionaries</span> <span class="k">with</span> <span class="n">the</span> <span class="n">following</span> <span class="n">keys</span> <span class="ow">and</span> <span class="n">values</span><span class="p">:</span>
+                             <span class="p">{</span><span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">float</span><span class="p">,</span> <span class="n">energy</span> <span class="ow">in</span> <span class="n">kJ</span><span class="o">/</span><span class="n">mol</span><span class="o">&gt;</span><span class="p">,</span>  <span class="o">*</span> <span class="n">only</span> <span class="n">this</span> <span class="ow">is</span> <span class="n">used</span> <span class="n">here</span>
+                              <span class="s1">&#39;xyz&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">dict</span><span class="o">&gt;</span><span class="p">,</span>
+                              <span class="s1">&#39;is_isomorphic&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>
+                              <span class="s1">&#39;trsh&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">list</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">ess_trsh_methods</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&gt;</span>
+           <span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The dihedrals angles of the original conformer.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list, optional</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">path</span></code> is invalid.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -247,24 +311,6 @@
 <dt id="arc.parser.parse_polarizability">
 <code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_polarizability</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_polarizability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_polarizability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the polarizability from a freq job output file, returns the value in Angstrom^3.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="arc.parser.parse_scan_energies">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_scan_energies</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_scan_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_scan_energies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse the torsion scan energies from an ESS log file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The ESS log file to parse from.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The electronic energy in kJ/mol.
-angles (list): The scan angles in degrees.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>energies (list)</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="function">

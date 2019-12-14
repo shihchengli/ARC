@@ -339,16 +339,37 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 
 <dl class="function">
 <dt id="arc.plotter.plot_2d_rotor_scan">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_2d_rotor_scan</code><span class="sig-paren">(</span><em class="sig-param">results</em>, <em class="sig-param">path=None</em>, <em class="sig-param">label=''</em>, <em class="sig-param">cmap='Blues'</em>, <em class="sig-param">resolution=90</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_2d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_2d_rotor_scan" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_2d_rotor_scan</code><span class="sig-paren">(</span><em class="sig-param">results</em>, <em class="sig-param">path=None</em>, <em class="sig-param">label=''</em>, <em class="sig-param">cmap='Blues'</em>, <em class="sig-param">resolution=90</em>, <em class="sig-param">mark_lowest_conformations=True</em>, <em class="sig-param">original_dihedrals=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_2d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_2d_rotor_scan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a 2D rotor scan.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>results</strong> (<em>dict</em>) – The results dictionary, dihedrals are assumed to be in degrees (not radians).</p></li>
+<li><p><strong>results</strong> (<em>dict</em>) – <p>The results dictionary, dihedrals are assumed to be in degrees (not radians).
+This dictionary has the following structure:</p>
+<dl>
+<dt>results = {‘directed_scan_type’: &lt;str, used for the fig name&gt;,</dt><dd><p>’scans’: &lt;list, entries are lists of torsion indices&gt;,
+‘directed_scan’: &lt;dict, keys are tuples of ‘{0:.2f}’ formatted dihedrals,</p>
+<blockquote>
+<div><p>values are dictionaries with the following keys and values:
+{‘energy’: &lt;float, energy in kJ/mol&gt;,  * only this is used here</p>
+<blockquote>
+<div><p>’xyz’: &lt;dict&gt;,
+‘is_isomorphic’: &lt;bool&gt;,
+‘trsh’: &lt;list, job.ess_trsh_methods&gt;}&gt;</p>
+</div></blockquote>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+</p></li>
 <li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The folder path to save this 2D image.</p></li>
 <li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The species label.</p></li>
 <li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – The color map to use. See optional arguments below.</p></li>
 <li><p><strong>resolution</strong> (<em>int</em><em>, </em><em>optional</em>) – The image resolution to produce.</p></li>
+<li><p><strong>mark_lowest_conformations</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to add a marker at the lowest conformers.
+<code class="docutils literal notranslate"><span class="pre">True</span></code> to add, default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>original_dihedrals</strong> (<em>list</em><em>, </em><em>optional</em>) – Entries are dihedral degrees of the conformer used for the scan.
+If given, the conformer will be marked on the plot with a red dot.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>

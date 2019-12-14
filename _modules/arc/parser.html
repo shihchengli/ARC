@@ -334,9 +334,9 @@
     <span class="k">return</span> <span class="n">zpe</span></div>
 
 
-<div class="viewcode-block" id="parse_scan_energies"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_scan_energies">[docs]</a><span class="k">def</span> <span class="nf">parse_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<div class="viewcode-block" id="parse_1d_scan_energies"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_1d_scan_energies">[docs]</a><span class="k">def</span> <span class="nf">parse_1d_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parse the torsion scan energies from an ESS log file.</span>
+<span class="sd">    Parse the 1D torsion scan energies from an ESS log file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        path (str): The ESS log file to parse from.</span>
@@ -344,18 +344,197 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        energies (list): The electronic energy in kJ/mol.</span>
 <span class="sd">        angles (list): The scan angles in degrees.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        InputError: If ``path`` is invalid.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Could not find file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">determine_qm_software</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">load_scan_energies</span><span class="p">()</span>
         <span class="n">energies</span> <span class="o">*=</span> <span class="mf">0.001</span>  <span class="c1"># convert to kJ/mol</span>
         <span class="n">angles</span> <span class="o">*=</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># convert to degrees</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">LogError</span><span class="p">,</span> <span class="ne">NotImplementedError</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not read energies from </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read energies from </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span></div>
+
+
+<div class="viewcode-block" id="parse_nd_scan_energies"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_nd_scan_energies">[docs]</a><span class="k">def</span> <span class="nf">parse_nd_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">software</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">,</span> <span class="n">return_original_dihedrals</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse the ND torsion scan energies from an ESS log file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The ESS log file to parse from.</span>
+<span class="sd">        software (str, optional): The software used to run this scan, default is &#39;gaussian&#39;.</span>
+<span class="sd">        return_original_dihedrals (bool, optional): Whether to return the dihedral angles of the original conformer.</span>
+<span class="sd">                                                    ``True`` to return, default is ``False``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: The &quot;results&quot; dictionary, which has the following structure::</span>
+
+<span class="sd">              results = {&#39;directed_scan_type&#39;: &lt;str, used for the fig name&gt;,</span>
+<span class="sd">                         &#39;scans&#39;: &lt;list, entries are lists of torsion indices&gt;,</span>
+<span class="sd">                         &#39;directed_scan&#39;: &lt;dict, keys are tuples of &#39;{0:.2f}&#39; formatted dihedrals,</span>
+<span class="sd">                                           values are dictionaries with the following keys and values:</span>
+<span class="sd">                                           {&#39;energy&#39;: &lt;float, energy in kJ/mol&gt;,  * only this is used here</span>
+<span class="sd">                                            &#39;xyz&#39;: &lt;dict&gt;,</span>
+<span class="sd">                                            &#39;is_isomorphic&#39;: &lt;bool&gt;,</span>
+<span class="sd">                                            &#39;trsh&#39;: &lt;list, job.ess_trsh_methods&gt;}&gt;</span>
+<span class="sd">                         }</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        list, optional: The dihedrals angles of the original conformer.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        InputError: If ``path`` is invalid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;directed_scan_type&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;ess_</span><span class="si">{software}</span><span class="s1">&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;scans&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
+               <span class="s1">&#39;directed_scan&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>
+               <span class="p">}</span>
+    <span class="k">if</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
+        <span class="c1"># internal variables:</span>
+        <span class="c1"># - scan_d_dict (dict): keys are scanning dihedral names (e.g., &#39;D2&#39;, or &#39;D4&#39;), values are the corresponding</span>
+        <span class="c1">#                       torsion indices tuples (e.g., (4, 1, 2, 5), or (4, 1, 3, 6)).</span>
+        <span class="c1"># - dihedrals_dict (dict): keys are torsion tuples (e.g., (4, 1, 2, 5), or (4, 1, 3, 6)),</span>
+        <span class="c1">#                          values are lists of dihedral angles in degrees corresponding to the torsion</span>
+        <span class="c1">#                          (e.g., [-159.99700, -149.99690, -139.99694, -129.99691, -119.99693]).</span>
+        <span class="c1"># - torsions (list): entries are torsion indices that are scanned, e.g.: [(4, 1, 2, 5), (4, 1, 3, 6)]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8192</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="n">symbols</span><span class="p">,</span> <span class="n">torsions</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">resolution</span><span class="p">,</span> <span class="n">original_dihedrals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="n">scan_d_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">min_e</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">while</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                <span class="k">if</span> <span class="s1">&#39;The following ModRedundant input section has been read:&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="c1"># &#39; The following ModRedundant input section has been read:&#39;</span>
+                    <span class="c1"># &#39; D       4       1       2       5 S  36 10.000&#39;</span>
+                    <span class="c1"># &#39; D       4       1       3       6 S  36 10.000&#39;</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+                            <span class="n">torsions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]]))</span>
+                            <span class="n">shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># the last point is repeated</span>
+                            <span class="n">resolution</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">7</span><span class="p">]))</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">break</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;scans&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torsions</span>
+                    <span class="k">if</span> <span class="s1">&#39;Symbolic Z-matrix:&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="c1">#  ---------------------</span>
+                        <span class="c1">#  HIR calculation by AI</span>
+                        <span class="c1">#  ---------------------</span>
+                        <span class="c1">#  Symbolic Z-matrix:</span>
+                        <span class="c1">#  Charge =  0 Multiplicity = 1</span>
+                        <span class="c1">#  c</span>
+                        <span class="c1">#  o                    1    oc2</span>
+                        <span class="c1">#  o                    1    oc3      2    oco3</span>
+                        <span class="c1">#  o                    1    oc4      2    oco4     3    dih4     0</span>
+                        <span class="c1">#  h                    2    ho5      1    hoc5     3    dih5     0</span>
+                        <span class="c1">#  h                    3    ho6      1    hoc6     4    dih6     0</span>
+                        <span class="c1">#        Variables:</span>
+                        <span class="c1">#   oc2                   1.36119</span>
+                        <span class="c1">#   oc3                   1.36119</span>
+                        <span class="c1">#   oco3                114.896</span>
+                        <span class="c1">#   oc4                   1.18581</span>
+                        <span class="c1">#   oco4                122.552</span>
+                        <span class="c1">#   dih4                180.</span>
+                        <span class="c1">#   ho5                   0.9637</span>
+                        <span class="c1">#   hoc5                111.746</span>
+                        <span class="c1">#   dih5                 20.003</span>
+                        <span class="c1">#   ho6                   0.9637</span>
+                        <span class="c1">#   hoc6                111.746</span>
+                        <span class="c1">#   dih6               -160.</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+                            <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                        <span class="k">while</span> <span class="s1">&#39;Variables&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                            <span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+                            <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                <span class="k">if</span> <span class="s1">&#39;Initial Parameters&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="c1">#                            ----------------------------</span>
+                    <span class="c1">#                            !    Initial Parameters    !</span>
+                    <span class="c1">#                            ! (Angstroms and Degrees)  !</span>
+                    <span class="c1">#  --------------------------                            --------------------------</span>
+                    <span class="c1">#  ! Name  Definition              Value          Derivative Info.                !</span>
+                    <span class="c1">#  --------------------------------------------------------------------------------</span>
+                    <span class="c1">#  ! R1    R(1,2)                  1.3612         calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! R2    R(1,3)                  1.3612         calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! R3    R(1,4)                  1.1858         calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! R4    R(2,5)                  0.9637         calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! R5    R(3,6)                  0.9637         calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! A1    A(2,1,3)              114.896          calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! A2    A(2,1,4)              122.552          calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! A3    A(3,1,4)              122.552          calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! A4    A(1,2,5)              111.746          calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! A5    A(1,3,6)              111.746          calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! D1    D(3,1,2,5)             20.003          calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! D2    D(4,1,2,5)           -159.997          Scan                            !</span>
+                    <span class="c1">#  ! D3    D(2,1,3,6)             20.0            calculate D2E/DX2 analytically  !</span>
+                    <span class="c1">#  ! D4    D(4,1,3,6)           -160.0            Scan                            !</span>
+                    <span class="c1">#  --------------------------------------------------------------------------------</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                    <span class="c1"># original_zmat = {&#39;symbols&#39;: list(), &#39;coords&#39;: list(), &#39;vars&#39;: dict()}</span>
+                    <span class="k">while</span> <span class="s1">&#39;--------------------------&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="c1"># key = splits[2][:-1].replace(&#39;(&#39;, &#39;_&#39;).replace(&#39;,&#39;, &#39;_&#39;)</span>
+                        <span class="c1"># val = float(splits[3])</span>
+                        <span class="c1"># original_zmat[&#39;symbols&#39;].append(symbols[len(original_zmat[&#39;symbols&#39;])])</span>
+                        <span class="c1"># original_zmat[&#39;vars&#39;][key] = val</span>
+                        <span class="k">if</span> <span class="s1">&#39;Scan&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                            <span class="n">scan_d_dict</span><span class="p">[</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> \
+                                <span class="nb">tuple</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)])</span>
+                            <span class="n">original_dihedrals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+                <span class="k">elif</span> <span class="s1">&#39;Summary of Optimized Potential Surface Scan&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="c1"># &#39; Summary of Optimized Potential Surface Scan (add -264.0 to energies):&#39;</span>
+                    <span class="n">base_e</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(add &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">energies</span><span class="p">,</span> <span class="n">dihedrals_dict</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">()</span>
+                    <span class="n">dihedral_num</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">while</span> <span class="s1">&#39;Grad&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                        <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="s1">&#39;Eigenvalues --&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                            <span class="c1"># convert Hartree energy to kJ/mol</span>
+                            <span class="n">energies</span> <span class="o">=</span> <span class="p">[(</span><span class="n">base_e</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="o">*</span> <span class="mf">4.3597447222071e-18</span> <span class="o">*</span> <span class="mf">6.02214179e23</span> <span class="o">*</span> <span class="mf">1e-3</span>
+                                        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]</span>
+                            <span class="n">min_es</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+                            <span class="n">min_e</span> <span class="o">=</span> <span class="n">min_es</span> <span class="k">if</span> <span class="n">min_e</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_e</span><span class="p">,</span> <span class="n">min_es</span><span class="p">)</span>
+                            <span class="n">dihedral_num</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="k">if</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">scan_d_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> \
+                                <span class="ow">and</span> <span class="n">scan_d_dict</span><span class="p">[</span><span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dihedrals_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                            <span class="c1"># parse the dihedral information</span>
+                            <span class="c1"># &#39;           D1          20.00308  30.00361  40.05829  50.36777  61.07341&#39;</span>
+                            <span class="c1"># &#39;           D2        -159.99700-149.99690-139.99694-129.99691-119.99693&#39;</span>
+                            <span class="c1"># &#39;           D3          19.99992  19.99959  19.94509  19.63805  18.93967&#39;</span>
+                            <span class="c1"># &#39;           D4        -160.00000-159.99990-159.99994-159.99991-159.99993&#39;</span>
+                            <span class="n">dihedrals</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">dihedral</span><span class="p">)</span> <span class="k">for</span> <span class="n">dihedral</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39; -&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]]</span>
+                            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dihedrals</span><span class="p">)):</span>
+                                <span class="k">if</span> <span class="mi">0</span> <span class="o">&gt;</span> <span class="n">dihedrals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mf">0.0049999</span><span class="p">:</span>
+                                    <span class="n">dihedrals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                            <span class="n">dihedrals_dict</span><span class="p">[</span><span class="n">scan_d_dict</span><span class="p">[</span><span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">dihedrals</span>
+                            <span class="n">dihedral_num</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dihedrals_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">scan_d_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                            <span class="c1"># we have all the data for this block, pass to ``results`` and initialize ``dihedrals_dict``</span>
+                            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">energy</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
+                                <span class="n">dihedral_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">dihedrals_dict</span><span class="p">[</span><span class="n">torsion</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">torsion</span> <span class="ow">in</span> <span class="n">torsions</span><span class="p">]</span>  <span class="c1"># ordered</span>
+                                <span class="n">key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{dihedral:.2f}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">dihedral</span> <span class="ow">in</span> <span class="n">dihedral_list</span><span class="p">)</span>
+                                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="n">energy</span><span class="p">}</span>
+                            <span class="n">dihedrals_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>  <span class="c1"># keys are torsion tuples, values are dihedral angles</span>
+                    <span class="k">break</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_nd_scan_energies is currently only implemented for Gaussian, got </span><span class="si">{software}</span><span class="s1">.&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">min_e</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">return_original_dihedrals</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">original_dihedrals</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">results</span></div>
 
 
 <div class="viewcode-block" id="parse_xyz_from_file"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_xyz_from_file">[docs]</a><span class="k">def</span> <span class="nf">parse_xyz_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -494,13 +673,22 @@
 
 <span class="k">def</span> <span class="nf">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A helper function for getting a list of lines from the file at `path`.</span>
+<span class="sd">    A helper function for getting a list of lines from a file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The file path.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: The lines read from the file.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        InputError: If ``path`` is an invalid file path.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Could not find file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">lines</span>
 
 

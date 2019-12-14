@@ -184,7 +184,7 @@
 <span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">get_atom_radius</span><span class="p">,</span> <span class="n">determine_symmetry</span>
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">SpeciesError</span><span class="p">,</span> <span class="n">RotorError</span><span class="p">,</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">TSError</span><span class="p">,</span> <span class="n">SanitizationError</span>
 <span class="kn">from</span> <span class="nn">arc.parser</span> <span class="kn">import</span> <span class="n">parse_xyz_from_file</span><span class="p">,</span> <span class="n">parse_dipole_moment</span><span class="p">,</span> <span class="n">parse_polarizability</span><span class="p">,</span> <span class="n">process_conformers_file</span><span class="p">,</span> \
-    <span class="n">parse_scan_energies</span>
+    <span class="n">parse_1d_scan_energies</span>
 <span class="kn">from</span> <span class="nn">arc.settings</span> <span class="kn">import</span> <span class="n">default_ts_methods</span><span class="p">,</span> <span class="n">valid_chars</span><span class="p">,</span> <span class="n">minimum_barrier</span>
 <span class="kn">from</span> <span class="nn">arc.species</span> <span class="kn">import</span> <span class="n">conformers</span>
 <span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="n">rdkit_conf_from_mol</span><span class="p">,</span> <span class="n">xyz_from_data</span><span class="p">,</span> <span class="n">molecules_from_xyz</span><span class="p">,</span> <span class="n">rmg_mol_from_inchi</span><span class="p">,</span> \
@@ -1948,7 +1948,7 @@
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find the file </span><span class="si">{rotor_path}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">energies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">energies</span> <span class="o">=</span> <span class="n">parse_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">rotor_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="n">parse_1d_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">rotor_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="n">symmetry</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">max_e</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
@@ -2039,7 +2039,7 @@
 <span class="sd">    Determine whether this rotor should be treated as a HinderedRotor of a FreeRotor</span>
 <span class="sd">    according to it&#39;s maximum peak</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">energies</span> <span class="o">=</span> <span class="n">parse_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">rotor_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">parse_1d_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">rotor_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">max_val</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
     <span class="k">return</span> <span class="s1">&#39;FreeRotor&#39;</span> <span class="k">if</span> <span class="n">max_val</span> <span class="o">&lt;</span> <span class="n">minimum_barrier</span> <span class="k">else</span> <span class="s1">&#39;HinderedRotor&#39;</span></div>
 
