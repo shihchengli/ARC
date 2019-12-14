@@ -223,18 +223,23 @@
 
 
 <span class="c1"># The number of conformers to generate per range of heavy atoms in the molecule</span>
-<span class="n">CONFS_VS_HEAVY_ATOMS</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span> <span class="mi">100</span><span class="p">,</span>
-                        <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">29</span><span class="p">):</span> <span class="mi">500</span><span class="p">,</span>
-                        <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">59</span><span class="p">):</span> <span class="mi">1000</span><span class="p">,</span>
+<span class="c1"># (will be increased if there are chiral centers)</span>
+<span class="n">CONFS_VS_HEAVY_ATOMS</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="mi">75</span><span class="p">,</span>
+                        <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span> <span class="mi">500</span><span class="p">,</span>
+                        <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">29</span><span class="p">):</span> <span class="mi">1000</span><span class="p">,</span>
+                        <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">59</span><span class="p">):</span> <span class="mi">2500</span><span class="p">,</span>
                         <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">99</span><span class="p">):</span> <span class="mi">5000</span><span class="p">,</span>
-                        <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;inf&#39;</span><span class="p">):</span> <span class="mi">10000</span><span class="p">,</span>
+                        <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;inf&#39;</span><span class="p">):</span> <span class="mi">7500</span><span class="p">,</span>
                         <span class="p">}</span>
 
 <span class="c1"># The number of conformers to generate per range of potential torsions in the molecule</span>
-<span class="n">CONFS_VS_TORSIONS</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span> <span class="mi">100</span><span class="p">,</span>
-                     <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">24</span><span class="p">):</span> <span class="mi">500</span><span class="p">,</span>
-                     <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">49</span><span class="p">):</span> <span class="mi">5000</span><span class="p">,</span>
-                     <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;inf&#39;</span><span class="p">):</span> <span class="mi">10000</span><span class="p">,</span>
+<span class="c1"># (will be increased if there are chiral centers)</span>
+<span class="n">CONFS_VS_TORSIONS</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">75</span><span class="p">,</span>
+                     <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span> <span class="mi">500</span><span class="p">,</span>
+                     <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">19</span><span class="p">):</span> <span class="mi">1000</span><span class="p">,</span>
+                     <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">34</span><span class="p">):</span> <span class="mi">2500</span><span class="p">,</span>
+                     <span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="mi">49</span><span class="p">):</span> <span class="mi">5000</span><span class="p">,</span>
+                     <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;inf&#39;</span><span class="p">):</span> <span class="mi">7500</span><span class="p">,</span>
                      <span class="p">}</span>
 
 <span class="c1"># The resolution (in degrees) for scanning smeared wells</span>
