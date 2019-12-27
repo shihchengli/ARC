@@ -236,7 +236,7 @@
 <span class="sd">        NotImplementedError: If the parser is not implemented for the ESS this log file belongs to.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">software</span> <span class="o">=</span> <span class="n">software</span> <span class="ow">or</span> <span class="n">determine_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="n">freqs</span><span class="p">,</span> <span class="n">normal_disp_modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">freqs</span><span class="p">,</span> <span class="n">normal_disp_modes</span><span class="p">,</span> <span class="n">normal_disp_modes_entries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
     <span class="n">num_of_freqs_per_line</span> <span class="o">=</span> <span class="mi">3</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -246,7 +246,7 @@
             <span class="k">if</span> <span class="s1">&#39;Harmonic frequencies (cm**-1)&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="c1"># e.g.:  Harmonic frequencies (cm**-1), IR intensities (KM/Mole), Raman scattering</span>
                 <span class="n">parse</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">if</span> <span class="n">parse</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">parse</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
                 <span class="n">parse_normal_disp_modes</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="n">parse</span> <span class="ow">and</span> <span class="s1">&#39;Frequencies --&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="c1"># e.g.:  Frequencies --    -18.0696               127.6948               174.9499</span>
