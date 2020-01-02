@@ -91,6 +91,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Features</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#flexible-coordinates-xyz-input">Flexible coordinates (xyz) input</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#specify-a-particular-job-type">Specify a particular job type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specify-job-level-of-theory">Specify job level of theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-job-options">Additional job options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#control-job-memory-allocation">Control job memory allocation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-a-fine-dft-grid-for-optimization">Using a fine DFT grid for optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rotor-scans">Rotor scans</a></li>
@@ -211,9 +213,145 @@ dismiss the given <code class="docutils literal notranslate"><span class="pre">j
 </pre></div>
 </div>
 <p>Specification 2:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">specific_job_type</span> <span class="p">:</span> <span class="n">bde</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">specific_job_type</span><span class="p">:</span> <span class="n">bde</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="specify-job-level-of-theory">
+<h2>Specify job level of theory<a class="headerlink" href="#specify-job-level-of-theory" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to specify a level of theory to be used in specific job types (e.g., optimization, single point, etc.).
+If not specified, ARC will use the defaults in the <code class="docutils literal notranslate"><span class="pre">default_levels_of_theory</span></code> dictionary in settings.py.</p>
+<p>ARC has the flexibility of accepting various types of job level of theory specification in an input file. The most
+general syntax is a dictionary:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">job_type</span><span class="o">&gt;</span><span class="n">_level</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;method_string&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;basis_string&#39;</span><span class="p">,</span> <span class="s1">&#39;auxiliary_basis&#39;</span><span class="p">:</span> <span class="s1">&#39;auxiliary_basis_string&#39;</span><span class="p">,</span> <span class="s1">&#39;dispersion&#39;</span><span class="p">:</span> <span class="s1">&#39;DFT_dispersion_string&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conformer_level</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;b3lyp&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;6-31g(d,p)&#39;</span><span class="p">,</span> <span class="s1">&#39;dispersion&#39;</span><span class="p">:</span> <span class="s1">&#39;empiricaldispersion=gd3bj&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>specifies <code class="docutils literal notranslate"><span class="pre">b3lyp/6-31g(d,p)</span></code> model chemistry along with the <a class="reference external" href="https://onlinelibrary.wiley.com/doi/full/10.1002/jcc.21759">D3 version of Grimme’s dispersion with Becke-Johnson
+damping</a> for optimizing conformers.
+Notice that <code class="docutils literal notranslate"><span class="pre">empiricaldispersion=gd3bj</span></code> is the format required by <code class="docutils literal notranslate"><span class="pre">Gaussian</span></code>. In general, different ESS have various
+formats for specifying model chemistry. Make sure to pass the correct format based on the intended ESS that should be
+used.</p>
+<p>Another example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sp_level</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;DLPNO-CCSD(T)-F12&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;cc-pVTZ-F12&#39;</span><span class="p">,</span> <span class="s1">&#39;auxiliary_basis&#39;</span><span class="p">:</span> <span class="s1">&#39;aug-cc-pVTZ/C cc-pVTZ-F12-CABS&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>specifies <code class="docutils literal notranslate"><span class="pre">DLPNO-CCSD(T)-F12/cc-pVTZ-F12</span></code> model chemistry along with two auxiliary basis sets <code class="docutils literal notranslate"><span class="pre">aug-cc-pVTZ/C</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cc-pVTZ-F12-CABS</span></code> for single point calculation.</p>
+<p>The following job-specific level of theory arguments accept either a simple string (see “shortcuts” below) or the
+above-detailed dictionary specification: <code class="docutils literal notranslate"><span class="pre">conformer_level</span></code>, <code class="docutils literal notranslate"><span class="pre">opt_level</span></code>, <code class="docutils literal notranslate"><span class="pre">freq_level</span></code>, <code class="docutils literal notranslate"><span class="pre">sp_level</span></code>,
+<code class="docutils literal notranslate"><span class="pre">scan_level</span></code>, <code class="docutils literal notranslate"><span class="pre">ts_guess_level</span></code>, <code class="docutils literal notranslate"><span class="pre">orbitals_level</span></code>.</p>
+<p>Using dictionary to specify job level of theory is always recommended due to its clarity and flexibility. In addition,
+ARC supports several shortcuts.</p>
+<p>The job level of theory also accepts a string input with format <code class="docutils literal notranslate"><span class="pre">method</span></code> or <code class="docutils literal notranslate"><span class="pre">method/basis</span></code>. You may use this option
+only if the level of theory specification contains neither <code class="docutils literal notranslate"><span class="pre">auxiliary_basis</span></code> nor <code class="docutils literal notranslate"><span class="pre">dispersion</span></code>.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opt_level</span> <span class="o">=</span> <span class="s1">&#39;apfd/def2tzvp&#39;</span>
+</pre></div>
+</div>
+<p>is a shortcut for:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opt_level</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;apfd&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;def2tzvp&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Another example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conformer_level</span> <span class="o">=</span> <span class="s1">&#39;PM6&#39;</span>
+</pre></div>
+</div>
+<p>is a shortcut for:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conformer_level</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;PM6&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>ARC also supports an additional argument (<code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code>) as a shortcut to simultaneously specify <code class="docutils literal notranslate"><span class="pre">opt_level</span></code>,
+<code class="docutils literal notranslate"><span class="pre">freq_level</span></code>, <code class="docutils literal notranslate"><span class="pre">sp_level</span></code>, and <code class="docutils literal notranslate"><span class="pre">scan_level</span></code>.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">level_of_theory</span><span class="p">:</span> <span class="s1">&#39;dlpno-ccsd(T)/def2tzvp//apfd/def2svp&#39;</span>
+</pre></div>
+</div>
+<p>is a shortcut for:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opt_level</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;apfd&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;def2svp&#39;</span><span class="p">}</span>
+<span class="n">freq_level</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;apfd&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;def2svp&#39;</span><span class="p">}</span>
+<span class="n">scan_level</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;apfd&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;def2svp&#39;</span><span class="p">}</span>
+<span class="n">sp_level</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;dlpno-ccsd(T)&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;def2tzvp&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Note: If <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> does not contain the <code class="docutils literal notranslate"><span class="pre">//</span></code> deliminator but does contain <code class="docutils literal notranslate"><span class="pre">\/</span></code>, it is interpreted as intended
+for running all opt, freq, scan, and sp job types at that level.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">level_of_theory</span><span class="p">:</span> <span class="s1">&#39;wb97xd/def2svp&#39;</span>
+</pre></div>
+</div>
+<p>is equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opt_level</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;wb97xd&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;def2svp&#39;</span><span class="p">}</span>
+<span class="n">freq_level</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;wb97xd&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;def2svp&#39;</span><span class="p">}</span>
+<span class="n">scan_level</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;wb97xd&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;def2svp&#39;</span><span class="p">}</span>
+<span class="n">sp_level</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;wb97xd&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;def2svp&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Note: If <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> does not contain any deliminator (neither <code class="docutils literal notranslate"><span class="pre">//</span></code> nor <code class="docutils literal notranslate"><span class="pre">\/</span></code>), it is interpreted as a
+composite method.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">level_of_theory</span><span class="p">:</span> <span class="s1">&#39;cbs-qb3&#39;</span>
+</pre></div>
+</div>
+<p>is interpreted as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">composite_method</span><span class="p">:</span> <span class="s1">&#39;cbs-qb3&#39;</span>
+</pre></div>
+</div>
+<p>If a semi-empirical method was meant to be used (e.g., <code class="docutils literal notranslate"><span class="pre">AM1</span></code>), it must be set using the job-specific level of theory
+arguments (e.g., <code class="docutils literal notranslate"><span class="pre">opt_level</span></code>, etc.) using the dictionary format, rather than the <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> shortcut
+argument.</p>
+<p>For example, to specify <code class="docutils literal notranslate"><span class="pre">AM1</span></code> as the geometry optimization method, please use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opt_level</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;AM1&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>To avoid conflicts and confusion, ARC will raise an <code class="docutils literal notranslate"><span class="pre">InputError</span></code> if both <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> and <code class="docutils literal notranslate"><span class="pre">composite_method</span></code>
+are specified. Also, it is not good practice to specify <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> along with <code class="docutils literal notranslate"><span class="pre">opt_level</span></code>,
+<code class="docutils literal notranslate"><span class="pre">freq_level</span></code>, and <code class="docutils literal notranslate"><span class="pre">sp_level</span></code>. If these arguments are specified simultaneously, ARC will overwrite
+<code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> with the values given in <code class="docutils literal notranslate"><span class="pre">opt_level</span></code>, <code class="docutils literal notranslate"><span class="pre">freq_level</span></code>, and <code class="docutils literal notranslate"><span class="pre">sp_level</span></code>.</p>
+</div>
+<div class="section" id="additional-job-options">
+<h2>Additional job options<a class="headerlink" href="#additional-job-options" title="Permalink to this headline">¶</a></h2>
+<p>Note: this feature currently has limited support for ESS other than <code class="docutils literal notranslate"><span class="pre">Orca</span></code>.</p>
+<p>ARC allows specification of job options (e.g., SCF convergence) at ease. By default, ARC uses default job options for
+each ESS and job type stored in the <code class="docutils literal notranslate"><span class="pre">ESS_default_options_dict</span></code> dictionary in the settings.py.</p>
+<p>ARC has the flexibility of accepting various types of job option specification in an input file. The most general
+syntax is a dictionary:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_additional_options</span> <span class="o">=</span> <span class="p">{</span><span class="n">ESS</span><span class="p">:</span> <span class="p">{</span><span class="n">job_type</span><span class="p">:</span>  <span class="p">{</span><span class="n">option_format</span><span class="p">:</span> <span class="p">{</span><span class="n">option_category</span><span class="p">:</span> <span class="n">option_specification</span><span class="p">}}}}</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_additional_options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;orca&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;opt&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;keyword&#39;</span> <span class="p">:{</span><span class="s1">&#39;opt_convergence&#39;</span><span class="p">:</span> <span class="s1">&#39;TightOpt&#39;</span><span class="p">}}}}</span>
+</pre></div>
+</div>
+<p>sets the optimization convergence to <code class="docutils literal notranslate"><span class="pre">TightOpt</span></code> for geometry optimization jobs in Orca.</p>
+<p>Another example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_additional_options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;orca&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;global&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;block&#39;</span> <span class="p">:{</span><span class="s1">&#39;generic&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">cf DryRun true </span><span class="se">\n</span><span class="s1"> end&#39;</span><span class="p">}}}}</span>
+</pre></div>
+</div>
+<p>instructs <code class="docutils literal notranslate"><span class="pre">Orca</span></code> to run a test job for determining the memory needed for the SCF module.</p>
+<p>Notice that ARC supports two kinds of <code class="docutils literal notranslate"><span class="pre">option_format</span></code>, which are <code class="docutils literal notranslate"><span class="pre">keyword</span></code> and <code class="docutils literal notranslate"><span class="pre">block</span></code>, because many ESS have
+these two methods to specify job options (e.g., <code class="docutils literal notranslate"><span class="pre">Orca</span></code>). Make sure to read the manual of the ESS that is intended to
+use to ensure correct format for specifying job options.</p>
+<p>Using dictionary to specify job option is always recommended due to its clarity and flexibility. The
+<code class="docutils literal notranslate"><span class="pre">ESS_default_options_dict</span></code> dictionary in the settings.py contains default <code class="docutils literal notranslate"><span class="pre">option_category</span></code>
+(e.g., <code class="docutils literal notranslate"><span class="pre">opt_convergence</span></code>, <code class="docutils literal notranslate"><span class="pre">scf_convergence</span></code>) that ARC use. Make sure to read the manual of the ESS that is
+intended to use to obtain a list of possible options. For example, <code class="docutils literal notranslate"><span class="pre">opt_convergence</span></code> can take values like
+<code class="docutils literal notranslate"><span class="pre">NormalOpt</span></code> and <code class="docutils literal notranslate"><span class="pre">TightOpt</span></code> as specified in the <code class="docutils literal notranslate"><span class="pre">Orca</span></code> <a class="reference external" href="https://cec.mpg.de/fileadmin/media/Forschung/ORCA/orca_manual_4_0_1.pdf">manual</a>.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">generic</span></code> as a key for <code class="docutils literal notranslate"><span class="pre">option_category</span></code> that is not default in ARC.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_additional_options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gaussian&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;global&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;keyword&#39;</span> <span class="p">:{</span><span class="s1">&#39;generic&#39;</span><span class="p">:</span> <span class="s1">&#39;iop(99/33=1)&#39;</span><span class="p">}}}}</span>
+</pre></div>
+</div>
+<p>will append <code class="docutils literal notranslate"><span class="pre">iop(99/33=1)</span></code> to all <code class="docutils literal notranslate"><span class="pre">Gaussian</span></code> job input scripts. In addition, ARC supports a shortcut.
+<code class="docutils literal notranslate"><span class="pre">job_shortcut_keywords</span></code> is a dictionary with ESS string as keys and job option keyword string as values.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_shortcut_keywords</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gaussian&#39;</span><span class="p">:</span> <span class="s1">&#39;iop(99/33=1)&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>is a shortcut of the previous example.</p>
 </div>
 <div class="section" id="control-job-memory-allocation">
 <h2>Control job memory allocation<a class="headerlink" href="#control-job-memory-allocation" title="Permalink to this headline">¶</a></h2>

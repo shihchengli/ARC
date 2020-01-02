@@ -190,7 +190,7 @@ To run ARC through its API, first make an instance of the ARC class, then call t
 <p>Where <code class="docutils literal notranslate"><span class="pre">spc0</span></code>, <code class="docutils literal notranslate"><span class="pre">spc1</span></code>, and <code class="docutils literal notranslate"><span class="pre">spc2</span></code> in the above example are <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p>
 <dl class="class">
 <dt id="arc.main.ARC">
-<em class="property">class </em><code class="sig-prename descclassname">arc.main.</code><code class="sig-name descname">ARC</code><span class="sig-paren">(</span><em class="sig-param">input_dict=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">arc_species_list=None</em>, <em class="sig-param">arc_rxn_list=None</em>, <em class="sig-param">level_of_theory=''</em>, <em class="sig-param">conformer_level=''</em>, <em class="sig-param">composite_method=''</em>, <em class="sig-param">opt_level=''</em>, <em class="sig-param">freq_level=''</em>, <em class="sig-param">sp_level=''</em>, <em class="sig-param">scan_level=''</em>, <em class="sig-param">ts_guess_level=''</em>, <em class="sig-param">use_bac=True</em>, <em class="sig-param">job_types=None</em>, <em class="sig-param">model_chemistry=''</em>, <em class="sig-param">initial_trsh=None</em>, <em class="sig-param">t_min=None</em>, <em class="sig-param">t_max=None</em>, <em class="sig-param">t_count=None</em>, <em class="sig-param">verbose=20</em>, <em class="sig-param">project_directory=None</em>, <em class="sig-param">max_job_time=120</em>, <em class="sig-param">allow_nonisomorphic_2d=False</em>, <em class="sig-param">job_memory=14</em>, <em class="sig-param">ess_settings=None</em>, <em class="sig-param">bath_gas=None</em>, <em class="sig-param">adaptive_levels=None</em>, <em class="sig-param">freq_scale_factor=None</em>, <em class="sig-param">calc_freq_factor=True</em>, <em class="sig-param">confs_to_dft=5</em>, <em class="sig-param">keep_checks=False</em>, <em class="sig-param">dont_gen_confs=None</em>, <em class="sig-param">specific_job_type=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.main.</code><code class="sig-name descname">ARC</code><span class="sig-paren">(</span><em class="sig-param">input_dict=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">arc_species_list=None</em>, <em class="sig-param">arc_rxn_list=None</em>, <em class="sig-param">level_of_theory=''</em>, <em class="sig-param">conformer_level=''</em>, <em class="sig-param">composite_method=''</em>, <em class="sig-param">opt_level=''</em>, <em class="sig-param">freq_level=''</em>, <em class="sig-param">sp_level=''</em>, <em class="sig-param">scan_level=''</em>, <em class="sig-param">ts_guess_level=''</em>, <em class="sig-param">use_bac=True</em>, <em class="sig-param">job_types=None</em>, <em class="sig-param">model_chemistry=''</em>, <em class="sig-param">job_additional_options=None</em>, <em class="sig-param">job_shortcut_keywords=None</em>, <em class="sig-param">t_min=None</em>, <em class="sig-param">t_max=None</em>, <em class="sig-param">t_count=None</em>, <em class="sig-param">verbose=20</em>, <em class="sig-param">project_directory=None</em>, <em class="sig-param">max_job_time=120</em>, <em class="sig-param">allow_nonisomorphic_2d=False</em>, <em class="sig-param">job_memory=14</em>, <em class="sig-param">ess_settings=None</em>, <em class="sig-param">bath_gas=None</em>, <em class="sig-param">adaptive_levels=None</em>, <em class="sig-param">freq_scale_factor=None</em>, <em class="sig-param">calc_freq_factor=True</em>, <em class="sig-param">confs_to_dft=5</em>, <em class="sig-param">keep_checks=False</em>, <em class="sig-param">dont_gen_confs=None</em>, <em class="sig-param">specific_job_type=''</em>, <em class="sig-param">orbitals_level=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC" title="Permalink to this definition">¶</a></dt>
 <dd><p>The main ARC class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -200,21 +200,28 @@ input/restart YAML file.</p></li>
 <li><p><strong>project</strong> (<em>str</em><em>, </em><em>optional</em>) – The project’s name. Used for naming the working directory.</p></li>
 <li><p><strong>arc_species_list</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p></li>
 <li><p><strong>arc_rxn_list</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of <a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> objects.</p></li>
-<li><p><strong>level_of_theory</strong> (<em>str</em><em>, </em><em>optional</em>) – A string representing either sp//geometry levels or a composite method, e.g.
-‘CBS-QB3’, ‘CCSD(T)-F12a/aug-cc-pVTZ//B3LYP/6-311++G(3df,3pd)’…</p></li>
-<li><p><strong>conformer_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for conformer searches.</p></li>
+<li><p><strong>level_of_theory</strong> (<em>str</em><em>, </em><em>optional</em>) – A shortcut representing either sp//geometry levels or a composite method.
+e.g., ‘CBS-QB3’, ‘CCSD(T)-F12a/aug-cc-pVTZ//B3LYP/6-311++G(3df,3pd)’…
+Notice that this argument does NOT support levels with slashes in the name.
+e.g., ‘ZINDO/2’, ‘DLPNO-MP2-F12/D’
+For these cases, use the dictionary-type job-specific level of theory arguments
+instead (e.g., <code class="docutils literal notranslate"><span class="pre">opt_level</span></code>).</p></li>
 <li><p><strong>composite_method</strong> (<em>str</em><em>, </em><em>optional</em>) – Composite method.</p></li>
-<li><p><strong>opt_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for geometry optimization.</p></li>
-<li><p><strong>freq_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for frequency calculations.</p></li>
-<li><p><strong>sp_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for single point calculations.</p></li>
-<li><p><strong>scan_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for rotor scans.</p></li>
-<li><p><strong>ts_guess_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of theory for comparisons of TS guesses between different methods.</p></li>
+<li><p><strong>conformer_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Level of theory for conformer searches.</p></li>
+<li><p><strong>opt_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Level of theory for geometry optimization.</p></li>
+<li><p><strong>freq_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Level of theory for frequency calculations.</p></li>
+<li><p><strong>sp_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Level of theory for single point calculations.</p></li>
+<li><p><strong>scan_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Level of theory for rotor scans.</p></li>
+<li><p><strong>ts_guess_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Level of theory for comparisons of TS guesses between different methods.</p></li>
+<li><p><strong>orbitals_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Level of theory for molecular orbitals calculations.</p></li>
 <li><p><strong>use_bac</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to use bond additivity corrections for thermo calculations.</p></li>
 <li><p><strong>job_types</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of job types to execute. Keys are job types, values are boolean.</p></li>
 <li><p><strong>model_chemistry</strong> (<em>str</em><em>, </em><em>optional</em>) – The model chemistry in Arkane for energy corrections (AE, BAC) and
 frequencies/ZPE scaling factor. Can usually be determined automatically.</p></li>
-<li><p><strong>initial_trsh</strong> (<em>dict</em><em>, </em><em>optional</em>) – Troubleshooting methods to try by default. Keys are ESS software, values are
-trshs.</p></li>
+<li><p><strong>job_additional_options</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional specifications to control the execution of a job.</p></li>
+<li><p><strong>job_shortcut_keywords</strong> (<em>dict</em><em>, </em><em>optional</em>) – Shortcut keyword specifications to control the execution of a job.
+keys are ESS, values are keywords
+e.g., {‘gaussian’: ‘iop(99/33=1)’}</p></li>
 <li><p><strong>t_min</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The minimum temperature for kinetics computations, e.g., (500, str(‘K’)).</p></li>
 <li><p><strong>t_max</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The maximum temperature for kinetics computations, e.g., (3000, str(‘K’)).</p></li>
 <li><p><strong>t_count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of temperature points between t_min and t_max for kinetics computations.</p></li>
@@ -289,9 +296,9 @@ if xyz is given.</p></li>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="arc.main.ARC.conformer_level">
-<code class="sig-name descname">conformer_level</code><a class="headerlink" href="#arc.main.ARC.conformer_level" title="Permalink to this definition">¶</a></dt>
-<dd><p>Level of theory for conformer searches.</p>
+<dt id="arc.main.ARC.level_of_theory">
+<code class="sig-name descname">level_of_theory</code><a class="headerlink" href="#arc.main.ARC.level_of_theory" title="Permalink to this definition">¶</a></dt>
+<dd><p>A shortcut representing either sp//geometry levels or a composite method,</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -302,10 +309,21 @@ if xyz is given.</p></li>
 <dl class="attribute">
 <dt id="arc.main.ARC.composite_method">
 <code class="sig-name descname">composite_method</code><a class="headerlink" href="#arc.main.ARC.composite_method" title="Permalink to this definition">¶</a></dt>
-<dd><p>Composite method.</p>
+<dd><p>A shortcut that represents a composite method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.main.ARC.conformer_level">
+<code class="sig-name descname">conformer_level</code><a class="headerlink" href="#arc.main.ARC.conformer_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Level of theory for conformer searches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -316,7 +334,7 @@ if xyz is given.</p></li>
 <dd><p>Level of theory for geometry optimization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -327,7 +345,7 @@ if xyz is given.</p></li>
 <dd><p>Level of theory for frequency calculations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -338,7 +356,7 @@ if xyz is given.</p></li>
 <dd><p>Level of theory for single point calculations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -349,7 +367,7 @@ if xyz is given.</p></li>
 <dd><p>Level of theory for rotor scans.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -360,7 +378,18 @@ if xyz is given.</p></li>
 <dd><p>Level of theory for comparisons of TS guesses between different methods.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.main.ARC.orbitals_level">
+<code class="sig-name descname">orbitals_level</code><a class="headerlink" href="#arc.main.ARC.orbitals_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Level of theory for molecular orbitals calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -450,9 +479,20 @@ to use user input / Arkane’s value / Arkane’s default.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="arc.main.ARC.initial_trsh">
-<code class="sig-name descname">initial_trsh</code><a class="headerlink" href="#arc.main.ARC.initial_trsh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Troubleshooting methods to try by default. Keys are ESS software, values are trshs.</p>
+<dt id="arc.main.ARC.job_additional_options">
+<code class="sig-name descname">job_additional_options</code><a class="headerlink" href="#arc.main.ARC.job_additional_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Additional specifications to control the execution of a job.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.main.ARC.job_shortcut_keywords">
+<code class="sig-name descname">job_shortcut_keywords</code><a class="headerlink" href="#arc.main.ARC.job_shortcut_keywords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut keyword specifications to control the execution of a job.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>dict</p>
@@ -693,6 +733,13 @@ if <cite>diagnostics</cite> is True, this method will not raise errors, and will
 <dt id="arc.main.ARC.determine_model_chemistry">
 <code class="sig-name descname">determine_model_chemistry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.determine_model_chemistry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.determine_model_chemistry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the model_chemistry to be used in Arkane.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.main.ARC.determine_model_chemistry_for_job_types">
+<code class="sig-name descname">determine_model_chemistry_for_job_types</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.determine_model_chemistry_for_job_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.determine_model_chemistry_for_job_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine method (e.g., b3lyp), basis set (e.g. def2-svp), and auxiliary basis set (e.g., def2-svp/c) for
+supported ARC job types (e.g., opt, freq, sp, scan, conformer, ts_guesses) from user inputs or defaults.</p>
 </dd></dl>
 
 <dl class="method">

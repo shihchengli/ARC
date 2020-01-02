@@ -185,7 +185,7 @@
 Includes spawning, terminating, checking, and troubleshooting various jobs</p>
 <dl class="class">
 <dt id="arc.scheduler.Scheduler">
-<em class="property">class </em><code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">Scheduler</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">ess_settings</em>, <em class="sig-param">species_list</em>, <em class="sig-param">project_directory</em>, <em class="sig-param">composite_method=''</em>, <em class="sig-param">conformer_level=''</em>, <em class="sig-param">opt_level=''</em>, <em class="sig-param">freq_level=''</em>, <em class="sig-param">sp_level=''</em>, <em class="sig-param">scan_level=''</em>, <em class="sig-param">ts_guess_level=''</em>, <em class="sig-param">orbitals_level=''</em>, <em class="sig-param">adaptive_levels=None</em>, <em class="sig-param">rmgdatabase=None</em>, <em class="sig-param">job_types=None</em>, <em class="sig-param">initial_trsh=None</em>, <em class="sig-param">rxn_list=None</em>, <em class="sig-param">bath_gas=None</em>, <em class="sig-param">restart_dict=None</em>, <em class="sig-param">max_job_time=120</em>, <em class="sig-param">allow_nonisomorphic_2d=False</em>, <em class="sig-param">memory=14</em>, <em class="sig-param">testing=False</em>, <em class="sig-param">dont_gen_confs=None</em>, <em class="sig-param">confs_to_dft=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">Scheduler</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">ess_settings</em>, <em class="sig-param">species_list</em>, <em class="sig-param">project_directory</em>, <em class="sig-param">composite_method=''</em>, <em class="sig-param">conformer_level=''</em>, <em class="sig-param">opt_level=''</em>, <em class="sig-param">freq_level=''</em>, <em class="sig-param">sp_level=''</em>, <em class="sig-param">scan_level=''</em>, <em class="sig-param">ts_guess_level=''</em>, <em class="sig-param">orbitals_level=''</em>, <em class="sig-param">adaptive_levels=None</em>, <em class="sig-param">rmgdatabase=None</em>, <em class="sig-param">job_types=None</em>, <em class="sig-param">job_additional_options=None</em>, <em class="sig-param">job_shortcut_keywords=None</em>, <em class="sig-param">rxn_list=None</em>, <em class="sig-param">bath_gas=None</em>, <em class="sig-param">restart_dict=None</em>, <em class="sig-param">max_job_time=120</em>, <em class="sig-param">allow_nonisomorphic_2d=False</em>, <em class="sig-param">memory=14</em>, <em class="sig-param">testing=False</em>, <em class="sig-param">dont_gen_confs=None</em>, <em class="sig-param">confs_to_dft=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler" title="Permalink to this definition">¶</a></dt>
 <dd><p>ARC’s Scheduler class. Creates jobs, submits, checks status, troubleshoots.
 Each species in <cite>species_list</cite> has to have a unique label.</p>
 <p>Dictionary structures:</p>
@@ -238,20 +238,20 @@ Each species in <cite>species_list</cite> has to have a unique label.</p>
 <li><p><strong>rxn_list</strong> (<em>list</em>) – Contains input <a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> objects.</p></li>
 <li><p><strong>project_directory</strong> (<em>str</em>) – Folder path for the project: the input file path or ARC/Projects/project-name.</p></li>
 <li><p><strong>composite_method</strong> (<em>str</em><em>, </em><em>optional</em>) – A composite method to use.</p></li>
-<li><p><strong>conformer_level</strong> (<em>str</em><em>, </em><em>optional</em>) – The level of theory to use for conformer comparisons.</p></li>
-<li><p><strong>opt_level</strong> (<em>str</em><em>, </em><em>optional</em>) – The level of theory to use for geometry optimizations.</p></li>
-<li><p><strong>freq_level</strong> (<em>str</em><em>, </em><em>optional</em>) – The level of theory to use for frequency calculations.</p></li>
-<li><p><strong>sp_level</strong> (<em>str</em><em>, </em><em>optional</em>) – The level of theory to use for single point energy calculations.</p></li>
-<li><p><strong>scan_level</strong> (<em>str</em><em>, </em><em>optional</em>) – The level of theory to use for torsion scans.</p></li>
-<li><p><strong>ts_guess_level</strong> (<em>str</em><em>, </em><em>optional</em>) – The level of theory to use for TS guess comparisons.</p></li>
-<li><p><strong>orbitals_level</strong> (<em>str</em><em>, </em><em>optional</em>) – The level of theory to use for calculating MOs (for plotting).</p></li>
+<li><p><strong>conformer_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – The level of theory to use for conformer comparisons.</p></li>
+<li><p><strong>opt_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – The level of theory to use for geometry optimizations.</p></li>
+<li><p><strong>freq_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – The level of theory to use for frequency calculations.</p></li>
+<li><p><strong>sp_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – The level of theory to use for single point energy calculations.</p></li>
+<li><p><strong>scan_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – The level of theory to use for torsion scans.</p></li>
+<li><p><strong>ts_guess_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – The level of theory to use for TS guess comparisons.</p></li>
+<li><p><strong>orbitals_level</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – The level of theory to use for calculating MOs (for plotting).</p></li>
 <li><p><strong>adaptive_levels</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of levels of theory for ranges of the number of heavy atoms in
 the molecule. Keys are tuples of (min_num_atoms, max_num_atoms), values are
 dictionaries with ‘optfreq’ and ‘sp’ as keys and levels of theory as values.</p></li>
 <li><p><strong>rmgdatabase</strong> (<em>RMGDatabase</em><em>, </em><em>optional</em>) – The RMG database object.</p></li>
 <li><p><strong>job_types</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of job types to execute. Keys are job types, values are boolean.</p></li>
-<li><p><strong>initial_trsh</strong> (<em>dict</em><em>, </em><em>optional</em>) – Troubleshooting methods to try by default. Keys are ESS software,
-values are trshs.</p></li>
+<li><p><strong>job_additional_options</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional specifications to control the execution of a job.</p></li>
+<li><p><strong>job_shortcut_keywords</strong> (<em>dict</em><em>, </em><em>optional</em>) – Shortcut keyword specifications to control the execution of a job.</p></li>
 <li><p><strong>bath_gas</strong> (<em>str</em><em>, </em><em>optional</em>) – A bath gas. Currently used in OneDMin to calc L-J parameters.
 Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p></li>
 <li><p><strong>restart_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A restart dictionary parsed from a YAML restart file.</p></li>
@@ -404,9 +404,20 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dd></dl>
 
 <dl class="attribute">
-<dt id="arc.scheduler.Scheduler.initial_trsh">
-<code class="sig-name descname">initial_trsh</code><a class="headerlink" href="#arc.scheduler.Scheduler.initial_trsh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Troubleshooting methods to try by default. Keys are ESS software, values are trshs.</p>
+<dt id="arc.scheduler.Scheduler.job_additional_options">
+<code class="sig-name descname">job_additional_options</code><a class="headerlink" href="#arc.scheduler.Scheduler.job_additional_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Additional specifications to control the execution of a job.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.scheduler.Scheduler.job_shortcut_keywords">
+<code class="sig-name descname">job_shortcut_keywords</code><a class="headerlink" href="#arc.scheduler.Scheduler.job_shortcut_keywords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut keyword specifications to control the execution of a job.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>dict</p>
@@ -568,6 +579,96 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.scheduler.Scheduler.conformer_level">
+<code class="sig-name descname">conformer_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.conformer_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of theory to use for conformer comparisons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.scheduler.Scheduler.opt_level">
+<code class="sig-name descname">opt_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.opt_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of theory to use for geometry optimizations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.scheduler.Scheduler.freq_level">
+<code class="sig-name descname">freq_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.freq_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of theory to use for frequency calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.scheduler.Scheduler.sp_level">
+<code class="sig-name descname">sp_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.sp_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of theory to use for single point energy calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.scheduler.Scheduler.scan_level">
+<code class="sig-name descname">scan_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.scan_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of theory to use for torsion scans.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.scheduler.Scheduler.ts_guess_level">
+<code class="sig-name descname">ts_guess_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.ts_guess_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of theory to use for TS guess comparisons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.scheduler.Scheduler.orbitals_level">
+<code class="sig-name descname">orbitals_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.orbitals_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of theory to use for calculating MOs (for plotting).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">adaptive_levels</code></dt>
+<dd><p>A dictionary of levels of theory for ranges of the number of heavy atoms in
+the molecule. Keys are tuples of (min_num_atoms, max_num_atoms), values are
+dictionaries with ‘optfreq’ and ‘sp’ as keys and levels of theory as values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1010,14 +1111,23 @@ If this was originally a composite job, run an appropriate separate freq job out
 
 <dl class="method">
 <dt id="arc.scheduler.Scheduler.run_job">
-<code class="sig-name descname">run_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">xyz</em>, <em class="sig-param">level_of_theory</em>, <em class="sig-param">job_type</em>, <em class="sig-param">fine=False</em>, <em class="sig-param">software=None</em>, <em class="sig-param">shift=''</em>, <em class="sig-param">trsh=''</em>, <em class="sig-param">memory=None</em>, <em class="sig-param">conformer=-1</em>, <em class="sig-param">ess_trsh_methods=None</em>, <em class="sig-param">scan=''</em>, <em class="sig-param">pivots=None</em>, <em class="sig-param">occ=None</em>, <em class="sig-param">scan_trsh=''</em>, <em class="sig-param">scan_res=None</em>, <em class="sig-param">max_job_time=None</em>, <em class="sig-param">confs=None</em>, <em class="sig-param">radius=None</em>, <em class="sig-param">directed_scan_type=None</em>, <em class="sig-param">directed_scans=None</em>, <em class="sig-param">directed_dihedrals=None</em>, <em class="sig-param">rotor_index=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">xyz</em>, <em class="sig-param">level_of_theory</em>, <em class="sig-param">job_type</em>, <em class="sig-param">fine=False</em>, <em class="sig-param">software=None</em>, <em class="sig-param">shift=''</em>, <em class="sig-param">trsh=''</em>, <em class="sig-param">memory=None</em>, <em class="sig-param">conformer=-1</em>, <em class="sig-param">ess_trsh_methods=None</em>, <em class="sig-param">scan=''</em>, <em class="sig-param">pivots=None</em>, <em class="sig-param">occ=None</em>, <em class="sig-param">scan_trsh=''</em>, <em class="sig-param">scan_res=None</em>, <em class="sig-param">max_job_time=None</em>, <em class="sig-param">confs=None</em>, <em class="sig-param">radius=None</em>, <em class="sig-param">directed_scan_type=None</em>, <em class="sig-param">directed_scans=None</em>, <em class="sig-param">directed_dihedrals=None</em>, <em class="sig-param">rotor_index=None</em>, <em class="sig-param">cpu_cores=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for running (all) jobs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>xyz</strong> (<em>dict</em>) – The 3D coordinates for the species.</p></li>
-<li><p><strong>level_of_theory</strong> (<em>str</em>) – The level of theory to use.</p></li>
+<li><p><strong>level_of_theory</strong> (<em>str</em><em> or </em><em>dict</em>) – <p>The level of theory to use.
+String format only supports two simple cases:
+(1) method (e.g., cbs-qb3, pm6)
+(2) method/basis (e.g, apfd/def2-tzvp)
+Dictionary format supports more options like dispersion and auxiliary basis
+{‘method’: ‘b3lyp’, ‘basis’: ‘def2-svp’, ‘auxiliary_basis’: ‘def2-svp/c’,</p>
+<blockquote>
+<div><p>’dispersion’: ‘gd3bj’}</p>
+</div></blockquote>
+</p></li>
 <li><p><strong>job_type</strong> (<em>str</em>) – The type of job to run.</p></li>
 <li><p><strong>fine</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to run an optimization job with a fine grid. <cite>True</cite> to use fine.</p></li>
 <li><p><strong>software</strong> (<em>str</em><em>, </em><em>optional</em>) – An ESS software to use.</p></li>
@@ -1040,6 +1150,7 @@ but used to identify the rotor.</p></li>
 <li><p><strong>directed_scans</strong> (<em>list</em>) – Entries are lists of four-atom dihedral scan indices to constrain.</p></li>
 <li><p><strong>directed_dihedrals</strong> (<em>list</em>) – The dihedral angles of a directed scan job corresponding to <code class="docutils literal notranslate"><span class="pre">directed_scans</span></code>.</p></li>
 <li><p><strong>rotor_index</strong> (<em>int</em>) – The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</p></li>
+<li><p><strong>cpu_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – The total number of cpu cores requested for a job.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1203,7 +1314,7 @@ If not given, a first Gromacs job will be spawned.</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The job object to troubleshoot.</p></li>
-<li><p><strong>level_of_theory</strong> (<em>str</em>) – The level of theory to use.</p></li>
+<li><p><strong>level_of_theory</strong> (<em>str</em><em> or </em><em>dict</em>) – The level of theory to use.</p></li>
 <li><p><strong>conformer</strong> (<em>str</em><em>, </em><em>optional</em>) – The conformer index.</p></li>
 </ul>
 </dd>

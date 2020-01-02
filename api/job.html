@@ -184,8 +184,30 @@
 <p>The ARC Job module</p>
 <dl class="class">
 <dt id="arc.job.job.Job">
-<em class="property">class </em><code class="sig-prename descclassname">arc.job.job.</code><code class="sig-name descname">Job</code><span class="sig-paren">(</span><em class="sig-param">project=''</em>, <em class="sig-param">ess_settings=None</em>, <em class="sig-param">species_name=''</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">job_type=''</em>, <em class="sig-param">level_of_theory=''</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">project_directory=''</em>, <em class="sig-param">charge=0</em>, <em class="sig-param">conformer=-1</em>, <em class="sig-param">fine=False</em>, <em class="sig-param">shift=''</em>, <em class="sig-param">software=None</em>, <em class="sig-param">is_ts=False</em>, <em class="sig-param">scan=None</em>, <em class="sig-param">pivots=None</em>, <em class="sig-param">total_job_memory_gb=14</em>, <em class="sig-param">comments=''</em>, <em class="sig-param">trsh=''</em>, <em class="sig-param">scan_trsh=''</em>, <em class="sig-param">job_dict=None</em>, <em class="sig-param">ess_trsh_methods=None</em>, <em class="sig-param">bath_gas=None</em>, <em class="sig-param">initial_trsh=None</em>, <em class="sig-param">job_num=None</em>, <em class="sig-param">job_server_name=None</em>, <em class="sig-param">job_name=None</em>, <em class="sig-param">job_id=None</em>, <em class="sig-param">server=None</em>, <em class="sig-param">initial_time=None</em>, <em class="sig-param">occ=None</em>, <em class="sig-param">max_job_time=120</em>, <em class="sig-param">scan_res=None</em>, <em class="sig-param">checkfile=None</em>, <em class="sig-param">number_of_radicals=None</em>, <em class="sig-param">conformers=None</em>, <em class="sig-param">radius=None</em>, <em class="sig-param">directed_scan_type=None</em>, <em class="sig-param">directed_scans=None</em>, <em class="sig-param">directed_dihedrals=None</em>, <em class="sig-param">rotor_index=None</em>, <em class="sig-param">testing=False</em>, <em class="sig-param">cpu_cores=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.job.job.</code><code class="sig-name descname">Job</code><span class="sig-paren">(</span><em class="sig-param">project=''</em>, <em class="sig-param">ess_settings=None</em>, <em class="sig-param">species_name=''</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">job_type=''</em>, <em class="sig-param">job_level_of_theory_dict=None</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">project_directory=''</em>, <em class="sig-param">charge=0</em>, <em class="sig-param">conformer=-1</em>, <em class="sig-param">fine=False</em>, <em class="sig-param">shift=''</em>, <em class="sig-param">software=None</em>, <em class="sig-param">is_ts=False</em>, <em class="sig-param">scan=None</em>, <em class="sig-param">pivots=None</em>, <em class="sig-param">total_job_memory_gb=14</em>, <em class="sig-param">comments=''</em>, <em class="sig-param">trsh=''</em>, <em class="sig-param">scan_trsh=''</em>, <em class="sig-param">job_dict=None</em>, <em class="sig-param">ess_trsh_methods=None</em>, <em class="sig-param">bath_gas=None</em>, <em class="sig-param">job_num=None</em>, <em class="sig-param">job_server_name=None</em>, <em class="sig-param">job_name=None</em>, <em class="sig-param">job_id=None</em>, <em class="sig-param">server=None</em>, <em class="sig-param">initial_time=None</em>, <em class="sig-param">occ=None</em>, <em class="sig-param">max_job_time=120</em>, <em class="sig-param">scan_res=None</em>, <em class="sig-param">checkfile=None</em>, <em class="sig-param">number_of_radicals=None</em>, <em class="sig-param">conformers=None</em>, <em class="sig-param">radius=None</em>, <em class="sig-param">directed_scan_type=None</em>, <em class="sig-param">directed_scans=None</em>, <em class="sig-param">directed_dihedrals=None</em>, <em class="sig-param">rotor_index=None</em>, <em class="sig-param">testing=False</em>, <em class="sig-param">cpu_cores=None</em>, <em class="sig-param">job_additional_options=None</em>, <em class="sig-param">job_shortcut_keywords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job" title="Permalink to this definition">¶</a></dt>
 <dd><p>ARC’s Job class.</p>
+<p>Dictionary structures:</p>
+<p>job_additional_options = {‘Orca’: {‘sp’:        {‘keyword’: {‘dlpno_threshold’: ‘normalPNO’}},</p>
+<blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><dl>
+<dt>‘freq’:      {‘block’: {‘geometry’: ‘’’%geom</dt><dd><blockquote>
+<div><p>Calc_Hess true</p>
+</div></blockquote>
+<p>end’’’},</p>
+</dd>
+</dl>
+<p>&lt;job_type&gt;:  &lt;option_format&gt;: {&lt;option_category&gt;: &lt;option_specification&gt;}</p>
+</div></blockquote>
+<p>},</p>
+</div></blockquote>
+<p>‘Gaussian’: {‘global’:   {‘keyword’: {‘wildcard’: ‘iop(7/33=1)’}},</p>
+<p>&lt;ESS&gt;: {…}</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -195,7 +217,14 @@
 <li><p><strong>species_name</strong> (<em>str</em>) – The species/TS name. Used for naming the directory.</p></li>
 <li><p><strong>xyz</strong> (<em>dict</em>) – The xyz geometry. Used for the calculation.</p></li>
 <li><p><strong>job_type</strong> (<em>str</em>) – The job’s type.</p></li>
-<li><p><strong>level_of_theory</strong> (<em>str</em>) – Level of theory, e.g. ‘CBS-QB3’, ‘CCSD(T)-F12a/aug-cc-pVTZ’, ‘B3LYP/6-311++G(3df,3pd)’…</p></li>
+<li><p><strong>job_level_of_theory_dict</strong> (<em>dict</em>) – <p>A dictionary that specifies the level of theory for a job.
+e.g., {‘auxiliary_basis’: ‘’,</p>
+<blockquote>
+<div><p>’basis’: ‘6-31g(d,p)’,
+‘method’: ‘b3lyp’,
+‘dispersion’: ‘empiricaldispersion=gd3bj’}</p>
+</div></blockquote>
+</p></li>
 <li><p><strong>multiplicity</strong> (<em>int</em>) – The species multiplicity.</p></li>
 <li><p><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The species net charge. Default is 0.</p></li>
 <li><p><strong>conformer</strong> (<em>int</em><em>, </em><em>optional</em>) – Conformer number if optimizing conformers.</p></li>
@@ -214,8 +243,6 @@ but used to identify the rotor.</p></li>
 <li><p><strong>ess_trsh_methods</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of troubleshooting methods already tried out for ESS convergence.</p></li>
 <li><p><strong>bath_gas</strong> (<em>str</em><em>, </em><em>optional</em>) – A bath gas. Currently used in OneDMin to calc L-J parameters.
 Allowed values are He, Ne, Ar, Kr, H2, N2, O2</p></li>
-<li><p><strong>initial_trsh</strong> (<em>dict</em><em>, </em><em>optional</em>) – Troubleshooting methods to try by default. Keys are ESS software,
-values are trshs.</p></li>
 <li><p><strong>job_num</strong> (<em>int</em><em>, </em><em>optional</em>) – Used as the entry number in the database, as well as the job name on the server.</p></li>
 <li><p><strong>job_server_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Job’s name on the server (e.g., ‘a103’).</p></li>
 <li><p><strong>job_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Job’s name for internal usage (e.g., ‘opt_a103’).</p></li>
@@ -238,7 +265,9 @@ multiplicity = 1.</p></li>
 <li><p><strong>rotor_index</strong> (<em>int</em>) – The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</p></li>
 <li><p><strong>job_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</p></li>
 <li><p><strong>testing</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the object is generated for testing purposes, True if it is.</p></li>
-<li><p><strong>cpu_cores</strong> (<em>int</em>) – The total number of cpu cores requested for a job.</p></li>
+<li><p><strong>cpu_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – The total number of cpu cores requested for a job.</p></li>
+<li><p><strong>job_additional_options</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional specifications to control the execution of a job.</p></li>
+<li><p><strong>job_shortcut_keywords</strong> (<em>dict</em><em>, </em><em>optional</em>) – Shortcut keyword specifications to control the execution of a job.</p></li>
 </ul>
 </dd>
 </dl>
@@ -388,12 +417,12 @@ the job should be unrestricted with multiplicity = 1.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="arc.job.job.Job.level_of_theory">
-<code class="sig-name descname">level_of_theory</code><a class="headerlink" href="#arc.job.job.Job.level_of_theory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Level of theory, e.g. ‘CBS-QB3’, ‘CCSD(T)-F12a/aug-cc-pVTZ’, ‘B3LYP/6-311++G(3df,3pd)’…</p>
+<dt id="arc.job.job.Job.job_level_of_theory_dict">
+<code class="sig-name descname">job_level_of_theory_dict</code><a class="headerlink" href="#arc.job.job.Job.job_level_of_theory_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary that specifies the level of theory for a job.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -540,6 +569,28 @@ needed to execute a job on server properly</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="arc.job.job.Job.auxiliary_basis_set">
+<code class="sig-name descname">auxiliary_basis_set</code><a class="headerlink" href="#arc.job.job.Job.auxiliary_basis_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>The auxiliary basis set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.job.job.Job.dispersion">
+<code class="sig-name descname">dispersion</code><a class="headerlink" href="#arc.job.job.Job.dispersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>DFT dispersion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="arc.job.job.Job.fine">
 <code class="sig-name descname">fine</code><a class="headerlink" href="#arc.job.job.Job.fine" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to use fine geometry optimization parameters.</p>
@@ -662,6 +713,28 @@ description and the identified error line from the ESS log file will be given as
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.job.job.Job.job_additional_options">
+<code class="sig-name descname">job_additional_options</code><a class="headerlink" href="#arc.job.job.Job.job_additional_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Additional specifications to control the execution of a job.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.job.job.Job.job_shortcut_keywords">
+<code class="sig-name descname">job_shortcut_keywords</code><a class="headerlink" href="#arc.job.job.Job.job_shortcut_keywords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut keyword specifications to control the execution of a job.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -799,17 +872,6 @@ description and the identified error line from the ESS log file will be given as
 </dd></dl>
 
 <dl class="attribute">
-<dt id="arc.job.job.Job.initial_trsh">
-<code class="sig-name descname">initial_trsh</code><a class="headerlink" href="#arc.job.job.Job.initial_trsh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Troubleshooting methods to try by default. Keys are ESS software, values are trshs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="arc.job.job.Job.scan_trsh">
 <code class="sig-name descname">scan_trsh</code><a class="headerlink" href="#arc.job.job.Job.scan_trsh" title="Permalink to this definition">¶</a></dt>
 <dd><p>A troubleshooting method for rotor scans.</p>
@@ -936,6 +998,13 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <dd class="field-odd"><p><strong>IOError</strong> – If the output file and any additional server information cannot be found.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.job.job.Job.determine_model_chemistry">
+<code class="sig-name descname">determine_model_chemistry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/job.html#Job.determine_model_chemistry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.job.Job.determine_model_chemistry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine method (e.g., b3lyp), basis set (e.g., def2-svp), auxiliary basis set (e.g., def2-svp/c), and
+DFT dispersion (e.g., empiricaldispersion=gd3bj) from job level of theory dict.</p>
 </dd></dl>
 
 <dl class="method">

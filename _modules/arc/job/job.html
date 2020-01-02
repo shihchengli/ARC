@@ -170,8 +170,9 @@
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
 
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">calculate_dihedral_angle</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">calculate_dihedral_angle</span><span class="p">,</span> <span class="n">determine_model_chemistry_type</span>
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">JobError</span><span class="p">,</span> <span class="n">InputError</span>
 <span class="kn">from</span> <span class="nn">arc.job.inputs</span> <span class="kn">import</span> <span class="n">input_files</span>
 <span class="kn">from</span> <span class="nn">arc.job.local</span> <span class="kn">import</span> <span class="n">get_last_modified_time</span><span class="p">,</span> <span class="n">submit_job</span><span class="p">,</span> <span class="n">delete_job</span><span class="p">,</span> <span class="n">execute_command</span><span class="p">,</span> <span class="n">check_job_status</span><span class="p">,</span> \
@@ -180,7 +181,7 @@
 <span class="kn">from</span> <span class="nn">arc.job.ssh</span> <span class="kn">import</span> <span class="n">SSHClient</span>
 <span class="kn">from</span> <span class="nn">arc.job.trsh</span> <span class="kn">import</span> <span class="n">determine_ess_status</span><span class="p">,</span> <span class="n">trsh_job_on_server</span>
 <span class="kn">from</span> <span class="nn">arc.settings</span> <span class="kn">import</span> <span class="n">arc_path</span><span class="p">,</span> <span class="n">servers</span><span class="p">,</span> <span class="n">submit_filename</span><span class="p">,</span> <span class="n">t_max_format</span><span class="p">,</span> <span class="n">input_filename</span><span class="p">,</span> <span class="n">output_filename</span><span class="p">,</span> \
-    <span class="n">rotor_scan_resolution</span><span class="p">,</span> <span class="n">levels_ess</span>
+    <span class="n">rotor_scan_resolution</span><span class="p">,</span> <span class="n">levels_ess</span><span class="p">,</span> <span class="n">orca_default_options_dict</span>
 <span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="n">xyz_to_str</span><span class="p">,</span> <span class="n">str_to_xyz</span><span class="p">,</span> <span class="n">check_xyz_dict</span>
 
 
@@ -191,6 +192,22 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ARC&#39;s Job class.</span>
 
+<span class="sd">    Dictionary structures::</span>
+
+<span class="sd">    job_additional_options = {&#39;Orca&#39;: {&#39;sp&#39;:        {&#39;keyword&#39;: {&#39;dlpno_threshold&#39;: &#39;normalPNO&#39;}},</span>
+
+<span class="sd">                                       &#39;freq&#39;:      {&#39;block&#39;: {&#39;geometry&#39;: &#39;&#39;&#39;%geom</span>
+<span class="sd">                                                                      Calc_Hess true</span>
+<span class="sd">                                                                 end&#39;&#39;&#39;},</span>
+
+<span class="sd">                                       &lt;job_type&gt;:  &lt;option_format&gt;: {&lt;option_category&gt;: &lt;option_specification&gt;}</span>
+<span class="sd">                                      },</span>
+
+<span class="sd">                              &#39;Gaussian&#39;: {&#39;global&#39;:   {&#39;keyword&#39;: {&#39;wildcard&#39;: &#39;iop(7/33=1)&#39;}},</span>
+
+<span class="sd">                              &lt;ESS&gt;: {...}</span>
+<span class="sd">                             }</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        project (str): The project&#39;s name. Used for naming the directory.</span>
 <span class="sd">        project_directory (str): The path to the project directory.</span>
@@ -198,7 +215,11 @@
 <span class="sd">        species_name (str): The species/TS name. Used for naming the directory.</span>
 <span class="sd">        xyz (dict): The xyz geometry. Used for the calculation.</span>
 <span class="sd">        job_type (str): The job&#39;s type.</span>
-<span class="sd">        level_of_theory (str): Level of theory, e.g. &#39;CBS-QB3&#39;, &#39;CCSD(T)-F12a/aug-cc-pVTZ&#39;, &#39;B3LYP/6-311++G(3df,3pd)&#39;...</span>
+<span class="sd">        job_level_of_theory_dict (dict): A dictionary that specifies the level of theory for a job.</span>
+<span class="sd">                                         e.g., {&#39;auxiliary_basis&#39;: &#39;&#39;,</span>
+<span class="sd">                                                &#39;basis&#39;: &#39;6-31g(d,p)&#39;,</span>
+<span class="sd">                                                &#39;method&#39;: &#39;b3lyp&#39;,</span>
+<span class="sd">                                                &#39;dispersion&#39;: &#39;empiricaldispersion=gd3bj&#39;}</span>
 <span class="sd">        multiplicity (int): The species multiplicity.</span>
 <span class="sd">        charge (int, optional): The species net charge. Default is 0.</span>
 <span class="sd">        conformer (int, optional): Conformer number if optimizing conformers.</span>
@@ -217,8 +238,6 @@
 <span class="sd">        ess_trsh_methods (list, optional): A list of troubleshooting methods already tried out for ESS convergence.</span>
 <span class="sd">        bath_gas (str, optional): A bath gas. Currently used in OneDMin to calc L-J parameters.</span>
 <span class="sd">                                  Allowed values are He, Ne, Ar, Kr, H2, N2, O2</span>
-<span class="sd">        initial_trsh (dict, optional): Troubleshooting methods to try by default. Keys are ESS software,</span>
-<span class="sd">                                       values are trshs.</span>
 <span class="sd">        job_num (int, optional): Used as the entry number in the database, as well as the job name on the server.</span>
 <span class="sd">        job_server_name (str, optional): Job&#39;s name on the server (e.g., &#39;a103&#39;).</span>
 <span class="sd">        job_name (str, optional): Job&#39;s name for internal usage (e.g., &#39;opt_a103&#39;).</span>
@@ -241,7 +260,9 @@
 <span class="sd">        rotor_index (int): The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</span>
 <span class="sd">        job_dict (dict, optional): A dictionary to create this object from (used when restarting ARC).</span>
 <span class="sd">        testing (bool, optional): Whether the object is generated for testing purposes, True if it is.</span>
-<span class="sd">        cpu_cores (int): The total number of cpu cores requested for a job.</span>
+<span class="sd">        cpu_cores (int, optional): The total number of cpu cores requested for a job.</span>
+<span class="sd">        job_additional_options (dict, optional): Additional specifications to control the execution of a job.</span>
+<span class="sd">        job_shortcut_keywords (dict, optional): Shortcut keyword specifications to control the execution of a job.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        project (str): The project&#39;s name. Used for naming the directory.</span>
@@ -259,7 +280,7 @@
 <span class="sd">        conformer (int): Conformer number if optimizing conformers.</span>
 <span class="sd">        conformers (str): A path to the YAML file conformer coordinates for a Gromacs MD job.</span>
 <span class="sd">        is_ts (bool): Whether this species represents a transition structure.</span>
-<span class="sd">        level_of_theory (str): Level of theory, e.g. &#39;CBS-QB3&#39;, &#39;CCSD(T)-F12a/aug-cc-pVTZ&#39;, &#39;B3LYP/6-311++G(3df,3pd)&#39;...</span>
+<span class="sd">        job_level_of_theory_dict (dict): A dictionary that specifies the level of theory for a job.</span>
 <span class="sd">        job_type (str): The job&#39;s type.</span>
 <span class="sd">        scan (list): A list representing atom labels for the dihedral scan (e.g., [2, 1, 3, 5]).</span>
 <span class="sd">        pivots (list): The rotor scan pivots, if the job type is scan. Not used directly in these methods,</span>
@@ -281,6 +302,8 @@
 <span class="sd">        total_job_memory_gb (int): The total memory ARC specifies for a job in GB.</span>
 <span class="sd">        method (str): The calculation method (e.g., &#39;B3LYP&#39;, &#39;CCSD(T)&#39;, &#39;CBS-QB3&#39;...).</span>
 <span class="sd">        basis_set (str): The basis set (e.g., &#39;6-311++G(d,p)&#39;, &#39;aug-cc-pVTZ&#39;...).</span>
+<span class="sd">        auxiliary_basis_set (str): The auxiliary basis set.</span>
+<span class="sd">        dispersion (str): DFT dispersion.</span>
 <span class="sd">        fine (bool): Whether to use fine geometry optimization parameters.</span>
 <span class="sd">        shift (str): A string representation alpha- and beta-spin orbitals shifts (molpro only).</span>
 <span class="sd">        comments (str): Job comments (archived, not used).</span>
@@ -298,6 +321,8 @@
 <span class="sd">        job_name (str): Job&#39;s name for internal usage (e.g., &#39;opt_a103&#39;).</span>
 <span class="sd">        job_id (int): The job&#39;s ID determined by the server.</span>
 <span class="sd">        job_num (int): Used as the entry number in the database, as well as the job name on the server.</span>
+<span class="sd">        job_additional_options (dict): Additional specifications to control the execution of a job.</span>
+<span class="sd">        job_shortcut_keywords (dict): Shortcut keyword specifications to control the execution of a job.</span>
 <span class="sd">        local_path (str): Local path to job&#39;s folder.</span>
 <span class="sd">        local_path_to_output_file (str): The local path to the output.out file.</span>
 <span class="sd">        local_path_to_orbitals_file (str): The local path to the orbitals.fchk file (only for orbitals jobs).</span>
@@ -310,7 +335,6 @@
 <span class="sd">        server (str): Server&#39;s name.</span>
 <span class="sd">        trsh (str): A troubleshooting keyword to be used in input files.</span>
 <span class="sd">        ess_trsh_methods (list): A list of troubleshooting methods already tried out for ESS convergence.</span>
-<span class="sd">        initial_trsh (dict): Troubleshooting methods to try by default. Keys are ESS software, values are trshs.</span>
 <span class="sd">        scan_trsh (str): A troubleshooting method for rotor scans.</span>
 <span class="sd">        occ (int): The number of occupied orbitals (core + val) from a molpro CCSD sp calc.</span>
 <span class="sd">        project_directory (str): The path to the project directory.</span>
@@ -322,14 +346,15 @@
 <span class="sd">        directed_scan_type (str): The type of the directed scan.</span>
 <span class="sd">        rotor_index (int): The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ess_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">species_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">level_of_theory</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ess_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">species_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                 <span class="n">job_level_of_theory_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">multiplicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_directory</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">conformer</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">software</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">is_ts</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scan</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pivots</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">total_job_memory_gb</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">trsh</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">scan_trsh</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-                 <span class="n">job_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ess_trsh_methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bath_gas</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">initial_trsh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">job_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ess_trsh_methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bath_gas</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">job_server_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">server</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">initial_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">max_job_time</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">scan_res</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">checkfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">number_of_radicals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">conformers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">directed_scan_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">directed_scans</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">directed_dihedrals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rotor_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">testing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">cpu_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">cpu_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_additional_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_shortcut_keywords</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">job_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">job_dict</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -339,8 +364,8 @@
                 <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;species_name must be specified&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">job_type</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;job_type must be specified&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">level_of_theory</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;level_of_theory must be specified&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">job_level_of_theory_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;job_level_of_theory_dict must be specified&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">ess_settings</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;ess_settings must be specified&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">multiplicity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -367,7 +392,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span> <span class="o">=</span> <span class="n">is_ts</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ess_trsh_methods</span> <span class="o">=</span> <span class="n">ess_trsh_methods</span> <span class="k">if</span> <span class="n">ess_trsh_methods</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span> <span class="o">=</span> <span class="n">trsh</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">initial_trsh</span> <span class="o">=</span> <span class="n">initial_trsh</span> <span class="k">if</span> <span class="n">initial_trsh</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span> <span class="o">=</span> <span class="n">job_additional_options</span> <span class="k">if</span> <span class="n">job_additional_options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job_shortcut_keywords</span> <span class="o">=</span> <span class="n">job_shortcut_keywords</span> <span class="k">if</span> <span class="n">job_shortcut_keywords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scan_trsh</span> <span class="o">=</span> <span class="n">scan_trsh</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scan_res</span> <span class="o">=</span> <span class="n">scan_res</span> <span class="k">if</span> <span class="n">scan_res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">rotor_scan_resolution</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scan</span> <span class="o">=</span> <span class="n">scan</span>
@@ -386,7 +412,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">=</span> <span class="n">job_type</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">job_server_name</span> <span class="o">=</span> <span class="n">job_server_name</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">job_name</span> <span class="o">=</span> <span class="n">job_name</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span> <span class="o">=</span> <span class="n">level_of_theory</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job_level_of_theory_dict</span> <span class="o">=</span> <span class="n">job_level_of_theory_dict</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="n">software</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cpu_cores</span> <span class="o">=</span> <span class="n">cpu_cores</span>
@@ -415,14 +441,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">job_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_server_name</span>
 
         <span class="c1"># determine the level of theory and software to use:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span><span class="p">:</span>
-            <span class="n">splits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>  <span class="c1"># there are two &#39;/&#39; symbols in a ff_param_fit job&#39;s l.o.t, keep both</span>
-        <span class="k">else</span><span class="p">:</span>  <span class="c1"># this is a composite job</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">auxiliary_basis_set</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersion</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">determine_model_chemistry</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -461,7 +481,7 @@
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span>
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_server_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_server_name</span>
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_name</span>
-        <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;level_of_theory&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span>
+        <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_level_of_theory_dict&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_level_of_theory_dict</span>
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">)</span>
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;fine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine</span>
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_status</span>
@@ -483,8 +503,10 @@
             <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;ess_trsh_methods&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ess_trsh_methods</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span><span class="p">:</span>
             <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;trsh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_trsh</span><span class="p">:</span>
-            <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;initial_trsh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_trsh</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">:</span>
+            <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_additional_options&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_shortcut_keywords</span><span class="p">:</span>
+            <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_shortcut_keywords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_shortcut_keywords</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shift</span><span class="p">:</span>
             <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;shift&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shift</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -533,7 +555,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ess_settings</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;ess_settings&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">species_name</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;species_name&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_type&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;level_of_theory&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job_level_of_theory_dict</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_level_of_theory_dict&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;multiplicity&#39;</span><span class="p">]</span>
         <span class="c1"># optional attributes:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">=</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;xyz&#39;</span> <span class="ow">in</span> <span class="n">job_dict</span> <span class="k">else</span> <span class="kc">None</span>
@@ -553,7 +575,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">comments</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;comments&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;comments&#39;</span> <span class="ow">in</span> <span class="n">job_dict</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;trsh&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;trsh&#39;</span> <span class="ow">in</span> <span class="n">job_dict</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scan_trsh</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;scan_trsh&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;scan_trsh&#39;</span> <span class="ow">in</span> <span class="n">job_dict</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">initial_trsh</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;initial_trsh&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;initial_trsh&#39;</span> <span class="ow">in</span> <span class="n">job_dict</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_additional_options&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;job_additional_options&#39;</span> \
+                                                                            <span class="ow">in</span> <span class="n">job_dict</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job_shortcut_keywords</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_shortcut_keywords&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;job_shortcut_keywords&#39;</span>\
+                                                                          <span class="ow">in</span> <span class="n">job_dict</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ess_trsh_methods</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;ess_trsh_methods&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;ess_trsh_methods&#39;</span> <span class="ow">in</span> <span class="n">job_dict</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bath_gas</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;bath_gas&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;bath_gas&#39;</span> <span class="ow">in</span> <span class="n">job_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">job_num</span> <span class="o">=</span> <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_num&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;job_num&#39;</span> <span class="ow">in</span> <span class="n">job_dict</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
@@ -639,8 +664,9 @@
                 <span class="n">job_type</span> <span class="o">+=</span> <span class="s1">&#39; (fine)&#39;</span>
             <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">job_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_name</span><span class="p">,</span> <span class="n">conformer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">,</span>
                    <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">job_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">,</span>
-                   <span class="bp">self</span><span class="o">.</span><span class="n">total_job_memory_gb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_time</span><span class="p">,</span>
-                   <span class="bp">self</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ess_trsh_methods</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="p">]</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">total_job_memory_gb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_time</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">run_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ess_trsh_methods</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="p">]</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Job.format_max_job_time"><a class="viewcode-back" href="../../../api/job.html#arc.job.job.Job.format_max_job_time">[docs]</a>    <span class="k">def</span> <span class="nf">format_max_job_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_format</span><span class="p">):</span>
@@ -688,8 +714,8 @@
                 <span class="n">architecture</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">#$ -l magnycours&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">submit</span> <span class="o">=</span> <span class="n">submit_scripts</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">job_server_name</span><span class="p">,</span> <span class="n">un</span><span class="o">=</span><span class="n">un</span><span class="p">,</span> <span class="n">t_max</span><span class="o">=</span><span class="n">t_max</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">submit_script_memory</span><span class="p">),</span> <span class="n">cpus</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cpu_cores</span><span class="p">,</span>
-                <span class="n">architecture</span><span class="o">=</span><span class="n">architecture</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+                <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">job_server_name</span><span class="p">,</span> <span class="n">un</span><span class="o">=</span><span class="n">un</span><span class="p">,</span> <span class="n">t_max</span><span class="o">=</span><span class="n">t_max</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">submit_script_memory</span><span class="p">),</span>
+                <span class="n">cpus</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cpu_cores</span><span class="p">,</span> <span class="n">architecture</span><span class="o">=</span><span class="n">architecture</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="n">submit_scripts_for_printing</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">server</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">submit_scripts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -715,18 +741,30 @@
 <span class="sd">        Write a software-specific, job-specific input file.</span>
 <span class="sd">        Save the file locally and also upload it to the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_trsh</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span><span class="p">:</span>
-            <span class="c1"># use the default trshs defined by the user in the initial_trsh dictionary</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_trsh</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_trsh</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">]</span>
+        <span class="c1"># Initialize variables</span>
+        <span class="n">orca_options_keywords_dict</span><span class="p">,</span> <span class="n">orca_options_blocks_dict</span><span class="p">,</span> <span class="n">restricted</span><span class="p">,</span> <span class="n">method_class</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+        <span class="n">job_options_keywords</span><span class="p">,</span> <span class="n">job_options_blocks</span><span class="p">,</span> <span class="n">shortcut_keywords</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="c1"># Ignore user specified additional job job_options_keywords when troubleshoot</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;When troubleshooting </span><span class="si">{self.job_name}</span><span class="s1">, ARC ignores user-specified additional job options </span><span class="se">\n</span><span class="s1">&#39;</span>
+                           <span class="sa">f</span><span class="s1">&#39;{yaml.dump(self.job_additional_options.get(self.software, &quot;&quot;), default_flow_style=False)}&#39;</span>
+                           <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                           <span class="sa">f</span><span class="s1">&#39;{yaml.dump(self.job_shortcut_keywords.get(self.software, &quot;&quot;), default_flow_style=False)}&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job_shortcut_keywords</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">input_files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="n">slash</span><span class="p">,</span> <span class="n">scan_string</span><span class="p">,</span> <span class="n">constraint</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span> <span class="ow">and</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span><span class="p">:</span>
+        <span class="n">slash</span><span class="p">,</span> <span class="n">slash_2</span><span class="p">,</span> <span class="n">scan_string</span><span class="p">,</span> <span class="n">constraint</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">:</span>
+            <span class="c1"># assume method without basis set is composite method or force field</span>
             <span class="n">slash</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auxiliary_basis_set</span><span class="p">:</span>
+                <span class="n">slash_2</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span><span class="p">)</span> \
+        <span class="c1"># Determine HF/DFT restriction type</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">)</span> \
                 <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_radicals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_radicals</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
             <span class="c1"># don&#39;t add &#39;u&#39; to composite jobs. Do add &#39;u&#39; for bi-rad singlets if `number_of_radicals` &gt; 1</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_radicals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_radicals</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -734,13 +772,16 @@
                             <span class="s1">&#39;multiplicity </span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_radicals</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">))</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;qchem&#39;</span><span class="p">:</span>
                 <span class="n">restricted</span> <span class="o">=</span> <span class="s1">&#39;True&#39;</span>  <span class="c1"># In QChem this attribute is &quot;unrestricted&quot;</span>
-            <span class="k">else</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;gaussian&#39;</span><span class="p">,</span> <span class="s1">&#39;orca&#39;</span><span class="p">,</span> <span class="s1">&#39;molpro&#39;</span><span class="p">]:</span>
                 <span class="n">restricted</span> <span class="o">=</span> <span class="s1">&#39;u&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;qchem&#39;</span><span class="p">:</span>
                 <span class="n">restricted</span> <span class="o">=</span> <span class="s1">&#39;False&#39;</span>  <span class="c1"># In QChem this attribute is &quot;unrestricted&quot;</span>
-            <span class="k">else</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;orca&#39;</span><span class="p">:</span>
+                <span class="n">restricted</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># gaussian, molpro</span>
                 <span class="n">restricted</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
 
         <span class="n">job_type_1</span><span class="p">,</span> <span class="n">job_type_2</span><span class="p">,</span> <span class="n">fine</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
 
@@ -764,6 +805,81 @@
 <span class="si">{job_type_2}</span><span class="s2"></span>
 <span class="s2">---;&quot;&quot;&quot;</span>
 
+        <span class="c1"># Software specific global job options</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;orca&#39;</span><span class="p">:</span>
+            <span class="n">shortcut_keywords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_shortcut_keywords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">orca_options_keywords_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">orca_options_blocks_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">user_scf_convergence</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">user_block_keywords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;block&#39;</span><span class="p">]</span>\
+                        <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;generic&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="n">user_block_keywords</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="k">if</span> <span class="n">user_block_keywords</span><span class="p">:</span>
+                    <span class="n">orca_options_blocks_dict</span><span class="p">[</span><span class="s1">&#39;global_generic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_block_keywords</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">user_keywords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span>\
+                        <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;generic&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="n">user_keywords</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="k">if</span> <span class="n">user_keywords</span><span class="p">:</span>
+                    <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;global_generic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_keywords</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">user_scf_convergence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span>\
+                        <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scf_convergence&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="n">user_scf_convergence</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">scf_convergence</span> <span class="o">=</span> <span class="n">user_scf_convergence</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span>\
+                              <span class="n">orca_default_options_dict</span><span class="p">[</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scf_convergence&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">scf_convergence</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Orca SCF convergence is not specified. Please specify this variable either in the &#39;</span>
+                                 <span class="s1">&#39;settings.py as default options or in the input file as additional options.&#39;</span><span class="p">)</span>
+            <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;scf_convergence&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scf_convergence</span>
+
+            <span class="c1"># Orca requires different job_options_blocks to wavefunction methods and DFTs</span>
+            <span class="c1"># determine model chemistry type</span>
+            <span class="n">model_chemistry_class</span> <span class="o">=</span> <span class="n">determine_model_chemistry_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">model_chemistry_class</span> <span class="o">==</span> <span class="s1">&#39;dft&#39;</span><span class="p">:</span>
+                <span class="n">method_class</span> <span class="o">=</span> <span class="s1">&#39;KS&#39;</span>
+                <span class="c1"># DFT grid must be the same for both opt and freq</span>
+                <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;dft_final_grid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;NoFinalGrid&#39;</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine</span><span class="p">:</span>
+                    <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;dft_grid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Grid6&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;dft_grid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Grid5&#39;</span>
+            <span class="k">elif</span> <span class="n">model_chemistry_class</span> <span class="o">==</span> <span class="s1">&#39;wavefunction&#39;</span><span class="p">:</span>
+                <span class="n">method_class</span> <span class="o">=</span> <span class="s1">&#39;HF&#39;</span>
+                <span class="k">if</span> <span class="s1">&#39;dlpno&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                    <span class="n">user_dlpno_threshold</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">user_dlpno_threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span> \
+                                <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dlpno_threshold&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="n">user_dlpno_threshold</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="n">dlpno_threshold</span> <span class="o">=</span> <span class="n">user_dlpno_threshold</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">user_dlpno_threshold</span> \
+                        <span class="k">else</span> <span class="n">orca_default_options_dict</span><span class="p">[</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dlpno_threshold&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">dlpno_threshold</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span>
+                            <span class="s1">&#39;Orca DLPNO threshold is not specified. Please specify this variable either in the &#39;</span>
+                            <span class="s1">&#39;settings.py as default options or in the input file as additional options.&#39;</span><span class="p">)</span>
+                    <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;dlpno_threshold&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dlpno_threshold</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Running </span><span class="si">{self.method}</span><span class="s1"> method in Orca.&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
+            <span class="n">shortcut_keywords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_shortcut_keywords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_level_of_theory_dict</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ro&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span> <span class="o">=</span> <span class="s1">&#39;use=L506&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># xqc will do qc (quadratic convergence) if the job fails w/o it, so use by default</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span> <span class="o">=</span> <span class="s1">&#39;scf=xqc&#39;</span>
+
+        <span class="c1"># Job type specific options</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;conformer&#39;</span><span class="p">,</span> <span class="s1">&#39;opt&#39;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
@@ -788,8 +904,8 @@
                     <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;opt&#39;</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine</span><span class="p">:</span>
                     <span class="n">fine</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">   GEOM_OPT_TOL_GRADIENT 15</span><span class="se">\n</span><span class="s1">   GEOM_OPT_TOL_DISPLACEMENT 60</span><span class="se">\n</span><span class="s1">   GEOM_OPT_TOL_ENERGY 5&#39;</span>
-                    <span class="k">if</span> <span class="s1">&#39;b&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span><span class="p">:</span>
-                        <span class="c1"># Try to capture DFT levels (containing the letter &#39;b&#39;?), and det a fine DFT grid</span>
+                    <span class="k">if</span> <span class="n">determine_model_chemistry_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;dft&#39;</span><span class="p">:</span>
+                        <span class="c1"># Try to capture DFT levels, and use a fine DFT grid</span>
                         <span class="c1"># See 4.4.5.2 Standard Quadrature Grids, S in</span>
                         <span class="c1"># http://www.q-chem.com/qchem-website/manual/qchem50_manual/sect-DFT.html</span>
                         <span class="n">fine</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">   XC_GRID 3&#39;</span>
@@ -798,6 +914,48 @@
                     <span class="n">job_type_1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">optg, root=2, method=qsd, readhess, savexyz=&#39;geometry.xyz&#39;&quot;</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">job_type_1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">optg, savexyz=&#39;geometry.xyz&#39;&quot;</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;orca&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine</span><span class="p">:</span>
+                    <span class="n">user_fine_opt_convergence</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">user_fine_opt_convergence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">][</span><span class="s1">&#39;opt&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span> \
+                                <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fine_opt_convergence&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="n">user_fine_opt_convergence</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="n">fine_opt_convergence</span> <span class="o">=</span> <span class="n">user_fine_opt_convergence</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">user_fine_opt_convergence</span> \
+                        <span class="k">else</span> <span class="n">orca_default_options_dict</span><span class="p">[</span><span class="s1">&#39;opt&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fine_opt_convergence&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">fine_opt_convergence</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span>
+                            <span class="s1">&#39;Orca fine optimization convergence is not specified. Please specify this variable either &#39;</span>
+                            <span class="s1">&#39;in the settings.py as default options or in the input file as additional options.&#39;</span><span class="p">)</span>
+                    <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;fine_opt_convergence&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fine_opt_convergence</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">user_opt_convergence</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">user_opt_convergence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">][</span><span class="s1">&#39;opt&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span> \
+                                <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;opt_convergence&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="n">user_opt_convergence</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="n">opt_convergence</span> <span class="o">=</span> <span class="n">user_opt_convergence</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">user_opt_convergence</span> \
+                        <span class="k">else</span> <span class="n">orca_default_options_dict</span><span class="p">[</span><span class="s1">&#39;opt&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;opt_convergence&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">opt_convergence</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span>
+                            <span class="s1">&#39;Orca optimization convergence is not specified. Please specify this variable either in &#39;</span>
+                            <span class="s1">&#39;the settings.py as default options or in the input file as additional options.&#39;</span><span class="p">)</span>
+                    <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;opt_convergence&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">opt_convergence</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
+                    <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;OptTS&#39;</span>
+                    <span class="n">orca_options_blocks_dict</span><span class="p">[</span><span class="s1">&#39;Calc_Hess&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="si">%g</span><span class="s2">eom</span>
+<span class="s2">    Calc_Hess true # calculation of the exact Hessian before the first opt step</span>
+<span class="s2">end               </span>
+<span class="s2">&quot;&quot;&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;Opt&#39;</span>
+                <span class="n">job_options_keywords</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">orca_options_keywords_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">job_options_blocks</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">orca_options_blocks_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;orbitals&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;qchem&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
@@ -837,6 +995,20 @@
                 <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;freq&#39;</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;molpro&#39;</span><span class="p">:</span>
                 <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">{frequencies;</span><span class="se">\n</span><span class="s1">thermo;</span><span class="se">\n</span><span class="s1">print,HESSIAN,thermo;}&#39;</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;orca&#39;</span><span class="p">:</span>
+                <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;Freq&#39;</span>
+                <span class="n">use_num_freq</span> <span class="o">=</span> <span class="n">orca_default_options_dict</span><span class="p">[</span><span class="s1">&#39;freq&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;use_num_freq&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">use_num_freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">][</span><span class="s1">&#39;freq&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span> \
+                            <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;use_num_freq&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                        <span class="n">use_num_freq</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">use_num_freq</span><span class="p">:</span>
+                    <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;freq_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;NumFreq&#39;</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using numerical frequencies calculation in Orca. Note: This job might therefore be &#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;time-consuming.&#39;</span><span class="p">)</span>
+                <span class="n">job_options_keywords</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">orca_options_keywords_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;optfreq&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
@@ -884,8 +1056,62 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">job_type_1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">optg,savexyz=&#39;geometry.xyz&quot;</span>
                 <span class="n">job_type_2</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">{frequencies;</span><span class="se">\n</span><span class="s1">thermo;</span><span class="se">\n</span><span class="s1">print,HESSIAN,thermo;}&#39;</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;orca&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
+                    <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;OptTS&#39;</span>
+                    <span class="n">orca_options_blocks_dict</span><span class="p">[</span><span class="s1">&#39;Calc_Hess&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="si">%g</span><span class="s2">eom</span>
+<span class="s2">    Calc_Hess true # calculation of the exact Hessian before the first opt step</span>
+<span class="s2">end               </span>
+<span class="s2">&quot;&quot;&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;Opt&#39;</span>
+                <span class="n">job_type_2</span> <span class="o">=</span> <span class="s1">&#39;!Freq&#39;</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine</span><span class="p">:</span>
+                    <span class="n">user_fine_opt_convergence</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">user_fine_opt_convergence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">][</span><span class="s1">&#39;opt&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span> \
+                                <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fine_opt_convergence&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="n">user_fine_opt_convergence</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="n">fine_opt_convergence</span> <span class="o">=</span> <span class="n">user_fine_opt_convergence</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">user_fine_opt_convergence</span> \
+                        <span class="k">else</span> <span class="n">orca_default_options_dict</span><span class="p">[</span><span class="s1">&#39;opt&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fine_opt_convergence&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">fine_opt_convergence</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span>
+                            <span class="s1">&#39;Orca fine optimization convergence is not specified. Please specify this variable either &#39;</span>
+                            <span class="s1">&#39;in the settings.py as default options or in the input file as additional options.&#39;</span><span class="p">)</span>
+                    <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;fine_opt_convergence&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fine_opt_convergence</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">user_opt_convergence</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">user_opt_convergence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">][</span><span class="s1">&#39;opt&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span> \
+                                <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;opt_convergence&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="n">user_opt_convergence</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="n">opt_convergence</span> <span class="o">=</span> <span class="n">user_opt_convergence</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">user_opt_convergence</span> \
+                        <span class="k">else</span> <span class="n">orca_default_options_dict</span><span class="p">[</span><span class="s1">&#39;opt&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;opt_convergence&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">opt_convergence</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span>
+                            <span class="s1">&#39;Orca optimization convergence is not specified. Please specify this variable either in &#39;</span>
+                            <span class="s1">&#39;the settings.py as default options or in the input file as additional options.&#39;</span><span class="p">)</span>
+                    <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;opt_convergence&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">opt_convergence</span>
+                <span class="n">use_num_freq</span> <span class="o">=</span> <span class="n">orca_default_options_dict</span><span class="p">[</span><span class="s1">&#39;freq&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;use_num_freq&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">use_num_freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">][</span><span class="s1">&#39;freq&#39;</span><span class="p">][</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span> \
+                            <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;use_num_freq&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                        <span class="n">use_num_freq</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">use_num_freq</span><span class="p">:</span>
+                    <span class="n">orca_options_keywords_dict</span><span class="p">[</span><span class="s1">&#39;freq_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;NumFreq&#39;</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using numeric frequencies calculation in Orca. Notice that this job will be &#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;very time consuming.&#39;</span><span class="p">)</span>
+                <span class="n">job_options_keywords</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">orca_options_keywords_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">job_options_blocks</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">orca_options_blocks_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;sp&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;sp&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
                 <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;scf=(tight, direct) integral=(grid=ultrafine, Acc2E=12)&#39;</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -896,15 +1122,17 @@
                 <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;sp&#39;</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;molpro&#39;</span><span class="p">:</span>
                 <span class="k">pass</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;orca&#39;</span><span class="p">:</span>
+                <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;sp&#39;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;composite&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;composite&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine</span><span class="p">:</span>
                     <span class="n">fine</span> <span class="o">=</span> <span class="s1">&#39;scf=(tight, direct) integral=(grid=ultrafine, Acc2E=12)&#39;</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
                     <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;opt=(ts, calcfc, noeigentest, tight, maxstep=5)&#39;</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;rocbs-qb3&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_level_of_theory_dict</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;rocbs-qb3&#39;</span><span class="p">]:</span>
                         <span class="c1"># No analytic 2nd derivatives (FC) for these methods</span>
                         <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;opt=(noeigentest, tight)&#39;</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -916,7 +1144,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">JobError</span><span class="p">(</span><span class="s1">&#39;Currently composite methods are only supported in gaussian&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;scan&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;scan&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">divmod</span><span class="p">(</span><span class="mi">360</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_res</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="n">JobError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Scan job got an illegal rotor scan resolution of </span><span class="si">{self.scan_res}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">:</span>
@@ -994,14 +1222,7 @@
                                  <span class="s1">&#39;Got: </span><span class="si">{0}</span><span class="s1"> using the </span><span class="si">{1}</span><span class="s1"> level of theory&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                                   <span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ro&#39;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span> <span class="o">=</span> <span class="s1">&#39;use=L506&#39;</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># xqc will do qc (quadratic convergence) if the job fails w/o it, so use by default</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">trsh</span> <span class="o">=</span> <span class="s1">&#39;scf=xqc&#39;</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;irc&#39;</span><span class="p">:</span>  <span class="c1"># TODO</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;irc&#39;</span><span class="p">:</span>  <span class="c1"># TODO</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine</span><span class="p">:</span>
                 <span class="c1"># Note that the Acc2E argument is not available in Gaussian03</span>
                 <span class="n">fine</span> <span class="o">=</span> <span class="s1">&#39;scf=(direct) integral=(grid=ultrafine, Acc2E=12)&#39;</span>
@@ -1011,7 +1232,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">job_type_1</span> <span class="o">+=</span> <span class="s1">&#39; guess=mix&#39;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;gsm&#39;</span><span class="p">:</span>  <span class="c1"># TODO</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;gsm&#39;</span><span class="p">:</span>  <span class="c1"># TODO</span>
             <span class="k">pass</span>
 
         <span class="k">if</span> <span class="s1">&#39;mrci&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
@@ -1031,15 +1252,21 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">memory</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_file_memory</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">slash</span><span class="o">=</span><span class="n">slash</span><span class="p">,</span>
+                                               <span class="n">slash_2</span><span class="o">=</span><span class="n">slash_2</span><span class="p">,</span>
                                                <span class="n">basis</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">,</span> <span class="n">cpus</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cpu_cores</span><span class="p">,</span>
                                                <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spin</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">),</span>
                                                <span class="n">job_type_1</span><span class="o">=</span><span class="n">job_type_1</span><span class="p">,</span> <span class="n">job_type_2</span><span class="o">=</span><span class="n">job_type_2</span><span class="p">,</span> <span class="n">scan</span><span class="o">=</span><span class="n">scan_string</span><span class="p">,</span>
                                                <span class="n">restricted</span><span class="o">=</span><span class="n">restricted</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="n">fine</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shift</span><span class="p">,</span> <span class="n">trsh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">trsh</span><span class="p">,</span>
-                                               <span class="n">scan_trsh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scan_trsh</span><span class="p">,</span> <span class="n">bath</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bath_gas</span><span class="p">,</span> <span class="n">constraint</span><span class="o">=</span><span class="n">constraint</span><span class="p">)</span> \
+                                               <span class="n">scan_trsh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scan_trsh</span><span class="p">,</span> <span class="n">bath</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bath_gas</span><span class="p">,</span> <span class="n">constraint</span><span class="o">=</span><span class="n">constraint</span><span class="p">,</span>
+                                               <span class="n">job_options_blocks</span><span class="o">=</span><span class="n">job_options_blocks</span><span class="p">,</span>
+                                               <span class="n">job_options_keywords</span><span class="o">=</span><span class="n">job_options_keywords</span><span class="p">,</span>
+                                               <span class="n">method_class</span><span class="o">=</span><span class="n">method_class</span><span class="p">,</span> <span class="n">auxiliary_basis</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auxiliary_basis_set</span><span class="p">,</span>
+                                               <span class="n">shortcut_keywords</span><span class="o">=</span><span class="n">shortcut_keywords</span><span class="p">)</span> \
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not interpret all input file keys in</span><span class="se">\n</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">))</span>
                 <span class="k">raise</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">testing</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">):</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">)</span>
@@ -1131,6 +1358,14 @@
             <span class="n">ssh</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">remote_file_path</span><span class="o">=</span><span class="n">remote_check_file_path</span><span class="p">,</span> <span class="n">local_file_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path_to_check_file</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path_to_check_file</span><span class="p">):</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Gaussian check file for </span><span class="si">{0}</span><span class="s1"> was not downloaded properly&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="p">))</span>
+
+        <span class="c1"># download Orca .hess hessian file generated by frequency calculations</span>
+        <span class="c1"># Hessian is useful when the user would like to project rotors</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;orca&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span>
+            <span class="n">remote_hess_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remote_path</span><span class="p">,</span> <span class="s1">&#39;input.hess&#39;</span><span class="p">)</span>
+            <span class="n">ssh</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">remote_file_path</span><span class="o">=</span><span class="n">remote_hess_file_path</span><span class="p">,</span> <span class="n">local_file_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path_to_hess_file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path_to_hess_file</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Orca hessian file for </span><span class="si">{self.job_name}</span><span class="s1"> was not downloaded properly&#39;</span><span class="p">)</span>
 
         <span class="c1"># download Lennard_Jones data file</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;onedmin&#39;</span><span class="p">:</span>
@@ -1236,6 +1471,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download the additional information of stdout and stderr from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ssh</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">lines1</span><span class="p">,</span> <span class="n">lines2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="n">cluster_soft</span> <span class="o">=</span> <span class="n">servers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">][</span><span class="s1">&#39;cluster_soft&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
@@ -1401,7 +1637,7 @@
             <span class="c1"># First check the levels_ess dictionary from settings.py:</span>
             <span class="k">for</span> <span class="n">ess</span><span class="p">,</span> <span class="n">phrase_list</span> <span class="ow">in</span> <span class="n">levels_ess</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">phrase</span> <span class="ow">in</span> <span class="n">phrase_list</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">phrase</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">phrase</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_level_of_theory_dict</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="n">ess</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;conformer&#39;</span><span class="p">,</span> <span class="s1">&#39;opt&#39;</span><span class="p">,</span> <span class="s1">&#39;freq&#39;</span><span class="p">,</span> <span class="s1">&#39;optfreq&#39;</span><span class="p">,</span> <span class="s1">&#39;sp&#39;</span><span class="p">,</span>
@@ -1458,6 +1694,12 @@
                             <span class="k">raise</span> <span class="n">JobError</span><span class="p">(</span><span class="s1">&#39;Could not find the QChem software to run </span><span class="si">{0}</span><span class="s1">/</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">))</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="s1">&#39;qchem&#39;</span>
+                    <span class="k">elif</span> <span class="s1">&#39;dlpno&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
+                        <span class="c1"># this is a DLPNO method, use Orca</span>
+                        <span class="k">if</span> <span class="s1">&#39;orca&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">esss</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="n">JobError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find the Orca software to run the DLPNO method </span><span class="si">{self.method}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                           <span class="sa">f</span><span class="s1">&#39;ess_settings is:</span><span class="se">\n</span><span class="si">{self.ess_settings}</span><span class="s1">&#39;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="s1">&#39;orca&#39;</span>
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;scan&#39;</span><span class="p">:</span>
                     <span class="k">if</span> <span class="s1">&#39;wb97xd&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
                         <span class="k">if</span> <span class="s1">&#39;gaussian&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">esss</span><span class="p">:</span>
@@ -1502,16 +1744,17 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="s1">&#39;gaussian&#39;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># if still no software was determined, just try by order, if exists</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;job_num: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job_num</span><span class="p">))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;ess_trsh_methods: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ess_trsh_methods</span><span class="p">))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;trsh: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trsh</span><span class="p">))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;job_type: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job_type</span><span class="p">))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;job_name: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="p">))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;level_of_theory: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span><span class="p">))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;software: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">software</span><span class="p">))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;method: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;basis_set: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not determine software for job </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job_name</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;job_num: </span><span class="si">{self.job_num}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ess_trsh_methods: </span><span class="si">{self.ess_trsh_methods}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;trsh: </span><span class="si">{self.trsh}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;job_type: </span><span class="si">{self.job_type}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;job_name: </span><span class="si">{self.job_name}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;level_of_theory: </span><span class="si">{self.job_level_of_theory_dict}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;software: </span><span class="si">{self.software}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;method: </span><span class="si">{self.method}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;basis_set: </span><span class="si">{self.basis_set}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;auxiliary_basis_set: </span><span class="si">{self.auxiliary_basis_set}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not determine software for job </span><span class="si">{self.job_name}</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="s1">&#39;gaussian&#39;</span> <span class="ow">in</span> <span class="n">esss</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Setting it to Gaussian&#39;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="s1">&#39;gaussian&#39;</span>
@@ -1525,19 +1768,37 @@
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Setting it to Molpro&#39;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="s1">&#39;molpro&#39;</span></div>
 
+<div class="viewcode-block" id="Job.determine_model_chemistry"><a class="viewcode-back" href="../../../api/job.html#arc.job.job.Job.determine_model_chemistry">[docs]</a>    <span class="k">def</span> <span class="nf">determine_model_chemistry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine method (e.g., b3lyp), basis set (e.g., def2-svp), auxiliary basis set (e.g., def2-svp/c), and</span>
+<span class="sd">        DFT dispersion (e.g., empiricaldispersion=gd3bj) from job level of theory dict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job_level_of_theory_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;job_level_of_theory_dict must be a dictionary. &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;Got {type(self.job_level_of_theory_dict)}.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;basis&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auxiliary_basis_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;auxiliary_basis&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dispersion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dispersion&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got empty job method specification.&#39;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Job.set_cpu_and_mem"><a class="viewcode-back" href="../../../api/job.html#arc.job.job.Job.set_cpu_and_mem">[docs]</a>    <span class="k">def</span> <span class="nf">set_cpu_and_mem</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the amount of cpus and memory based on ESS and cluster software.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cpu_cores</span> <span class="o">=</span> <span class="mi">8</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu_cores</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">servers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cpus&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>  <span class="c1"># set to 8 by default</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu_cores</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># set to 8 if user did not specify cpu in settings and in ARC input file</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cpu_cores</span> <span class="o">=</span> <span class="n">servers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cpus&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 
         <span class="n">max_mem</span> <span class="o">=</span> <span class="n">servers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;memory&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># max memory per node in GB</span>
-        <span class="k">if</span> <span class="n">max_mem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_job_memory_gb</span> <span class="o">&gt;</span> <span class="n">max_mem</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">max_mem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_job_memory_gb</span> <span class="o">&gt;</span> <span class="n">max_mem</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The memory for job </span><span class="si">{self.job_name}</span><span class="s1"> using </span><span class="si">{self.software}</span><span class="s1"> (</span><span class="si">{self.total_job_memory_gb}</span><span class="s1"> GB) &#39;</span>
-                           <span class="sa">f</span><span class="s1">&#39;exceeds 90</span><span class="si">% o</span><span class="s1">f the the maximum node memory on </span><span class="si">{self.server}</span><span class="s1">. &#39;</span>
-                           <span class="sa">f</span><span class="s1">&#39;Setting it to 90% * </span><span class="si">{max_mem}</span><span class="s1"> GB.&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">total_job_memory_gb</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">max_mem</span>
+                           <span class="sa">f</span><span class="s1">&#39;exceeds 80</span><span class="si">% o</span><span class="s1">f the the maximum node memory on </span><span class="si">{self.server}</span><span class="s1">. &#39;</span>
+                           <span class="sa">f</span><span class="s1">&#39;Setting it to 80% * </span><span class="si">{max_mem}</span><span class="s1"> GB.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">total_job_memory_gb</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">max_mem</span>
             <span class="n">total_submit_script_memory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_job_memory_gb</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mf">1.05</span>  <span class="c1"># MB</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;keywords&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;max_total_job_memory&#39;</span><span class="p">)</span>  <span class="c1"># useful info when trouble shoot</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">total_submit_script_memory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_job_memory_gb</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mf">1.1</span>  <span class="c1"># MB</span>
 
@@ -1578,6 +1839,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">local_path_to_orbitals_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">,</span> <span class="s1">&#39;orbitals.fchk&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">local_path_to_lj_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">,</span> <span class="s1">&#39;lj.dat&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">local_path_to_check_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">,</span> <span class="s1">&#39;check.chk&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_path_to_hess_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">,</span> <span class="s1">&#39;input.hess&#39;</span><span class="p">)</span>
 
         <span class="c1"># parentheses don&#39;t play well in folder names:</span>
         <span class="n">species_name_for_remote_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>

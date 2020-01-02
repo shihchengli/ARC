@@ -232,8 +232,8 @@ Multiple species are defined using SMILES / an XYZ list / InChI:</p>
 </pre></div>
 </div>
 <p>In the above example, <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> is a directive that specifies in one line the
-<cite>sp_method/sp_basis_set//opt_method/opt_basis_set</cite>. Specifying the <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code>
-also sets the <code class="docutils literal notranslate"><span class="pre">freq_level</span></code> as equal to the <code class="docutils literal notranslate"><span class="pre">opt_level</span></code>. Note that the <code class="docutils literal notranslate"><span class="pre">scan_level</span></code>
+<code class="docutils literal notranslate"><span class="pre">sp_method/sp_basis_set//opt_method/opt_basis_set</span></code>. Specifying the <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code>
+also sets the <code class="docutils literal notranslate"><span class="pre">freq_level</span></code> as equal to the <code class="docutils literal notranslate"><span class="pre">opt_level</span></code>. Note that if the <code class="docutils literal notranslate"><span class="pre">scan_level</span></code>
 isn’t set, and ARC will use the default in settings.py unless directed otherwise.</p>
 <p>To specify a composite method, simply define something like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">level_of_theory</span><span class="p">:</span> <span class="n">CBS</span><span class="o">-</span><span class="n">QB3</span>
@@ -243,6 +243,8 @@ isn’t set, and ARC will use the default in settings.py unless directed otherwi
 default values than for non-composite methods (defined in settings.py). Yes, an independent
 frequencies calculation job is executed after a composite job just so that the Hamiltonian will
 be outputted.</p>
+<p>For detailed discussion on specifying job level of theory (e.g., including auxiliary basis sets and DFT dispersions),
+see see <span class="xref std std-ref">Specify job level of theory</span>.</p>
 <p>The same example as above ran via the API (e.g., in <a class="reference external" href="https://jupyter.org/">Jupyter notebooks</a>) would look like the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">arc</span> <span class="kn">import</span> <span class="n">ARC</span>
 <span class="kn">from</span> <span class="nn">arc.species</span> <span class="kn">import</span> <span class="n">ARCSpecies</span>

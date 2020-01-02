@@ -183,7 +183,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">arkane.ess</span> <span class="kn">import</span> <span class="n">GaussianLog</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">,</span> <span class="n">QChemLog</span>
+<span class="kn">from</span> <span class="nn">arkane.ess</span> <span class="kn">import</span> <span class="n">GaussianLog</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">,</span> <span class="n">QChemLog</span><span class="p">,</span> <span class="n">OrcaLog</span>
 <span class="kn">from</span> <span class="nn">arkane.util</span> <span class="kn">import</span> <span class="n">determine_qm_software</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="kn">import</span> <span class="n">get_element</span>
 <span class="kn">from</span> <span class="nn">rmgpy.qm.qmdata</span> <span class="kn">import</span> <span class="n">QMData</span>
@@ -631,6 +631,9 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        str: The ESS (either &#39;gaussian&#39;, &#39;qchem&#39;, or &#39;molpro&#39;).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        InputError: If the log file could not be identified.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">determine_qm_software</span><span class="p">(</span><span class="n">log_file</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">):</span>
@@ -639,7 +642,9 @@
         <span class="k">return</span> <span class="s1">&#39;qchem&#39;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;molpro&#39;</span>
-    <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Could not identify the log file in </span><span class="si">{0}</span><span class="s1"> as belonging to Gaussian, QChem, or Molpro.&#39;</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">OrcaLog</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;orca&#39;</span>
+    <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not identify the log file in </span><span class="si">{log_file}</span><span class="s1"> as belonging to Gaussian, QChem, Molpro, or Orca.&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="calculate_dihedral_angle"><a class="viewcode-back" href="../../api/common.html#arc.common.calculate_dihedral_angle">[docs]</a><span class="k">def</span> <span class="nf">calculate_dihedral_angle</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">torsion</span><span class="p">):</span>
@@ -760,6 +765,70 @@
     <span class="k">for</span> <span class="n">counter</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sorted_indices</span><span class="p">):</span>
         <span class="n">sorted_list2</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_list2</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">sorted_list1</span><span class="p">,</span> <span class="n">sorted_list2</span></div>
+
+
+<div class="viewcode-block" id="determine_model_chemistry_type"><a class="viewcode-back" href="../../api/common.html#arc.common.determine_model_chemistry_type">[docs]</a><span class="k">def</span> <span class="nf">determine_model_chemistry_type</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine the type of a model chemistry (e.g., DFT, wavefunction, force field, semi-empirical, composite).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        method (str): method in a model chemistry. e.g., b3lyp, cbs-qb3, am1, dlpno-ccsd(T)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        model_chemistry_type (str): class of model chemistry.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">given_method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">wave_function_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;hf&#39;</span><span class="p">,</span> <span class="s1">&#39;cc&#39;</span><span class="p">,</span> <span class="s1">&#39;ci&#39;</span><span class="p">,</span> <span class="s1">&#39;mp2&#39;</span><span class="p">,</span> <span class="s1">&#39;mp3&#39;</span><span class="p">,</span> <span class="s1">&#39;cp&#39;</span><span class="p">,</span> <span class="s1">&#39;cep&#39;</span><span class="p">,</span> <span class="s1">&#39;nevpt&#39;</span><span class="p">,</span> <span class="s1">&#39;dmrg&#39;</span><span class="p">,</span> <span class="s1">&#39;ri&#39;</span><span class="p">,</span> <span class="s1">&#39;cas&#39;</span><span class="p">,</span> <span class="s1">&#39;ic&#39;</span><span class="p">,</span> <span class="s1">&#39;mr&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;bd&#39;</span><span class="p">,</span> <span class="s1">&#39;mbpt&#39;</span><span class="p">]</span>
+    <span class="n">semiempirical_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;am&#39;</span><span class="p">,</span> <span class="s1">&#39;pm&#39;</span><span class="p">,</span> <span class="s1">&#39;zindo&#39;</span><span class="p">,</span> <span class="s1">&#39;mndo&#39;</span><span class="p">,</span> <span class="s1">&#39;xtb&#39;</span><span class="p">,</span> <span class="s1">&#39;nddo&#39;</span><span class="p">]</span>
+    <span class="n">force_field_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;amber&#39;</span><span class="p">,</span> <span class="s1">&#39;mmff&#39;</span><span class="p">,</span> <span class="s1">&#39;dreiding&#39;</span><span class="p">,</span> <span class="s1">&#39;uff&#39;</span><span class="p">,</span> <span class="s1">&#39;qmdff&#39;</span><span class="p">,</span> <span class="s1">&#39;gfn&#39;</span><span class="p">,</span> <span class="s1">&#39;gaff&#39;</span><span class="p">,</span> <span class="s1">&#39;ghemical&#39;</span><span class="p">,</span> <span class="s1">&#39;charmm&#39;</span><span class="p">,</span> <span class="s1">&#39;ani&#39;</span><span class="p">]</span>
+    <span class="c1"># all composite methods supported by Gaussian</span>
+    <span class="n">composite_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cbs-4m&#39;</span><span class="p">,</span> <span class="s1">&#39;cbs-qb3&#39;</span><span class="p">,</span> <span class="s1">&#39;rocbs-qb3&#39;</span><span class="p">,</span> <span class="s1">&#39;cbs-apno&#39;</span><span class="p">,</span> <span class="s1">&#39;w1u&#39;</span><span class="p">,</span> <span class="s1">&#39;w1ro&#39;</span><span class="p">,</span> <span class="s1">&#39;w1bd&#39;</span><span class="p">,</span> <span class="s1">&#39;g1&#39;</span><span class="p">,</span> <span class="s1">&#39;g2&#39;</span><span class="p">,</span> <span class="s1">&#39;g3&#39;</span><span class="p">,</span> <span class="s1">&#39;g4&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;g2mp2&#39;</span><span class="p">,</span> <span class="s1">&#39;g3mp2&#39;</span><span class="p">,</span> <span class="s1">&#39;g3b3&#39;</span><span class="p">,</span> <span class="s1">&#39;g3mp2b3&#39;</span><span class="p">,</span> <span class="s1">&#39;g4mp2&#39;</span><span class="p">,</span> <span class="s1">&#39;cbs-qb3-paraskevas&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Composite methods</span>
+    <span class="k">if</span> <span class="n">given_method</span> <span class="ow">in</span> <span class="n">composite_methods</span><span class="p">:</span>
+        <span class="n">model_chemistry_class</span> <span class="o">=</span> <span class="s1">&#39;composite&#39;</span>
+        <span class="k">return</span> <span class="n">model_chemistry_class</span>
+
+    <span class="c1"># Special cases</span>
+    <span class="k">if</span> <span class="n">given_method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;m06hf&#39;</span><span class="p">,</span> <span class="s1">&#39;m06-hf&#39;</span><span class="p">]:</span>
+        <span class="n">model_chemistry_class</span> <span class="o">=</span> <span class="s1">&#39;dft&#39;</span>
+        <span class="k">return</span> <span class="n">model_chemistry_class</span>
+
+    <span class="c1"># General cases</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">wf_method</span> <span class="ow">in</span> <span class="n">given_method</span> <span class="k">for</span> <span class="n">wf_method</span> <span class="ow">in</span> <span class="n">wave_function_methods</span><span class="p">):</span>
+        <span class="n">model_chemistry_class</span> <span class="o">=</span> <span class="s1">&#39;wavefunction&#39;</span>
+    <span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="n">sm_method</span> <span class="ow">in</span> <span class="n">given_method</span> <span class="k">for</span> <span class="n">sm_method</span> <span class="ow">in</span> <span class="n">semiempirical_methods</span><span class="p">):</span>
+        <span class="n">model_chemistry_class</span> <span class="o">=</span> <span class="s1">&#39;semiempirical&#39;</span>
+    <span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="n">ff_method</span> <span class="ow">in</span> <span class="n">given_method</span> <span class="k">for</span> <span class="n">ff_method</span> <span class="ow">in</span> <span class="n">force_field_methods</span><span class="p">):</span>
+        <span class="n">model_chemistry_class</span> <span class="o">=</span> <span class="s1">&#39;force_field&#39;</span>   <span class="c1"># a.k.a molecular dynamics</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Assuming </span><span class="si">{given_method}</span><span class="s1"> is a DFT method.&#39;</span><span class="p">)</span>
+        <span class="n">model_chemistry_class</span> <span class="o">=</span> <span class="s1">&#39;dft&#39;</span>
+    <span class="k">return</span> <span class="n">model_chemistry_class</span></div>
+
+
+<div class="viewcode-block" id="format_level_of_theory_for_logging"><a class="viewcode-back" href="../../api/common.html#arc.common.format_level_of_theory_for_logging">[docs]</a><span class="k">def</span> <span class="nf">format_level_of_theory_for_logging</span><span class="p">(</span><span class="n">level_of_theory_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Format level of theory dictionary to string for logging purposes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level_of_theory_dict (dict): level of theory dictionary.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        level_of_theory_log_str (str): level of theory string for logging.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">basis</span> <span class="o">=</span> <span class="n">level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;basis&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">auxiliary_basis</span> <span class="o">=</span> <span class="n">level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;auxiliary_basis&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">dispersion</span> <span class="o">=</span> <span class="n">level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dispersion&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">level_of_theory_log_str</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">method</span><span class="p">,</span> <span class="n">basis</span><span class="p">])</span> <span class="k">if</span> <span class="n">basis</span> <span class="k">else</span> <span class="n">method</span>
+    <span class="n">level_of_theory_log_str</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">level_of_theory_log_str</span><span class="p">,</span> <span class="n">auxiliary_basis</span><span class="p">])</span> <span class="k">if</span> <span class="n">auxiliary_basis</span>\
+        <span class="k">else</span> <span class="n">level_of_theory_log_str</span>
+    <span class="n">level_of_theory_log_str</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">level_of_theory_log_str</span><span class="p">,</span> <span class="n">dispersion</span><span class="p">])</span> <span class="k">if</span> <span class="n">dispersion</span>\
+        <span class="k">else</span> <span class="n">level_of_theory_log_str</span>
+    <span class="k">return</span> <span class="n">level_of_theory_log_str</span></div>
 </pre></div>
 
            </div>
