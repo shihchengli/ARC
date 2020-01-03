@@ -450,6 +450,38 @@ Returns the comprehensive (default values for missing job types) job types for A
 </dd></dl>
 
 <dl class="function">
+<dt id="arc.common.is_notebook">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_notebook</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#is_notebook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_notebook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether ARC was called from an IPython notebook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if ARC was called from a notebook, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.common.key_by_val">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">key_by_val</code><span class="sig-paren">(</span><em class="sig-param">dictionary</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#key_by_val"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.key_by_val" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function for getting a key from a dictionary corresponding to a certain value.
+Does not check for value unicity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dictionary</strong> (<em>dict</em>) – The dictionary.</p></li>
+<li><p><strong>value</strong> – The value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The key.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.common.log_footer">
 <code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">log_footer</code><span class="sig-paren">(</span><em class="sig-param">execution_time</em>, <em class="sig-param">level=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#log_footer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_footer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output a footer for the log.</p>

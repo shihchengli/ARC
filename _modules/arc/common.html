@@ -419,8 +419,10 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        dict or list: The content read from the file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;path must be a string, got </span><span class="si">{path}</span><span class="s1"> which is a {type(path)}&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Could not find the YAML file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find the YAML file </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">content</span></div>
@@ -434,10 +436,12 @@
 <span class="sd">        path (str): The YAML file path to save.</span>
 <span class="sd">        content (list, dict): The content to save.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;path must be a string, got </span><span class="si">{path}</span><span class="s1"> which is a {type(path)}&#39;</span><span class="p">)</span>
     <span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">string_representer</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Creating a restart file...&#39;</span><span class="p">)</span>
     <span class="n">content</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">content</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
@@ -557,6 +561,24 @@
     <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]):</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="nb">min</span><span class="p">([</span><span class="n">entry</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="key_by_val"><a class="viewcode-back" href="../../api/common.html#arc.common.key_by_val">[docs]</a><span class="k">def</span> <span class="nf">key_by_val</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A helper function for getting a key from a dictionary corresponding to a certain value.</span>
+<span class="sd">    Does not check for value unicity.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dictionary (dict): The dictionary.</span>
+<span class="sd">        value: The value.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The key.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">key</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find value </span><span class="si">{value}</span><span class="s1"> in the dictionary</span><span class="se">\n</span><span class="si">{dictionary}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="initialize_job_types"><a class="viewcode-back" href="../../api/common.html#arc.common.initialize_job_types">[docs]</a><span class="k">def</span> <span class="nf">initialize_job_types</span><span class="p">(</span><span class="n">job_types</span><span class="p">,</span> <span class="n">specific_job_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
@@ -829,6 +851,25 @@
     <span class="n">level_of_theory_log_str</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">level_of_theory_log_str</span><span class="p">,</span> <span class="n">dispersion</span><span class="p">])</span> <span class="k">if</span> <span class="n">dispersion</span>\
         <span class="k">else</span> <span class="n">level_of_theory_log_str</span>
     <span class="k">return</span> <span class="n">level_of_theory_log_str</span></div>
+
+
+<div class="viewcode-block" id="is_notebook"><a class="viewcode-back" href="../../api/common.html#arc.common.is_notebook">[docs]</a><span class="k">def</span> <span class="nf">is_notebook</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether ARC was called from an IPython notebook.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: ``True`` if ARC was called from a notebook, ``False`` otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shell</span> <span class="o">=</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">if</span> <span class="n">shell</span> <span class="o">==</span> <span class="s1">&#39;ZMQInteractiveShell&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># Jupyter notebook or qtconsole</span>
+        <span class="k">elif</span> <span class="n">shell</span> <span class="o">==</span> <span class="s1">&#39;TerminalInteractiveShell&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># Terminal running IPython</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># Other type (?)</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># Probably standard Python interpreter</span></div>
 </pre></div>
 
            </div>
