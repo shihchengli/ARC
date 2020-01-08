@@ -324,17 +324,66 @@ Also check ESS and servers.</p>
 
 <dl class="function">
 <dt id="arc.common.format_level_of_theory_for_logging">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_for_logging</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_for_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_for_logging" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_for_logging</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_for_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_for_logging" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format level of theory dictionary to string for logging purposes.</p>
+<dl class="simple">
+<dt>Examples: input -&gt; output</dt><dd><p>{‘method’: ‘cbs-qb3’} -&gt; ‘cbs-qb3’
+{‘method’: ‘b3lyp’, ‘basis’: ‘6-31g’, ‘auxiliary_basis’: ‘’, ‘dispersion’: ‘gd3bj’} -&gt; ‘b3lyp/6-31g gd3bj’
+‘apfd/def2-tzvp’ -&gt; ‘apfd/def2-tzvp’
+More examples can be found from <cite>test_format_level_of_theory_for_logging</cite> in commonTest.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>level_of_theory_dict</strong> (<em>dict</em>) – level of theory dictionary.</p>
+<dd class="field-odd"><p><strong>level_of_theory</strong> (<em>str</em><em> or </em><em>dict</em>) – job level of theory.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>level of theory string for logging.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>level_of_theory_log_str (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.common.format_level_of_theory_inputs">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_inputs</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function to format level of theory inputs for internal use in ARC.</p>
+<dl>
+<dt>Examples: input -&gt; output</dt><dd><p>‘cbs-qb3’ -&gt; {‘method’: ‘cbs-qb3’, ‘basis’: ‘’, ‘auxiliary_basis’: ‘’, ‘dispersion’: ‘’}
+‘b3lyp/def2-TZVP’ -&gt; {‘method’: ‘b3lyp’, ‘basis’: ‘def2-tzvp’, ‘auxiliary_basis’: ‘’, ‘dispersion’: ‘’}
+{‘method’: ‘wb97xd’, ‘basis’: ‘6-31g’} -&gt; {‘method’: ‘wb97xd’, ‘basis’: ‘6-31g’, ‘auxiliary_basis’: ‘’,</p>
+<blockquote>
+<div><p>‘dispersion’: ‘’}</p>
+</div></blockquote>
+<p>More examples can be found from <cite>test_format_model_chemistry_inputs</cite> in commonTest.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>level_of_theory</strong> (<em>str</em><em> or </em><em>dict</em>) – <p>job level of theory specification
+e.g., ‘b3lyp/def2-svp’
+e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p>
+<blockquote>
+<div><p>’auxiliary_basis’: ‘aug-cc-pVTZ/C cc-pVTZ-F12-CABS’}</p>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The formatted model chemistry dictionary.</dt><dd><p>Default keys: ‘method’, ‘basis’, ‘auxiliary_basis’, ‘dispersion’</p>
+</dd>
+<dt>formatted_model_chemistry_str (str): The formatted model chemistry string.</dt><dd><p>Format: method|basis|auxiliary_basis|dispersion</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>formatted_model_chemistry_dict (dict)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> contains illegal specifications.</p>
 </dd>
 </dl>
 </dd></dl>
