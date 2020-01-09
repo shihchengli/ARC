@@ -909,6 +909,17 @@ generating conformers. <code class="docutils literal notranslate"><span class="p
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="arc.species.species.ARCSpecies.zmat">
+<code class="sig-name descname">zmat</code><a class="headerlink" href="#arc.species.species.ARCSpecies.zmat" title="Permalink to this definition">¶</a></dt>
+<dd><p>The species internal coordinates (Z Matrix).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.as_dict">
 <code class="sig-name descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.as_dict" title="Permalink to this definition">¶</a></dt>
@@ -1104,7 +1115,9 @@ If <code class="docutils literal notranslate"><span class="pre">xyz</span></code
 <dd class="field-odd"><p><strong>xyz_list</strong> (<em>list</em><em>, </em><em>str</em><em>, </em><em>dict</em>) – Entries are either string-format, dict-format coordinates or file paths.
 (If there’s only one entry, it could be given directly, not in a list)
 The file paths could direct to either a .xyz file, ARC conformers (w/ or w/o
-energies), or an ESS log/input files, making this method extremely flexible.</p>
+energies), or an ESS log/input files, making this method extremely flexible.
+Internal coordinates (either string or dict) are also allowed and will be
+converted into cartesian coordinates.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1116,7 +1129,7 @@ energies), or an ESS log/input files, making this method extremely flexible.</p>
 atoms in 3D space.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Radius in are Angstrom.</p>
+<dd class="field-odd"><p>The radius in Angstrom.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>float</p>

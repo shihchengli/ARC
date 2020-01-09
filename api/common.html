@@ -190,32 +190,19 @@ As such, it should not import any other ARC module (specifically ones that use t
 <p>ATOM_RADII data taken from <a class="reference external" href="http://dx.doi.org/10.1039/b801115j">DOI 10.1039/b801115j</a>.</p>
 <dl class="function">
 <dt id="arc.common.almost_equal_coords">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_coords</code><span class="sig-paren">(</span><em class="sig-param">xyz1</em>, <em class="sig-param">xyz2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_coords</code><span class="sig-paren">(</span><em class="sig-param">xyz1</em>, <em class="sig-param">xyz2</em>, <em class="sig-param">rtol=1e-05</em>, <em class="sig-param">atol=1e-08</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for checking whether two xyz’s are almost equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>xyz1</strong> (<em>dict</em>) – Coordinates.</p></li>
-<li><p><strong>xyz2</strong> (<em>dict</em>) – Coordinates.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="arc.common.almost_equal_coords_lists">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_coords_lists</code><span class="sig-paren">(</span><em class="sig-param">xyz1</em>, <em class="sig-param">xyz2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords_lists" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper function for checking two lists of xyz’s has at least one entry in each that is almost equal.
-Useful for comparing xyz’s in unit tests.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>xyz1</strong> (<em>list</em><em>, </em><em>dict</em>) – Either a dict-format xyz, or a list of them.</p></li>
-<li><p><strong>xyz2</strong> (<em>list</em><em>, </em><em>dict</em>) – Either a dict-format xyz, or a list of them.</p></li>
+<li><p><strong>xyz1</strong> (<em>dict</em>) – Cartesian coordinates.</p></li>
+<li><p><strong>xyz2</strong> (<em>dict</em>) – Cartesian coordinates.</p></li>
+<li><p><strong>rtol</strong> (<em>float</em><em>, </em><em>optional</em>) – The relative tolerance parameter.</p></li>
+<li><p><strong>atol</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute tolerance parameter.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Whether at least one entry in each input xyz’s is almost equal to an entry in the other xyz.</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if they are almost equal, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>bool</p>
@@ -224,21 +211,24 @@ Useful for comparing xyz’s in unit tests.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="arc.common.calculate_dihedral_angle">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">calculate_dihedral_angle</code><span class="sig-paren">(</span><em class="sig-param">coords</em>, <em class="sig-param">torsion</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#calculate_dihedral_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.calculate_dihedral_angle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate a dihedral angle. Inspired by ASE Atoms.get_dihedral().</p>
+<dt id="arc.common.almost_equal_coords_lists">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_coords_lists</code><span class="sig-paren">(</span><em class="sig-param">xyz1</em>, <em class="sig-param">xyz2</em>, <em class="sig-param">rtol=1e-05</em>, <em class="sig-param">atol=1e-08</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords_lists" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function for checking two lists of xyz’s has at least one entry in each that is almost equal.
+Useful for comparing xyz’s in unit tests.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coords</strong> (<em>list</em><em>, </em><em>tuple</em>) – The array-format or tuple-format coordinates.</p></li>
-<li><p><strong>torsion</strong> (<em>list</em>) – The 4 atoms defining the dihedral angle, 1-indexed.</p></li>
+<li><p><strong>xyz1</strong> (<em>list</em><em>, </em><em>dict</em>) – Either a dict-format xyz, or a list of them.</p></li>
+<li><p><strong>xyz2</strong> (<em>list</em><em>, </em><em>dict</em>) – Either a dict-format xyz, or a list of them.</p></li>
+<li><p><strong>rtol</strong> (<em>float</em><em>, </em><em>optional</em>) – The relative tolerance parameter.</p></li>
+<li><p><strong>atol</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute tolerance parameter.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The dihedral angle.</p>
+<dd class="field-even"><p>Whether at least one entry in each input xyz’s is almost equal to an entry in the other xyz.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -323,6 +313,36 @@ Also check ESS and servers.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="arc.common.determine_top_group_indices">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_top_group_indices</code><span class="sig-paren">(</span><em class="sig-param">mol</em>, <em class="sig-param">atom1</em>, <em class="sig-param">atom2</em>, <em class="sig-param">index=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_top_group_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_top_group_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the indices of a “top group” in a molecule.
+The top is defined as all atoms connected to atom2, including atom2, excluding the direction of atom1.
+Two <code class="docutils literal notranslate"><span class="pre">atom_list_to_explore</span></code> are used so the list the loop iterates through isn’t changed within the loop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>Molecule</em>) – The Molecule object to explore.</p></li>
+<li><p><strong>atom1</strong> (<em>Atom</em>) – The pivotal atom in mol.</p></li>
+<li><p><strong>atom2</strong> (<em>Atom</em>) – The beginning of the top relative to atom1 in mol.</p></li>
+<li><p><strong>index</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return 1-index or 0-index conventions. 1 for 1-index.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The indices of the atoms in the top (either 0-index or 1-index, as requested).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether the top has heavy atoms (is not just a hydrogen atom). True if it has heavy atoms.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.common.format_level_of_theory_for_logging">
 <code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_for_logging</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_for_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_for_logging" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format level of theory dictionary to string for logging purposes.</p>
@@ -342,6 +362,9 @@ More examples can be found from <cite>test_format_level_of_theory_for_logging</c
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>level_of_theory_log_str (str)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If level_of_theory_dict is of wrong type.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -508,6 +531,23 @@ Returns the comprehensive (default values for missing job types) job types for A
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.common.is_str_float">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_str_float</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#is_str_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_str_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a string represents a number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – The string to check.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if it does, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>

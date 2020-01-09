@@ -186,6 +186,7 @@
  | <a href="#W"><strong>W</strong></a>
  | <a href="#X"><strong>X</strong></a>
  | <a href="#Y"><strong>Y</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
  
 </div>
 <h2 id="_">_</h2>
@@ -317,8 +318,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/main.html#arc.main.ARC.calc_freq_factor">calc_freq_factor (arc.main.ARC attribute)</a>
 </li>
-      <li><a href="api/common.html#arc.common.calculate_dihedral_angle">calculate_dihedral_angle() (in module arc.common)</a>
-</li>
       <li><a href="api/conformers.html#arc.species.conformers.change_dihedrals_and_force_field_it">change_dihedrals_and_force_field_it() (in module arc.species.conformers)</a>
 </li>
       <li><a href="api/job.html#arc.job.job.Job.charge">charge (arc.job.job.Job attribute)</a>
@@ -379,13 +378,15 @@
 </li>
       <li><a href="api/species.html#arc.species.species.check_xyz">check_xyz() (in module arc.species.species)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/converter.html#arc.species.converter.check_xyz_dict">check_xyz_dict() (in module arc.species.converter)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.check_xyz_isomorphism">check_xyz_isomorphism() (arc.species.species.ARCSpecies method)</a>
 </li>
       <li><a href="api/plotter.html#arc.plotter.check_xyz_species_for_drawing">check_xyz_species_for_drawing() (in module arc.plotter)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.check_zmat_dict">check_zmat_dict() (in module arc.species.converter)</a>
 </li>
       <li><a href="api/job.html#arc.job.job.Job.checkfile">checkfile (arc.job.job.Job attribute)</a>
 
@@ -402,6 +403,8 @@
       <li><a href="api/job.html#arc.job.job.Job.comments">comments (arc.job.job.Job attribute)</a>
 </li>
       <li><a href="api/conformers.html#arc.species.conformers.compare_xyz">compare_xyz() (in module arc.species.conformers)</a>
+</li>
+      <li><a href="api/conformers.html#arc.species.conformers.compare_zmats">compare_zmats() (in module arc.species.conformers)</a>
 </li>
       <li><a href="api/main.html#arc.main.ARC.composite_method">composite_method (arc.main.ARC attribute)</a>
 
@@ -539,7 +542,7 @@
         <li><a href="api/common.html#arc.common.determine_symmetry">(in module arc.common)</a>
 </li>
       </ul></li>
-      <li><a href="api/conformers.html#arc.species.conformers.determine_top_group_indices">determine_top_group_indices() (in module arc.species.conformers)</a>
+      <li><a href="api/common.html#arc.common.determine_top_group_indices">determine_top_group_indices() (in module arc.common)</a>
 </li>
       <li><a href="api/conformers.html#arc.species.conformers.determine_torsion_sampling_points">determine_torsion_sampling_points() (in module arc.species.conformers)</a>
 </li>
@@ -749,6 +752,12 @@
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.get_xyz">get_xyz() (arc.species.species.ARCSpecies method)</a>
 </li>
+      <li><a href="api/converter.html#arc.species.converter.get_xyz_radius">get_xyz_radius() (in module arc.species.converter)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.get_zmat_param_value">get_zmat_param_value() (in module arc.species.converter)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.get_zmat_str_var_value">get_zmat_str_var_value() (in module arc.species.converter)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -775,14 +784,14 @@
 </li>
       <li><a href="api/common.html#arc.common.initialize_job_types">initialize_job_types() (in module arc.common)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/common.html#arc.common.initialize_log">initialize_log() (in module arc.common)</a>
 
       <ul>
         <li><a href="api/conformers.html#arc.species.conformers.initialize_log">(in module arc.species.conformers)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/scheduler.html#arc.scheduler.Scheduler.initialize_output_dict">initialize_output_dict() (arc.scheduler.Scheduler method)</a>
 </li>
       <li><a href="api/job.html#arc.job.job.Job.input">input (arc.job.job.Job attribute)</a>
@@ -792,6 +801,8 @@
       <li><a href="api/conformers.html#arc.species.conformers.inverse_chirality_symbol">inverse_chirality_symbol() (in module arc.species.conformers)</a>
 </li>
       <li><a href="api/common.html#arc.common.is_notebook">is_notebook() (in module arc.common)</a>
+</li>
+      <li><a href="api/common.html#arc.common.is_str_float">is_str_float() (in module arc.common)</a>
 </li>
       <li><a href="api/job.html#arc.job.job.Job.is_ts">is_ts (arc.job.job.Job attribute)</a>
 
@@ -951,13 +962,15 @@
         <li><a href="api/species.html#arc.species.species.TSGuess.method">(arc.species.species.TSGuess attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/common.html#arc.common.min_list">min_list() (in module arc.common)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/conformers.html#arc.species.conformers.mix_rdkit_and_openbabel_force_field">mix_rdkit_and_openbabel_force_field() (in module arc.species.conformers)</a>
 </li>
       <li><a href="api/main.html#arc.main.ARC.model_chemistry">model_chemistry (arc.main.ARC attribute)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.modify_coords">modify_coords() (in module arc.species.converter)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.mol">mol (arc.species.species.ARCSpecies attribute)</a>
 </li>
@@ -1179,6 +1192,8 @@
 </li>
       <li><a href="api/job.html#arc.job.job.Job.remote_path">remote_path (arc.job.job.Job attribute)</a>
 </li>
+      <li><a href="api/converter.html#arc.species.converter.remove_dummies">remove_dummies() (in module arc.species.converter)</a>
+</li>
       <li><a href="api/local.html#arc.job.local.rename_output">rename_output() (in module arc.job.local)</a>
 </li>
       <li><a href="api/conformers.html#arc.species.conformers.replace_n_with_c_in_mol">replace_n_with_c_in_mol() (in module arc.species.conformers)</a>
@@ -1207,10 +1222,10 @@
 </li>
       <li><a href="api/reaction.html#arc.reaction.ARCReaction.rmg_reaction_to_str">rmg_reaction_to_str() (arc.reaction.ARCReaction method)</a>
 </li>
-      <li><a href="api/reaction.html#arc.reaction.ARCReaction.rmg_reactions">rmg_reactions (arc.reaction.ARCReaction attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/reaction.html#arc.reaction.ARCReaction.rmg_reactions">rmg_reactions (arc.reaction.ARCReaction attribute)</a>
+</li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.rmg_species">rmg_species (arc.species.species.ARCSpecies attribute)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.rmg_thermo">rmg_thermo (arc.species.species.ARCSpecies attribute)</a>
@@ -1347,10 +1362,10 @@
 </li>
       <li><a href="api/converter.html#arc.species.converter.set_multiplicity">set_multiplicity() (in module arc.species.converter)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/converter.html#arc.species.converter.set_radicals_by_map">set_radicals_by_map() (in module arc.species.converter)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/converter.html#arc.species.converter.set_rdkit_dihedrals">set_rdkit_dihedrals() (in module arc.species.converter)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.set_transport_data">set_transport_data() (arc.species.species.ARCSpecies method)</a>
@@ -1391,11 +1406,15 @@
 </li>
       <li><a href="api/job.html#arc.job.job.Job.spin">spin (arc.job.job.Job attribute)</a>
 </li>
+      <li><a href="api/converter.html#arc.species.converter.split_str_zmat">split_str_zmat() (in module arc.species.converter)</a>
+</li>
       <li><a href="api/ssh.html#arc.job.ssh.SSHClient">SSHClient (class in arc.job.ssh)</a>
 </li>
       <li><a href="api/converter.html#arc.species.converter.standardize_xyz_string">standardize_xyz_string() (in module arc.species.converter)</a>
 </li>
       <li><a href="api/converter.html#arc.species.converter.str_to_xyz">str_to_xyz() (in module arc.species.converter)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.str_to_zmat">str_to_zmat() (in module arc.species.converter)</a>
 </li>
       <li><a href="api/common.html#arc.common.string_representer">string_representer() (in module arc.common)</a>
 </li>
@@ -1600,6 +1619,22 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.yml_path">yml_path (arc.species.species.ARCSpecies attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/species.html#arc.species.species.ARCSpecies.zmat">zmat (arc.species.species.ARCSpecies attribute)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.zmat_from_xyz">zmat_from_xyz() (in module arc.species.converter)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/converter.html#arc.species.converter.zmat_to_str">zmat_to_str() (in module arc.species.converter)</a>
+</li>
+      <li><a href="api/converter.html#arc.species.converter.zmat_to_xyz">zmat_to_xyz() (in module arc.species.converter)</a>
 </li>
   </ul></td>
 </tr></table>

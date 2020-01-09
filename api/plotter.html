@@ -250,7 +250,7 @@ Saves an image if a species and <code class="docutils literal notranslate"><span
 <li><p><strong>xyz</strong> (<em>str</em><em>, </em><em>optional</em>) – The xyz coordinates to plot in string format.</p></li>
 <li><p><strong>species</strong> (<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a><em>, </em><em>optional</em>) – A species from which to extract the xyz coordinates to plot.</p></li>
 <li><p><strong>project_directory</strong> (<em>str</em><em>, </em><em>optional</em>) – A directory for saving the image (only supported for draw_3d).</p></li>
-<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – The method to use, either show_sticks or draw_3d.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – The method to use, either ‘show_sticks’, ‘draw_3d’, or ‘scatter’.</p></li>
 </ul>
 </dd>
 </dl>
@@ -399,7 +399,7 @@ If given, the conformer will be marked on the plot with a red dot.</p></li>
 
 <dl class="function">
 <dt id="arc.plotter.plot_3d_mol_as_scatter">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_3d_mol_as_scatter</code><span class="sig-paren">(</span><em class="sig-param">xyz</em>, <em class="sig-param">path=None</em>, <em class="sig-param">plot_h=True</em>, <em class="sig-param">show_plot=True</em>, <em class="sig-param">name=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_3d_mol_as_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_3d_mol_as_scatter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_3d_mol_as_scatter</code><span class="sig-paren">(</span><em class="sig-param">xyz</em>, <em class="sig-param">path=None</em>, <em class="sig-param">plot_h=True</em>, <em class="sig-param">show_plot=True</em>, <em class="sig-param">name=''</em>, <em class="sig-param">index=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_3d_mol_as_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_3d_mol_as_scatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the molecule as scattered balls in space according to the supplied xyz coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -409,6 +409,7 @@ If given, the conformer will be marked on the plot with a red dot.</p></li>
 <li><p><strong>plot_h</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to plot hydrogen atoms as well. <code class="docutils literal notranslate"><span class="pre">True</span></code> to plot them.</p></li>
 <li><p><strong>show_plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to show the plot. <code class="docutils literal notranslate"><span class="pre">True</span></code> to show.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – A name to be added to the saved file name.</p></li>
+<li><p><strong>index</strong> (<em>int</em><em>, </em><em>optional</em>) – The index type (0 or 1) for printing atom numbers. Pass None to avoid printing numbers.</p></li>
 </ul>
 </dd>
 </dl>
@@ -445,7 +446,7 @@ If energies are given, the conformers are considered to be optimized.</p>
 <li><p><strong>project_directory</strong> (<em>str</em>) – The path to the project’s directory.</p></li>
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>xyzs</strong> (<em>list</em>) – Entries are dict-format xyz coordinates of conformers.</p></li>
-<li><p><strong>level_of_theory</strong> (<em>str</em>) – The level of theory used for the conformers optimization.</p></li>
+<li><p><strong>level_of_theory</strong> (<em>dict</em>) – The level of theory used for the conformers optimization.</p></li>
 <li><p><strong>multiplicity</strong> (<em>int</em><em>, </em><em>optional</em>) – The species multiplicity, used for perceiving the molecule.</p></li>
 <li><p><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The species charge, used for perceiving the molecule.</p></li>
 <li><p><strong>is_ts</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the species represents a TS. True if it does.</p></li>

@@ -544,6 +544,40 @@
     <span class="k">return</span> <span class="n">symmetry</span><span class="p">,</span> <span class="n">optical_isomers</span></div>
 
 
+<div class="viewcode-block" id="determine_top_group_indices"><a class="viewcode-back" href="../../api/common.html#arc.common.determine_top_group_indices">[docs]</a><span class="k">def</span> <span class="nf">determine_top_group_indices</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom1</span><span class="p">,</span> <span class="n">atom2</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine the indices of a &quot;top group&quot; in a molecule.</span>
+<span class="sd">    The top is defined as all atoms connected to atom2, including atom2, excluding the direction of atom1.</span>
+<span class="sd">    Two ``atom_list_to_explore`` are used so the list the loop iterates through isn&#39;t changed within the loop.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mol (Molecule): The Molecule object to explore.</span>
+<span class="sd">        atom1 (Atom): The pivotal atom in mol.</span>
+<span class="sd">        atom2 (Atom): The beginning of the top relative to atom1 in mol.</span>
+<span class="sd">        index (bool, optional): Whether to return 1-index or 0-index conventions. 1 for 1-index.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: The indices of the atoms in the top (either 0-index or 1-index, as requested).</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Whether the top has heavy atoms (is not just a hydrogen atom). True if it has heavy atoms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">explored_atom_list</span><span class="p">,</span> <span class="n">atom_list_to_explore1</span><span class="p">,</span> <span class="n">atom_list_to_explore2</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom1</span><span class="p">],</span> <span class="p">[</span><span class="n">atom2</span><span class="p">],</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom_list_to_explore1</span> <span class="o">+</span> <span class="n">atom_list_to_explore2</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">atom3</span> <span class="ow">in</span> <span class="n">atom_list_to_explore1</span><span class="p">:</span>
+            <span class="n">top</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom3</span><span class="p">)</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">atom4</span> <span class="ow">in</span> <span class="n">atom3</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">atom4</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">explored_atom_list</span> <span class="ow">and</span> <span class="n">atom4</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">atom_list_to_explore2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">atom4</span><span class="o">.</span><span class="n">is_hydrogen</span><span class="p">():</span>
+                        <span class="c1"># append H w/o further exploring</span>
+                        <span class="n">top</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom4</span><span class="p">)</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">atom_list_to_explore2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom4</span><span class="p">)</span>  <span class="c1"># explore it further</span>
+            <span class="n">explored_atom_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom3</span><span class="p">)</span>  <span class="c1"># mark as explored</span>
+        <span class="n">atom_list_to_explore1</span><span class="p">,</span> <span class="n">atom_list_to_explore2</span> <span class="o">=</span> <span class="n">atom_list_to_explore2</span><span class="p">,</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="n">top</span><span class="p">,</span> <span class="ow">not</span> <span class="n">atom2</span><span class="o">.</span><span class="n">is_hydrogen</span><span class="p">()</span></div>
+
+
 <div class="viewcode-block" id="min_list"><a class="viewcode-back" href="../../api/common.html#arc.common.min_list">[docs]</a><span class="k">def</span> <span class="nf">min_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for finding the minimum of a list of integers where some of the entries might be None.</span>
@@ -669,54 +703,27 @@
     <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not identify the log file in </span><span class="si">{log_file}</span><span class="s1"> as belonging to Gaussian, QChem, Molpro, or Orca.&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="calculate_dihedral_angle"><a class="viewcode-back" href="../../api/common.html#arc.common.calculate_dihedral_angle">[docs]</a><span class="k">def</span> <span class="nf">calculate_dihedral_angle</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">torsion</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate a dihedral angle. Inspired by ASE Atoms.get_dihedral().</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        coords (list, tuple): The array-format or tuple-format coordinates.</span>
-<span class="sd">        torsion (list): The 4 atoms defining the dihedral angle, 1-indexed.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        float: The dihedral angle.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">torsion</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">torsion</span><span class="p">]</span>  <span class="c1"># convert 1-index to 0-index</span>
-    <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="n">torsion</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
-    <span class="n">bxa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="n">bxa</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">bxa</span><span class="p">)</span>
-    <span class="n">cxb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-    <span class="n">cxb</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">cxb</span><span class="p">)</span>
-    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">bxa</span><span class="p">,</span> <span class="n">cxb</span><span class="p">)</span>
-    <span class="c1"># check for numerical trouble due to finite precision:</span>
-    <span class="k">if</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="k">elif</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">bxa</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">angle</span>
-    <span class="k">return</span> <span class="n">angle</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span></div>
-
-
-<div class="viewcode-block" id="almost_equal_coords"><a class="viewcode-back" href="../../api/common.html#arc.common.almost_equal_coords">[docs]</a><span class="k">def</span> <span class="nf">almost_equal_coords</span><span class="p">(</span><span class="n">xyz1</span><span class="p">,</span> <span class="n">xyz2</span><span class="p">):</span>
+<div class="viewcode-block" id="almost_equal_coords"><a class="viewcode-back" href="../../api/common.html#arc.common.almost_equal_coords">[docs]</a><span class="k">def</span> <span class="nf">almost_equal_coords</span><span class="p">(</span><span class="n">xyz1</span><span class="p">,</span> <span class="n">xyz2</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1.0000000000000001e-05</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for checking whether two xyz&#39;s are almost equal.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        xyz1 (dict): Coordinates.</span>
-<span class="sd">        xyz2 (dict): Coordinates.</span>
+<span class="sd">        xyz1 (dict): Cartesian coordinates.</span>
+<span class="sd">        xyz2 (dict): Cartesian coordinates.</span>
+<span class="sd">        rtol (float, optional): The relative tolerance parameter.</span>
+<span class="sd">        atol (float, optional): The absolute tolerance parameter.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: ``True`` if they are almost equal, ``False`` otherwise.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">xyz_coord1</span><span class="p">,</span> <span class="n">xyz_coord2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">xyz1</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">],</span> <span class="n">xyz2</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]):</span>
         <span class="k">for</span> <span class="n">xyz1_c</span><span class="p">,</span> <span class="n">xyz2_c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">xyz_coord1</span><span class="p">,</span> <span class="n">xyz_coord2</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="n">xyz1_c</span><span class="p">],</span> <span class="p">[</span><span class="n">xyz2_c</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="n">xyz1_c</span><span class="p">],</span> <span class="p">[</span><span class="n">xyz2_c</span><span class="p">],</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="almost_equal_coords_lists"><a class="viewcode-back" href="../../api/common.html#arc.common.almost_equal_coords_lists">[docs]</a><span class="k">def</span> <span class="nf">almost_equal_coords_lists</span><span class="p">(</span><span class="n">xyz1</span><span class="p">,</span> <span class="n">xyz2</span><span class="p">):</span>
+<div class="viewcode-block" id="almost_equal_coords_lists"><a class="viewcode-back" href="../../api/common.html#arc.common.almost_equal_coords_lists">[docs]</a><span class="k">def</span> <span class="nf">almost_equal_coords_lists</span><span class="p">(</span><span class="n">xyz1</span><span class="p">,</span> <span class="n">xyz2</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1.0000000000000001e-05</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for checking two lists of xyz&#39;s has at least one entry in each that is almost equal.</span>
 <span class="sd">    Useful for comparing xyz&#39;s in unit tests.</span>
@@ -724,6 +731,8 @@
 <span class="sd">    Args:</span>
 <span class="sd">        xyz1 (list, dict): Either a dict-format xyz, or a list of them.</span>
 <span class="sd">        xyz2 (list, dict): Either a dict-format xyz, or a list of them.</span>
+<span class="sd">        rtol (float, optional): The relative tolerance parameter.</span>
+<span class="sd">        atol (float, optional): The absolute tolerance parameter.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: Whether at least one entry in each input xyz&#39;s is almost equal to an entry in the other xyz.</span>
@@ -736,7 +745,7 @@
         <span class="k">for</span> <span class="n">xyz2_entry</span> <span class="ow">in</span> <span class="n">xyz2</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">xyz1_entry</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">xyz2_entry</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]:</span>
                 <span class="k">return</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="n">almost_equal_coords</span><span class="p">(</span><span class="n">xyz1_entry</span><span class="p">,</span> <span class="n">xyz2_entry</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">almost_equal_coords</span><span class="p">(</span><span class="n">xyz1_entry</span><span class="p">,</span> <span class="n">xyz2_entry</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">):</span>
                 <span class="k">break</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -934,16 +943,24 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        level_of_theory_log_str (str): level of theory string for logging.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: If level_of_theory_dict is of wrong type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">level_of_theory_dict</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">format_level_of_theory_inputs</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">level_of_theory</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;level_of_theory_dict must be a dictionary, got: </span><span class="si">{level_of_theory}</span><span class="s1"> &#39;</span>
+                        <span class="sa">f</span><span class="s1">&#39;which is a {type(level_of_theory)}.&#39;</span><span class="p">)</span>
+    <span class="n">level_of_theory_dict</span> <span class="o">=</span> <span class="n">format_level_of_theory_inputs</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">method</span> <span class="o">=</span> <span class="n">level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">basis</span> <span class="o">=</span> <span class="n">level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;basis&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">auxiliary_basis</span> <span class="o">=</span> <span class="n">level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;auxiliary_basis&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">dispersion</span> <span class="o">=</span> <span class="n">level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dispersion&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">level_of_theory_log_str</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">method</span><span class="p">,</span> <span class="n">basis</span><span class="p">])</span> <span class="k">if</span> <span class="n">basis</span> <span class="k">else</span> <span class="n">method</span>
-    <span class="n">level_of_theory_log_str</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">level_of_theory_log_str</span><span class="p">,</span> <span class="n">auxiliary_basis</span><span class="p">])</span> <span class="k">if</span> <span class="n">auxiliary_basis</span>\
+    <span class="n">level_of_theory_log_str</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">level_of_theory_log_str</span><span class="p">,</span> <span class="n">auxiliary_basis</span><span class="p">])</span> <span class="k">if</span> <span class="n">auxiliary_basis</span> \
         <span class="k">else</span> <span class="n">level_of_theory_log_str</span>
-    <span class="n">level_of_theory_log_str</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">level_of_theory_log_str</span><span class="p">,</span> <span class="n">dispersion</span><span class="p">])</span> <span class="k">if</span> <span class="n">dispersion</span>\
+    <span class="n">level_of_theory_log_str</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">level_of_theory_log_str</span><span class="p">,</span> <span class="n">dispersion</span><span class="p">])</span> <span class="k">if</span> <span class="n">dispersion</span> \
         <span class="k">else</span> <span class="n">level_of_theory_log_str</span>
     <span class="k">return</span> <span class="n">level_of_theory_log_str</span></div>
 
@@ -965,6 +982,23 @@
             <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># Other type (?)</span>
     <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># Probably standard Python interpreter</span></div>
+
+
+<div class="viewcode-block" id="is_str_float"><a class="viewcode-back" href="../../api/common.html#arc.common.is_str_float">[docs]</a><span class="k">def</span> <span class="nf">is_str_float</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether a string represents a number.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (str): The string to check.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: ``True`` if it does, ``False`` otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 </pre></div>
 
            </div>

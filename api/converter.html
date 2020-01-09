@@ -241,17 +241,33 @@ resonance structures. <code class="docutils literal notranslate"><span class="pr
 <dl class="function">
 <dt id="arc.species.converter.check_xyz_dict">
 <code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">check_xyz_dict</code><span class="sig-paren">(</span><em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#check_xyz_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.check_xyz_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the xyz dictionary entered is valid. If it is a string, convert it.
+<dd><p>Check that the xyz dictionary entered is valid.
+If it is a string, convert it.
+If it is a Z matrix, convert it to cartesian coordinates,
 If isotopes are not in xyz_dict, common values will be added.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em>) – The xyz dictionary.</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>TypeError</strong> – If xyz_dict is not a dictionary.</p></li>
-<li><p><strong>ValueError</strong> – If xyz_dict is missing symbols or coords.</p></li>
-</ul>
+<dd class="field-even"><p><strong>ConverterError</strong> – If <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is of wrong type or is missing symbols or coords.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.check_zmat_dict">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">check_zmat_dict</code><span class="sig-paren">(</span><em class="sig-param">zmat</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#check_zmat_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.check_zmat_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the zmat dictionary entered is valid.
+If it is a string, convert it.
+If it represents cartesian coordinates, convert it to internal coordinates.
+If a map isn’t given, a trivial one will be added.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>zmat</strong> (<em>dict</em><em>, </em><em>str</em>) – The zmat dictionary.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ConverterError</strong> – If <code class="docutils literal notranslate"><span class="pre">zmat</span></code> is of wrong type or is missing vars or coords.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -296,10 +312,111 @@ Either xyz or coords and symbols must be given.</p>
 <dd class="field-odd"><p><strong>element_symbol</strong> (<em>str</em>) – The element symbol.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The most common isotope number for the element.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>The most common isotope number for the element.</dt><dd><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> for dummy atoms (‘X’).</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.get_xyz_radius">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">get_xyz_radius</code><span class="sig-paren">(</span><em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#get_xyz_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.get_xyz_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the largest distance from the coordinate system origin attributed to one of the atoms in 3D space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The radius in Angstrom.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.get_zmat_param_value">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">get_zmat_param_value</code><span class="sig-paren">(</span><em class="sig-param">coords</em>, <em class="sig-param">indices</em>, <em class="sig-param">mol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#get_zmat_param_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.get_zmat_param_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a zmat similarly to modify_coords(),
+but instead of modifying it, only reports on the value of a requested parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coords</strong> (<em>dict</em>) – Either cartesian (xyz) or internal (zmat) coordinates.</p></li>
+<li><p><strong>indices</strong> (<em>list</em>) – The indices to change (0-indexed). Specifying a list of length 2, 3, or 4
+will result in a length, angle, or a dihedral angle parameter, respectively.</p></li>
+<li><p><strong>mol</strong> (<em>Molecule</em><em>, </em><em>optional</em>) – The corresponding RMG molecule with the connectivity information.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The parameter value in Angstrom or degrees.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.get_zmat_str_var_value">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">get_zmat_str_var_value</code><span class="sig-paren">(</span><em class="sig-param">zmat_str</em>, <em class="sig-param">var</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#get_zmat_str_var_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.get_zmat_str_var_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value of a zmat variable from a string-represented zmat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>zmat_str</strong> (<em>str</em>) – The string representation of the zmat.</p></li>
+<li><p><strong>var</strong> (<em>str</em>) – The variable to look for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The value corresponding to the <code class="docutils literal notranslate"><span class="pre">var</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.modify_coords">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">modify_coords</code><span class="sig-paren">(</span><em class="sig-param">coords</em>, <em class="sig-param">indices</em>, <em class="sig-param">new_value</em>, <em class="sig-param">modification_type</em>, <em class="sig-param">mol=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#modify_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.modify_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify either a bond length, angle, or dihedral angle in the given coordinates.
+The coordinates input could either be cartesian (preferred) or internal (will be first converter to cartesian,
+then to internal back again since a specific zmat must be created).
+Internal coordinates will be used for the modification (using folding and unfolding).</p>
+<p>Specifying an ‘atom’ modification type will only translate/rotate the atom represented by the first index
+if the corresponding zmat parameter is changed.
+Specifying a ‘group’ modification type will cause the entire group connected to the first atom to translate/rotate
+if the corresponding zmat parameter is changed.
+Specifying a ‘groups’ modification type (only valid for dihedral angles) will cause the groups connected to
+the first two atoms to translate/rotate if the corresponding zmat parameter is changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coords</strong> (<em>dict</em>) – Either cartesian (xyz) or internal (zmat) coordinates.</p></li>
+<li><p><strong>indices</strong> (<em>list</em>) – The indices to change (0-indexed). Specifying a list of length 2, 3, or 4
+will result in changing a bond length, angle, or a dihedral angle, respectively.</p></li>
+<li><p><strong>new_value</strong> (<em>float</em>) – The new value to set (in Angstrom or degrees).</p></li>
+<li><p><strong>modification_type</strong> (<em>str</em>) – Either ‘atom’, ‘group’, or ‘groups’ (‘groups’ is only allowed for dihedral angles).
+Note that D ‘groups’ is a composite constraint, equivalent to calling D ‘group’
+for each 1st neighboring  atom in a torsion top.</p></li>
+<li><p><strong>mol</strong> (<em>Molecule</em><em>, </em><em>optional</em>) – The corresponding RMG molecule with the connectivity information.
+Mandatory if the modification type is ‘group’ or ‘groups’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The respective cartesian (xyz) coordinates reflecting the desired modification.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If a group/s modification type is requested but <code class="docutils literal notranslate"><span class="pre">mol</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+    or if a ‘groups’ modification type was specified for R or A.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -349,7 +466,10 @@ If <cite>multiplicity</cite> is given, the returned species multiplicity will be
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>SanitizationError</strong> – If atoms could not be re-ordered.</p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SanitizationError</strong> – If atoms could not be re-ordered.</p></li>
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">mol</span></code> has a wrong type.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -372,7 +492,10 @@ If <cite>multiplicity</cite> is given, the returned species multiplicity will be
 <dd class="field-odd"><p>bool</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>SanitizationError</strong> – If atoms could not be re-ordered.</p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SanitizationError</strong> – If atoms could not be re-ordered.</p></li>
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">ref_mol</span></code> or the entries in <code class="docutils literal notranslate"><span class="pre">mol_list</span></code> have a wrong type.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -421,6 +544,29 @@ If <cite>multiplicity</cite> is given, the returned species multiplicity will be
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>RDMol</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ConverterError</strong> – if <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is of wrong type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.remove_dummies">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">remove_dummies</code><span class="sig-paren">(</span><em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#remove_dummies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.remove_dummies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove dummy (‘X’) atoms from cartesian coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em>) – The cartesian coordinate, either in a dict or str format.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The coordinates w/o dummy atoms.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">xyz</span></code> if of wrong type.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -474,6 +620,12 @@ it’ll be used to set radicals (useful if bond orders aren’t known for a mole
 <li><p><strong>radical_map</strong> (<em>Molecule</em><em>, </em><em>optional</em>) – An RMG Molecule object with the same atom order to be used as a radical map.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ConverterError</strong> – If <code class="docutils literal notranslate"><span class="pre">radical_map</span></code> is of wrong type.</p></li>
+<li><p><strong>SpeciesError</strong> – If number of radicals and multiplicity do not match or if connectivity cannot be inferred.</p></li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
@@ -489,7 +641,7 @@ it’ll be used to set radicals (useful if bond orders aren’t known for a mole
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If atom order does not match.</p>
+<dd class="field-even"><p><strong>ConverterError</strong> – If atom order does not match.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -510,10 +662,36 @@ Either <code class="docutils literal notranslate"><span class="pre">deg_incremen
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The xyz with the new dihedral, ordered according to the map,</p>
+<dd class="field-even"><p>The xyz with the new dihedral, ordered according to the map.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>new_xyz (dict)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ConverterError</strong> – If the dihedral cannot be set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.split_str_zmat">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">split_str_zmat</code><span class="sig-paren">(</span><em class="sig-param">zmat_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#split_str_zmat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.split_str_zmat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split a string zmat into its coordinates and variables sections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>zmat_str</strong> (<em>str</em>) – The zmat.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The coords section.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The variables section if it exists, else None.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -538,6 +716,9 @@ option is ‘gaussian’.</p></li>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>xyz (str)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ConverterError</strong> – If <code class="docutils literal notranslate"><span class="pre">xyz_str</span></code> is of wrong type.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -578,7 +759,51 @@ The xyz string format may have optional Gaussian-style isotope specification, e.
 <dd class="field-odd"><p>xyz_dict (dict)</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>InputError</strong> – If input is not a string or does not have four space-separated entries per non empty line.</p>
+<dd class="field-even"><p><strong>ConverterError</strong> – If xyz_str is not a string or does not have four space-separated entries per non empty line.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.str_to_zmat">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">str_to_zmat</code><span class="sig-paren">(</span><em class="sig-param">zmat_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#str_to_zmat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.str_to_zmat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a string Z Matrix format to the ARC dict zmat style.
+Note: The <code class="docutils literal notranslate"><span class="pre">zmat_str</span></code> argument could also direct to a file path to parse the data from.
+A typical zmat string format may look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span>
+<span class="n">H</span>       <span class="mi">1</span>      <span class="n">R1</span>
+<span class="n">H</span>       <span class="mi">1</span>      <span class="n">R1</span>       <span class="mi">2</span>      <span class="n">A1</span>
+<span class="n">H</span>       <span class="mi">1</span>      <span class="n">R1</span>       <span class="mi">2</span>      <span class="n">A1</span>       <span class="mi">3</span>      <span class="n">D1</span>
+<span class="n">H</span>       <span class="mi">1</span>      <span class="n">R1</span>       <span class="mi">2</span>      <span class="n">A1</span>       <span class="mi">3</span>      <span class="n">D2</span>
+<span class="n">A1</span><span class="o">=</span><span class="mf">109.4712</span>
+<span class="n">D1</span><span class="o">=</span><span class="mf">120.0000</span>
+<span class="n">D2</span><span class="o">=</span><span class="mf">240.0000</span>
+<span class="n">R1</span><span class="o">=</span><span class="mf">1.0912</span>
+</pre></div>
+</div>
+<p>The resulting zmat for the above example is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">),</span>
+ <span class="s1">&#39;coords&#39;</span><span class="p">:</span> <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;R_1_0&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;R_2_1&#39;</span><span class="p">,</span> <span class="s1">&#39;A_2_1_0&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;R_3_2&#39;</span><span class="p">,</span> <span class="s1">&#39;A_3_2_0&#39;</span><span class="p">,</span> <span class="s1">&#39;D_3_2_0_1&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;R_4_3&#39;</span><span class="p">,</span> <span class="s1">&#39;A_4_3_0&#39;</span><span class="p">,</span> <span class="s1">&#39;D_4_3_0_2&#39;</span><span class="p">)),</span>
+ <span class="s1">&#39;vars&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;R_1_0&#39;</span><span class="p">:</span> <span class="mf">1.0912</span><span class="p">,</span> <span class="s1">&#39;R_2_1&#39;</span><span class="p">:</span> <span class="mf">1.782</span><span class="p">,</span> <span class="s1">&#39;A_2_1_0&#39;</span><span class="p">:</span> <span class="mf">35.2644</span><span class="p">,</span> <span class="s1">&#39;R_3_2&#39;</span><span class="p">:</span> <span class="mf">1.782</span><span class="p">,</span> <span class="s1">&#39;A_3_2_0&#39;</span><span class="p">:</span> <span class="mf">35.2644</span><span class="p">,</span>
+          <span class="s1">&#39;D_3_2_0_1&#39;</span><span class="p">:</span> <span class="mf">120.0</span><span class="p">,</span> <span class="s1">&#39;R_4_3&#39;</span><span class="p">:</span> <span class="mf">1.782</span><span class="p">,</span> <span class="s1">&#39;A_4_3_0&#39;</span><span class="p">:</span> <span class="mf">35.2644</span><span class="p">,</span> <span class="s1">&#39;D_4_3_0_2&#39;</span><span class="p">:</span> <span class="mf">240.0</span><span class="p">},</span>
+ <span class="s1">&#39;map&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">4</span><span class="p">}}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>zmat_str</strong> (<em>str</em>) – The string zmat format to be converted.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The ARC zmat format.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>zmat_dict (dict)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ConverterError</strong> – If zmat_str is not a string or does not have enough values per line.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -660,7 +885,7 @@ Adopted from rmgpy/molecule/converter.py</p>
 <dd class="field-odd"><p>dict</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>InputError</strong> – If cannot identify the number of atoms entry, of if it is different that the actual number.</p>
+<dd class="field-even"><p><strong>ConverterError</strong> – If cannot identify the number of atoms entry, of if it is different that the actual number.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -687,10 +912,8 @@ If <code class="docutils literal notranslate"><span class="pre">isotopes</span><
 <dd class="field-odd"><p>dict</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>InputError</strong> – If neither <code class="docutils literal notranslate"><span class="pre">numbers</span></code> nor <code class="docutils literal notranslate"><span class="pre">symbols</span></code> are specified, if both are specified,</p></li>
-<li><p><strong>or if the input lengths aren't consistent.</strong> – </p></li>
-</ul>
+<dd class="field-even"><p><strong>ConverterError</strong> – If neither <code class="docutils literal notranslate"><span class="pre">numbers</span></code> nor <code class="docutils literal notranslate"><span class="pre">symbols</span></code> are specified, if both are specified,
+    or if the input lengths aren’t consistent.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -725,9 +948,6 @@ If <code class="docutils literal notranslate"><span class="pre">isotopes</span><
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>pybel_mol (OBmol)</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>InputError</strong> – If xyz has a wrong format.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -771,7 +991,7 @@ option is ‘gaussian’.</p></li>
 <dd class="field-odd"><p>str</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>InputError</strong> – If input is not a dict or does not have all attributes.</p>
+<dd class="field-even"><p><strong>ConverterError</strong> – If input is not a dict or does not have all attributes.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -825,7 +1045,93 @@ This function does not consider isotopes.</p>
 <dd class="field-odd"><p>str</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">xyz_dict</span></code> is of wrong format or <code class="docutils literal notranslate"><span class="pre">comment</span></code> is a multiline string.</p>
+<dd class="field-even"><p><strong>ConverterError</strong> – If <code class="docutils literal notranslate"><span class="pre">xyz_dict</span></code> is of wrong format or <code class="docutils literal notranslate"><span class="pre">comment</span></code> is a multiline string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.zmat_from_xyz">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">zmat_from_xyz</code><span class="sig-paren">(</span><em class="sig-param">xyz</em>, <em class="sig-param">mol=None</em>, <em class="sig-param">constraints=None</em>, <em class="sig-param">consolidate=True</em>, <em class="sig-param">consolidation_tols=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#zmat_from_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.zmat_from_xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a Z matrix from xyz.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em>) – The cartesian coordinate, either in a dict or str format.</p></li>
+<li><p><strong>mol</strong> (<em>Molecule</em><em>, </em><em>optional</em>) – The corresponding RMG Molecule with connectivity information.</p></li>
+<li><p><strong>constraints</strong> (<em>dict</em><em>, </em><em>optional</em>) – Accepted keys are:
+‘R_atom’, ‘R_group’, ‘A_atom’, ‘A_group’, ‘D_atom’, ‘D_group’, or ‘D_groups’.
+‘R’, ‘A’, and ‘D’, constraining distances, angles, and dihedrals, respectively.
+Values are lists of atom indices (0-indexed) tuples.
+The atom indices order matters.
+Specifying ‘_atom’ will cause only the last atom in the specified list values
+to translate/rotate if the corresponding zmat parameter is changed.
+Specifying ‘_group’ will cause the entire group connected to the last atom
+to translate/rotate if the corresponding zmat parameter is changed.
+Specifying ‘_groups’ (only valid for D) will cause the groups connected to
+the last two atoms to translate/rotate if the corresponding parameter is changed.</p></li>
+<li><p><strong>consolidate</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to consolidate the zmat after generation, <code class="docutils literal notranslate"><span class="pre">True</span></code> to consolidate.</p></li>
+<li><p><strong>consolidation_tols</strong> (<em>dict</em><em>, </em><em>optional</em>) – Keys are ‘R’, ‘A’, ‘D’, values are floats representing absolute tolerance
+for consolidating almost equal internal coordinates.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Z matrix.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">xyz</span></code> if of wrong type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.zmat_to_str">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">zmat_to_str</code><span class="sig-paren">(</span><em class="sig-param">zmat</em>, <em class="sig-param">zmat_format='gaussian'</em>, <em class="sig-param">consolidate=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#zmat_to_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.zmat_to_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a zmat to a string format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>zmat</strong> (<em>dict</em>) – The Z Matrix to convert.</p></li>
+<li><p><strong>zmat_format</strong> (<em>str</em><em>, </em><em>optional</em>) – The requested format to output (varies by ESS).
+Allowed values are: ‘gaussian’, ‘qchem’, ‘molpro’, ‘orca’, or ‘psi4’.
+The default format is ‘gaussian’.</p></li>
+<li><p><strong>consolidate</strong> (<em>bool</em>) – Whether to return a consolidated zmat (geometry optimization will be more efficient).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The string representation of the zmat in the requested format.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ConverterError</strong> – If <code class="docutils literal notranslate"><span class="pre">zmat</span></code> is of wrong type or missing keys, or if <code class="docutils literal notranslate"><span class="pre">zmat_format</span></code> is not recognized.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.zmat_to_xyz">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">zmat_to_xyz</code><span class="sig-paren">(</span><em class="sig-param">zmat</em>, <em class="sig-param">keep_dummy=False</em>, <em class="sig-param">xyz_isotopes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#zmat_to_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.zmat_to_xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the xyz dict coordinates from a zmat dict.
+Most common isotopes assumed, unless a reference xyz dict is given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>zmat</strong> (<em>dict</em>) – The zmat.</p></li>
+<li><p><strong>keep_dummy</strong> (<em>bool</em>) – Whether to keep dummy atoms (‘X’), <code class="docutils literal notranslate"><span class="pre">True</span></code> to keep, default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>xyz_isotopes</strong> (<em>dict</em>) – A reference xyz dictionary to take isotope information from.
+Must be ordered as the original mol/xyz used to create <code class="docutils literal notranslate"><span class="pre">zmat</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The xyz cartesian coordinates.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
