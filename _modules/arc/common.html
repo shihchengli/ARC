@@ -803,11 +803,18 @@
 <span class="sd">    Determine the type of a model chemistry (e.g., DFT, wavefunction, force field, semi-empirical, composite).</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        method (str): method in a model chemistry. e.g., b3lyp, cbs-qb3, am1, dlpno-ccsd(T)</span>
+<span class="sd">        method (str, dict): method in a model chemistry. e.g., b3lyp, cbs-qb3, am1, dlpno-ccsd(T)</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        model_chemistry_type (str): class of model chemistry.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: If ``method`` is of wrong type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">format_level_of_theory_for_logging</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The method argument must be a string, got </span><span class="si">{method}</span><span class="s1"> which is a {type(method)}.&#39;</span><span class="p">)</span>
     <span class="n">given_method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="n">wave_function_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;hf&#39;</span><span class="p">,</span> <span class="s1">&#39;cc&#39;</span><span class="p">,</span> <span class="s1">&#39;ci&#39;</span><span class="p">,</span> <span class="s1">&#39;mp2&#39;</span><span class="p">,</span> <span class="s1">&#39;mp3&#39;</span><span class="p">,</span> <span class="s1">&#39;cp&#39;</span><span class="p">,</span> <span class="s1">&#39;cep&#39;</span><span class="p">,</span> <span class="s1">&#39;nevpt&#39;</span><span class="p">,</span> <span class="s1">&#39;dmrg&#39;</span><span class="p">,</span> <span class="s1">&#39;ri&#39;</span><span class="p">,</span> <span class="s1">&#39;cas&#39;</span><span class="p">,</span> <span class="s1">&#39;ic&#39;</span><span class="p">,</span> <span class="s1">&#39;mr&#39;</span><span class="p">,</span>
                              <span class="s1">&#39;bd&#39;</span><span class="p">,</span> <span class="s1">&#39;mbpt&#39;</span><span class="p">]</span>
@@ -945,13 +952,13 @@
 <span class="sd">        level_of_theory_log_str (str): level of theory string for logging.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        TypeError: If level_of_theory_dict is of wrong type.</span>
+<span class="sd">        TypeError: If ``level_of_theory`` is of wrong type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">level_of_theory</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;level_of_theory_dict must be a dictionary, got: </span><span class="si">{level_of_theory}</span><span class="s1"> &#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;level_of_theory_dict must be either a dictionary or a string, got: </span><span class="si">{level_of_theory}</span><span class="s1"> &#39;</span>
                         <span class="sa">f</span><span class="s1">&#39;which is a {type(level_of_theory)}.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;|&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">level_of_theory</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">level_of_theory</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="n">level_of_theory_dict</span> <span class="o">=</span> <span class="n">format_level_of_theory_inputs</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">method</span> <span class="o">=</span> <span class="n">level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">basis</span> <span class="o">=</span> <span class="n">level_of_theory_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;basis&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>

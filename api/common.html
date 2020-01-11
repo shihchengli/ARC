@@ -278,13 +278,16 @@ Also check ESS and servers.</p>
 <dd><p>Determine the type of a model chemistry (e.g., DFT, wavefunction, force field, semi-empirical, composite).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>method</strong> (<em>str</em>) – method in a model chemistry. e.g., b3lyp, cbs-qb3, am1, dlpno-ccsd(T)</p>
+<dd class="field-odd"><p><strong>method</strong> (<em>str</em><em>, </em><em>dict</em>) – method in a model chemistry. e.g., b3lyp, cbs-qb3, am1, dlpno-ccsd(T)</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>class of model chemistry.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>model_chemistry_type (str)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">method</span></code> is of wrong type.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -364,7 +367,7 @@ More examples can be found from <cite>test_format_level_of_theory_for_logging</c
 <dd class="field-odd"><p>level_of_theory_log_str (str)</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>TypeError</strong> – If level_of_theory_dict is of wrong type.</p>
+<dd class="field-even"><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> is of wrong type.</p>
 </dd>
 </dl>
 </dd></dl>
