@@ -221,11 +221,23 @@ Useful when terminating ARC while some (ghost) jobs are still running.</p>
 
 <dl class="function">
 <dt id="arc.job.local.execute_command">
-<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">execute_command</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">shell=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#execute_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.execute_command" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute a command. <cite>command</cite> is an array of string commands to send.
-If path is not an empty string, the command will be executed in the directory path it points to.
-Returns lists of stdin, stdout, stderr corresponding to the commands sent.
-<cite>shell</cite> specifies whether the command should be executed using bash instead of Python</p>
+<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">execute_command</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">shell=True</em>, <em class="sig-param">no_fail=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#execute_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.execute_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a command.</p>
+<p class="rubric">Notes</p>
+<p>If <cite>no_fail</cite> == True, then a warning is logged and <cite>False</cite> is returned so that the calling function can debug
+the situation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> – An array of string commands to send.</p></li>
+<li><p><strong>shell</strong> (<em>bool</em>) – Specifies whether the command should be executed using bash instead of Python</p></li>
+<li><p><strong>no_fail</strong> (<em>bool</em>) – If <cite>True</cite> then ARC will not crash if an error is encountered.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lists of stdin, stdout, stderr corresponding to the commands sent</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
