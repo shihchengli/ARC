@@ -647,9 +647,9 @@
     <span class="n">defaults_to_false</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;onedmin&#39;</span><span class="p">,</span> <span class="s1">&#39;orbitals&#39;</span><span class="p">,</span> <span class="s1">&#39;bde&#39;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">job_types</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">job_types</span> <span class="o">=</span> <span class="n">default_job_types</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Job types were not specified, using default values from ARC settings&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Job types were not specified, using ARC&#39;s defaults&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;the following job types were specified: </span><span class="si">{job_types}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The following job types were specified: </span><span class="si">{job_types}</span><span class="s1">.&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="s1">&#39;lennard_jones&#39;</span> <span class="ow">in</span> <span class="n">job_types</span><span class="p">:</span>
         <span class="c1"># rename lennard_jones to OneDMin</span>
         <span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;onedmin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;lennard_jones&#39;</span><span class="p">]</span>
