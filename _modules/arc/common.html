@@ -578,12 +578,14 @@
     <span class="k">return</span> <span class="n">top</span><span class="p">,</span> <span class="ow">not</span> <span class="n">atom2</span><span class="o">.</span><span class="n">is_hydrogen</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="min_list"><a class="viewcode-back" href="../../api/common.html#arc.common.min_list">[docs]</a><span class="k">def</span> <span class="nf">min_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+<div class="viewcode-block" id="extermum_list"><a class="viewcode-back" href="../../api/common.html#arc.common.extermum_list">[docs]</a><span class="k">def</span> <span class="nf">extermum_list</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">return_min</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A helper function for finding the minimum of a list of integers where some of the entries might be None.</span>
+<span class="sd">    A helper function for finding the minimum of a list of numbers (int/float) where some of the entries might be None.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        lst (list): The list.</span>
+<span class="sd">        return_min (bool, optional): Whether to return the minimum or the maximum.</span>
+<span class="sd">                                    ``True`` for minimum, ``False`` for maximum, ``True`` by default.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        int: The entry with the minimal value.</span>
@@ -594,7 +596,10 @@
         <span class="k">return</span> <span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]):</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">return</span> <span class="nb">min</span><span class="p">([</span><span class="n">entry</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span></div>
+    <span class="k">if</span> <span class="n">return_min</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">([</span><span class="n">entry</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">([</span><span class="n">entry</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="key_by_val"><a class="viewcode-back" href="../../api/common.html#arc.common.key_by_val">[docs]</a><span class="k">def</span> <span class="nf">key_by_val</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>

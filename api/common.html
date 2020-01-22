@@ -346,6 +346,27 @@ Two <code class="docutils literal notranslate"><span class="pre">atom_list_to_ex
 </dd></dl>
 
 <dl class="function">
+<dt id="arc.common.extermum_list">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">extermum_list</code><span class="sig-paren">(</span><em class="sig-param">lst</em>, <em class="sig-param">return_min=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#extermum_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.extermum_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function for finding the minimum of a list of numbers (int/float) where some of the entries might be None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lst</strong> (<em>list</em>) – The list.</p></li>
+<li><p><strong>return_min</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the minimum or the maximum.
+<code class="docutils literal notranslate"><span class="pre">True</span></code> for minimum, <code class="docutils literal notranslate"><span class="pre">False</span></code> for maximum, <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The entry with the minimal value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.common.format_level_of_theory_for_logging">
 <code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_for_logging</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_for_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_for_logging" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format level of theory dictionary to string for logging purposes.</p>
@@ -597,23 +618,6 @@ Does not check for value unicity.</p>
 <li><p><strong>project</strong> (<em>str</em>) – The ARC project name to be logged in the header.</p></li>
 <li><p><strong>level</strong> – The desired logging level.</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="arc.common.min_list">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">min_list</code><span class="sig-paren">(</span><em class="sig-param">lst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#min_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.min_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper function for finding the minimum of a list of integers where some of the entries might be None.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>lst</strong> (<em>list</em>) – The list.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The entry with the minimal value.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
