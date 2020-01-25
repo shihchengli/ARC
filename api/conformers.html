@@ -783,7 +783,7 @@ If None, the plot will not be shown (nor saved).</p></li>
 Useful when run outside of ARC. True to print.</p></li>
 <li><p><strong>use_zmats</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to assign a Z Matrix to each conformer which will be used for detecting
 similar conformers to a certain tolerance. It might be memory-intensive to large
-species, though.  <code class="docutils literal notranslate"><span class="pre">True</span></code> to use Z Matrices. <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p></li>
+species, though. <code class="docutils literal notranslate"><span class="pre">True</span></code> to use Z Matrices. <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -804,7 +804,7 @@ species, though.  <code class="docutils literal notranslate"><span class="pre">T
 <dl class="function">
 <dt id="arc.species.conformers.generate_force_field_conformers">
 <code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">generate_force_field_conformers</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol_list</em>, <em class="sig-param">torsion_num</em>, <em class="sig-param">charge</em>, <em class="sig-param">multiplicity</em>, <em class="sig-param">xyzs=None</em>, <em class="sig-param">num_confs=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">use_zmats=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_force_field_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.generate_force_field_conformers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate conformers using RDKit and Open Babel and optimize them using a force field
+<dd><p>Generate conformers using RDKit and OpenBabel and optimize them using a force field
 Also consider user guesses in <cite>xyzs</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -835,8 +835,25 @@ species, though.  <code class="docutils literal notranslate"><span class="pre">T
 </dd></dl>
 
 <dl class="function">
+<dt id="arc.species.conformers.generate_monoatomic_conformer">
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">generate_monoatomic_conformer</code><span class="sig-paren">(</span><em class="sig-param">symbol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_monoatomic_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.generate_monoatomic_conformer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a conformer for a monoatomic species.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – The atomic symbol.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The monoatomic conformer.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.species.conformers.get_force_field_energies">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">get_force_field_energies</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol</em>, <em class="sig-param">num_confs=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">optimize=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#get_force_field_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.get_force_field_energies" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">get_force_field_energies</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol</em>, <em class="sig-param">num_confs=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">optimize=True</em>, <em class="sig-param">try_ob=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#get_force_field_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.get_force_field_energies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine force field energies using RDKit.
 If num_confs is given, random 3D geometries will be generated. If xyz is given, it will be directly used instead.
 The coordinates are returned in the order of atoms in mol.</p>
@@ -849,6 +866,7 @@ The coordinates are returned in the order of atoms in mol.</p>
 <li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – The 3D coordinates guess.</p></li>
 <li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of force field to use.</p></li>
 <li><p><strong>optimize</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to first optimize the conformer using FF. True to optimize.</p></li>
+<li><p><strong>try_ob</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to try OpenBabel if RDKit fails. <code class="docutils literal notranslate"><span class="pre">True</span></code> to try, <code class="docutils literal notranslate"><span class="pre">False</span></code> by default.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1073,10 +1091,10 @@ Note that chiral double bonds (‘E’ and ‘Z’) must not be inversed (they a
 
 <dl class="function">
 <dt id="arc.species.conformers.mix_rdkit_and_openbabel_force_field">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">mix_rdkit_and_openbabel_force_field</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol</em>, <em class="sig-param">num_confs=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">force_field='GAFF'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#mix_rdkit_and_openbabel_force_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.mix_rdkit_and_openbabel_force_field" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">mix_rdkit_and_openbabel_force_field</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol</em>, <em class="sig-param">num_confs=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">force_field='GAFF'</em>, <em class="sig-param">try_ob=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#mix_rdkit_and_openbabel_force_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.mix_rdkit_and_openbabel_force_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optimize conformers using a force field (GAFF, MMFF94s, MMFF94, UFF, Ghemical)
-Use RDKit to generate the random conformers (open babel isn’t good enough),
-but use open babel to optimize them (RDKit doesn’t have GAFF)</p>
+Use RDKit to generate the random conformers (OpenBabel isn’t good enough),
+but use OpenBabel to optimize them (RDKit doesn’t have GAFF)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1085,6 +1103,7 @@ but use open babel to optimize them (RDKit doesn’t have GAFF)</p>
 <li><p><strong>num_confs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of random 3D conformations to generate.</p></li>
 <li><p><strong>xyz</strong> (<em>string</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – The 3D coordinates in either a string or an array format.</p></li>
 <li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of force field to use.</p></li>
+<li><p><strong>try_ob</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to try OpenBabel if RDKit fails. <code class="docutils literal notranslate"><span class="pre">True</span></code> to try, <code class="docutils literal notranslate"><span class="pre">False</span></code> by default.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1114,7 +1133,7 @@ but use open babel to optimize them (RDKit doesn’t have GAFF)</p>
 <li><p><strong>num_confs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of random 3D conformations to generate.</p></li>
 <li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – The 3D coordinates.</p></li>
 <li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of force field to use.</p></li>
-<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – The conformer searching method to use in open babel.
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – The conformer searching method to use in OpenBabel.
 For method description, see <a class="reference external" href="http://openbabel.org/dev-api/group__conformer.shtml">http://openbabel.org/dev-api/group__conformer.shtml</a></p></li>
 </ul>
 </dd>
@@ -1157,9 +1176,9 @@ other, and are not pruned out.</p>
 
 <dl class="function">
 <dt id="arc.species.conformers.rdkit_force_field">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">rdkit_force_field</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">rd_mol</em>, <em class="sig-param">mol=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">optimize=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#rdkit_force_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.rdkit_force_field" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">rdkit_force_field</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">rd_mol</em>, <em class="sig-param">mol=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">optimize=True</em>, <em class="sig-param">try_ob=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#rdkit_force_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.rdkit_force_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optimize RDKit conformers using a force field (MMFF94 or MMFF94s are recommended).
-Fallback to Open Babel if RDKit fails.</p>
+Fallback to OpenBabel if RDKit fails.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1168,6 +1187,7 @@ Fallback to Open Babel if RDKit fails.</p>
 <li><p><strong>mol</strong> (<em>Molecule</em><em>, </em><em>optional</em>) – The RMG molecule object with connectivity and bond order information.</p></li>
 <li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of force field to use.</p></li>
 <li><p><strong>optimize</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to first optimize the conformer using FF. True to optimize.</p></li>
+<li><p><strong>try_ob</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to try OpenBabel if RDKit fails. <code class="docutils literal notranslate"><span class="pre">True</span></code> to try, <code class="docutils literal notranslate"><span class="pre">False</span></code> by default.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
