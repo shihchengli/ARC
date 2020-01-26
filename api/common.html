@@ -187,7 +187,6 @@ As such, it should not import any other ARC module (specifically ones that use t
 <div><p>to avoid circular imports.</p>
 </div></blockquote>
 <p>VERSION is the full ARC version, using <a class="reference external" href="https://semver.org/">semantic versioning</a>.</p>
-<p>ATOM_RADII data taken from <a class="reference external" href="http://dx.doi.org/10.1039/b801115j">DOI 10.1039/b801115j</a>.</p>
 <dl class="function">
 <dt id="arc.common.almost_equal_coords">
 <code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_coords</code><span class="sig-paren">(</span><em class="sig-param">xyz1</em>, <em class="sig-param">xyz2</em>, <em class="sig-param">rtol=1e-05</em>, <em class="sig-param">atol=1e-08</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords" title="Permalink to this definition">¶</a></dt>
@@ -248,6 +247,23 @@ Also check ESS and servers.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.common.colliding_atoms">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">colliding_atoms</code><span class="sig-paren">(</span><em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#colliding_atoms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.colliding_atoms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether atoms are too close to each other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>xyz</strong> (<em>dict</em>) – The Cartesian coordinates.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if they are colliding, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -438,8 +454,7 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 <dl class="function">
 <dt id="arc.common.get_atom_radius">
 <code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_atom_radius</code><span class="sig-paren">(</span><em class="sig-param">symbol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_atom_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_atom_radius" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the atom covalent radius in Angstroms, data in the ATOM_RADII dict.
-(Change to QCElemental after transitioning to Py3)</p>
+<dd><p>Get the atom covalent radius of an atom in Angstroms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – The atomic symbol.</p>
@@ -449,6 +464,9 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">symbol</span></code> is of wrong type.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -504,6 +522,26 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.common.get_single_bond_length">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_single_bond_length</code><span class="sig-paren">(</span><em class="sig-param">symbol1</em>, <em class="sig-param">symbol2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_single_bond_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_single_bond_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the an approximate for a single bond length between two elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbol1</strong> (<em>str</em>) – Symbol 1.</p></li>
+<li><p><strong>symbol2</strong> (<em>str</em>) – Symbol 2.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The estimated single bond length in Angstrom.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -590,6 +628,9 @@ Does not check for value unicity.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The key.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the value could not be found in the dictionary.</p>
 </dd>
 </dl>
 </dd></dl>

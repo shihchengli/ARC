@@ -664,7 +664,7 @@
                 <span class="n">base_energy</span> <span class="o">=</span> <span class="n">lowest_conf_i</span><span class="p">[</span><span class="s1">&#39;FF energy&#39;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">plot_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">converter</span><span class="o">.</span><span class="n">xyz_to_str</span><span class="p">(</span><span class="n">lowest_conf_i</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]))</span>
-        <span class="n">arc</span><span class="o">.</span><span class="n">plotter</span><span class="o">.</span><span class="n">show_sticks</span><span class="p">(</span><span class="n">lowest_conf_i</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])</span>
+        <span class="n">arc</span><span class="o">.</span><span class="n">plotter</span><span class="o">.</span><span class="n">draw_structure</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="n">lowest_conf_i</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">])</span>
         <span class="n">num_comb</span> <span class="o">=</span> <span class="n">arc</span><span class="o">.</span><span class="n">plotter</span><span class="o">.</span><span class="n">plot_torsion_angles</span><span class="p">(</span><span class="n">torsion_angles</span><span class="p">,</span> <span class="n">multiple_sampling_points_dict</span><span class="p">,</span>
                                                    <span class="n">wells_dict</span><span class="o">=</span><span class="n">wells_dict</span><span class="p">,</span> <span class="n">e_conformers</span><span class="o">=</span><span class="n">newest_conformers_dict</span><span class="p">,</span>
                                                    <span class="n">de_threshold</span><span class="o">=</span><span class="n">de_threshold</span><span class="p">,</span> <span class="n">plot_path</span><span class="o">=</span><span class="n">plot_path</span><span class="p">)</span>
@@ -1538,33 +1538,6 @@
         <span class="n">wells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;end_angle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_angles</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">wells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;angles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_angles</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">wells</span></div>
-
-
-<div class="viewcode-block" id="check_atom_collisions"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.check_atom_collisions">[docs]</a><span class="k">def</span> <span class="nf">check_atom_collisions</span><span class="p">(</span><span class="n">xyz</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check whether atoms are too close to each other.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        xyz (dict): The 3D geometry.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">         bool: True if they are colliding, False otherwise.</span>
-
-<span class="sd">    Todo:</span>
-<span class="sd">        - Consider atomic radius for the different elements</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">coords</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]</span>
-    <span class="n">symbols</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">symbols</span> <span class="o">==</span> <span class="p">(</span><span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">):</span>
-        <span class="c1"># hard-code for H2:</span>
-        <span class="k">if</span> <span class="nb">sum</span><span class="p">((</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">k</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coord1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coords</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">coord2</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]:</span>
-                <span class="k">if</span> <span class="nb">sum</span><span class="p">((</span><span class="n">coord1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">coord2</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span> <span class="o">&lt;</span> <span class="mf">0.9</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="check_special_non_rotor_cases"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.check_special_non_rotor_cases">[docs]</a><span class="k">def</span> <span class="nf">check_special_non_rotor_cases</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">top1</span><span class="p">,</span> <span class="n">top2</span><span class="p">):</span>

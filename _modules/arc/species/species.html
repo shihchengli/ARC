@@ -181,7 +181,7 @@
 <span class="kn">from</span> <span class="nn">rmgpy.statmech</span> <span class="kn">import</span> <span class="n">NonlinearRotor</span><span class="p">,</span> <span class="n">LinearRotor</span>
 <span class="kn">from</span> <span class="nn">rmgpy.transport</span> <span class="kn">import</span> <span class="n">TransportData</span>
 
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">determine_symmetry</span><span class="p">,</span> <span class="n">determine_top_group_indices</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">get_single_bond_length</span><span class="p">,</span> <span class="n">determine_symmetry</span><span class="p">,</span> <span class="n">determine_top_group_indices</span>
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">SpeciesError</span><span class="p">,</span> <span class="n">RotorError</span><span class="p">,</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">TSError</span><span class="p">,</span> <span class="n">SanitizationError</span>
 <span class="kn">from</span> <span class="nn">arc.parser</span> <span class="kn">import</span> <span class="n">parse_xyz_from_file</span><span class="p">,</span> <span class="n">parse_dipole_moment</span><span class="p">,</span> <span class="n">parse_polarizability</span><span class="p">,</span> <span class="n">process_conformers_file</span><span class="p">,</span> \
     <span class="n">parse_1d_scan_energies</span>
@@ -190,6 +190,7 @@
 <span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="n">check_isomorphism</span><span class="p">,</span> <span class="n">check_xyz_dict</span><span class="p">,</span> <span class="n">check_zmat_dict</span><span class="p">,</span> <span class="n">get_xyz_radius</span><span class="p">,</span> \
     <span class="n">molecules_from_xyz</span><span class="p">,</span> <span class="n">order_atoms_in_mol_list</span><span class="p">,</span> <span class="n">rdkit_conf_from_mol</span><span class="p">,</span> <span class="n">remove_dummies</span><span class="p">,</span> <span class="n">rmg_mol_from_inchi</span><span class="p">,</span> \
     <span class="n">set_rdkit_dihedrals</span><span class="p">,</span> <span class="n">str_to_xyz</span><span class="p">,</span> <span class="n">translate_to_center_of_mass</span><span class="p">,</span> <span class="n">xyz_from_data</span><span class="p">,</span> <span class="n">xyz_to_str</span>
+<span class="kn">from</span> <span class="nn">arc.species.vectors</span> <span class="kn">import</span> <span class="n">calculate_distance</span>
 <span class="kn">from</span> <span class="nn">arc.ts</span> <span class="kn">import</span> <span class="n">atst</span>
 
 
@@ -379,8 +380,8 @@
 <span class="sd">                           heteroatoms). Another option is specifying &#39;cheap&#39;, and the &quot;old&quot; RDKit embedding method</span>
 <span class="sd">                           will be used.</span>
 <span class="sd">        conf_is_isomorphic (bool): Whether the lowest conformer is isomorphic with the 2D graph representation</span>
-<span class="sd">                                   of the species. `True` if it is. Defaults to `None`. If `True`, an isomorphism check</span>
-<span class="sd">                                   will be strictly enforced for the final optimized coordinates.</span>
+<span class="sd">                                   of the species. ``True`` if it is. Defaults to ``None``. If ``True``, an isomorphism</span>
+<span class="sd">                                   check will be strictly enforced for the final optimized coordinates.</span>
 <span class="sd">        conformers_before_opt (tuple): Conformers XYZs of a species before optimization.</span>
 <span class="sd">        bdes (list): Specifying for which bonds should bond dissociation energies be calculated.</span>
 <span class="sd">                     Entries are bonded atom indices tuples (1-indexed). An &#39;all_h&#39; string entry is also allowed,</span>
@@ -1306,16 +1307,12 @@
             <span class="n">original_mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">molecules_from_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">check_isomorphism</span><span class="p">(</span><span class="n">original_mol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">original_mol</span><span class="o">.</span><span class="n">multiplicity</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
-                    <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;XYZ and the 2D graph representation for </span><span class="si">{0}</span><span class="s1"> are not isomorphic.</span><span class="se">\n</span><span class="s1">&#39;</span>
-                                       <span class="s1">&#39;Got xyz:</span><span class="se">\n</span><span class="si">{1}</span><span class="se">\n\n</span><span class="s1">which corresponds to </span><span class="si">{2}</span><span class="se">\n</span><span class="si">{3}</span><span class="se">\n\n</span><span class="s1">and: </span><span class="si">{4}</span><span class="se">\n</span><span class="si">{5}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                        <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">(),</span>
-                                        <span class="n">original_mol</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">(),</span> <span class="n">original_mol</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">()))</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;XYZ and the 2D graph representation for </span><span class="si">{0}</span><span class="s1"> are not isomorphic.</span><span class="se">\n</span><span class="s1">&#39;</span>
-                                   <span class="s1">&#39;Got xyz:</span><span class="se">\n</span><span class="si">{1}</span><span class="se">\n\n</span><span class="s1">which corresponds to </span><span class="si">{2}</span><span class="se">\n</span><span class="si">{3}</span><span class="se">\n\n</span><span class="s1">and: </span><span class="si">{4}</span><span class="se">\n</span><span class="si">{5}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">(),</span>
-                                    <span class="n">original_mol</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">(),</span> <span class="n">original_mol</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">()))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;XYZ and the 2D graph representation for </span><span class="si">{0}</span><span class="s1"> are not isomorphic.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                               <span class="s1">&#39;Got xyz:</span><span class="se">\n</span><span class="si">{1}</span><span class="se">\n\n</span><span class="s1">which corresponds to </span><span class="si">{2}</span><span class="se">\n</span><span class="si">{3}</span><span class="se">\n\n</span><span class="s1">and: </span><span class="si">{4}</span><span class="se">\n</span><span class="si">{5}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">(),</span>
+                                <span class="n">original_mol</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">(),</span> <span class="n">original_mol</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">()))</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">are_coords_compliant_with_graph</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;XYZ and the 2D graph representation for </span><span class="si">{self.label}</span><span class="s1"> are not compliant&#39;</span><span class="p">)</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># molecules_from_xyz() returned None for b_mol</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">original_mol</span>  <span class="c1"># todo: Atom order will not be correct, need fix</span>
@@ -1443,6 +1440,8 @@
 <div class="viewcode-block" id="ARCSpecies.check_xyz_isomorphism"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.check_xyz_isomorphism">[docs]</a>    <span class="k">def</span> <span class="nf">check_xyz_isomorphism</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">allow_nonisomorphic_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check whether the perception of self.final_xyz or ``xyz`` is isomorphic with self.mol.</span>
+<span class="sd">        If it is not isomorphic, compliant coordinates will be checked (equivalent to checking isomorphism without</span>
+<span class="sd">        bond order information, only does not necessitates a molecule object, directly checks bond lengths)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            allow_nonisomorphic_2d (bool, optional): Whether to continue spawning jobs for the species even if this</span>
@@ -1454,45 +1453,46 @@
 <span class="sd">            bool: Whether the perception of self.final_xyz is isomorphic with self.mol, ``True`` if it is.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="n">xyz</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span>
-        <span class="n">passed_test</span><span class="p">,</span> <span class="n">return_value</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">b_mol</span> <span class="o">=</span> <span class="n">molecules_from_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">except</span> <span class="n">SanitizationError</span><span class="p">:</span>
                 <span class="n">b_mol</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not perceive the Cartesian coordinates of species </span><span class="si">{self.label}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">b_mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">is_isomorphic</span> <span class="o">=</span> <span class="n">check_isomorphism</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">,</span> <span class="n">b_mol</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">is_isomorphic</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="n">is_isomorphic</span><span class="p">:</span>
-                <span class="n">passed_test</span><span class="p">,</span> <span class="n">return_value</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># isomorphism test failed</span>
-                <span class="n">passed_test</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_is_isomorphic</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">allow_nonisomorphic_2d</span><span class="p">:</span>
-                        <span class="c1"># conformer was isomorphic, we **do** allow nonisomorphism, and the optimized structure isn&#39;t</span>
-                        <span class="n">return_value</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="c1"># conformer was isomorphic, we don&#39;t allow nonisomorphism, but the optimized structure isn&#39;t</span>
-                        <span class="n">return_value</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">check_isomorphism</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">,</span> <span class="n">b_mol</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The Cartesian coordinates of species </span><span class="si">{self.label}</span><span class="s1"> are not isomorphic with the 2D &#39;</span>
+                                 <span class="sa">f</span><span class="s1">&#39;structure {self.mol.to_smiles()}&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">b_mol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">are_coords_compliant_with_graph</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The Cartesian coordinates of species </span><span class="si">{self.label}</span><span class="s1"> are not compliant with the 2D &#39;</span>
+                                 <span class="sa">f</span><span class="s1">&#39;structure {self.mol.to_smiles()}&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_is_isomorphic</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">allow_nonisomorphic_2d</span><span class="p">:</span>
+                    <span class="c1"># conformer was isomorphic, we **do** allow nonisomorphism, and the optimized structure isn&#39;t</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;allowing nonisomorphic 2D&#39;</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># conformer was not isomorphic, don&#39;t strictly enforce isomorphism here</span>
-                    <span class="n">return_value</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">passed_test</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;The optimized geometry of species </span><span class="si">{0}</span><span class="s1"> is not isomorphic with the 2D structure </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">()))</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">return_value</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Not spawning additional jobs for this species!&#39;</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Species </span><span class="si">{0}</span><span class="s1"> was found to be isomorphic with the perception &#39;</span>
-                            <span class="s1">&#39;of its optimized coordinates.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+                    <span class="c1"># conformer was isomorphic, we don&#39;t allow nonisomorphism, but the optimized structure isn&#39;t</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;not allowing nonisomorphic 2D&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">result</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;not allowing nonisomorphic 2D&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot check isomorphism for species </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot check isomorphism for species </span><span class="si">{self.label}</span><span class="s1"> &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;without the 2D graph connectivity information.&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">allow_nonisomorphic_2d</span><span class="p">:</span>
-                <span class="n">return_value</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="n">return_value</span></div>
+                <span class="n">result</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;allowing nonisomorphic 2D&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.scissors"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.scissors">[docs]</a>    <span class="k">def</span> <span class="nf">scissors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2087,6 +2087,37 @@
     <span class="k">if</span> <span class="n">electrons</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">^</span> <span class="n">multiplicity</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="are_coords_compliant_with_graph"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.are_coords_compliant_with_graph">[docs]</a><span class="k">def</span> <span class="nf">are_coords_compliant_with_graph</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether the Cartesian coordinates represent the same 2D connectivity as the graph.</span>
+<span class="sd">    Bond orders are not considered here, this function checks whether the coordinates represent a bond length</span>
+<span class="sd">    below 120% of the single bond length of the respective elements.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xyz (dict): The Cartesian coordinates.</span>
+<span class="sd">        mol (Molecule): The 2D graph connectivity information.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Whether the coordinates are compliant with the 2D connectivity graph. ``True`` if they are.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">checked_atoms</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">atom_index_1</span><span class="p">,</span> <span class="n">atom1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">atom1</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span> <span class="o">!=</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">][</span><span class="n">atom_index_1</span><span class="p">]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Element order in xyz (</span><span class="si">{xyz[&quot;symbols&quot;]}</span><span class="s1">) differs from mol &#39;</span>
+                           <span class="sa">f</span><span class="s1">&#39;({[atom.element.symbol for atom in mol.atoms]})&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">atom2</span> <span class="ow">in</span> <span class="n">atom1</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">atom_index_2</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">atom_index_2</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">checked_atoms</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">calculate_distance</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">],</span> <span class="n">atoms</span><span class="o">=</span><span class="p">[</span><span class="n">atom_index_1</span><span class="p">,</span> <span class="n">atom_index_2</span><span class="p">])</span>
+                <span class="n">single_bond_r</span> <span class="o">=</span> <span class="n">get_single_bond_length</span><span class="p">(</span><span class="n">atom1</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">atom2</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">r</span> <span class="o">&gt;</span> <span class="n">single_bond_r</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">checked_atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom_index_1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
 </pre></div>
 
            </div>
