@@ -419,7 +419,7 @@
     <span class="k">return</span> <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span></div>
 
 
-<div class="viewcode-block" id="parse_nd_scan_energies"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_nd_scan_energies">[docs]</a><span class="k">def</span> <span class="nf">parse_nd_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">software</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">,</span> <span class="n">return_original_dihedrals</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="parse_nd_scan_energies"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_nd_scan_energies">[docs]</a><span class="k">def</span> <span class="nf">parse_nd_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">software</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_original_dihedrals</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse the ND torsion scan energies from an ESS log file.</span>
 
@@ -447,6 +447,7 @@
 <span class="sd">    Raises:</span>
 <span class="sd">        InputError: If ``path`` is invalid.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">software</span> <span class="o">=</span> <span class="n">software</span> <span class="ow">or</span> <span class="n">determine_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;directed_scan_type&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;ess_</span><span class="si">{software}</span><span class="s1">&#39;</span><span class="p">,</span>
                <span class="s1">&#39;scans&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
                <span class="s1">&#39;directed_scan&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>

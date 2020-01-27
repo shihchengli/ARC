@@ -1174,6 +1174,12 @@ All bonded atoms are moved accordingly. The result is saved in self.initial_xyz.
 <li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – An alternative xyz to use instead of self.final_xyz.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>InputError</strong> – If both <code class="docutils literal notranslate"><span class="pre">deg_increment</span></code> and <code class="docutils literal notranslate"><span class="pre">deg_abs</span></code> are None.</p></li>
+<li><p><strong>RotorError</strong> – If the rotor could not be identified based on the pivots.</p></li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
