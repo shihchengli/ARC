@@ -169,7 +169,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">arkane.exceptions</span> <span class="kn">import</span> <span class="n">LogError</span>
-<span class="kn">from</span> <span class="nn">arkane.ess</span> <span class="kn">import</span> <span class="n">GaussianLog</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">,</span> <span class="n">QChemLog</span><span class="p">,</span> <span class="n">OrcaLog</span>
+<span class="kn">from</span> <span class="nn">arkane.ess</span> <span class="kn">import</span> <span class="n">GaussianLog</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">,</span> <span class="n">OrcaLog</span><span class="p">,</span> <span class="n">QChemLog</span><span class="p">,</span> <span class="n">TeraChemLog</span>
 <span class="kn">from</span> <span class="nn">arkane.util</span> <span class="kn">import</span> <span class="n">determine_qm_software</span>
 
 <span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">determine_ess</span>
@@ -232,10 +232,29 @@
                     <span class="k">break</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;terachem&#39;</span><span class="p">:</span>
+        <span class="n">read_output</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;=== Mode&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="c1"># example: &#39;=== Mode 1: 1198.526 cm^-1 ===&#39;</span>
+                <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])])</span>
+            <span class="k">elif</span> <span class="s1">&#39;Vibrational Frequencies/Thermochemical Analysis After Removing Rotation and Translation&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">read_output</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">read_output</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;Temperature (Kelvin):&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s1">&#39;Frequency(cm-1)&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="k">break</span>
+                <span class="c1"># example:</span>
+                <span class="c1"># &#39;Mode  Eigenvalue(AU)  Frequency(cm-1)  Intensity(km/mol)   Vib.Temp(K)      ZPE(AU) ...&#39;</span>
+                <span class="c1"># &#39;  1     0.0331810528   170.5666870932      52.2294230772  245.3982965841   0.0003885795 ...&#39;</span>
+                <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])])</span>
+
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_frequencies() can currently only parse Orca, Molpro, QChem and Gaussian files,&#39;</span>
-                          <span class="sa">f</span><span class="s1">&#39; got </span><span class="si">{software}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using parser.parse_frequencies. Determined frequencies are: </span><span class="si">{freqs}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_frequencies() can currently only parse Gaussian, Molpro, Orca, QChem and TeraChem &#39;</span>
+                          <span class="sa">f</span><span class="s1">&#39;files, got </span><span class="si">{software}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using parser.parse_frequencies(). Determined frequencies are: </span><span class="si">{freqs}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">freqs</span></div>
 
 
@@ -294,6 +313,25 @@
     <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="n">normal_disp_modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">normal_disp_modes</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">normal_disp_modes</span></div>
+
+
+<div class="viewcode-block" id="parse_geometry"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_geometry">[docs]</a><span class="k">def</span> <span class="nf">parse_geometry</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse the xyz geometry from an ESS log file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The ESS log file to parse from</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        xyz (dict): The geometry.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">determine_qm_software</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">coords</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">load_geometry</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">LogError</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse xyz from </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">xyz_from_data</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">numbers</span><span class="o">=</span><span class="n">number</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="parse_t1"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_t1">[docs]</a><span class="k">def</span> <span class="nf">parse_t1</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -562,7 +600,7 @@
 <span class="sd">    Parse xyz coordinated from:</span>
 <span class="sd">    - .xyz: XYZ file</span>
 <span class="sd">    - .gjf: Gaussian input file</span>
-<span class="sd">    - .out or .log: ESS output file (Gaussian, QChem, Molpro, Orca)</span>
+<span class="sd">    - .out or .log: ESS output file (Gaussian, Molpro, Orca, QChem, TeraChem) - calls parse_geometry()</span>
 <span class="sd">    - other: Molpro or QChem input file</span>
 
 <span class="sd">    Args:</span>
@@ -603,12 +641,7 @@
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">]):</span>
                     <span class="n">start_parsing</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">elif</span> <span class="s1">&#39;out&#39;</span> <span class="ow">in</span> <span class="n">file_extension</span> <span class="ow">or</span> <span class="s1">&#39;log&#39;</span> <span class="ow">in</span> <span class="n">file_extension</span><span class="p">:</span>
-        <span class="n">log</span> <span class="o">=</span> <span class="n">determine_qm_software</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">coords</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">load_geometry</span><span class="p">()</span>
-            <span class="n">xyz</span> <span class="o">=</span> <span class="n">xyz_from_data</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">numbers</span><span class="o">=</span><span class="n">number</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">LogError</span><span class="p">:</span>
-            <span class="n">xyz</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">parse_geometry</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">record</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
@@ -625,6 +658,52 @@
     <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">relevant_lines</span><span class="p">:</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">relevant_lines</span> <span class="k">if</span> <span class="n">line</span><span class="p">]))</span>
     <span class="k">return</span> <span class="n">xyz</span></div>
+
+
+<div class="viewcode-block" id="parse_trajectory"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_trajectory">[docs]</a><span class="k">def</span> <span class="nf">parse_trajectory</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse all geometries from an xyz trajectory file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The file path.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Entries are xyz&#39;s on the trajectory.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ParserError: If the trajectory could not be read.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">skip_line</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">num_of_atoms</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">trajectory</span><span class="p">,</span> <span class="n">xyz_lines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]]):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_lines</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_lines</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_of_atoms</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse trajectory, expected </span><span class="si">{num_of_atoms}</span><span class="s1"> atoms, &#39;</span>
+                                      <span class="sa">f</span><span class="s1">&#39;but got {len(xyz_lines)} for point {len(trajectory) + 1} in the trajectory.&#39;</span><span class="p">)</span>
+                <span class="n">trajectory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">xyz_line</span> <span class="k">for</span> <span class="n">xyz_line</span> <span class="ow">in</span> <span class="n">xyz_lines</span><span class="p">])))</span>
+            <span class="n">num_of_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">skip_line</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">xyz_lines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">skip_line</span><span class="p">:</span>
+            <span class="c1"># skip the comment line</span>
+            <span class="n">skip_line</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xyz_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_lines</span><span class="p">):</span>
+        <span class="c1"># add the last point in the trajectory</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_lines</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_of_atoms</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse trajectory, expected </span><span class="si">{num_of_atoms}</span><span class="s1"> atoms, &#39;</span>
+                              <span class="sa">f</span><span class="s1">&#39;but got {len(xyz_lines)} for point {len(trajectory) + 1} in the trajectory.&#39;</span><span class="p">)</span>
+        <span class="n">trajectory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">xyz_line</span> <span class="k">for</span> <span class="n">xyz_line</span> <span class="ow">in</span> <span class="n">xyz_lines</span><span class="p">])))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">trajectory</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse trajectory from </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">trajectory</span></div>
 
 
 <div class="viewcode-block" id="parse_dipole_moment"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_dipole_moment">[docs]</a><span class="k">def</span> <span class="nf">parse_dipole_moment</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -645,6 +724,18 @@
             <span class="k">elif</span> <span class="n">read</span><span class="p">:</span>
                 <span class="n">dipole_moment</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">read</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">):</span>
+        <span class="c1"># example: &#39; Dipole moment /Debye                   2.96069859     0.00000000     0.00000000&#39;</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;dipole moment&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">and</span> <span class="s1">&#39;/debye&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">dm_x</span><span class="p">,</span> <span class="n">dm_y</span><span class="p">,</span> <span class="n">dm_z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">dipole_moment</span> <span class="o">=</span> <span class="p">(</span><span class="n">dm_x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dm_y</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dm_z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">OrcaLog</span><span class="p">):</span>
+        <span class="c1"># example: &#39;Magnitude (Debye)      :      2.11328&#39;</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;Magnitude (Debye)&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">dipole_moment</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">QChemLog</span><span class="p">):</span>
         <span class="c1"># example:</span>
         <span class="c1">#     Dipole Moment (Debye)</span>
@@ -661,23 +752,16 @@
             <span class="k">elif</span> <span class="n">read</span><span class="p">:</span>
                 <span class="n">dipole_moment</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">read</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">):</span>
-        <span class="c1"># example:</span>
-        <span class="c1">#  Dipole moment /Debye                   2.96069859     0.00000000     0.00000000</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">TeraChemLog</span><span class="p">):</span>
+        <span class="c1"># example: &#39;DIPOLE MOMENT: {-0.000178, -0.000003, -0.000019} (|D| = 0.000179) DEBYE&#39;</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;dipole moment&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">and</span> <span class="s1">&#39;/debye&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-                <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-                <span class="n">dm_x</span><span class="p">,</span> <span class="n">dm_y</span><span class="p">,</span> <span class="n">dm_z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s1">&#39;dipole moment&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">and</span> <span class="s1">&#39;debye&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">dm_x</span><span class="p">,</span> <span class="n">dm_y</span><span class="p">,</span> <span class="n">dm_z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
                 <span class="n">dipole_moment</span> <span class="o">=</span> <span class="p">(</span><span class="n">dm_x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dm_y</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dm_z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">OrcaLog</span><span class="p">):</span>
-        <span class="c1"># example:</span>
-        <span class="c1"># Magnitude (Debye)      :      2.11328</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;Magnitude (Debye)&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                <span class="n">dipole_moment</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="s1">&#39;Currently dipole moments can only be parsed from either Orca, Gaussian, Molpro, or QChem &#39;</span>
-                          <span class="s1">&#39;optimization output files&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="s1">&#39;Currently dipole moments can only be parsed from either Gaussian, Molpro, Orca, QChem, &#39;</span>
+                          <span class="s1">&#39;or TeraChem optimization output files&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">dipole_moment</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="s1">&#39;Could not parse the dipole moment&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dipole_moment</span></div>
@@ -705,10 +789,10 @@
 <span class="sd">        path (str): The file path.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        list: The lines read from the file.</span>
+<span class="sd">        list: Entries are lines from the file.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        InputError: If ``path`` is an invalid file path.</span>
+<span class="sd">        InputError: If the file could not be read.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>

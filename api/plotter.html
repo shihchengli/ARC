@@ -460,8 +460,26 @@ If not given (None) then the Species.conformer_energies are used instead.</p></l
 
 <dl class="function">
 <dt id="arc.plotter.save_geo">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_geo</code><span class="sig-paren">(</span><em class="sig-param">species</em>, <em class="sig-param">project_directory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_geo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_geo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the geometry in several forms for an ARC Species object in the project’s output folder under the species name.</p>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_geo</code><span class="sig-paren">(</span><em class="sig-param">species=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">project_directory=None</em>, <em class="sig-param">path=None</em>, <em class="sig-param">filename=None</em>, <em class="sig-param">format_='all'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_geo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_geo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a geometry file.
+If <code class="docutils literal notranslate"><span class="pre">species</span></code> is given, .final_xyz will be saved if it is not None, otherwise .initial_xyz will be used.
+If <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is given, it gets precedence over <code class="docutils literal notranslate"><span class="pre">species</span></code>.
+Either <code class="docutils literal notranslate"><span class="pre">species</span></code> or <code class="docutils literal notranslate"><span class="pre">xyz</span></code> must be specified. Either <code class="docutils literal notranslate"><span class="pre">project_directory</span></code> or <code class="docutils literal notranslate"><span class="pre">path</span></code> must be specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>species</strong> (<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a>) – The species with the geometry attributes.</p></li>
+<li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – The xyz coordinates to save in a string format.</p></li>
+<li><p><strong>project_directory</strong> (<em>str</em><em>, </em><em>optional</em>) – The project directory where the species folder is located.</p></li>
+<li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – A specific directory path for saving the files.</p></li>
+<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em>) – A name for the file to save (without suffix).</p></li>
+<li><p><strong>format_</strong> (<em>str</em><em>, </em><em>optional</em>) – The format to save. Either ‘xyz’, ‘gjf’ or ‘all’ for both.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If neither species nor xyz were given. Or if neither project_directory nor path were given.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">

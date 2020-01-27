@@ -90,7 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Features</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#flexible-coordinates-xyz-input">Flexible coordinates (xyz) input</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#specify-a-particular-job-type">Specify a particular job type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specify-a-specific-job-type-to-execute">Specify a specific job type to execute</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#specify-job-level-of-theory">Specify job level of theory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#additional-job-options">Additional job options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#control-job-memory-allocation">Control job memory allocation</a></li>
@@ -99,7 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nd-rotor-scans">ND Rotor scans</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#electronic-structure-software-settings">Electronic Structure Software Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gaussian-check-files">Gaussian check files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ess-check-files">ESS check files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#frequency-scaling-factors">Frequency scaling factors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adaptive-levels-of-theory">Adaptive levels of theory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#isomorphism-checks">Isomorphism checks</a></li>
@@ -187,19 +187,20 @@
 <span id="advanced"></span><h1>Advanced Features<a class="headerlink" href="#advanced-features" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="flexible-coordinates-xyz-input">
 <span id="flexxyz"></span><h2>Flexible coordinates (xyz) input<a class="headerlink" href="#flexible-coordinates-xyz-input" title="Permalink to this headline">¶</a></h2>
-<p>The xyz attribute of an <a class="reference internal" href="api/species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects (whether TS or not) is extremely flexible.
-It could be a multiline string containing the coordinates, or a list of several multiline strings.
+<p>The xyz attribute of an <a class="reference internal" href="api/species.html#species"><span class="std std-ref">ARCSpecies</span></a> object (whether a TS or not) is extremely flexible.
+It could be a multiline string containing the coordinates, or a list of several such multiline strings.
 It could also contain valid file paths to ESS input files, output files,
 <a class="reference external" href="https://en.wikipedia.org/wiki/XYZ_file_format">XYZ format</a> files, or ARC’s conformers (before/after optimization) files.
 See <a class="reference internal" href="examples.html#examples"><span class="std std-ref">the examples</span></a>.</p>
 </div>
-<div class="section" id="specify-a-particular-job-type">
-<h2>Specify a particular job type<a class="headerlink" href="#specify-a-particular-job-type" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="specify-a-specific-job-type-to-execute">
+<h2>Specify a specific job type to execute<a class="headerlink" href="#specify-a-specific-job-type-to-execute" title="Permalink to this headline">¶</a></h2>
 <p>To run ARC with a particular job type, set <code class="docutils literal notranslate"><span class="pre">specific_job_type</span></code> to the job type you want.
 Currently, ARC supports the following job types: <code class="docutils literal notranslate"><span class="pre">conformers</span></code>, <code class="docutils literal notranslate"><span class="pre">opt</span></code>, <code class="docutils literal notranslate"><span class="pre">fine</span></code>, <code class="docutils literal notranslate"><span class="pre">freq</span></code>,
 <code class="docutils literal notranslate"><span class="pre">sp</span></code>, <code class="docutils literal notranslate"><span class="pre">rotors</span></code>, <code class="docutils literal notranslate"><span class="pre">onedmin</span></code>, <code class="docutils literal notranslate"><span class="pre">orbitals</span></code>, <code class="docutils literal notranslate"><span class="pre">bde</span></code>.</p>
-<p>Notice that <code class="docutils literal notranslate"><span class="pre">specific_job_type</span></code> takes higher precedence than <code class="docutils literal notranslate"><span class="pre">job_types</span></code>. If you specify both attributes, ARC will
-dismiss the given <code class="docutils literal notranslate"><span class="pre">job_types</span></code> and will only populate the <code class="docutils literal notranslate"><span class="pre">job_types</span></code> dictionary using given <code class="docutils literal notranslate"><span class="pre">specific_job_type</span></code>.</p>
+<p>Note: <code class="docutils literal notranslate"><span class="pre">specific_job_type</span></code> takes higher precedence than <code class="docutils literal notranslate"><span class="pre">job_types</span></code>. If you specify both attributes, ARC will
+dismiss the given <code class="docutils literal notranslate"><span class="pre">job_types</span></code> and will only populate the <code class="docutils literal notranslate"><span class="pre">job_types</span></code> dictionary using the given
+<code class="docutils literal notranslate"><span class="pre">specific_job_type</span></code>.</p>
 <p>For bond dissociation energy calculation, the following two <code class="docutils literal notranslate"><span class="pre">job_types</span></code> specifications are equivalent:</p>
 <p>Specification 1:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_types</span><span class="p">:</span>
@@ -383,6 +384,11 @@ describing the importance of a DFT grid.</p>
 <span class="n">XC_GRID</span>                   <span class="mi">3</span>
 </pre></div>
 </div>
+<p>In TeraChem, this will add the following directive:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dftgrid</span> <span class="mi">4</span>
+<span class="n">dynamicgrid</span> <span class="n">yes</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="rotor-scans">
 <h2>Rotor scans<a class="headerlink" href="#rotor-scans" title="Permalink to this headline">¶</a></h2>
@@ -474,7 +480,9 @@ individual jobs being submit to your server queue system.</p></li>
 <div><ul class="simple">
 <li><p><a class="reference external" href="http://gaussian.com/">Gaussian</a></p></li>
 <li><p><a class="reference external" href="https://www.molpro.net/">Molpro</a></p></li>
+<li><p><a class="reference external" href="https://sites.google.com/site/orcainputlibrary/">Orca</a></p></li>
 <li><p><a class="reference external" href="https://www.q-chem.com/">QChem</a></p></li>
+<li><p><a class="reference external" href="http://www.petachem.com/products.html">TeraChem</a></p></li>
 </ul>
 </div></blockquote>
 <p>ARC also supports the following (non-ESS) software:</p>
@@ -516,18 +524,19 @@ in the <code class="docutils literal notranslate"><span class="pre">initial_trsh
 </pre></div>
 </div>
 </div>
-<div class="section" id="gaussian-check-files">
-<h2>Gaussian check files<a class="headerlink" href="#gaussian-check-files" title="Permalink to this headline">¶</a></h2>
-<p>ARC copies check files from previous <a class="reference external" href="http://gaussian.com/">Gaussian</a> jobs, and uses them when spawning additional
-jobs for the same species. When ARC terminates it will attempt to delete all downloaded checkfiles
-(remote copies remain). To keep the check files set the <code class="docutils literal notranslate"><span class="pre">keep_checks</span></code> attribute to <code class="docutils literal notranslate"><span class="pre">True</span></code> (it is
-<code class="docutils literal notranslate"><span class="pre">False</span></code> by default).</p>
+<div class="section" id="ess-check-files">
+<h2>ESS check files<a class="headerlink" href="#ess-check-files" title="Permalink to this headline">¶</a></h2>
+<p>ARC copies check files from previous <a class="reference external" href="http://gaussian.com/">Gaussian</a> and <a class="reference external" href="http://www.petachem.com/products.html">TeraChem</a> jobs,
+and uses them when spawning additional jobs for the same species.
+When ARC terminates, it will attempt to delete all downloaded checkfiles (remote copies remain).
+To change this behaviour and keep the check files, set the <code class="docutils literal notranslate"><span class="pre">keep_checks</span></code> attribute to <code class="docutils literal notranslate"><span class="pre">True</span></code>
+(it is <code class="docutils literal notranslate"><span class="pre">False</span></code> by default).</p>
 </div>
 <div class="section" id="frequency-scaling-factors">
 <h2>Frequency scaling factors<a class="headerlink" href="#frequency-scaling-factors" title="Permalink to this headline">¶</a></h2>
 <p>ARC will look for appropriate available frequency scaling factors in <a class="reference external" href="http://reactionmechanismgenerator.github.io/RMG-Py/users/arkane/input.html">Arkane</a>
 for the respective <code class="docutils literal notranslate"><span class="pre">freq_level</span></code>. If a frequency scaling factor isn’t available, ARC will attempt
-to determine it using <a href="#id9"><span class="problematic" id="id10">`Truhlar's method`__</span></a>. This involves spawning fine optimizations anf frequency
+to determine it using <a href="#id10"><span class="problematic" id="id11">`Truhlar's method`__</span></a>. This involves spawning fine optimizations anf frequency
 calculations for a dataset of 15 small molecules. To avoid this, either pass a known frequency scaling
 factor using the <code class="docutils literal notranslate"><span class="pre">freq_scale_factor</span></code> attribute (see <a class="reference internal" href="examples.html#examples"><span class="std std-ref">examples</span></a>), or set the
 <code class="docutils literal notranslate"><span class="pre">calc_freq_factor</span></code> attribute to <code class="docutils literal notranslate"><span class="pre">False</span></code> (it is <code class="docutils literal notranslate"><span class="pre">True</span></code> by default).</p>
