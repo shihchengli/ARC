@@ -105,10 +105,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#isomorphism-checks">Isomorphism checks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-a-non-default-project-directory">Using a non-default project directory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#visualizing-molecular-orbitals-mos">Visualizing molecular orbitals (MOs)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#consider-a-specific-diaestereomer">Consider a specific diaestereomer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#consider-a-specific-diastereomer">Consider a specific diastereomer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#don-t-generate-conformers-for-specific-species">Don’t generate conformers for specific species</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#writing-an-arc-input-file-using-the-api">Writing an ARC input file using the API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#calculating-bdes-bond-dissociation-energies">Calculating BDEs (bond dissociation energies)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#disable-comparisons-with-the-rmg-database">Disable comparisons with the RMG database</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Output</a></li>
@@ -595,13 +596,13 @@ in <code class="docutils literal notranslate"><span class="pre">settings.py</spa
 Open the resulting FCheck file using <a class="reference external" href="http://iqmol.org/">IQMol</a>
 to post process and save images.</p>
 </div>
-<div class="section" id="consider-a-specific-diaestereomer">
-<h2>Consider a specific diaestereomer<a class="headerlink" href="#consider-a-specific-diaestereomer" title="Permalink to this headline">¶</a></h2>
-<p>ARC’s conformer generation module will consider by default all non-enantiomeric (non-mirror) diaestereomers,
+<div class="section" id="consider-a-specific-diastereomer">
+<h2>Consider a specific diastereomer<a class="headerlink" href="#consider-a-specific-diastereomer" title="Permalink to this headline">¶</a></h2>
+<p>ARC’s conformer generation module will consider by default all non-enantiomeric (non-mirror) diastereomers,
 using chiral (tetrahedral) carbon atoms, chiral inversion modes in nitrogen atoms, and cis/trans double bonds.
-To consider a specific diaestereomer, pass the 3D xyz coordinates when defining the species, and set the
+To consider a specific diastereomer, pass the 3D xyz coordinates when defining the species, and set the
 <code class="docutils literal notranslate"><span class="pre">consider_all_diastereomers</span></code> species flag to <code class="docutils literal notranslate"><span class="pre">False</span></code> (it is <code class="docutils literal notranslate"><span class="pre">True</span></code> by default). For example, the following code
-will cause ARC to only consider the R-Z diaestereomer of the following hypothetical species:</p>
+will cause ARC to only consider the R-Z diastereomer of the following hypothetical species:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spc1_xyz</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Cl      1.47566594   -2.36900082   -0.86260264</span>
 <span class="s2">              O      -1.34833561    1.76407680    0.29252133</span>
 <span class="s2">              C       1.46682130   -0.58010226   -0.70920153</span>
@@ -894,6 +895,22 @@ but on the optimal geometry determined by ARC. To calculate the same BDEs in eth
 must be spawned (and successfully terminated for all species and fragments).</p>
 <p>The calculated BDEs are reported in the log file as well as in a designated <cite>BDE_report.yml</cite>
 file under the <cite>output</cite> directory in the project’s folder. Units are kJ/mol.</p>
+</div>
+<div class="section" id="disable-comparisons-with-the-rmg-database">
+<h2>Disable comparisons with the RMG database<a class="headerlink" href="#disable-comparisons-with-the-rmg-database" title="Permalink to this headline">¶</a></h2>
+<p>By default, at the end of an ARC job, ARC will try to compare the calculated thermochemistry and kinetics to estimates
+from the RMG database. The comparison is saved as a parity plot in the output directory.</p>
+<p>Sometimes though, it is desirable to disable these comparisons with the RMG database. For example, although ARC will
+not crash due to any exceptions encountered while making the parity plots, it makes sense to disable these comparisons
+when dealing with species that cannot be estimated by the RMG database (e.g. because of the presence of atom types that
+are currently not supported). In other circumstances it may make sense to disable this comparison simply to save time
+by not having to load the RMG database if the comparison is not needed.</p>
+<p>To disable ARC from generating these parity plots, simply supply the following in the ARC input file (or as a keyword
+argument to the main ARC object if using the API):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">compare_to_rmg</span><span class="p">:</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>With this option specified, ARC will not load the RMG database, and parity plots will not be generated.</p>
 </div>
 </div>
 

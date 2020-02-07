@@ -207,6 +207,8 @@
 <span class="sd">        t_count (int, optional): The number of temperature points between t_min and t_max for kinetics computations.</span>
 <span class="sd">        freq_scale_factor (float, optional): The harmonic frequencies scaling factor. Could be automatically determined</span>
 <span class="sd">                                             if not available in Arkane and not provided by the user.</span>
+<span class="sd">        compare_to_rmg (bool): If ``True`` data calculated from the RMG-database will be calculated and included on the</span>
+<span class="sd">                               parity plot</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        project (str): The project&#39;s name. Used for naming the directory.</span>
@@ -225,9 +227,12 @@
 <span class="sd">        t_max (tuple): The maximum temperature for kinetics computations, e.g., (3000, &#39;K&#39;).</span>
 <span class="sd">        t_count (int): The number of temperature points between t_min and t_max for kinetics computations.</span>
 <span class="sd">        rmgdb (RMGDatabase): The RMG database object.</span>
+<span class="sd">        compare_to_rmg (bool): If ```True`` data calculated from the RMG-database will be calculated and included on the</span>
+<span class="sd">                               parity plot</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">project_directory</span><span class="p">,</span> <span class="n">species_dict</span><span class="p">,</span> <span class="n">rxn_list</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">use_bac</span><span class="p">,</span> <span class="n">model_chemistry</span><span class="p">,</span>
-                 <span class="n">lib_long_desc</span><span class="p">,</span> <span class="n">rmgdatabase</span><span class="p">,</span> <span class="n">t_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_count</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq_scale_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">lib_long_desc</span><span class="p">,</span> <span class="n">rmgdatabase</span><span class="p">,</span> <span class="n">t_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_count</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq_scale_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">compare_to_rmg</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rmgdb</span> <span class="o">=</span> <span class="n">rmgdatabase</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span> <span class="o">=</span> <span class="n">project_directory</span>
@@ -247,6 +252,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">t_min</span> <span class="o">=</span> <span class="n">t_min</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t_max</span> <span class="o">=</span> <span class="n">t_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t_count</span> <span class="o">=</span> <span class="n">t_count</span> <span class="k">if</span> <span class="n">t_count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">50</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compare_to_rmg</span> <span class="o">=</span> <span class="n">compare_to_rmg</span>
 
     <span class="k">def</span> <span class="nf">_generate_arkane_species_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -347,11 +353,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Process ARC outputs and generate thermo and kinetics.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># load the RMG database</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">load_rmg_db</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not load the RMG database! Got:</span><span class="se">\n</span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_to_rmg</span><span class="p">:</span>  <span class="c1"># load the RMG database</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">load_rmg_db</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not load the RMG database! Got:</span><span class="se">\n</span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="c1"># Thermo:</span>
         <span class="n">species_list_for_thermo_parity</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">species_for_thermo_lib</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -387,15 +393,16 @@
                     <span class="n">species</span><span class="o">.</span><span class="n">thermo</span> <span class="o">=</span> <span class="n">arkane_spc</span><span class="o">.</span><span class="n">get_thermo_data</span><span class="p">()</span>
                     <span class="n">plotter</span><span class="o">.</span><span class="n">log_thermo</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">output_path</span><span class="p">)</span>
                     <span class="n">species_for_thermo_lib</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">species</span><span class="o">.</span><span class="n">rmg_thermo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmgdb</span><span class="o">.</span><span class="n">thermo</span><span class="o">.</span><span class="n">get_thermo_data</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">rmg_species</span><span class="p">)</span>
-                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not retrieve RMG thermo for species </span><span class="si">{species.label}</span><span class="s1">, possibly due to missing &#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;2D structure (bond orders). Not including this species in the parity plots.&#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Got: </span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">species</span><span class="o">.</span><span class="n">generate_thermo</span><span class="p">:</span>
-                        <span class="n">species_list_for_thermo_parity</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_to_rmg</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">species</span><span class="o">.</span><span class="n">rmg_thermo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmgdb</span><span class="o">.</span><span class="n">thermo</span><span class="o">.</span><span class="n">get_thermo_data</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">rmg_species</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not retrieve RMG thermo for species </span><span class="si">{species.label}</span><span class="s1">, possibly due to missing &#39;</span>
+                                    <span class="sa">f</span><span class="s1">&#39;2D structure (bond orders). Not including this species in the parity plots.&#39;</span>
+                                    <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Got: </span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">species</span><span class="o">.</span><span class="n">generate_thermo</span><span class="p">:</span>
+                            <span class="n">species_list_for_thermo_parity</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;job_types&#39;</span><span class="p">][</span><span class="s1">&#39;onedmin&#39;</span><span class="p">]:</span>
                     <span class="n">species_for_transport_lib</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;convergence&#39;</span><span class="p">]:</span>
@@ -465,8 +472,9 @@
                 <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
                     <span class="n">rxn</span><span class="o">.</span><span class="n">kinetics</span> <span class="o">=</span> <span class="n">kinetics_job</span><span class="o">.</span><span class="n">reaction</span><span class="o">.</span><span class="n">kinetics</span>
                     <span class="n">plotter</span><span class="o">.</span><span class="n">log_kinetics</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">output_path</span><span class="p">)</span>
-                    <span class="n">rxn</span><span class="o">.</span><span class="n">rmg_reactions</span> <span class="o">=</span> <span class="n">rmgdb</span><span class="o">.</span><span class="n">determine_rmg_kinetics</span><span class="p">(</span><span class="n">rmgdb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rmgdb</span><span class="p">,</span> <span class="n">reaction</span><span class="o">=</span><span class="n">rxn</span><span class="o">.</span><span class="n">rmg_reaction</span><span class="p">,</span>
-                                                                     <span class="n">dh_rxn298</span><span class="o">=</span><span class="n">rxn</span><span class="o">.</span><span class="n">dh_rxn298</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_to_rmg</span><span class="p">:</span>
+                        <span class="n">rxn</span><span class="o">.</span><span class="n">rmg_reactions</span> <span class="o">=</span> <span class="n">rmgdb</span><span class="o">.</span><span class="n">determine_rmg_kinetics</span><span class="p">(</span><span class="n">rmgdb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rmgdb</span><span class="p">,</span> <span class="n">reaction</span><span class="o">=</span><span class="n">rxn</span><span class="o">.</span><span class="n">rmg_reaction</span><span class="p">,</span>
+                                                                         <span class="n">dh_rxn298</span><span class="o">=</span><span class="n">rxn</span><span class="o">.</span><span class="n">dh_rxn298</span><span class="p">)</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">)</span>

@@ -184,7 +184,7 @@
 <p>Processor module for outputting thermoproperties and rates.</p>
 <dl class="class">
 <dt id="arc.processor.Processor">
-<em class="property">class </em><code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">Processor</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">project_directory</em>, <em class="sig-param">species_dict</em>, <em class="sig-param">rxn_list</em>, <em class="sig-param">output</em>, <em class="sig-param">use_bac</em>, <em class="sig-param">model_chemistry</em>, <em class="sig-param">lib_long_desc</em>, <em class="sig-param">rmgdatabase</em>, <em class="sig-param">t_min=None</em>, <em class="sig-param">t_max=None</em>, <em class="sig-param">t_count=None</em>, <em class="sig-param">freq_scale_factor=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">Processor</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">project_directory</em>, <em class="sig-param">species_dict</em>, <em class="sig-param">rxn_list</em>, <em class="sig-param">output</em>, <em class="sig-param">use_bac</em>, <em class="sig-param">model_chemistry</em>, <em class="sig-param">lib_long_desc</em>, <em class="sig-param">rmgdatabase</em>, <em class="sig-param">t_min=None</em>, <em class="sig-param">t_max=None</em>, <em class="sig-param">t_count=None</em>, <em class="sig-param">freq_scale_factor=None</em>, <em class="sig-param">compare_to_rmg=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/processor.html#Processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.Processor" title="Permalink to this definition">¶</a></dt>
 <dd><p>ARC Processor class. Post processes results in Arkane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -203,6 +203,8 @@
 <li><p><strong>t_count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of temperature points between t_min and t_max for kinetics computations.</p></li>
 <li><p><strong>freq_scale_factor</strong> (<em>float</em><em>, </em><em>optional</em>) – The harmonic frequencies scaling factor. Could be automatically determined
 if not available in Arkane and not provided by the user.</p></li>
+<li><p><strong>compare_to_rmg</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> data calculated from the RMG-database will be calculated and included on the
+parity plot</p></li>
 </ul>
 </dd>
 </dl>
@@ -358,6 +360,18 @@ if not available in Arkane and not provided by the user.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>RMGDatabase</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.processor.Processor.compare_to_rmg">
+<code class="sig-name descname">compare_to_rmg</code><a class="headerlink" href="#arc.processor.Processor.compare_to_rmg" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <code class="docutils literal notranslate"><span class="pre">`True</span></code> data calculated from the RMG-database will be calculated and included on the
+parity plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>

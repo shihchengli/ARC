@@ -264,6 +264,8 @@
 <span class="sd">                                      default is False.</span>
 <span class="sd">        dont_gen_confs (list, optional): A list of species labels for which conformer generation should be avoided</span>
 <span class="sd">                                         if xyz is given.</span>
+<span class="sd">        compare_to_rmg (bool): If ``True`` data calculated from the RMG-database will be calculated and included on the</span>
+<span class="sd">                               parity plot</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        project (str): The project&#39;s name. Used for naming the working directory.</span>
@@ -315,6 +317,8 @@
 <span class="sd">        keep_checks (bool): Whether to keep all Gaussian checkfiles when ARC terminates. True to keep, default is False.</span>
 <span class="sd">        dont_gen_confs (list): A list of species labels for which conformer generation should be avoided</span>
 <span class="sd">                               if xyz is given.</span>
+<span class="sd">        compare_to_rmg (bool): If ``True`` data calculated from the RMG-database will be calculated and included on the</span>
+<span class="sd">                               parity plot</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -324,7 +328,8 @@
                  <span class="n">job_shortcut_keywords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_count</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
                  <span class="n">project_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_job_time</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">allow_nonisomorphic_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">job_memory</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
                  <span class="n">ess_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bath_gas</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adaptive_levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq_scale_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">calc_freq_factor</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">confs_to_dft</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">keep_checks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dont_gen_confs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">specific_job_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">orbitals_level</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+                 <span class="n">confs_to_dft</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">keep_checks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dont_gen_confs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">specific_job_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">orbitals_level</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                 <span class="n">compare_to_rmg</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -338,6 +343,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ess_settings</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calc_freq_factor</span> <span class="o">=</span> <span class="n">calc_freq_factor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">keep_checks</span> <span class="o">=</span> <span class="n">keep_checks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compare_to_rmg</span> <span class="o">=</span> <span class="n">compare_to_rmg</span>
 
         <span class="k">if</span> <span class="n">input_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -701,7 +707,8 @@
                         <span class="n">species_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">species_dict</span><span class="p">,</span> <span class="n">rxn_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">rxn_list</span><span class="p">,</span>
                         <span class="n">output</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">use_bac</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">use_bac</span><span class="p">,</span> <span class="n">model_chemistry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_chemistry</span><span class="p">,</span>
                         <span class="n">lib_long_desc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lib_long_desc</span><span class="p">,</span> <span class="n">rmgdatabase</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rmgdb</span><span class="p">,</span> <span class="n">t_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t_max</span><span class="p">,</span>
-                        <span class="n">t_count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t_count</span><span class="p">,</span> <span class="n">freq_scale_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq_scale_factor</span><span class="p">)</span>
+                        <span class="n">t_count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t_count</span><span class="p">,</span> <span class="n">freq_scale_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq_scale_factor</span><span class="p">,</span>
+                        <span class="n">compare_to_rmg</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compare_to_rmg</span><span class="p">)</span>
         <span class="n">prc</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
         <span class="n">log_footer</span><span class="p">(</span><span class="n">execution_time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span><span class="p">)</span></div>
