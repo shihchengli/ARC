@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -798,20 +798,19 @@
             <span class="k">else</span><span class="p">:</span>  <span class="c1"># gaussian, molpro</span>
                 <span class="n">restricted</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
-        <span class="n">dispersion</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;terachem&#39;</span><span class="p">:</span>
             <span class="c1"># TeraChem does not accept &quot;wb97xd3&quot;, it expects to get &quot;wb97x&quot; as the method and &quot;d3&quot; as the dispersion</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;d2&#39;</span><span class="p">:</span>
-                <span class="n">dispersion</span> <span class="o">=</span> <span class="s1">&#39;d2&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dispersion</span> <span class="o">=</span> <span class="s1">&#39;d2&#39;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;d3&#39;</span><span class="p">:</span>
-                <span class="n">dispersion</span> <span class="o">=</span> <span class="s1">&#39;d3&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dispersion</span> <span class="o">=</span> <span class="s1">&#39;d3&#39;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;d&#39;</span><span class="p">:</span>
-                <span class="n">dispersion</span> <span class="o">=</span> <span class="s1">&#39;yes&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dispersion</span> <span class="o">=</span> <span class="s1">&#39;yes&#39;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">dispersion</span> <span class="o">=</span> <span class="s1">&#39;no&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dispersion</span> <span class="o">=</span> <span class="s1">&#39;no&#39;</span>
 
         <span class="n">job_type_1</span><span class="p">,</span> <span class="n">job_type_2</span><span class="p">,</span> <span class="n">fine</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
 
@@ -1330,7 +1329,7 @@
                                                <span class="n">job_options_blocks</span><span class="o">=</span><span class="n">job_options_blocks</span><span class="p">,</span>
                                                <span class="n">job_options_keywords</span><span class="o">=</span><span class="n">job_options_keywords</span><span class="p">,</span>
                                                <span class="n">method_class</span><span class="o">=</span><span class="n">method_class</span><span class="p">,</span> <span class="n">auxiliary_basis</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auxiliary_basis_set</span><span class="p">,</span>
-                                               <span class="n">shortcut_keywords</span><span class="o">=</span><span class="n">shortcut_keywords</span><span class="p">,</span> <span class="n">dispersion</span><span class="o">=</span><span class="n">dispersion</span><span class="p">,</span>
+                                               <span class="n">shortcut_keywords</span><span class="o">=</span><span class="n">shortcut_keywords</span><span class="p">,</span> <span class="n">dispersion</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersion</span><span class="p">,</span>
                                                <span class="p">)</span> \
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
