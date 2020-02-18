@@ -215,7 +215,7 @@
 <span class="sd">        xyz_str (str): The string xyz format to be converted.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        xyz_dict (dict): The ARC xyz format.</span>
+<span class="sd">        dict: The ARC xyz format.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ConverterError: If xyz_str is not a string or does not have four space-separated entries per non empty line.</span>
@@ -338,11 +338,11 @@
 <span class="sd">        xyz_dict (dict): The ARC xyz format.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        x (tuple): The X coordinates.</span>
+<span class="sd">        tuple: The X coordinates.</span>
 <span class="sd">    Returns:</span>
-<span class="sd">        y (tuple): The Y coordinates.</span>
+<span class="sd">        tuple: The Y coordinates.</span>
 <span class="sd">    Returns:</span>
-<span class="sd">        z (tuple): The Z coordinates.</span>
+<span class="sd">        tuple: The Z coordinates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">xyz_dict</span> <span class="o">=</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">)</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">(),</span> <span class="nb">tuple</span><span class="p">()</span>
@@ -490,7 +490,7 @@
 <span class="sd">                                        option is &#39;gaussian&#39;.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        xyz (str): The string xyz format in standardized format.</span>
+<span class="sd">        str: The string xyz format in standardized format.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ConverterError: If ``xyz_str`` is of wrong type.</span>
@@ -783,7 +783,7 @@
 <span class="sd">        zmat_str (str): The string zmat format to be converted.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        zmat_dict (dict): The ARC zmat format.</span>
+<span class="sd">        dict: The ARC zmat format.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ConverterError: If zmat_str is not a string or does not have enough values per line.</span>
@@ -1035,7 +1035,7 @@
 <span class="sd">        xyz (dict): ARC&#39;s xyz dictionary format.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        pybel_mol (OBmol): An Open Babel molecule.</span>
+<span class="sd">        OBmol: An Open Babel molecule.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">xyz</span> <span class="o">=</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -1054,7 +1054,7 @@
 <span class="sd">        has_h (bool): Whether the molecule has hydrogen atoms. ``True`` if it does.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        inchi (str): The respective InChI representation of the molecule.</span>
+<span class="sd">        str: The respective InChI representation of the molecule.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">has_h</span><span class="p">:</span>
         <span class="n">inchi</span> <span class="o">=</span> <span class="n">pybel_mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;inchi&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># Add fixed H layer</span>
@@ -1392,7 +1392,7 @@
 <span class="sd">        to_single_bonds (bool, optional): Whether to convert all bonds to single bonds. ``True`` to convert.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        new_mol (Molecule): The updated molecule.</span>
+<span class="sd">        Molecule: The updated molecule.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">new_mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
@@ -1537,7 +1537,7 @@
 <span class="sd">        deg_abs (float, optional): The required dihedral in degrees.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        new_xyz (dict): The xyz with the new dihedral, ordered according to the map.</span>
+<span class="sd">        dict: The xyz with the new dihedral, ordered according to the map.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ConverterError: If the dihedral cannot be set.</span>

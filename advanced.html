@@ -110,6 +110,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#writing-an-arc-input-file-using-the-api">Writing an ARC input file using the API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#calculating-bdes-bond-dissociation-energies">Calculating BDEs (bond dissociation energies)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#disable-comparisons-with-the-rmg-database">Disable comparisons with the RMG database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-solvent-corrections">Use solvent corrections</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Output</a></li>
@@ -911,6 +912,22 @@ argument to the main ARC object if using the API):</p>
 </pre></div>
 </div>
 <p>With this option specified, ARC will not load the RMG database, and parity plots will not be generated.</p>
+</div>
+<div class="section" id="use-solvent-corrections">
+<h2>Use solvent corrections<a class="headerlink" href="#use-solvent-corrections" title="Permalink to this headline">¶</a></h2>
+<p>This feature is currently only implemented for jobs spawned using Gaussian.
+The <cite>solvent</cite> argument, if not None, requests that a calculation be performed in the presence of a solvent
+by placing the solute (the species) in a cavity within the solvent reaction field. This argument is a dictionary,
+with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘method’ (optional values: ‘pcm’ (default), ‘cpcm’, ‘dipole’, ‘ipcm’, ‘scipcm’)</p></li>
+<li><p>‘solvent’ (values are strings of “known” solvents, default is “water”)</p></li>
+</ul>
+</div></blockquote>
+<p>Example:</p>
+<p>solvent = {‘method’: ‘pcm’, ‘solvent: ‘DiethylEther’}</p>
+<p>See <a class="reference external" href="https://gaussian.com/scrf/">https://gaussian.com/scrf/</a> for more details.</p>
 </div>
 </div>
 

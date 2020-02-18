@@ -185,7 +185,7 @@
 Includes spawning, terminating, checking, and troubleshooting various jobs</p>
 <dl class="class">
 <dt id="arc.scheduler.Scheduler">
-<em class="property">class </em><code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">Scheduler</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">ess_settings</em>, <em class="sig-param">species_list</em>, <em class="sig-param">project_directory</em>, <em class="sig-param">composite_method=''</em>, <em class="sig-param">conformer_level=''</em>, <em class="sig-param">opt_level=''</em>, <em class="sig-param">freq_level=''</em>, <em class="sig-param">sp_level=''</em>, <em class="sig-param">scan_level=''</em>, <em class="sig-param">ts_guess_level=''</em>, <em class="sig-param">orbitals_level=''</em>, <em class="sig-param">adaptive_levels=None</em>, <em class="sig-param">rmgdatabase=None</em>, <em class="sig-param">job_types=None</em>, <em class="sig-param">job_additional_options=None</em>, <em class="sig-param">job_shortcut_keywords=None</em>, <em class="sig-param">rxn_list=None</em>, <em class="sig-param">bath_gas=None</em>, <em class="sig-param">restart_dict=None</em>, <em class="sig-param">max_job_time=120</em>, <em class="sig-param">allow_nonisomorphic_2d=False</em>, <em class="sig-param">memory=14</em>, <em class="sig-param">testing=False</em>, <em class="sig-param">dont_gen_confs=None</em>, <em class="sig-param">confs_to_dft=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">Scheduler</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">ess_settings</em>, <em class="sig-param">species_list</em>, <em class="sig-param">project_directory</em>, <em class="sig-param">composite_method=''</em>, <em class="sig-param">conformer_level=''</em>, <em class="sig-param">opt_level=''</em>, <em class="sig-param">freq_level=''</em>, <em class="sig-param">sp_level=''</em>, <em class="sig-param">scan_level=''</em>, <em class="sig-param">ts_guess_level=''</em>, <em class="sig-param">orbitals_level=''</em>, <em class="sig-param">adaptive_levels=None</em>, <em class="sig-param">rmgdatabase=None</em>, <em class="sig-param">job_types=None</em>, <em class="sig-param">job_additional_options=None</em>, <em class="sig-param">solvent=None</em>, <em class="sig-param">job_shortcut_keywords=None</em>, <em class="sig-param">rxn_list=None</em>, <em class="sig-param">bath_gas=None</em>, <em class="sig-param">restart_dict=None</em>, <em class="sig-param">max_job_time=120</em>, <em class="sig-param">allow_nonisomorphic_2d=False</em>, <em class="sig-param">memory=14</em>, <em class="sig-param">testing=False</em>, <em class="sig-param">dont_gen_confs=None</em>, <em class="sig-param">confs_to_dft=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler" title="Permalink to this definition">¶</a></dt>
 <dd><p>ARC’s Scheduler class. Creates jobs, submits, checks status, troubleshoots.
 Each species in <cite>species_list</cite> has to have a unique label.</p>
 <p>Dictionary structures:</p>
@@ -263,6 +263,15 @@ that is isomorphic to the 2D graph representation.</p></li>
 <li><p><strong>dont_gen_confs</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of species labels for which conformer jobs were loaded from a restart
 file, or user-requested. Additional conformer generation should be avoided.</p></li>
 <li><p><strong>confs_to_dft</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of lowest MD conformers to DFT at the conformers_level.</p></li>
+<li><p><strong>solvent</strong> (<em>dict</em>) – <p>This argument, if not None, requests that a calculation be performed in the presence of a
+solvent by placing the solute in a cavity within the solvent reaction field.
+Keys are:
+- ‘method’ (optional values: ‘pcm’ (default), ‘cpcm’, ‘dipole’, ‘ipcm’, ‘scipcm’)
+-  ‘solvent’ (values are strings of “known” solvents, see <a class="reference external" href="https://gaussian.com/scrf/">https://gaussian.com/scrf/</a>,</p>
+<blockquote>
+<div><p>default is “water”)</p>
+</div></blockquote>
+</p></li>
 </ul>
 </dd>
 </dl>
@@ -666,6 +675,17 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <dd><p>A dictionary of levels of theory for ranges of the number of heavy atoms in
 the molecule. Keys are tuples of (min_num_atoms, max_num_atoms), values are
 dictionaries with ‘optfreq’ and ‘sp’ as keys and levels of theory as values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.scheduler.Scheduler.solvent">
+<code class="sig-name descname">solvent</code><a class="headerlink" href="#arc.scheduler.Scheduler.solvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>The solvent model and solvent to use.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>dict</p>

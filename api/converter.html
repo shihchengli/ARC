@@ -514,7 +514,7 @@ If <cite>multiplicity</cite> is given, the returned species multiplicity will be
 <dd class="field-even"><p>The respective InChI representation of the molecule.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>inchi (str)</p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -664,7 +664,7 @@ Either <code class="docutils literal notranslate"><span class="pre">deg_incremen
 <dd class="field-even"><p>The xyz with the new dihedral, ordered according to the map.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>new_xyz (dict)</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>ConverterError</strong> – If the dihedral cannot be set.</p>
@@ -714,7 +714,7 @@ option is ‘gaussian’.</p></li>
 <dd class="field-even"><p>The string xyz format in standardized format.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>xyz (str)</p>
+<dd class="field-odd"><p>str</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>ConverterError</strong> – If <code class="docutils literal notranslate"><span class="pre">xyz_str</span></code> is of wrong type.</p>
@@ -755,7 +755,7 @@ The xyz string format may have optional Gaussian-style isotope specification, e.
 <dd class="field-even"><p>The ARC xyz format.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>xyz_dict (dict)</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>ConverterError</strong> – If xyz_str is not a string or does not have four space-separated entries per non empty line.</p>
@@ -799,7 +799,7 @@ A typical zmat string format may look like this:</p>
 <dd class="field-even"><p>The ARC zmat format.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>zmat_dict (dict)</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>ConverterError</strong> – If zmat_str is not a string or does not have enough values per line.</p>
@@ -863,7 +863,7 @@ Adopted from rmgpy/molecule/converter.py</p>
 <dd class="field-even"><p>The updated molecule.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>new_mol (Molecule)</p>
+<dd class="field-odd"><p>Molecule</p>
 </dd>
 </dl>
 </dd></dl>
@@ -946,7 +946,7 @@ If <code class="docutils literal notranslate"><span class="pre">isotopes</span><
 <dd class="field-even"><p>An Open Babel molecule.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>pybel_mol (OBmol)</p>
+<dd class="field-odd"><p>OBmol</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1007,19 +1007,19 @@ option is ‘gaussian’.</p></li>
 <dd class="field-even"><p>The X coordinates.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>x (tuple)</p>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The Y coordinates.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>y (tuple)</p>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The Z coordinates.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>z (tuple)</p>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
