@@ -561,12 +561,19 @@
     <span class="k">return</span> <span class="n">r</span></div>
 
 
-<div class="viewcode-block" id="colliding_atoms"><a class="viewcode-back" href="../../api/common.html#arc.common.colliding_atoms">[docs]</a><span class="k">def</span> <span class="nf">colliding_atoms</span><span class="p">(</span><span class="n">xyz</span><span class="p">):</span>
+<div class="viewcode-block" id="colliding_atoms"><a class="viewcode-back" href="../../api/common.html#arc.common.colliding_atoms">[docs]</a><span class="k">def</span> <span class="nf">colliding_atoms</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.55</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check whether atoms are too close to each other.</span>
+<span class="sd">    A default threshold of 55% the covalent radii of two atoms is used.</span>
+<span class="sd">    For example:</span>
+<span class="sd">    - C-O collide at 55% * 1.42 A = 0.781 A</span>
+<span class="sd">    - N-N collide at 55% * 1.42 A = 0.781 A</span>
+<span class="sd">    - C-N collide at 55% * 1.47 A = 0.808 A</span>
+<span class="sd">    - C-H collide at 55% * 1.07 A = 0.588 A</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        xyz (dict): The Cartesian coordinates.</span>
+<span class="sd">        threshold (float, optional): The collision threshold to use.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">         bool: ``True`` if they are colliding, ``False`` otherwise.</span>
@@ -574,26 +581,20 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="c1"># monoatomic</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="n">coords</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]</span>
-    <span class="n">symbols</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]</span>
-    <span class="n">atom_radaii</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_atom_radius</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span> <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coord1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coords</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">coord2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]):</span>
-                <span class="k">if</span> <span class="nb">sum</span><span class="p">((</span><span class="n">coord1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">coord2</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span> <span class="o">&lt;</span> \
-                        <span class="mf">0.9</span> <span class="o">*</span> <span class="p">(</span><span class="n">atom_radaii</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">atom_radaii</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]):</span>  <span class="c1"># take a 10% confidence value</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;atom </span><span class="si">{symbols[i]}</span><span class="s1"> with coords </span><span class="si">{coord1}</span><span class="s1"> is distant &#39;</span>
-                                 <span class="sa">f</span><span class="s1">&#39;{sum((coord1[k] - coord2[k]) ** 2 for k in range(3)) ** 0.5} &#39;</span>
-                                 <span class="sa">f</span><span class="s1">&#39;from atom </span><span class="si">{symbols[i + j + 1]}</span><span class="s1"> with coords </span><span class="si">{coord2}</span><span class="s1">, &#39;</span>
-                                 <span class="sa">f</span><span class="s1">&#39;should be more than {atom_radaii[i] + atom_radaii[j + i + 1]}&#39;</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="n">geometry</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.8897259886</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]])</span>  <span class="c1"># convert A to Bohr</span>
+    <span class="n">qcel_out</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">molutil</span><span class="o">.</span><span class="n">guess_connectivity</span><span class="p">(</span><span class="n">symbols</span><span class="o">=</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">qcel_out</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">qcel_out</span><span class="p">))</span></div>
 
 
 <span class="c1"># a bond length dictionary of single bonds, Angstrom</span>
 <span class="c1"># https://sites.google.com/site/chempendix/bond-lengths</span>
 <span class="c1"># https://courses.lumenlearning.com/suny-potsdam-organicchemistry/chapter/1-3-basics-of-bonding/</span>
 <span class="c1"># &#39;N-O&#39; is taken from the geometry of NH2OH</span>
+<span class="c1"># todo: combine with partial charge to allow greated distance, e.g., as in N2O4</span>
+<span class="c1"># todo: or replace with NBO analysis</span>
 <span class="n">SINGLE_BOND_LENGTH</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Br-Br&#39;</span><span class="p">:</span> <span class="mf">2.29</span><span class="p">,</span> <span class="s1">&#39;Br-Cr&#39;</span><span class="p">:</span> <span class="mf">1.94</span><span class="p">,</span> <span class="s1">&#39;Br-H&#39;</span><span class="p">:</span> <span class="mf">1.41</span><span class="p">,</span>
                       <span class="s1">&#39;C-C&#39;</span><span class="p">:</span> <span class="mf">1.54</span><span class="p">,</span> <span class="s1">&#39;C-Cl&#39;</span><span class="p">:</span> <span class="mf">1.77</span><span class="p">,</span> <span class="s1">&#39;C-F&#39;</span><span class="p">:</span> <span class="mf">1.35</span><span class="p">,</span> <span class="s1">&#39;C-H&#39;</span><span class="p">:</span> <span class="mf">1.09</span><span class="p">,</span> <span class="s1">&#39;C-I&#39;</span><span class="p">:</span> <span class="mf">2.13</span><span class="p">,</span>
                       <span class="s1">&#39;C-N&#39;</span><span class="p">:</span> <span class="mf">1.47</span><span class="p">,</span> <span class="s1">&#39;C-O&#39;</span><span class="p">:</span> <span class="mf">1.43</span><span class="p">,</span> <span class="s1">&#39;C-P&#39;</span><span class="p">:</span> <span class="mf">1.87</span><span class="p">,</span> <span class="s1">&#39;C-S&#39;</span><span class="p">:</span> <span class="mf">1.81</span><span class="p">,</span> <span class="s1">&#39;C-Si&#39;</span><span class="p">:</span> <span class="mf">1.86</span><span class="p">,</span>

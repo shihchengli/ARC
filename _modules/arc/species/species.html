@@ -181,15 +181,33 @@
 <span class="kn">from</span> <span class="nn">rmgpy.statmech</span> <span class="kn">import</span> <span class="n">NonlinearRotor</span><span class="p">,</span> <span class="n">LinearRotor</span>
 <span class="kn">from</span> <span class="nn">rmgpy.transport</span> <span class="kn">import</span> <span class="n">TransportData</span>
 
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">get_single_bond_length</span><span class="p">,</span> <span class="n">determine_symmetry</span><span class="p">,</span> <span class="n">determine_top_group_indices</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="p">(</span><span class="n">colliding_atoms</span><span class="p">,</span>
+                        <span class="n">determine_symmetry</span><span class="p">,</span>
+                        <span class="n">determine_top_group_indices</span><span class="p">,</span>
+                        <span class="n">get_logger</span><span class="p">,</span>
+                        <span class="n">get_single_bond_length</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">SpeciesError</span><span class="p">,</span> <span class="n">RotorError</span><span class="p">,</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">TSError</span><span class="p">,</span> <span class="n">SanitizationError</span>
-<span class="kn">from</span> <span class="nn">arc.parser</span> <span class="kn">import</span> <span class="n">parse_xyz_from_file</span><span class="p">,</span> <span class="n">parse_dipole_moment</span><span class="p">,</span> <span class="n">parse_polarizability</span><span class="p">,</span> <span class="n">process_conformers_file</span><span class="p">,</span> \
-    <span class="n">parse_1d_scan_energies</span>
+<span class="kn">from</span> <span class="nn">arc.parser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">parse_1d_scan_energies</span><span class="p">,</span>
+                        <span class="n">parse_dipole_moment</span><span class="p">,</span>
+                        <span class="n">parse_polarizability</span><span class="p">,</span>
+                        <span class="n">parse_xyz_from_file</span><span class="p">,</span>
+                        <span class="n">process_conformers_file</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">arc.settings</span> <span class="kn">import</span> <span class="n">default_ts_methods</span><span class="p">,</span> <span class="n">valid_chars</span><span class="p">,</span> <span class="n">minimum_barrier</span>
 <span class="kn">from</span> <span class="nn">arc.species</span> <span class="kn">import</span> <span class="n">conformers</span>
-<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="n">check_isomorphism</span><span class="p">,</span> <span class="n">check_xyz_dict</span><span class="p">,</span> <span class="n">check_zmat_dict</span><span class="p">,</span> <span class="n">get_xyz_radius</span><span class="p">,</span> \
-    <span class="n">molecules_from_xyz</span><span class="p">,</span> <span class="n">order_atoms_in_mol_list</span><span class="p">,</span> <span class="n">rdkit_conf_from_mol</span><span class="p">,</span> <span class="n">remove_dummies</span><span class="p">,</span> <span class="n">rmg_mol_from_inchi</span><span class="p">,</span> \
-    <span class="n">set_rdkit_dihedrals</span><span class="p">,</span> <span class="n">str_to_xyz</span><span class="p">,</span> <span class="n">translate_to_center_of_mass</span><span class="p">,</span> <span class="n">xyz_from_data</span><span class="p">,</span> <span class="n">xyz_to_str</span>
+<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="p">(</span><span class="n">check_isomorphism</span><span class="p">,</span>
+                                   <span class="n">check_xyz_dict</span><span class="p">,</span>
+                                   <span class="n">check_zmat_dict</span><span class="p">,</span>
+                                   <span class="n">get_xyz_radius</span><span class="p">,</span>
+                                   <span class="n">molecules_from_xyz</span><span class="p">,</span>
+                                   <span class="n">order_atoms_in_mol_list</span><span class="p">,</span>
+                                   <span class="n">rdkit_conf_from_mol</span><span class="p">,</span>
+                                   <span class="n">remove_dummies</span><span class="p">,</span>
+                                   <span class="n">rmg_mol_from_inchi</span><span class="p">,</span>
+                                   <span class="n">set_rdkit_dihedrals</span><span class="p">,</span>
+                                   <span class="n">str_to_xyz</span><span class="p">,</span>
+                                   <span class="n">translate_to_center_of_mass</span><span class="p">,</span>
+                                   <span class="n">xyz_from_data</span><span class="p">,</span>
+                                   <span class="n">xyz_to_str</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">arc.species.vectors</span> <span class="kn">import</span> <span class="n">calculate_distance</span>
 <span class="kn">from</span> <span class="nn">arc.ts</span> <span class="kn">import</span> <span class="n">atst</span>
 
@@ -470,7 +488,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rotors</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rmg_species</span> <span class="o">=</span> <span class="n">rmg_species</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">process_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">bond_corrections</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">bond_corrections</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
@@ -502,6 +519,7 @@
 
             <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">multiplicity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="n">multiplicity</span>
             <span class="k">if</span> <span class="n">charge</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1365,6 +1383,10 @@
                     <span class="c1"># string which does not represent a (valid) path, treat as a string representation of xyz</span>
                     <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">remove_dummies</span><span class="p">(</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)))</span>
                     <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># dummy (lists should be the same length)</span>
+            <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">xyzs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">colliding_atoms</span><span class="p">(</span><span class="n">xyz</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The following coordinates for species </span><span class="si">{self.label}</span><span class="s1"> has colliding atoms:</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                       <span class="sa">f</span><span class="s1">&#39;{xyz_to_str(xyz)}&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">xyzs</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">conformer_energies</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>

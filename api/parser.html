@@ -191,11 +191,17 @@
 <dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The ESS log file to parse from.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The electronic energy in kJ/mol.
-angles (list): The scan angles in degrees.</p>
+<dd class="field-even"><p><dl>
+<dt>The electronic energy in kJ/mol,</dt><dd><blockquote>
+<div><p>list: The scan angles in degrees,</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>energies (list)</p>
+<dd class="field-odd"><p>tuple[list</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">path</span></code> is invalid.</p>
@@ -224,7 +230,7 @@ angles (list): The scan angles in degrees.</p>
 <dd class="field-even"><p>The electronic energy in kJ/mol</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>e_elect (float)</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -247,7 +253,7 @@ angles (list): The scan angles in degrees.</p>
 <dd class="field-even"><p>The geometry.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>xyz (dict)</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -266,7 +272,8 @@ angles (list): The scan angles in degrees.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p>The “results” dictionary, which has the following structure:</p>
+<dd class="field-even"><p><dl>
+<dt>tuple[</dt><dd><p>dict: The “results” dictionary, which has the following structure:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;directed_scan_type&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">str</span><span class="p">,</span> <span class="n">used</span> <span class="k">for</span> <span class="n">the</span> <span class="n">fig</span> <span class="n">name</span><span class="o">&gt;</span><span class="p">,</span>
            <span class="s1">&#39;scans&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">list</span><span class="p">,</span> <span class="n">entries</span> <span class="n">are</span> <span class="n">lists</span> <span class="n">of</span> <span class="n">torsion</span> <span class="n">indices</span><span class="o">&gt;</span><span class="p">,</span>
            <span class="s1">&#39;directed_scan&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">dict</span><span class="p">,</span> <span class="n">keys</span> <span class="n">are</span> <span class="n">tuples</span> <span class="n">of</span> <span class="s1">&#39;</span><span class="si">{0:.2f}</span><span class="s1">&#39;</span> <span class="n">formatted</span> <span class="n">dihedrals</span><span class="p">,</span>
@@ -275,22 +282,19 @@ angles (list): The scan angles in degrees.</p>
                               <span class="s1">&#39;xyz&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">dict</span><span class="o">&gt;</span><span class="p">,</span>
                               <span class="s1">&#39;is_isomorphic&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>
                               <span class="s1">&#39;trsh&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">list</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">ess_trsh_methods</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&gt;</span>
-           <span class="p">}</span>
+           <span class="p">},</span>
 </pre></div>
 </div>
+<dl class="simple">
+<dt>list, optional: The dihedrals angles of the original conformer,</dt><dd><p>]</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The dihedrals angles of the original conformer.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list, optional</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">path</span></code> is invalid.</p>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">path</span></code> is invalid.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -307,16 +311,17 @@ angles (list): The scan angles in degrees.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The frequencies (cm^-1)</p>
+<dd class="field-even"><p><dl>
+<dt>The frequencies (cm^-1),</dt><dd><blockquote>
+<div><p>np.ndarray: The normal displacement modes,</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.ndarray</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The normal displacement modes</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>tuple[np.ndarray</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>NotImplementedError</strong> – If the parser is not implemented for the ESS this log file belongs to.</p>
@@ -372,7 +377,7 @@ angles (list): The scan angles in degrees.</p>
 <dd class="field-even"><p>The parsed coordinates.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>xyz (dict)</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>ParserError</strong> – If the coordinates could not be parsed.</p>
@@ -408,16 +413,17 @@ angles (list): The scan angles in degrees.</p>
 a “conformers_after_optimization” file).</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Entries are conformer coordinates in a dict format.</p>
+<dd class="field-even"><p><dl>
+<dt>Entries are conformer coordinates in a dict format,</dt><dd><blockquote>
+<div><p>list: Entries float numbers representing the energies in kJ/mol,</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>xyz (list)</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Entries float numbers representing the energies in kJ/mol.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>energies (list)</p>
+<dd class="field-odd"><p>tuple[list</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>InputError</strong> – If the file could not be found.</p>

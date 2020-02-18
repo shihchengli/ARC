@@ -267,9 +267,9 @@
 <span class="sd">        software (str, optional): The software to used to generate the log file.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        np.ndarray: The frequencies (cm^-1)</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        np.ndarray: The normal displacement modes</span>
+<span class="sd">        tuple[np.ndarray: The frequencies (cm^-1),</span>
+<span class="sd">              np.ndarray: The normal displacement modes,</span>
+<span class="sd">             ]</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: If the parser is not implemented for the ESS this log file belongs to.</span>
@@ -323,7 +323,7 @@
 <span class="sd">        path (str): The ESS log file to parse from</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        xyz (dict): The geometry.</span>
+<span class="sd">        dict: The geometry.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">determine_qm_software</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -358,15 +358,15 @@
 <span class="sd">        zpe_scale_factor: The ZPE scaling factor, used only for composite methods in Gaussian via Arkane.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        e_elect (float): The electronic energy in kJ/mol</span>
+<span class="sd">        float: The electronic energy in kJ/mol</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Could not find file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">determine_qm_software</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">e_elect</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">load_energy</span><span class="p">(</span><span class="n">zpe_scale_factor</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.001</span>  <span class="c1"># convert to kJ/mol</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">LogError</span><span class="p">,</span> <span class="ne">NotImplementedError</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not read e_elect from </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read e_elect from </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">e_elect</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">e_elect</span></div>
 
@@ -400,8 +400,9 @@
 <span class="sd">        path (str): The ESS log file to parse from.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        energies (list): The electronic energy in kJ/mol.</span>
-<span class="sd">        angles (list): The scan angles in degrees.</span>
+<span class="sd">        tuple[list: The electronic energy in kJ/mol,</span>
+<span class="sd">              list: The scan angles in degrees,</span>
+<span class="sd">             ]</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        InputError: If ``path`` is invalid.</span>
@@ -430,19 +431,20 @@
 <span class="sd">                                                    ``True`` to return, default is ``False``.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        dict: The &quot;results&quot; dictionary, which has the following structure::</span>
+<span class="sd">        tuple[</span>
+<span class="sd">            dict: The &quot;results&quot; dictionary, which has the following structure::</span>
 
-<span class="sd">              results = {&#39;directed_scan_type&#39;: &lt;str, used for the fig name&gt;,</span>
-<span class="sd">                         &#39;scans&#39;: &lt;list, entries are lists of torsion indices&gt;,</span>
-<span class="sd">                         &#39;directed_scan&#39;: &lt;dict, keys are tuples of &#39;{0:.2f}&#39; formatted dihedrals,</span>
-<span class="sd">                                           values are dictionaries with the following keys and values:</span>
-<span class="sd">                                           {&#39;energy&#39;: &lt;float, energy in kJ/mol&gt;,  * only this is used here</span>
-<span class="sd">                                            &#39;xyz&#39;: &lt;dict&gt;,</span>
-<span class="sd">                                            &#39;is_isomorphic&#39;: &lt;bool&gt;,</span>
-<span class="sd">                                            &#39;trsh&#39;: &lt;list, job.ess_trsh_methods&gt;}&gt;</span>
-<span class="sd">                         }</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        list, optional: The dihedrals angles of the original conformer.</span>
+<span class="sd">                  results = {&#39;directed_scan_type&#39;: &lt;str, used for the fig name&gt;,</span>
+<span class="sd">                             &#39;scans&#39;: &lt;list, entries are lists of torsion indices&gt;,</span>
+<span class="sd">                             &#39;directed_scan&#39;: &lt;dict, keys are tuples of &#39;{0:.2f}&#39; formatted dihedrals,</span>
+<span class="sd">                                               values are dictionaries with the following keys and values:</span>
+<span class="sd">                                               {&#39;energy&#39;: &lt;float, energy in kJ/mol&gt;,  * only this is used here</span>
+<span class="sd">                                                &#39;xyz&#39;: &lt;dict&gt;,</span>
+<span class="sd">                                                &#39;is_isomorphic&#39;: &lt;bool&gt;,</span>
+<span class="sd">                                                &#39;trsh&#39;: &lt;list, job.ess_trsh_methods&gt;}&gt;</span>
+<span class="sd">                             },</span>
+<span class="sd">            list, optional: The dihedrals angles of the original conformer,</span>
+<span class="sd">             ]</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        InputError: If ``path`` is invalid.</span>
@@ -608,7 +610,7 @@
 <span class="sd">        path (str): The file path.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        xyz (dict): The parsed coordinates.</span>
+<span class="sd">        dict: The parsed coordinates.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ParserError: If the coordinates could not be parsed.</span>
@@ -813,9 +815,9 @@
 <span class="sd">                               a &quot;conformers_after_optimization&quot; file).</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        xyz (list): Entries are conformer coordinates in a dict format.</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        energies (list): Entries float numbers representing the energies in kJ/mol.</span>
+<span class="sd">        tuple[list: Entries are conformer coordinates in a dict format,</span>
+<span class="sd">              list: Entries float numbers representing the energies in kJ/mol,</span>
+<span class="sd">             ]</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        InputError: If the file could not be found.</span>

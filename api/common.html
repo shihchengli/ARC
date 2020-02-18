@@ -253,11 +253,20 @@ Also check ESS and servers.</p>
 
 <dl class="function">
 <dt id="arc.common.colliding_atoms">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">colliding_atoms</code><span class="sig-paren">(</span><em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#colliding_atoms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.colliding_atoms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check whether atoms are too close to each other.</p>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">colliding_atoms</code><span class="sig-paren">(</span><em class="sig-param">xyz</em>, <em class="sig-param">threshold=0.55</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#colliding_atoms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.colliding_atoms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether atoms are too close to each other.
+A default threshold of 55% the covalent radii of two atoms is used.
+For example:
+- C-O collide at 55% * 1.42 A = 0.781 A
+- N-N collide at 55% * 1.42 A = 0.781 A
+- C-N collide at 55% * 1.47 A = 0.808 A
+- C-H collide at 55% * 1.07 A = 0.588 A</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>xyz</strong> (<em>dict</em>) – The Cartesian coordinates.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyz</strong> (<em>dict</em>) – The Cartesian coordinates.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The collision threshold to use.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if they are colliding, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
