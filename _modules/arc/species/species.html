@@ -589,6 +589,17 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_mol_list</span><span class="p">()</span>
 
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a string representation of the object&quot;&quot;&quot;</span>
+        <span class="n">str_representation</span> <span class="o">=</span> <span class="s1">&#39;ARCSpecies(&#39;</span>
+        <span class="n">str_representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;label=</span><span class="si">{self.label}</span><span class="s1">, &#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">str_representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;smiles={self.mol.to_smiles()}, &#39;</span>
+        <span class="n">str_representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;is_ts=</span><span class="si">{self.is_ts}</span><span class="s1">, &#39;</span>
+        <span class="n">str_representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;multiplicity=</span><span class="si">{self.multiplicity}</span><span class="s1">, &#39;</span>
+        <span class="n">str_representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;charge=</span><span class="si">{self.charge}</span><span class="s1">)&#39;</span>
+        <span class="k">return</span> <span class="n">str_representation</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">number_of_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The number of atoms in the species&quot;&quot;&quot;</span>
@@ -1385,7 +1396,7 @@
                     <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># dummy (lists should be the same length)</span>
             <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">xyzs</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">colliding_atoms</span><span class="p">(</span><span class="n">xyz</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The following coordinates for species </span><span class="si">{self.label}</span><span class="s1"> has colliding atoms:</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The following coordinates for species </span><span class="si">{self.label}</span><span class="s1"> have colliding atoms:</span><span class="se">\n</span><span class="s1">&#39;</span>
                                        <span class="sa">f</span><span class="s1">&#39;{xyz_to_str(xyz)}&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">conformers</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">xyzs</span><span class="p">)</span>
@@ -1407,8 +1418,8 @@
                 <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">xyzs</span><span class="p">:</span>
                     <span class="n">consistent</span> <span class="o">=</span> <span class="n">check_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">consistent</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Inconsistent combination of number of electrons. multiplicity and charde  &#39;</span>
-                                           <span class="s1">&#39;for </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span></div>
+                        <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Inconsistent combination of number of electrons, multiplicity and charge  &#39;</span>
+                                           <span class="sa">f</span><span class="s1">&#39;for </span><span class="si">{self.label}</span><span class="s1">.&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.set_transport_data"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.set_transport_data">[docs]</a>    <span class="k">def</span> <span class="nf">set_transport_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lj_path</span><span class="p">,</span> <span class="n">opt_path</span><span class="p">,</span> <span class="n">bath_gas</span><span class="p">,</span> <span class="n">opt_level</span><span class="p">,</span> <span class="n">freq_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">freq_level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
