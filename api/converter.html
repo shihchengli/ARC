@@ -571,6 +571,30 @@ If <cite>multiplicity</cite> is given, the returned species multiplicity will be
 </dd></dl>
 
 <dl class="function">
+<dt id="arc.species.converter.rmg_conformer_to_xyz">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">rmg_conformer_to_xyz</code><span class="sig-paren">(</span><em class="sig-param">conformer</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#rmg_conformer_to_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.rmg_conformer_to_xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert xyz coordinates from an rmgpy.statmech.Conformer object into the ARC dict xyz style.</p>
+<p class="rubric">Notes</p>
+<p>Only the xyz information (symbols and coordinates) will be taken from the Conformer object. Other properties
+such as electronic energy will not be converted.</p>
+<p>We also assume that we can get the isotope number by rounding the mass</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>conformer</strong> (<em>Conformer</em>) – An rmgpy.statmech.Conformer object containing the desired xyz coordinates</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If conformer is not an rmgpy.statmech.Conformer object</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The ARC xyz format</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.species.converter.rmg_mol_from_inchi">
 <code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">rmg_mol_from_inchi</code><span class="sig-paren">(</span><em class="sig-param">inchi</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#rmg_mol_from_inchi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.rmg_mol_from_inchi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate an RMG Molecule object from InChI.</p>
@@ -947,6 +971,25 @@ If <code class="docutils literal notranslate"><span class="pre">isotopes</span><
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>OBmol</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.xyz_to_rmg_conformer">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">xyz_to_rmg_conformer</code><span class="sig-paren">(</span><em class="sig-param">xyz_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#xyz_to_rmg_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.xyz_to_rmg_conformer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the Arc dict xyz style into an rmgpy.statmech.Conformer object containing these coordinates.</p>
+<p class="rubric">Notes</p>
+<p>Only the xyz information will be supplied to the newly created Conformer object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>xyz_dict</strong> (<em>dict</em>) – The ARC dict xyz style coordinates</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An rmgpy.statmech.Conformer object containing the desired xyz coordinates</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Conformer</p>
 </dd>
 </dl>
 </dd></dl>
