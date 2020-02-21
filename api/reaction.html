@@ -452,9 +452,14 @@ corresponding TS <a class="reference internal" href="species.html#species"><span
 
 <dl class="method">
 <dt id="arc.reaction.ARCReaction.check_ts">
-<code class="sig-name descname">check_ts</code><span class="sig-paren">(</span><em class="sig-param">log=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.check_ts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.check_ts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the TS E0 is above both reactants and products wells
-Return <code class="docutils literal notranslate"><span class="pre">False</span></code> if this test fails, else <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<code class="sig-name descname">check_ts</code><span class="sig-paren">(</span><em class="sig-param">verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.check_ts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.check_ts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the TS E0 is above both reactants and products wells.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – Whether to print logging messages.</p>
+</dd>
+</dl>
+<p>Returns: Whether the TS energy is above both reactants and products wells, <code class="docutils literal notranslate"><span class="pre">True</span></code> if it is.</p>
 </dd></dl>
 
 <dl class="method">

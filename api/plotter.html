@@ -236,8 +236,20 @@ Saves an image if a species and <code class="docutils literal notranslate"><span
 
 <dl class="function">
 <dt id="arc.plotter.draw_parity_plot">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_parity_plot</code><span class="sig-paren">(</span><em class="sig-param">var_arc</em>, <em class="sig-param">var_rmg</em>, <em class="sig-param">var_label</em>, <em class="sig-param">var_units</em>, <em class="sig-param">labels</em>, <em class="sig-param">pp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_parity_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_parity_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_parity_plot</code><span class="sig-paren">(</span><em class="sig-param">var_arc</em>, <em class="sig-param">var_rmg</em>, <em class="sig-param">labels</em>, <em class="sig-param">var_label</em>, <em class="sig-param">var_units</em>, <em class="sig-param">pp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_parity_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_parity_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw a parity plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var_arc</strong> (<em>list</em>) – The variable calculated by ARC.</p></li>
+<li><p><strong>var_rmg</strong> (<em>list</em>) – The variable estimated by RMG.</p></li>
+<li><p><strong>labels</strong> (<em>list</em>) – Species labels corresponding the the data in <code class="docutils literal notranslate"><span class="pre">var_arc</span></code> and <code class="docutils literal notranslate"><span class="pre">var_rmg</span></code>.</p></li>
+<li><p><strong>var_label</strong> (<em>str</em>) – The variable name.</p></li>
+<li><p><strong>var_units</strong> (<em>str</em>) – The variable units.</p></li>
+<li><p><strong>pp</strong> (<em>PdfPages</em><em>, </em><em>optional</em>) – Used for storing the image as a multi-page PFD file.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -478,6 +490,21 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>InputError</strong> – If neither species nor xyz were given. Or if neither project_directory nor path were given.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.plotter.save_irc_traj_animation">
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_irc_traj_animation</code><span class="sig-paren">(</span><em class="sig-param">irc_f_path</em>, <em class="sig-param">irc_r_path</em>, <em class="sig-param">out_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_irc_traj_animation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_irc_traj_animation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save an IRC trajectory animation file showing the entire reaction coordinate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>irc_f_path</strong> (<em>str</em>) – The forward IRC computation.</p></li>
+<li><p><strong>irc_r_path</strong> (<em>str</em>) – The reverse IRC computation.</p></li>
+<li><p><strong>out_path</strong> (<em>str</em>) – The path to the output file.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

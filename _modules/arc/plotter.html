@@ -178,10 +178,7 @@
 <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
 
 <span class="kn">import</span> <span class="nn">py3Dmol</span> <span class="k">as</span> <span class="nn">p3D</span>
-<span class="kn">from</span> <span class="nn">ase</span> <span class="kn">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Atoms</span>
-<span class="kn">from</span> <span class="nn">ase.io</span> <span class="kn">import</span> <span class="n">write</span> <span class="k">as</span> <span class="n">ase_write</span>
-<span class="kn">from</span> <span class="nn">ase.visualize</span> <span class="kn">import</span> <span class="n">view</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">import</span> <span class="nn">qcelemental</span> <span class="k">as</span> <span class="nn">qcel</span>
 <span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
 
 <span class="kn">from</span> <span class="nn">rmgpy.data.base</span> <span class="kn">import</span> <span class="n">Entry</span>
@@ -191,11 +188,23 @@
 <span class="kn">from</span> <span class="nn">rmgpy.quantity</span> <span class="kn">import</span> <span class="n">ScalarQuantity</span>
 <span class="kn">from</span> <span class="nn">rmgpy.species</span> <span class="kn">import</span> <span class="n">Species</span>
 
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">format_level_of_theory_for_logging</span><span class="p">,</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">is_notebook</span><span class="p">,</span> <span class="n">extermum_list</span><span class="p">,</span> <span class="n">save_yaml_file</span><span class="p">,</span> \
-    <span class="n">sort_two_lists_by_the_first</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="p">(</span><span class="n">extermum_list</span><span class="p">,</span>
+                        <span class="n">format_level_of_theory_for_logging</span><span class="p">,</span>
+                        <span class="n">get_logger</span><span class="p">,</span>
+                        <span class="n">is_notebook</span><span class="p">,</span>
+                        <span class="n">save_yaml_file</span><span class="p">,</span>
+                        <span class="n">sort_two_lists_by_the_first</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">SanitizationError</span>
-<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="n">rdkit_conf_from_mol</span><span class="p">,</span> <span class="n">molecules_from_xyz</span><span class="p">,</span> <span class="n">check_xyz_dict</span><span class="p">,</span> <span class="n">str_to_xyz</span><span class="p">,</span> <span class="n">xyz_to_str</span><span class="p">,</span> \
-    <span class="n">xyz_to_x_y_z</span><span class="p">,</span> <span class="n">xyz_from_data</span><span class="p">,</span> <span class="n">remove_dummies</span><span class="p">,</span> <span class="n">get_xyz_radius</span>
+<span class="kn">from</span> <span class="nn">arc.parser</span> <span class="kn">import</span> <span class="n">parse_trajectory</span>
+<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="p">(</span><span class="n">check_xyz_dict</span><span class="p">,</span>
+                                   <span class="n">get_xyz_radius</span><span class="p">,</span>
+                                   <span class="n">molecules_from_xyz</span><span class="p">,</span>
+                                   <span class="n">remove_dummies</span><span class="p">,</span>
+                                   <span class="n">rdkit_conf_from_mol</span><span class="p">,</span>
+                                   <span class="n">str_to_xyz</span><span class="p">,</span>
+                                   <span class="n">xyz_from_data</span><span class="p">,</span>
+                                   <span class="n">xyz_to_str</span><span class="p">,</span>
+                                   <span class="n">xyz_to_x_y_z</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">arc.species.species</span> <span class="kn">import</span> <span class="n">ARCSpecies</span>
 
 
@@ -515,9 +524,17 @@
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">thermo_sources</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="draw_parity_plot"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.draw_parity_plot">[docs]</a><span class="k">def</span> <span class="nf">draw_parity_plot</span><span class="p">(</span><span class="n">var_arc</span><span class="p">,</span> <span class="n">var_rmg</span><span class="p">,</span> <span class="n">var_label</span><span class="p">,</span> <span class="n">var_units</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">pp</span><span class="p">):</span>
+<div class="viewcode-block" id="draw_parity_plot"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.draw_parity_plot">[docs]</a><span class="k">def</span> <span class="nf">draw_parity_plot</span><span class="p">(</span><span class="n">var_arc</span><span class="p">,</span> <span class="n">var_rmg</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">var_label</span><span class="p">,</span> <span class="n">var_units</span><span class="p">,</span> <span class="n">pp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draw a parity plot.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        var_arc (list): The variable calculated by ARC.</span>
+<span class="sd">        var_rmg (list): The variable estimated by RMG.</span>
+<span class="sd">        labels (list): Species labels corresponding the the data in ``var_arc`` and ``var_rmg``.</span>
+<span class="sd">        var_label (str): The variable name.</span>
+<span class="sd">        var_units (str): The variable units.</span>
+<span class="sd">        pp (PdfPages, optional): Used for storing the image as a multi-page PFD file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">var_arc</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
     <span class="n">width</span> <span class="o">=</span> <span class="mi">8</span>
@@ -741,6 +758,40 @@
         <span class="n">gv</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{xyz_str}</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">geo_path</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{filename}</span><span class="s1">.gjf&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">gv</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="save_irc_traj_animation"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.save_irc_traj_animation">[docs]</a><span class="k">def</span> <span class="nf">save_irc_traj_animation</span><span class="p">(</span><span class="n">irc_f_path</span><span class="p">,</span> <span class="n">irc_r_path</span><span class="p">,</span> <span class="n">out_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Save an IRC trajectory animation file showing the entire reaction coordinate.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        irc_f_path (str): The forward IRC computation.</span>
+<span class="sd">        irc_r_path (str): The reverse IRC computation.</span>
+<span class="sd">        out_path (str): The path to the output file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">traj1</span> <span class="o">=</span> <span class="n">parse_trajectory</span><span class="p">(</span><span class="n">irc_f_path</span><span class="p">)</span>
+    <span class="n">traj2</span> <span class="o">=</span> <span class="n">parse_trajectory</span><span class="p">(</span><span class="n">irc_r_path</span><span class="p">)</span>
+
+    <span class="n">traj</span> <span class="o">=</span> <span class="n">traj1</span><span class="p">[:</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">traj2</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">traj2</span><span class="p">[:</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">traj1</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Entering Link 1</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">traj_index</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">traj</span><span class="p">):</span>
+            <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span> <span class="o">=</span> <span class="n">xyz_to_x_y_z</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;                         Standard orientation:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; ---------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; Center     Atomic     Atomic              Coordinates (Angstroms)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; Number     Number      Type              X           Y           Z</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; ---------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]):</span>
+                <span class="n">el_num</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_Z</span><span class="p">(</span><span class="n">symbol</span><span class="p">),</span> <span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ys</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">zs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    {i + 1:&gt;5}          </span><span class="si">{el_num}</span><span class="s1">             0        </span><span class="si">{x}</span><span class="s1"> </span><span class="si">{y}</span><span class="s1"> </span><span class="si">{z}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; ---------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; GradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGrad</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39; Step number   1 out of a maximum of  29 on scan point     &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;{traj_index + 1} out of    {len(traj)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; GradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGrad</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; Normal termination of Gaussian 16</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 
 <span class="c1"># *** Files (libraries, xyz, conformers) ***</span>
