@@ -766,7 +766,7 @@ TSGuess objects.</p>
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.arkane_file">
 <code class="sig-name descname">arkane_file</code><a class="headerlink" href="#arc.species.species.ARCSpecies.arkane_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Path to the Arkane Species file generated in Processor.</p>
+<dd><p>Path to the Arkane Species file generated in processor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1178,6 +1178,7 @@ All bonded atoms are moved accordingly. The result is saved in self.initial_xyz.
 <dd class="field-even"><ul class="simple">
 <li><p><strong>InputError</strong> – If both <code class="docutils literal notranslate"><span class="pre">deg_increment</span></code> and <code class="docutils literal notranslate"><span class="pre">deg_abs</span></code> are None.</p></li>
 <li><p><strong>RotorError</strong> – If the rotor could not be identified based on the pivots.</p></li>
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">deg_increment</span></code> or <code class="docutils literal notranslate"><span class="pre">deg_abs</span></code> are of wrong type.</p></li>
 </ul>
 </dd>
 </dl>

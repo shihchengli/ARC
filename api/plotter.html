@@ -229,9 +229,21 @@ Saves an image if a species and <code class="docutils literal notranslate"><span
 
 <dl class="function">
 <dt id="arc.plotter.draw_kinetics_plots">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_kinetics_plots</code><span class="sig-paren">(</span><em class="sig-param">rxn_list</em>, <em class="sig-param">path=None</em>, <em class="sig-param">t_min=(300</em>, <em class="sig-param">'K')</em>, <em class="sig-param">t_max=(3000</em>, <em class="sig-param">'K')</em>, <em class="sig-param">t_count=50</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_kinetics_plots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_kinetics_plots" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draws plots of calculated rates and RMG’s best values for reaction rates in rxn_list
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_kinetics_plots</code><span class="sig-paren">(</span><em class="sig-param">rxn_list</em>, <em class="sig-param">T_min</em>, <em class="sig-param">T_max</em>, <em class="sig-param">T_count=50</em>, <em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_kinetics_plots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_kinetics_plots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws plots of calculated rate coefficients and RMG’s estimates.
 <cite>rxn_list</cite> has a .kinetics attribute calculated by ARC and an .rmg_reactions list with RMG rates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rxn_list</strong> (<em>list</em>) – Reactions with a .kinetics attribute calculated by ARC
+and an .rmg_reactions list with RMG rates.</p></li>
+<li><p><strong>T_min</strong> (<em>tuple</em>) – The minimum temperature to consider, e.g., (500, ‘K’).</p></li>
+<li><p><strong>T_max</strong> (<em>tuple</em>) – The maximum temperature to consider, e.g., (3000, ‘K’).</p></li>
+<li><p><strong>T_count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of temperature points between <code class="docutils literal notranslate"><span class="pre">T_min</span></code> and <code class="docutils literal notranslate"><span class="pre">T_max</span></code>.</p></li>
+<li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to the project’s output folder.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -271,7 +283,15 @@ Saves an image if a species and <code class="docutils literal notranslate"><span
 <dl class="function">
 <dt id="arc.plotter.draw_thermo_parity_plots">
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_thermo_parity_plots</code><span class="sig-paren">(</span><em class="sig-param">species_list</em>, <em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_thermo_parity_plots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_thermo_parity_plots" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draws parity plots of calculated thermo and RMG’s best values for species in species_list.</p>
+<dd><p>Draws parity plots of calculated thermo and RMG’s estimates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>species_list</strong> (<em>list</em>) – Species to compare.</p></li>
+<li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to the project’s output folder.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
