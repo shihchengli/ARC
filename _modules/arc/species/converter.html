@@ -1646,11 +1646,11 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">spc1</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="n">filter_structures</span><span class="p">)</span>
-    <span class="k">except</span> <span class="n">AtomTypeError</span><span class="p">:</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">AtomTypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
         <span class="k">pass</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">spc2</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="n">filter_structures</span><span class="p">)</span>
-    <span class="k">except</span> <span class="n">AtomTypeError</span><span class="p">:</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">AtomTypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
         <span class="k">pass</span>
 
     <span class="k">for</span> <span class="n">molecule1</span> <span class="ow">in</span> <span class="n">spc1</span><span class="o">.</span><span class="n">molecule</span><span class="p">:</span>
