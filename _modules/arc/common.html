@@ -303,22 +303,21 @@
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">server_list</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="s1">&#39;Server name could only be a string. &#39;</span>
-                                        <span class="s1">&#39;Got </span><span class="si">{0}</span><span class="s1"> which is </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">server</span><span class="p">)))</span>
+                    <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Server name could only be a string. Got </span><span class="si">{server}</span><span class="s1"> which is {type(server)}&#39;</span><span class="p">)</span>
                 <span class="n">settings</span><span class="p">[</span><span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">server_list</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="s1">&#39;Servers in the ess_settings dictionary could either be a string or a list of &#39;</span>
-                                <span class="s1">&#39;strings. Got: </span><span class="si">{0}</span><span class="s1"> which is a </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">server_list</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">server_list</span><span class="p">)))</span>
+            <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Servers in the ess_settings dictionary could either be a string or a list of &#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;strings. Got: </span><span class="si">{server_list}</span><span class="s1"> which is a {type(server_list)}&#39;</span><span class="p">)</span>
     <span class="c1"># run checks:</span>
     <span class="k">for</span> <span class="n">ess</span><span class="p">,</span> <span class="n">server_list</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">ess</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;gaussian&#39;</span><span class="p">,</span> <span class="s1">&#39;qchem&#39;</span><span class="p">,</span> <span class="s1">&#39;molpro&#39;</span><span class="p">,</span> <span class="s1">&#39;orca&#39;</span><span class="p">,</span> <span class="s1">&#39;terachem&#39;</span><span class="p">,</span> <span class="s1">&#39;onedmin&#39;</span><span class="p">,</span> <span class="s1">&#39;gromacs&#39;</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="s1">&#39;Recognized ESS software are Gaussian, QChem, Molpro, Orca, TeraChem or OneDMin. &#39;</span>
-                                <span class="s1">&#39;Got: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ess</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Recognized ESS software are Gaussian, QChem, Molpro, Orca, TeraChem or OneDMin. &#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;Got: </span><span class="si">{ess}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">server_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">server</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">servers</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
                 <span class="n">server_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">servers</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
-                <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="s1">&#39;Recognized servers are </span><span class="si">{0}</span><span class="s1">. Got: </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">server_names</span><span class="p">,</span> <span class="n">server</span><span class="p">))</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Using the following ESS settings:</span><span class="se">\n</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">settings</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Recognized servers are </span><span class="si">{server_names}</span><span class="s1">. Got: </span><span class="si">{server}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Using the following ESS settings:</span><span class="se">\n</span><span class="si">{settings}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">settings</span></div>
 
 
@@ -393,15 +392,14 @@
 <span class="sd">        project (str): The ARC project name to be logged in the header.</span>
 <span class="sd">        level: The desired logging level.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;ARC execution initiated on </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">asctime</span><span class="p">()))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;ARC execution initiated on {time.asctime()}&#39;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;###############################################################&#39;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;#                                                             #&#39;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;#                 Automatic Rate Calculator                   #&#39;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;#                            ARC                              #&#39;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;#                                                             #&#39;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;#   Version: </span><span class="si">{0}{1}</span><span class="s1">                                       #&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">VERSION</span><span class="p">,</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">VERSION</span><span class="p">))))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;#   Version: </span><span class="si">{VERSION}</span><span class="s1">{&quot; &quot; * (10 - len(VERSION))}                                       #&#39;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;#                                                             #&#39;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;###############################################################&#39;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
@@ -416,7 +414,7 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;    (running on the </span><span class="si">{branch_name}</span><span class="s1"> branch)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Starting project </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">))</span></div>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Starting project </span><span class="si">{project}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="log_footer"><a class="viewcode-back" href="../../api/common.html#arc.common.log_footer">[docs]</a><span class="k">def</span> <span class="nf">log_footer</span><span class="p">(</span><span class="n">execution_time</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>
@@ -428,8 +426,8 @@
 <span class="sd">        level: The desired logging level.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;Total execution time: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">execution_time</span><span class="p">))</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;ARC execution terminated on </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">asctime</span><span class="p">()))</span></div>
+    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Total execution time: </span><span class="si">{execution_time}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;ARC execution terminated on {time.asctime()}&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_git_commit"><a class="viewcode-back" href="../../api/common.html#arc.common.get_git_commit">[docs]</a><span class="k">def</span> <span class="nf">get_git_commit</span><span class="p">():</span>
@@ -544,11 +542,11 @@
 <span class="sd">    Args:</span>
 <span class="sd">        symbol (str): The atomic symbol.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        float: The atomic covalent radius (None if not found).</span>
-
 <span class="sd">    Raises:</span>
 <span class="sd">        TypeError: If ``symbol`` is of wrong type.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: The atomic covalent radius (None if not found).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The symbol argument must be string, got </span><span class="si">{symbol}</span><span class="s1"> which is a {type(symbol)}&#39;</span><span class="p">)</span>
@@ -735,13 +733,13 @@
 <span class="sd">        list1 (list, tuple): Entries are floats or ints (could also be None).</span>
 <span class="sd">        list2 (list, tuple): Entries could be anything.</span>
 
+<span class="sd">    Raises:</span>
+<span class="sd">        InputError: If types are wrong, or lists are not the same length.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Sorted values from list1, ignoring None entries.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Respective entries from list2.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        InputError: If types are wrong, or lists are not the same length.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">list2</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Arguments must be lists, got: {type(list1)} and {type(list2)}&#39;</span><span class="p">)</span>
@@ -778,11 +776,11 @@
 <span class="sd">        dictionary (dict): The dictionary.</span>
 <span class="sd">        value: The value.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        The key.</span>
-
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If the value could not be found in the dictionary.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The key.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
@@ -846,11 +844,12 @@
 <span class="sd">    Args:</span>
 <span class="sd">        method (str, dict): method in a model chemistry. e.g., b3lyp, cbs-qb3, am1, dlpno-ccsd(T)</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        model_chemistry_type (str): class of model chemistry.</span>
-
 <span class="sd">    Raises:</span>
 <span class="sd">        TypeError: If ``method`` is of wrong type.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        model_chemistry_type (str): The model chemistry type, one of the following:</span>
+<span class="sd">                                    &#39;composite&#39;, &#39;dft&#39;, &#39;force_field&#39;, &#39;semiempirical&#39;, or &#39;wavefunction&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">method</span> <span class="o">=</span> <span class="n">format_level_of_theory_for_logging</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
@@ -905,14 +904,14 @@
 <span class="sd">                                       e.g., {&#39;method&#39;: &#39;DLPNO-CCSD(T)-F12&#39;, &#39;basis&#39;: &#39;cc-pVTZ-F12&#39;,</span>
 <span class="sd">                                              &#39;auxiliary_basis&#39;: &#39;aug-cc-pVTZ/C cc-pVTZ-F12-CABS&#39;}</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        formatted_model_chemistry_dict (dict): The formatted model chemistry dictionary.</span>
-<span class="sd">                                               Default keys: &#39;method&#39;, &#39;basis&#39;, &#39;auxiliary_basis&#39;, &#39;dispersion&#39;</span>
-<span class="sd">        formatted_model_chemistry_str (str): The formatted model chemistry string.</span>
-<span class="sd">                                             Format: method|basis|auxiliary_basis|dispersion</span>
-
 <span class="sd">    Raises:</span>
 <span class="sd">        InputError: If ``level_of_theory`` contains illegal specifications.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        formatted_model_chemistry_dict (dict): The formatted model chemistry dictionary.</span>
+<span class="sd">                                               Default keys: &#39;method&#39;, &#39;basis&#39;, &#39;auxiliary_basis&#39;, &#39;dispersion&#39;.</span>
+<span class="sd">        formatted_model_chemistry_str (str): The formatted model chemistry string.</span>
+<span class="sd">                                             Format: method|basis|auxiliary_basis|dispersion.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">formatted_model_chemistry_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;auxiliary_basis&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;dispersion&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">level_of_theory</span><span class="p">:</span>
@@ -989,11 +988,11 @@
 <span class="sd">    Args:</span>
 <span class="sd">        level_of_theory (str or dict): job level of theory.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        level_of_theory_log_str (str): level of theory string for logging.</span>
-
 <span class="sd">    Raises:</span>
 <span class="sd">        TypeError: If ``level_of_theory`` is of wrong type.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        level_of_theory_log_str (str): level of theory string for logging.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;level_of_theory_dict must be either a dictionary or a string, got: </span><span class="si">{level_of_theory}</span><span class="s1"> &#39;</span>

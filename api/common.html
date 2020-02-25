@@ -302,14 +302,18 @@ For example:
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>method</strong> (<em>str</em><em>, </em><em>dict</em>) – method in a model chemistry. e.g., b3lyp, cbs-qb3, am1, dlpno-ccsd(T)</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>class of model chemistry.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>model_chemistry_type (str)</p>
-</dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">method</span></code> is of wrong type.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The model chemistry type, one of the following:</dt><dd><p>’composite’, ‘dft’, ‘force_field’, ‘semiempirical’, or ‘wavefunction’.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>model_chemistry_type (str)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -403,14 +407,14 @@ More examples can be found from <cite>test_format_level_of_theory_for_logging</c
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>level_of_theory</strong> (<em>str</em><em> or </em><em>dict</em>) – job level of theory.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>level of theory string for logging.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>level_of_theory_log_str (str)</p>
-</dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> is of wrong type.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>level of theory string for logging.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>level_of_theory_log_str (str)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -439,20 +443,20 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 </div></blockquote>
 </p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>The formatted model chemistry dictionary.</dt><dd><p>Default keys: ‘method’, ‘basis’, ‘auxiliary_basis’, ‘dispersion’</p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> contains illegal specifications.</p>
 </dd>
-<dt>formatted_model_chemistry_str (str): The formatted model chemistry string.</dt><dd><p>Format: method|basis|auxiliary_basis|dispersion</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The formatted model chemistry dictionary.</dt><dd><p>Default keys: ‘method’, ‘basis’, ‘auxiliary_basis’, ‘dispersion’.</p>
+</dd>
+<dt>formatted_model_chemistry_str (str): The formatted model chemistry string.</dt><dd><p>Format: method|basis|auxiliary_basis|dispersion.</p>
 </dd>
 </dl>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>formatted_model_chemistry_dict (dict)</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">level_of_theory</span></code> contains illegal specifications.</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>formatted_model_chemistry_dict (dict)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -465,14 +469,14 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – The atomic symbol.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The atomic covalent radius (None if not found).</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float</p>
-</dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">symbol</span></code> is of wrong type.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The atomic covalent radius (None if not found).</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -632,11 +636,11 @@ Does not check for value unicity.</p>
 <li><p><strong>value</strong> – The value.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The key.</p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the value could not be found in the dictionary.</p>
 </dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If the value could not be found in the dictionary.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The key.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -716,20 +720,20 @@ to accommodate for dictionaries as entries of list2, otherwise a
 <li><p><strong>list2</strong> (<em>list</em><em>, </em><em>tuple</em>) – Entries could be anything.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Sorted values from list1, ignoring None entries.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Respective entries from list2.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>InputError</strong> – If types are wrong, or lists are not the same length.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Sorted values from list1, ignoring None entries.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Respective entries from list2.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
