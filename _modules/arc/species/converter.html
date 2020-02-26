@@ -169,6 +169,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">pybel</span>
+<span class="kn">import</span> <span class="nn">qcelemental</span> <span class="k">as</span> <span class="nn">qcel</span>
 <span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdMolTransforms</span> <span class="k">as</span> <span class="n">rdMT</span>
 
@@ -394,6 +395,22 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">comment</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ConverterError</span><span class="p">(</span><span class="s1">&#39;The comment attribute cannot be a multiline string, got:</span><span class="se">\n</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">comment</span><span class="p">)))</span>
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]))</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">comment</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+
+
+<div class="viewcode-block" id="xyz_to_dmat"><a class="viewcode-back" href="../../../api/converter.html#arc.species.converter.xyz_to_dmat">[docs]</a><span class="k">def</span> <span class="nf">xyz_to_dmat</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert Cartesian coordinates to a distance matrix.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xyz_dict (dict): The Cartesian coordinates,</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: the distance matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xyz_dict</span> <span class="o">=</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">)</span>
+    <span class="n">dmat</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">distance_matrix</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xyz_to_coords_list</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">)),</span>
+                                          <span class="n">b</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xyz_to_coords_list</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">dmat</span></div>
 
 
 <div class="viewcode-block" id="xyz_file_format_to_xyz"><a class="viewcode-back" href="../../../api/converter.html#arc.species.converter.xyz_file_format_to_xyz">[docs]</a><span class="k">def</span> <span class="nf">xyz_file_format_to_xyz</span><span class="p">(</span><span class="n">xyz_file</span><span class="p">):</span>
