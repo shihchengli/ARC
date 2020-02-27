@@ -412,6 +412,8 @@
 </li>
       <li><a href="api/job.html#arc.job.job.Job.comments">comments (arc.job.job.Job attribute)</a>
 </li>
+      <li><a href="api/converter.html#arc.species.converter.compare_confs">compare_confs() (in module arc.species.converter)</a>
+</li>
       <li><a href="api/processor.html#arc.processor.compare_rates">compare_rates() (in module arc.processor)</a>
 </li>
       <li><a href="api/processor.html#arc.processor.compare_thermo">compare_thermo() (in module arc.processor)</a>
@@ -420,9 +422,7 @@
 </li>
       <li><a href="api/processor.html#arc.processor.compare_transport">compare_transport() (in module arc.processor)</a>
 </li>
-      <li><a href="api/conformers.html#arc.species.conformers.compare_xyz">compare_xyz() (in module arc.species.conformers)</a>
-</li>
-      <li><a href="api/conformers.html#arc.species.conformers.compare_zmats">compare_zmats() (in module arc.species.conformers)</a>
+      <li><a href="api/converter.html#arc.species.converter.compare_zmats">compare_zmats() (in module arc.species.converter)</a>
 </li>
       <li><a href="api/main.html#arc.main.ARC.composite_method">composite_method (arc.main.ARC attribute)</a>
 
@@ -462,12 +462,6 @@
 </li>
       <li><a href="api/conformers.html#arc.species.conformers.conformers_combinations_by_lowest_conformer">conformers_combinations_by_lowest_conformer() (in module arc.species.conformers)</a>
 </li>
-      <li><a href="api/main.html#arc.main.ARC.confs_to_dft">confs_to_dft (arc.main.ARC attribute)</a>
-
-      <ul>
-        <li><a href="api/scheduler.html#arc.scheduler.Scheduler.confs_to_dft">(arc.scheduler.Scheduler attribute)</a>
-</li>
-      </ul></li>
       <li><a href="api/ssh.html#arc.job.ssh.SSHClient.connect">connect() (arc.job.ssh.SSHClient method)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.consider_all_diastereomers">consider_all_diastereomers (arc.species.species.ARCSpecies attribute)</a>
@@ -618,6 +612,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.e0">e0 (arc.species.species.ARCSpecies attribute)</a>
 </li>
+      <li><a href="api/main.html#arc.main.ARC.e_confs">e_confs (arc.main.ARC attribute)</a>
+
+      <ul>
+        <li><a href="api/scheduler.html#arc.scheduler.Scheduler.e_confs">(arc.scheduler.Scheduler attribute)</a>
+</li>
+      </ul></li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.e_elect">e_elect (arc.species.species.ARCSpecies attribute)</a>
 </li>
       <li><a href="api/converter.html#arc.species.converter.elementize">elementize() (in module arc.species.converter)</a>
@@ -1030,14 +1030,20 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/job.html#arc.job.job.Job.n_atoms">n_atoms (arc.job.job.Job attribute)</a>
 </li>
+      <li><a href="api/main.html#arc.main.ARC.n_confs">n_confs (arc.main.ARC attribute)</a>
+
+      <ul>
+        <li><a href="api/scheduler.html#arc.scheduler.Scheduler.n_confs">(arc.scheduler.Scheduler attribute)</a>
+</li>
+      </ul></li>
       <li><a href="api/species.html#arc.species.species.nearly_equal">nearly_equal() (in module arc.species.species)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.TSGuess.neb">neb() (arc.species.species.TSGuess method)</a>
 </li>
-      <li><a href="api/species.html#arc.species.species.ARCSpecies.neg_freqs_trshed">neg_freqs_trshed (arc.species.species.ARCSpecies attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/species.html#arc.species.species.ARCSpecies.neg_freqs_trshed">neg_freqs_trshed (arc.species.species.ARCSpecies attribute)</a>
+</li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.number_of_atoms">number_of_atoms() (arc.species.species.ARCSpecies property)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.number_of_heavy_atoms">number_of_heavy_atoms() (arc.species.species.ARCSpecies property)</a>

@@ -173,18 +173,23 @@
 <span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdMolTransforms</span> <span class="k">as</span> <span class="n">rdMT</span>
 
-<span class="kn">from</span> <span class="nn">arkane.common</span> <span class="kn">import</span> <span class="n">symbol_by_number</span><span class="p">,</span> <span class="n">mass_by_symbol</span><span class="p">,</span> <span class="n">get_element_mass</span>
+<span class="kn">from</span> <span class="nn">arkane.common</span> <span class="kn">import</span> <span class="n">get_element_mass</span><span class="p">,</span> <span class="n">mass_by_symbol</span><span class="p">,</span> <span class="n">symbol_by_number</span>
 <span class="kn">from</span> <span class="nn">rmgpy.exceptions</span> <span class="kn">import</span> <span class="n">AtomTypeError</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.molecule</span> <span class="kn">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Bond</span><span class="p">,</span> <span class="n">Molecule</span>
 <span class="kn">from</span> <span class="nn">rmgpy.quantity</span> <span class="kn">import</span> <span class="n">ArrayQuantity</span>
 <span class="kn">from</span> <span class="nn">rmgpy.species</span> <span class="kn">import</span> <span class="n">Species</span>
 <span class="kn">from</span> <span class="nn">rmgpy.statmech</span> <span class="kn">import</span> <span class="n">Conformer</span>
 
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">is_str_float</span><span class="p">,</span> <span class="n">get_atom_radius</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">almost_equal_lists</span><span class="p">,</span> <span class="n">get_atom_radius</span><span class="p">,</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">is_str_float</span>
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">ConverterError</span><span class="p">,</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">SanitizationError</span><span class="p">,</span> <span class="n">SpeciesError</span>
 <span class="kn">from</span> <span class="nn">arc.species.xyz_to_2d</span> <span class="kn">import</span> <span class="n">MolGraph</span>
-<span class="kn">from</span> <span class="nn">arc.species.zmat</span> <span class="kn">import</span> <span class="n">zmat_to_coords</span><span class="p">,</span> <span class="n">get_atom_indices_from_zmat_parameter</span><span class="p">,</span> <span class="n">xyz_to_zmat</span><span class="p">,</span> <span class="n">KEY_FROM_LEN</span><span class="p">,</span> \
-    <span class="n">get_parameter_from_atom_indices</span><span class="p">,</span> <span class="n">get_all_neighbors</span>
+<span class="kn">from</span> <span class="nn">arc.species.zmat</span> <span class="kn">import</span> <span class="p">(</span><span class="n">KEY_FROM_LEN</span><span class="p">,</span>
+                              <span class="n">_compare_zmats</span><span class="p">,</span>
+                              <span class="n">get_all_neighbors</span><span class="p">,</span>
+                              <span class="n">get_atom_indices_from_zmat_parameter</span><span class="p">,</span>
+                              <span class="n">get_parameter_from_atom_indices</span><span class="p">,</span>
+                              <span class="n">zmat_to_coords</span><span class="p">,</span>
+                              <span class="n">xyz_to_zmat</span><span class="p">)</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
@@ -1149,7 +1154,7 @@
 <span class="sd">        Molecule: The respective RMG Molecule object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">rmg_mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">()</span><span class="o">.</span><span class="n">from_inchi</span><span class="p">(</span><span class="n">inchi</span><span class="p">)</span>
+        <span class="n">rmg_mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">()</span><span class="o">.</span><span class="n">from_inchi</span><span class="p">(</span><span class="n">inchi</span><span class="p">,</span> <span class="n">raise_atomtype_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">AtomTypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Got the following Error when trying to create an RMG Molecule object from InChI:&#39;</span>
                        <span class="s1">&#39;</span><span class="se">\n</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
@@ -1484,8 +1489,8 @@
             <span class="n">bond</span> <span class="o">=</span> <span class="n">Bond</span><span class="p">(</span><span class="n">atom_mapping</span><span class="p">[</span><span class="n">atom1</span><span class="p">],</span> <span class="n">atom_mapping</span><span class="p">[</span><span class="n">atom2</span><span class="p">],</span> <span class="n">bond_order</span><span class="p">)</span>
             <span class="n">new_mol</span><span class="o">.</span><span class="n">add_bond</span><span class="p">(</span><span class="n">bond</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">new_mol</span><span class="o">.</span><span class="n">update_atomtypes</span><span class="p">()</span>
-    <span class="k">except</span> <span class="p">(</span><span class="n">AtomTypeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+        <span class="n">new_mol</span><span class="o">.</span><span class="n">update_atomtypes</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
         <span class="k">pass</span>
     <span class="n">new_mol</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">multiplicity</span>
     <span class="k">return</span> <span class="n">new_mol</span></div>
@@ -1507,7 +1512,7 @@
         <span class="n">atom</span> <span class="o">=</span> <span class="n">Atom</span><span class="p">(</span><span class="n">element</span><span class="o">=</span><span class="n">symbol</span><span class="p">)</span>
         <span class="n">atom</span><span class="o">.</span><span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">coord</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
         <span class="n">mol</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">connect_the_dots</span><span class="p">()</span>  <span class="c1"># only adds single bonds, but we don&#39;t care</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">connect_the_dots</span><span class="p">(</span><span class="n">raise_atomtype_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># only adds single bonds, but we don&#39;t care</span>
     <span class="k">return</span> <span class="n">mol</span></div>
 
 
@@ -1753,6 +1758,67 @@
     <span class="n">atom_r</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">get_atom_radius</span><span class="p">(</span><span class="n">si</span><span class="p">)</span> <span class="k">if</span> <span class="n">get_atom_radius</span><span class="p">(</span><span class="n">si</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">1.50</span> <span class="k">for</span> <span class="n">si</span> <span class="ow">in</span> <span class="n">border_elements</span><span class="p">])</span>
     <span class="n">radius</span> <span class="o">=</span> <span class="n">r</span> <span class="o">**</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="n">atom_r</span>
     <span class="k">return</span> <span class="n">radius</span></div>
+
+
+<div class="viewcode-block" id="compare_zmats"><a class="viewcode-back" href="../../../api/converter.html#arc.species.converter.compare_zmats">[docs]</a><span class="k">def</span> <span class="nf">compare_zmats</span><span class="p">(</span><span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">r_tol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">a_tol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">d_tol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">symmetric_torsions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compare internal coordinates of two conformers of the same species.</span>
+<span class="sd">    The comparison could principally be done using all dihedrals, which is information this module readily has,</span>
+<span class="sd">    but this function uses Z matrices instead for better robustness (this way rings are considered as well).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        z1 (dict): Z matrix of conformer 1.</span>
+<span class="sd">        z2 (dict): Z matrix of conformer 2.</span>
+<span class="sd">        r_tol (float, optional): A tolerance for comparing distances (in Angstrom).</span>
+<span class="sd">        a_tol (float, optional): A tolerance for comparing angles (in degrees).</span>
+<span class="sd">        d_tol (float, optional): A tolerance for comparing dihedral angles (in degrees).</span>
+<span class="sd">        verbose (bool, optional): Whether to print a reason for determining the zmats are different if they are,</span>
+<span class="sd">                                  ``True`` to print.</span>
+<span class="sd">        symmetric_torsions (dict, optional): Keys are tuples scan indices (0- or 1-indexed), values are internal</span>
+<span class="sd">                                             rotation symmetry numbers (sigma). Conformers which only differ by an</span>
+<span class="sd">                                             integer number of 360 degrees / sigma are considered identical.</span>
+<span class="sd">        index (int, optional): Either ``0`` or ``1`` to specify the starting index in the keys of ``symmetric_torsions``</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Whether the coordinates represent the same conformer within the given tolerance, ``True`` if they do.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        InputError: If ``xyz1`` and ``xyz2`` are of wrong type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># convert the keys of symmetric_torsions to 0-indexed torsion tuples</span>
+    <span class="n">symmetric_torsions</span> <span class="o">=</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">([</span><span class="n">torsion</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">index</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]):</span> <span class="n">sigma</span>
+                          <span class="k">for</span> <span class="n">torsion</span><span class="p">,</span> <span class="n">sigma</span> <span class="ow">in</span> <span class="n">symmetric_torsions</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span> <span class="k">if</span> <span class="n">symmetric_torsions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="p">[</span><span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">]):</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;xyz1 and xyz2 must be dictionaries, got {type(z1)} and {type(z2)}, respectively&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">z1</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">z2</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">_compare_zmats</span><span class="p">(</span><span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">r_tol</span><span class="o">=</span><span class="n">r_tol</span><span class="p">,</span> <span class="n">a_tol</span><span class="o">=</span><span class="n">a_tol</span><span class="p">,</span> <span class="n">d_tol</span><span class="o">=</span><span class="n">d_tol</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                          <span class="n">symmetric_torsions</span><span class="o">=</span><span class="n">symmetric_torsions</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compare_confs"><a class="viewcode-back" href="../../../api/converter.html#arc.species.converter.compare_confs">[docs]</a><span class="k">def</span> <span class="nf">compare_confs</span><span class="p">(</span><span class="n">xyz1</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                  <span class="n">xyz2</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                  <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
+                  <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
+                  <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compare two Cartesian coordinates representing conformers using distance matrices.</span>
+
+<span class="sd">    The relative difference (``rtol`` * abs(value in xyz2)) and the absolute difference ``atol``</span>
+<span class="sd">    are added together to compare against the absolute difference between (value in xyz1) and (value in xyz2).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xyz1 (dict): Conformer 1.</span>
+<span class="sd">        xyz2 (dict): Conformer 2.</span>
+<span class="sd">        rtol (float): The relative tolerance parameter (see Notes).</span>
+<span class="sd">        atol (float): The absolute tolerance parameter (see Notes).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Whether the two conformers have almost equal atom distances. ``True`` if they do.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xyz1</span><span class="p">,</span> <span class="n">xyz2</span> <span class="o">=</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">xyz1</span><span class="p">),</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">xyz2</span><span class="p">)</span>
+    <span class="n">dmat1</span><span class="p">,</span> <span class="n">dmat2</span> <span class="o">=</span> <span class="n">xyz_to_dmat</span><span class="p">(</span><span class="n">xyz1</span><span class="p">),</span> <span class="n">xyz_to_dmat</span><span class="p">(</span><span class="n">xyz2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">almost_equal_lists</span><span class="p">(</span><span class="n">dmat1</span><span class="p">,</span> <span class="n">dmat2</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

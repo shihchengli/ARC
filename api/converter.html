@@ -273,6 +273,64 @@ If a map isn’t given, a trivial one will be added.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="arc.species.converter.compare_confs">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">compare_confs</code><span class="sig-paren">(</span><em class="sig-param">xyz1: dict</em>, <em class="sig-param">xyz2: dict</em>, <em class="sig-param">rtol: float = 1e-05</em>, <em class="sig-param">atol: float = 1e-05</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/species/converter.html#compare_confs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.compare_confs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two Cartesian coordinates representing conformers using distance matrices.</p>
+<p>The relative difference (<code class="docutils literal notranslate"><span class="pre">rtol</span></code> * abs(value in xyz2)) and the absolute difference <code class="docutils literal notranslate"><span class="pre">atol</span></code>
+are added together to compare against the absolute difference between (value in xyz1) and (value in xyz2).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyz1</strong> (<em>dict</em>) – Conformer 1.</p></li>
+<li><p><strong>xyz2</strong> (<em>dict</em>) – Conformer 2.</p></li>
+<li><p><strong>rtol</strong> (<em>float</em>) – The relative tolerance parameter (see Notes).</p></li>
+<li><p><strong>atol</strong> (<em>float</em>) – The absolute tolerance parameter (see Notes).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether the two conformers have almost equal atom distances. <code class="docutils literal notranslate"><span class="pre">True</span></code> if they do.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.species.converter.compare_zmats">
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">compare_zmats</code><span class="sig-paren">(</span><em class="sig-param">z1</em>, <em class="sig-param">z2</em>, <em class="sig-param">r_tol=0.01</em>, <em class="sig-param">a_tol=2</em>, <em class="sig-param">d_tol=2</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">symmetric_torsions=None</em>, <em class="sig-param">index=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#compare_zmats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.compare_zmats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare internal coordinates of two conformers of the same species.
+The comparison could principally be done using all dihedrals, which is information this module readily has,
+but this function uses Z matrices instead for better robustness (this way rings are considered as well).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z1</strong> (<em>dict</em>) – Z matrix of conformer 1.</p></li>
+<li><p><strong>z2</strong> (<em>dict</em>) – Z matrix of conformer 2.</p></li>
+<li><p><strong>r_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – A tolerance for comparing distances (in Angstrom).</p></li>
+<li><p><strong>a_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – A tolerance for comparing angles (in degrees).</p></li>
+<li><p><strong>d_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – A tolerance for comparing dihedral angles (in degrees).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print a reason for determining the zmats are different if they are,
+<code class="docutils literal notranslate"><span class="pre">True</span></code> to print.</p></li>
+<li><p><strong>symmetric_torsions</strong> (<em>dict</em><em>, </em><em>optional</em>) – Keys are tuples scan indices (0- or 1-indexed), values are internal
+rotation symmetry numbers (sigma). Conformers which only differ by an
+integer number of 360 degrees / sigma are considered identical.</p></li>
+<li><p><strong>index</strong> (<em>int</em><em>, </em><em>optional</em>) – Either <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code> to specify the starting index in the keys of <code class="docutils literal notranslate"><span class="pre">symmetric_torsions</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether the coordinates represent the same conformer within the given tolerance, <code class="docutils literal notranslate"><span class="pre">True</span></code> if they do.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">xyz1</span></code> and <code class="docutils literal notranslate"><span class="pre">xyz2</span></code> are of wrong type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="arc.species.converter.elementize">
 <code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">elementize</code><span class="sig-paren">(</span><em class="sig-param">atom</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#elementize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.elementize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the atom type of an RMG:Atom object into its general parent element atom type (e.g., <cite>S4d</cite> into <cite>S</cite>).</p>

@@ -185,7 +185,7 @@
 Includes spawning, terminating, checking, and troubleshooting various jobs</p>
 <dl class="class">
 <dt id="arc.scheduler.Scheduler">
-<em class="property">class </em><code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">Scheduler</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">ess_settings</em>, <em class="sig-param">species_list</em>, <em class="sig-param">project_directory</em>, <em class="sig-param">composite_method=''</em>, <em class="sig-param">conformer_level=''</em>, <em class="sig-param">opt_level=''</em>, <em class="sig-param">freq_level=''</em>, <em class="sig-param">sp_level=''</em>, <em class="sig-param">scan_level=''</em>, <em class="sig-param">ts_guess_level=''</em>, <em class="sig-param">irc_level=''</em>, <em class="sig-param">orbitals_level=''</em>, <em class="sig-param">adaptive_levels=None</em>, <em class="sig-param">rmg_database=None</em>, <em class="sig-param">job_types=None</em>, <em class="sig-param">job_additional_options=None</em>, <em class="sig-param">solvent=None</em>, <em class="sig-param">job_shortcut_keywords=None</em>, <em class="sig-param">rxn_list=None</em>, <em class="sig-param">bath_gas=None</em>, <em class="sig-param">restart_dict=None</em>, <em class="sig-param">max_job_time=120</em>, <em class="sig-param">allow_nonisomorphic_2d=False</em>, <em class="sig-param">memory=14</em>, <em class="sig-param">testing=False</em>, <em class="sig-param">dont_gen_confs=None</em>, <em class="sig-param">confs_to_dft=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">Scheduler</code><span class="sig-paren">(</span><em class="sig-param">project: str</em>, <em class="sig-param">ess_settings: dict</em>, <em class="sig-param">species_list: list</em>, <em class="sig-param">project_directory: str</em>, <em class="sig-param">composite_method: str = ''</em>, <em class="sig-param">conformer_level: str = ''</em>, <em class="sig-param">opt_level: str = ''</em>, <em class="sig-param">freq_level: str = ''</em>, <em class="sig-param">sp_level: str = ''</em>, <em class="sig-param">scan_level: str = ''</em>, <em class="sig-param">ts_guess_level: str = ''</em>, <em class="sig-param">irc_level: str = ''</em>, <em class="sig-param">orbitals_level: str = ''</em>, <em class="sig-param">adaptive_levels: dict = None</em>, <em class="sig-param">rmg_database=None</em>, <em class="sig-param">job_types: dict = None</em>, <em class="sig-param">job_additional_options: dict = None</em>, <em class="sig-param">solvent: dict = None</em>, <em class="sig-param">job_shortcut_keywords: dict = None</em>, <em class="sig-param">rxn_list: list = None</em>, <em class="sig-param">bath_gas: str = None</em>, <em class="sig-param">restart_dict: dict = None</em>, <em class="sig-param">max_job_time: float = 120</em>, <em class="sig-param">allow_nonisomorphic_2d: bool = False</em>, <em class="sig-param">memory: float = 14</em>, <em class="sig-param">testing: bool = False</em>, <em class="sig-param">dont_gen_confs: list = None</em>, <em class="sig-param">n_confs: int = None</em>, <em class="sig-param">e_confs: float = 5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler" title="Permalink to this definition">¶</a></dt>
 <dd><p>ARC’s Scheduler class. Creates jobs, submits, checks status, troubleshoots.
 Each species in <cite>species_list</cite> has to have a unique label.</p>
 <p>Dictionary structures:</p>
@@ -260,11 +260,13 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p></li>
 <li><p><strong>max_job_time</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximal allowed job time on the server in hours (can be fractional).</p></li>
 <li><p><strong>allow_nonisomorphic_2d</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to optimize species even if they do not have a 3D conformer
 that is isomorphic to the 2D graph representation.</p></li>
-<li><p><strong>memory</strong> (<em>int</em><em>, </em><em>optional</em>) – The total allocated job memory in GB (14 by default).</p></li>
+<li><p><strong>memory</strong> (<em>float</em><em>, </em><em>optional</em>) – The total allocated job memory in GB (14 by default).</p></li>
 <li><p><strong>testing</strong> (<em>bool</em><em>, </em><em>optional</em>) – Used for internal ARC testing (generating the object w/o executing it).</p></li>
 <li><p><strong>dont_gen_confs</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of species labels for which conformer jobs were loaded from a restart
 file, or user-requested. Additional conformer generation should be avoided.</p></li>
-<li><p><strong>confs_to_dft</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of lowest MD conformers to DFT at the conformers_level.</p></li>
+<li><p><strong>n_confs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of lowest force field conformers to consider.</p></li>
+<li><p><strong>e_confs</strong> (<em>float</em><em>, </em><em>optional</em>) – The energy threshold in kJ/mol above the lowest energy conformer below which
+force field conformers are considered.</p></li>
 <li><p><strong>solvent</strong> (<em>dict</em>) – <p>This argument, if not None, requests that a calculation be performed in the presence of a
 solvent by placing the solute in a cavity within the solvent reaction field.
 Keys are:
@@ -539,9 +541,20 @@ or user-requested. Additional conformer generation should be avoided for them.</
 </dd></dl>
 
 <dl class="attribute">
-<dt id="arc.scheduler.Scheduler.confs_to_dft">
-<code class="sig-name descname">confs_to_dft</code><a class="headerlink" href="#arc.scheduler.Scheduler.confs_to_dft" title="Permalink to this definition">¶</a></dt>
-<dd><p>The number of lowest MD conformers to DFT at the conformers_level.</p>
+<dt id="arc.scheduler.Scheduler.memory">
+<code class="sig-name descname">memory</code><a class="headerlink" href="#arc.scheduler.Scheduler.memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total allocated job memory in GB (14 by default).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.scheduler.Scheduler.n_confs">
+<code class="sig-name descname">n_confs</code><a class="headerlink" href="#arc.scheduler.Scheduler.n_confs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of lowest force field conformers to consider.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -550,12 +563,13 @@ or user-requested. Additional conformer generation should be avoided for them.</
 </dd></dl>
 
 <dl class="attribute">
-<dt id="arc.scheduler.Scheduler.memory">
-<code class="sig-name descname">memory</code><a class="headerlink" href="#arc.scheduler.Scheduler.memory" title="Permalink to this definition">¶</a></dt>
-<dd><p>The total allocated job memory in GB (14 by default).</p>
+<dt id="arc.scheduler.Scheduler.e_confs">
+<code class="sig-name descname">e_confs</code><a class="headerlink" href="#arc.scheduler.Scheduler.e_confs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The energy threshold in kJ/mol above the lowest energy conformer below which
+force field conformers are considered.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>

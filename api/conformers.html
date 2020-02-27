@@ -189,7 +189,6 @@ while atoms in Molecules are 0-indexed.</p>
 </div>
 <p>conformers is a list of dictionaries, each with the following keys:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;xyz&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">dict</span><span class="o">&gt;</span><span class="p">,</span>
- <span class="s1">&#39;zmat&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">dict</span><span class="o">&gt;</span><span class="p">,</span>
  <span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">,</span>
  <span class="s1">&#39;FF energy&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">float</span><span class="o">&gt;</span><span class="p">,</span>
  <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">str</span><span class="o">&gt;</span><span class="p">,</span>
@@ -293,67 +292,8 @@ by converting it to a tuple deterministically.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="arc.species.conformers.compare_xyz">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">compare_xyz</code><span class="sig-paren">(</span><em class="sig-param">xyz1</em>, <em class="sig-param">xyz2</em>, <em class="sig-param">precision=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#compare_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.compare_xyz" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compare coordinates of two conformers of the same species. Not checking isotopes.
-compare_zmats() is much more accurate, use this function only if the conformers do not have the <cite>zmat</cite> attribute.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>xyz1</strong> (<em>dict</em>) – Coordinates of conformer 1 in either string or array format.</p></li>
-<li><p><strong>xyz2</strong> (<em>dict</em>) – Coordinates of conformer 2 in either string or array format.</p></li>
-<li><p><strong>precision</strong> (<em>float</em><em>, </em><em>optional</em>) – The allowed difference threshold between coordinates, in Angstroms.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Whether the coordinates represent the same conformer within the given <code class="docutils literal notranslate"><span class="pre">precision</span></code>, <code class="docutils literal notranslate"><span class="pre">True</span></code> if they do.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">xyz1</span></code> and <code class="docutils literal notranslate"><span class="pre">xyz2</span></code> are of wrong type or have different elements (not considering isotopes).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="arc.species.conformers.compare_zmats">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">compare_zmats</code><span class="sig-paren">(</span><em class="sig-param">z1</em>, <em class="sig-param">z2</em>, <em class="sig-param">r_tol=0.01</em>, <em class="sig-param">a_tol=2</em>, <em class="sig-param">d_tol=2</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">symmetric_torsions=None</em>, <em class="sig-param">index=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#compare_zmats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.compare_zmats" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compare internal coordinates of two conformers of the same species.
-The comparison could principally be done using all dihedrals, which is information this module readily has,
-but this function uses Z matrices instead for better robustness (this way rings are considered as well).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>z1</strong> (<em>dict</em>) – Z matrix of conformer 1.</p></li>
-<li><p><strong>z2</strong> (<em>dict</em>) – Z matrix of conformer 2.</p></li>
-<li><p><strong>r_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – A tolerance for comparing distances (in Angstrom).</p></li>
-<li><p><strong>a_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – A tolerance for comparing angles (in degrees).</p></li>
-<li><p><strong>d_tol</strong> (<em>float</em><em>, </em><em>optional</em>) – A tolerance for comparing dihedral angles (in degrees).</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print a reason for determining the zmats are different if they are,
-<code class="docutils literal notranslate"><span class="pre">True</span></code> to print.</p></li>
-<li><p><strong>symmetric_torsions</strong> (<em>dict</em><em>, </em><em>optional</em>) – Keys are tuples scan indices (0- or 1-indexed), values are internal
-rotation symmetry numbers (sigma). Conformers which only differ by an
-integer number of 360 degrees / sigma are considered identical.</p></li>
-<li><p><strong>index</strong> (<em>int</em><em>, </em><em>optional</em>) – Either <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code> to specify the starting index in the keys of <code class="docutils literal notranslate"><span class="pre">symmetric_torsions</span></code></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Whether the coordinates represent the same conformer within the given tolerance, <code class="docutils literal notranslate"><span class="pre">True</span></code> if they do.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">xyz1</span></code> and <code class="docutils literal notranslate"><span class="pre">xyz2</span></code> are of wrong type.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
 <dt id="arc.species.conformers.conformers_combinations_by_lowest_conformer">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">conformers_combinations_by_lowest_conformer</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol</em>, <em class="sig-param">base_xyz</em>, <em class="sig-param">multiple_tors</em>, <em class="sig-param">multiple_sampling_points</em>, <em class="sig-param">len_conformers=-1</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">max_combination_iterations=25</em>, <em class="sig-param">torsion_angles=None</em>, <em class="sig-param">multiple_sampling_points_dict=None</em>, <em class="sig-param">use_zmats=True</em>, <em class="sig-param">wells_dict=None</em>, <em class="sig-param">de_threshold=None</em>, <em class="sig-param">plot_path=False</em>, <em class="sig-param">symmetries=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#conformers_combinations_by_lowest_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.conformers_combinations_by_lowest_conformer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">conformers_combinations_by_lowest_conformer</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol</em>, <em class="sig-param">base_xyz</em>, <em class="sig-param">multiple_tors</em>, <em class="sig-param">multiple_sampling_points</em>, <em class="sig-param">len_conformers=-1</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">max_combination_iterations=25</em>, <em class="sig-param">torsion_angles=None</em>, <em class="sig-param">multiple_sampling_points_dict=None</em>, <em class="sig-param">wells_dict=None</em>, <em class="sig-param">de_threshold=None</em>, <em class="sig-param">plot_path=False</em>, <em class="sig-param">symmetries=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#conformers_combinations_by_lowest_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.conformers_combinations_by_lowest_conformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iteratively modify dihedrals in the lowest conformer (each iteration deduces a new lowest conformer),
 until convergence.</p>
 <dl class="field-list simple">
@@ -378,9 +318,6 @@ corresponding angles from conformers.</p></li>
 If None, the plot will not be shown (nor saved).</p></li>
 <li><p><strong>symmetries</strong> (<em>dict</em><em>, </em><em>optional</em>) – Keys are tuples scan indices (1-indexed), values are internal
 rotation symmetry numbers (sigma).</p></li>
-<li><p><strong>use_zmats</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to assign a Z Matrix to each conformer which will be used for detecting
-similar conformers to a certain tolerance. It might be memory-intensive to large
-species, though.  <code class="docutils literal notranslate"><span class="pre">True</span></code> to use Z Matrices. <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -394,7 +331,7 @@ species, though.  <code class="docutils literal notranslate"><span class="pre">T
 
 <dl class="function">
 <dt id="arc.species.conformers.deduce_new_conformers">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">deduce_new_conformers</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">conformers</em>, <em class="sig-param">torsions</em>, <em class="sig-param">tops</em>, <em class="sig-param">mol_list</em>, <em class="sig-param">smeared_scan_res=None</em>, <em class="sig-param">plot_path=None</em>, <em class="sig-param">combination_threshold=1000</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">max_combination_iterations=25</em>, <em class="sig-param">diastereomers=None</em>, <em class="sig-param">de_threshold=None</em>, <em class="sig-param">use_zmats=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#deduce_new_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.deduce_new_conformers" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">deduce_new_conformers</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">conformers</em>, <em class="sig-param">torsions</em>, <em class="sig-param">tops</em>, <em class="sig-param">mol_list</em>, <em class="sig-param">smeared_scan_res=None</em>, <em class="sig-param">plot_path=None</em>, <em class="sig-param">combination_threshold=1000</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">max_combination_iterations=25</em>, <em class="sig-param">diastereomers=None</em>, <em class="sig-param">de_threshold=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#deduce_new_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.deduce_new_conformers" title="Permalink to this definition">¶</a></dt>
 <dd><p>By knowing the existing torsion wells, get the geometries of all important conformers.
 Validate that atoms don’t collide in the generated conformers (don’t consider ones where they do).</p>
 <dl class="field-list simple">
@@ -415,9 +352,6 @@ If None, the plot will not be shown (nor saved).</p></li>
 representing specific diastereomers to keep.</p></li>
 <li><p><strong>de_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – An energy threshold (in kJ/mol) above which wells in a torsion
 will not be considered.</p></li>
-<li><p><strong>use_zmats</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to assign a Z Matrix to each conformer which will be used for detecting
-similar conformers to a certain tolerance. It might be memory-intensive to large
-species, though.  <code class="docutils literal notranslate"><span class="pre">True</span></code> to use Z Matrices. <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -659,7 +593,7 @@ We don’t care about the actual rotor symmetry number here, since we plan to ju
 
 <dl class="function">
 <dt id="arc.species.conformers.generate_all_combinations">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">generate_all_combinations</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol</em>, <em class="sig-param">base_xyz</em>, <em class="sig-param">multiple_tors</em>, <em class="sig-param">multiple_sampling_points</em>, <em class="sig-param">len_conformers=-1</em>, <em class="sig-param">torsions=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">use_zmats=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_all_combinations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.generate_all_combinations" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">generate_all_combinations</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol</em>, <em class="sig-param">base_xyz</em>, <em class="sig-param">multiple_tors</em>, <em class="sig-param">multiple_sampling_points</em>, <em class="sig-param">len_conformers=-1</em>, <em class="sig-param">torsions=None</em>, <em class="sig-param">force_field='MMFF94s'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_all_combinations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.generate_all_combinations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate all combinations of torsion wells from a base conformer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -673,9 +607,6 @@ to torsions in multiple_tors.</p></li>
 <li><p><strong>len_conformers</strong> (<em>int</em><em>, </em><em>optional</em>) – The length of the existing conformers list (for consecutive numbering).</p></li>
 <li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of force field to use.</p></li>
 <li><p><strong>torsions</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of all possible torsions in the molecule. Will be determined if not given.</p></li>
-<li><p><strong>use_zmats</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to assign a Z Matrix to each conformer which will be used for detecting
-similar conformers to a certain tolerance. It might be memory-intensive to large
-species, though.  <code class="docutils literal notranslate"><span class="pre">True</span></code> to use Z Matrices. <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -689,7 +620,7 @@ species, though.  <code class="docutils literal notranslate"><span class="pre">T
 
 <dl class="function">
 <dt id="arc.species.conformers.generate_conformer_combinations">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">generate_conformer_combinations</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol</em>, <em class="sig-param">base_xyz</em>, <em class="sig-param">hypothetical_num_comb</em>, <em class="sig-param">multiple_tors</em>, <em class="sig-param">multiple_sampling_points</em>, <em class="sig-param">combination_threshold=1000</em>, <em class="sig-param">len_conformers=-1</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">max_combination_iterations=25</em>, <em class="sig-param">plot_path=None</em>, <em class="sig-param">torsion_angles=None</em>, <em class="sig-param">multiple_sampling_points_dict=None</em>, <em class="sig-param">wells_dict=None</em>, <em class="sig-param">de_threshold=None</em>, <em class="sig-param">symmetries=None</em>, <em class="sig-param">use_zmats=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_conformer_combinations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.generate_conformer_combinations" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">generate_conformer_combinations</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol</em>, <em class="sig-param">base_xyz</em>, <em class="sig-param">hypothetical_num_comb</em>, <em class="sig-param">multiple_tors</em>, <em class="sig-param">multiple_sampling_points</em>, <em class="sig-param">combination_threshold=1000</em>, <em class="sig-param">len_conformers=-1</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">max_combination_iterations=25</em>, <em class="sig-param">plot_path=None</em>, <em class="sig-param">torsion_angles=None</em>, <em class="sig-param">multiple_sampling_points_dict=None</em>, <em class="sig-param">wells_dict=None</em>, <em class="sig-param">de_threshold=None</em>, <em class="sig-param">symmetries=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_conformer_combinations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.generate_conformer_combinations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Call either conformers_combinations_by_lowest_conformer() or generate_all_combinations(),
 according to the hypothetical_num_comb.</p>
 <dl class="field-list simple">
@@ -717,9 +648,6 @@ corresponding angles from conformers.</p></li>
 If None, the plot will not be shown (nor saved).</p></li>
 <li><p><strong>symmetries</strong> (<em>dict</em><em>, </em><em>optional</em>) – Keys are tuples scan indices (1-indexed), values are internal
 rotation symmetry numbers (sigma).</p></li>
-<li><p><strong>use_zmats</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to assign a Z Matrix to each conformer which will be used for detecting
-similar conformers to a certain tolerance. It might be memory-intensive to large
-species, though.  <code class="docutils literal notranslate"><span class="pre">True</span></code> to use Z Matrices. <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -733,7 +661,7 @@ species, though.  <code class="docutils literal notranslate"><span class="pre">T
 
 <dl class="function">
 <dt id="arc.species.conformers.generate_conformers">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">generate_conformers</code><span class="sig-paren">(</span><em class="sig-param">mol_list</em>, <em class="sig-param">label</em>, <em class="sig-param">xyzs=None</em>, <em class="sig-param">torsions=None</em>, <em class="sig-param">tops=None</em>, <em class="sig-param">charge=0</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">num_confs=None</em>, <em class="sig-param">num_confs_to_return=None</em>, <em class="sig-param">de_threshold=None</em>, <em class="sig-param">smeared_scan_res=None</em>, <em class="sig-param">combination_threshold=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">max_combination_iterations=None</em>, <em class="sig-param">diastereomers=None</em>, <em class="sig-param">return_all_conformers=False</em>, <em class="sig-param">plot_path=None</em>, <em class="sig-param">print_logs=True</em>, <em class="sig-param">use_zmats=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.generate_conformers" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">generate_conformers</code><span class="sig-paren">(</span><em class="sig-param">mol_list</em>, <em class="sig-param">label</em>, <em class="sig-param">xyzs=None</em>, <em class="sig-param">torsions=None</em>, <em class="sig-param">tops=None</em>, <em class="sig-param">charge=0</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">num_confs_to_generate=None</em>, <em class="sig-param">n_confs=None</em>, <em class="sig-param">e_confs=None</em>, <em class="sig-param">de_threshold=None</em>, <em class="sig-param">smeared_scan_res=None</em>, <em class="sig-param">combination_threshold=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">max_combination_iterations=None</em>, <em class="sig-param">diastereomers=None</em>, <em class="sig-param">return_all_conformers=False</em>, <em class="sig-param">plot_path=None</em>, <em class="sig-param">print_logs=True</em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="../_modules/arc/species/conformers.html#generate_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.generate_conformers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate conformers for (non-TS) species starting from a list of RMG Molecules.
 (resonance structures are assumed to have already been generated and included in the molecule list)</p>
 <dl class="field-list simple">
@@ -746,9 +674,10 @@ species, though.  <code class="docutils literal notranslate"><span class="pre">T
 <li><p><strong>tops</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of tops corresponding to torsions. Will be determined if not given.</p></li>
 <li><p><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The species charge. Used to perceive a molecule from xyz.</p></li>
 <li><p><strong>multiplicity</strong> (<em>int</em><em>, </em><em>optional</em>) – The species multiplicity. Used to perceive a molecule from xyz.</p></li>
-<li><p><strong>num_confs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of conformers to generate. Determined automatically if not given.</p></li>
-<li><p><strong>num_confs_to_return</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of conformers to return.</p></li>
-<li><p><strong>well_tolerance</strong> (<em>float</em><em>, </em><em>optional</em>) – The required precision (in degrees) around which to center a well’s mean.</p></li>
+<li><p><strong>num_confs_to_generate</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of conformers to generate (can be determined automatically)</p></li>
+<li><p><strong>n_confs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of conformers to return.</p></li>
+<li><p><strong>e_confs</strong> (<em>float</em><em>, </em><em>optional</em>) – The energy threshold in kJ/mol above the lowest energy conformer
+below which all (unique) generated conformers will be returned.</p></li>
 <li><p><strong>de_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – Energy threshold (in kJ/mol) above which wells will not be considered.</p></li>
 <li><p><strong>smeared_scan_res</strong> (<em>float</em><em>, </em><em>optional</em>) – The resolution (in degrees) for scanning smeared wells.</p></li>
 <li><p><strong>combination_threshold</strong> (<em>int</em><em>, </em><em>optional</em>) – A threshold below which all combinations will be generated.</p></li>
@@ -764,16 +693,7 @@ In addition to the lowest conformers list. Tru to return it.</p></li>
 If None, the plot will not be shown (nor saved).</p></li>
 <li><p><strong>print_logs</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether define a logger so logs are also printed to stdout.
 Useful when run outside of ARC. True to print.</p></li>
-<li><p><strong>use_zmats</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to assign a Z Matrix to each conformer which will be used for detecting
-similar conformers to a certain tolerance. It might be memory-intensive to large
-species, though. <code class="docutils literal notranslate"><span class="pre">True</span></code> to use Z Matrices. <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Lowest conformers (number of entries is num_confs_to_return times the number of enantiomer combinations)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
@@ -781,12 +701,18 @@ species, though. <code class="docutils literal notranslate"><span class="pre">Tr
 <li><p><strong>TypeError</strong> – If xyzs has entries of a wrong type.</p></li>
 </ul>
 </dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Lowest conformers.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="arc.species.conformers.generate_force_field_conformers">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">generate_force_field_conformers</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol_list</em>, <em class="sig-param">torsion_num</em>, <em class="sig-param">charge</em>, <em class="sig-param">multiplicity</em>, <em class="sig-param">xyzs=None</em>, <em class="sig-param">num_confs=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">use_zmats=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_force_field_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.generate_force_field_conformers" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">generate_force_field_conformers</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol_list</em>, <em class="sig-param">torsion_num</em>, <em class="sig-param">charge</em>, <em class="sig-param">multiplicity</em>, <em class="sig-param">xyzs=None</em>, <em class="sig-param">num_confs=None</em>, <em class="sig-param">force_field='MMFF94s'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_force_field_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.generate_force_field_conformers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate conformers using RDKit and OpenBabel and optimize them using a force field
 Also consider user guesses in <cite>xyzs</cite></p>
 <dl class="field-list simple">
@@ -800,9 +726,6 @@ Also consider user guesses in <cite>xyzs</cite></p>
 <li><p><strong>multiplicity</strong> (<em>int</em>) – The species spin multiplicity.</p></li>
 <li><p><strong>num_confs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of conformers to generate.</p></li>
 <li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of force field to use.</p></li>
-<li><p><strong>use_zmats</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to assign a Z Matrix to each conformer which will be used for detecting
-similar conformers to a certain tolerance. It might be memory-intensive to large
-species, though.  <code class="docutils literal notranslate"><span class="pre">True</span></code> to use Z Matrices. <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -838,7 +761,7 @@ species, though.  <code class="docutils literal notranslate"><span class="pre">T
 <dt id="arc.species.conformers.get_force_field_energies">
 <code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">get_force_field_energies</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">mol</em>, <em class="sig-param">num_confs=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">optimize=True</em>, <em class="sig-param">try_ob=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#get_force_field_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.get_force_field_energies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine force field energies using RDKit.
-If num_confs is given, random 3D geometries will be generated. If xyz is given, it will be directly used instead.
+If <code class="docutils literal notranslate"><span class="pre">num_confs</span></code> is given, random 3D geometries will be generated. If xyz is given, it will be directly used instead.
 The coordinates are returned in the order of atoms in mol.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -872,27 +795,27 @@ The coordinates are returned in the order of atoms in mol.</p>
 
 <dl class="function">
 <dt id="arc.species.conformers.get_lowest_confs">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">get_lowest_confs</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">confs</em>, <em class="sig-param">n=1</em>, <em class="sig-param">energy='FF energy'</em>, <em class="sig-param">symmetries=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#get_lowest_confs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.get_lowest_confs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">get_lowest_confs</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">confs: dict</em>, <em class="sig-param">n: int = None</em>, <em class="sig-param">e: float = None</em>, <em class="sig-param">energy: str = 'FF energy'</em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="../_modules/arc/species/conformers.html#get_lowest_confs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.get_lowest_confs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the most stable conformer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species’ label.</p></li>
 <li><p><strong>confs</strong> (<em>dict</em><em>, </em><em>list</em>) – Entries are either conformer dictionaries or a length two list of xyz coordinates and energy</p></li>
-<li><p><strong>n</strong> (<em>int</em>) – Number of lowest conformers to return.</p></li>
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of lowest conformers to return.</p></li>
+<li><p><strong>e</strong> (<em>float</em><em>, </em><em>optional</em>) – The energy threshold above the lowest energy conformer in kJ/mol
+below which all conformers will be returned.</p></li>
 <li><p><strong>energy</strong> (<em>str</em><em>, </em><em>optional</em>) – The energy attribute to search by. Currently only ‘FF energy’ is supported.</p></li>
-<li><p><strong>symmetries</strong> (<em>dict</em><em>, </em><em>optional</em>) – Keys are tuples scan indices (1-indexed), values are internal
-rotation symmetry numbers (sigma).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Conformer dictionaries.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>ConformerError</strong> – If n &lt; 1, or if no conformers were given.</p>
+<dd class="field-even"><p><strong>ConformerError</strong> – If n &lt; 1, e &lt; 0, both n and e are <code class="docutils literal notranslate"><span class="pre">None</span></code>, or if no conformers are given.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Conformer dictionaries.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
 </dd>
 </dl>
 </dd></dl>

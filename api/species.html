@@ -994,13 +994,15 @@ Actual QM data parsing is done later when processing thermo and kinetics.</p>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.generate_conformers">
-<code class="sig-name descname">generate_conformers</code><span class="sig-paren">(</span><em class="sig-param">confs_to_dft=5</em>, <em class="sig-param">plot_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.generate_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.generate_conformers" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">generate_conformers</code><span class="sig-paren">(</span><em class="sig-param">n_confs: int = 15</em>, <em class="sig-param">e_confs: float = 5</em>, <em class="sig-param">plot_path: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.generate_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.generate_conformers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate conformers</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>confs_to_dft</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of conformers to store in the .conformers attribute of the species
+<li><p><strong>n_confs</strong> (<em>int</em><em>, </em><em>optional</em>) – The max number of conformers to store in the .conformers attribute
 that will later be DFT’ed at the conformers_level.</p></li>
+<li><p><strong>e_confs</strong> (<em>float</em><em>, </em><em>optional</em>) – The energy threshold in kJ/mol above the lowest energy conformer below which all
+(unique) generated conformers will be stored in the .conformers attribute.</p></li>
 <li><p><strong>plot_path</strong> (<em>str</em><em>, </em><em>optional</em>) – A folder path in which the plot will be saved.
 If None, the plot will not be shown (nor saved).</p></li>
 </ul>
