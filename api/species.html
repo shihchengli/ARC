@@ -1082,7 +1082,7 @@ relevant rotors info for the species, including directed and ND rotors.</p>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.mol_from_xyz">
-<code class="sig-name descname">mol_from_xyz</code><span class="sig-paren">(</span><em class="sig-param">xyz=None</em>, <em class="sig-param">get_cheap=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.mol_from_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.mol_from_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mol_from_xyz</code><span class="sig-paren">(</span><em class="sig-param">xyz: dict = None</em>, <em class="sig-param">get_cheap: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.mol_from_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.mol_from_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make sure atom order in self.mol corresponds to xyz.
 Important for TS discovery and for identifying rotor indices.</p>
 <p>This works by generating a molecule from xyz and using the

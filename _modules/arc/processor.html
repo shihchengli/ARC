@@ -259,9 +259,6 @@
     <span class="c1"># 1. Rates</span>
     <span class="k">if</span> <span class="n">compute_rates</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">reaction</span> <span class="ow">in</span> <span class="n">reactions</span><span class="p">:</span>
-            <span class="n">copy_freq_output_for_ts</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">reaction</span><span class="o">.</span><span class="n">ts_label</span><span class="p">,</span>
-                                    <span class="n">project_directory</span><span class="o">=</span><span class="n">project_directory</span><span class="p">,</span>
-                                    <span class="n">output_dict</span><span class="o">=</span><span class="n">output_dict</span><span class="p">)</span>
             <span class="n">species_converged</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">if</span> <span class="n">output_dict</span><span class="p">[</span><span class="n">reaction</span><span class="o">.</span><span class="n">ts_label</span><span class="p">][</span><span class="s1">&#39;convergence&#39;</span><span class="p">]:</span>
                 <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">reaction</span><span class="o">.</span><span class="n">r_species</span> <span class="o">+</span> <span class="n">reaction</span><span class="o">.</span><span class="n">p_species</span><span class="p">:</span>
@@ -591,28 +588,6 @@
                 <span class="k">if</span> <span class="s1">&#39;_rotor&#39;</span> <span class="ow">in</span> <span class="n">file_name</span><span class="p">:</span>  <span class="c1"># move to the rotor directory</span>
                     <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">species_path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">),</span>
                                 <span class="n">dst</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">species_path</span><span class="p">,</span> <span class="s1">&#39;rotors&#39;</span><span class="p">,</span> <span class="n">file_name</span><span class="p">))</span></div>
-
-
-<div class="viewcode-block" id="copy_freq_output_for_ts"><a class="viewcode-back" href="../../api/processor.html#arc.processor.copy_freq_output_for_ts">[docs]</a><span class="k">def</span> <span class="nf">copy_freq_output_for_ts</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                            <span class="n">project_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                            <span class="n">output_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                            <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Copy the frequency job output file into the TS geometry folder.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        label (str): The TS species label.</span>
-<span class="sd">        project_directory (str): The path to the ARC project directory.</span>
-<span class="sd">        output_dict (dict): Keys are labels, values are output file paths.</span>
-<span class="sd">                            See Scheduler for a description of this dictionary.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">calc_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dict</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;freq&#39;</span><span class="p">])</span>
-    <span class="k">if</span> <span class="n">calc_path</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">calc_path</span><span class="p">):</span>
-        <span class="c1"># calc_path is empty string when loading from a YAML file</span>
-        <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_directory</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">,</span> <span class="s1">&#39;rxns&#39;</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="s1">&#39;frequency.out&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_path</span><span class="p">)):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_path</span><span class="p">))</span>
-        <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">calc_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
