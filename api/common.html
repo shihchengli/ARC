@@ -275,7 +275,7 @@ Also check ESS and servers.</p>
 
 <dl class="function">
 <dt id="arc.common.colliding_atoms">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">colliding_atoms</code><span class="sig-paren">(</span><em class="sig-param">xyz</em>, <em class="sig-param">threshold=0.55</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#colliding_atoms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.colliding_atoms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">colliding_atoms</code><span class="sig-paren">(</span><em class="sig-param">xyz: dict</em>, <em class="sig-param">threshold: float = 0.55</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#colliding_atoms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.colliding_atoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether atoms are too close to each other.
 A default threshold of 55% the covalent radii of two atoms is used.
 For example:
@@ -318,7 +318,7 @@ For example:
 
 <dl class="function">
 <dt id="arc.common.determine_model_chemistry_type">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_model_chemistry_type</code><span class="sig-paren">(</span><em class="sig-param">method</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_model_chemistry_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_model_chemistry_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_model_chemistry_type</code><span class="sig-paren">(</span><em class="sig-param">method: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#determine_model_chemistry_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_model_chemistry_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the type of a model chemistry (e.g., DFT, wavefunction, force field, semi-empirical, composite).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -395,7 +395,7 @@ Two <code class="docutils literal notranslate"><span class="pre">atom_list_to_ex
 
 <dl class="function">
 <dt id="arc.common.extermum_list">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">extermum_list</code><span class="sig-paren">(</span><em class="sig-param">lst</em>, <em class="sig-param">return_min=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#extermum_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.extermum_list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">extermum_list</code><span class="sig-paren">(</span><em class="sig-param">lst: list</em>, <em class="sig-param">return_min: bool = True</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../_modules/arc/common.html#extermum_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.extermum_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for finding the minimum of a list of numbers (int/float) where some of the entries might be None.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -416,7 +416,7 @@ Two <code class="docutils literal notranslate"><span class="pre">atom_list_to_ex
 
 <dl class="function">
 <dt id="arc.common.format_level_of_theory_for_logging">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_for_logging</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_for_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_for_logging" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_for_logging</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_for_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_for_logging" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format level of theory dictionary to string for logging purposes.</p>
 <dl class="simple">
 <dt>Examples: input -&gt; output</dt><dd><p>{‘method’: ‘cbs-qb3’} -&gt; ‘cbs-qb3’
@@ -443,7 +443,7 @@ More examples can be found from <cite>test_format_level_of_theory_for_logging</c
 
 <dl class="function">
 <dt id="arc.common.format_level_of_theory_inputs">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_inputs</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_inputs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_inputs</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_inputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function to format level of theory inputs for internal use in ARC.</p>
 <dl>
 <dt>Examples: input -&gt; output</dt><dd><p>‘cbs-qb3’ -&gt; {‘method’: ‘cbs-qb3’, ‘basis’: ‘’, ‘auxiliary_basis’: ‘’, ‘dispersion’: ‘’}
@@ -485,7 +485,7 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 
 <dl class="function">
 <dt id="arc.common.get_atom_radius">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_atom_radius</code><span class="sig-paren">(</span><em class="sig-param">symbol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_atom_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_atom_radius" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_atom_radius</code><span class="sig-paren">(</span><em class="sig-param">symbol: str</em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/common.html#get_atom_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_atom_radius" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the atom covalent radius of an atom in Angstroms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -543,7 +543,7 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 
 <dl class="function">
 <dt id="arc.common.get_ordinal_indicator">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_ordinal_indicator</code><span class="sig-paren">(</span><em class="sig-param">number</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_ordinal_indicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_ordinal_indicator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_ordinal_indicator</code><span class="sig-paren">(</span><em class="sig-param">number: int</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#get_ordinal_indicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_ordinal_indicator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the ordinal indicator for an integer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -560,7 +560,7 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 
 <dl class="function">
 <dt id="arc.common.get_single_bond_length">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_single_bond_length</code><span class="sig-paren">(</span><em class="sig-param">symbol1</em>, <em class="sig-param">symbol2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_single_bond_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_single_bond_length" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_single_bond_length</code><span class="sig-paren">(</span><em class="sig-param">symbol1: str</em>, <em class="sig-param">symbol2: str</em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/common.html#get_single_bond_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_single_bond_length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the an approximate for a single bond length between two elements.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -574,6 +574,49 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.common.globalize_path">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">globalize_path</code><span class="sig-paren">(</span><em class="sig-param">string: str</em>, <em class="sig-param">project_directory: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#globalize_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.globalize_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebase an absolute file path on the current project path.
+Useful when restarting an ARC project in a different folder or on a different machine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> (<em>str</em>) – A string containing a path to rebase.</p></li>
+<li><p><strong>project_directory</strong> (<em>str</em>) – The current project directory to rebase upon.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string with the rebased path.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.common.globalize_paths">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">globalize_paths</code><span class="sig-paren">(</span><em class="sig-param">file_path: str</em>, <em class="sig-param">project_directory: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#globalize_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.globalize_paths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebase all file paths in the contents of the given file on the current project path.
+Useful when restarting an ARC project in a different folder or on a different machine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>str</em>) – A path to the file to check.
+The contents of this file will be changed and saved as a different file.</p></li>
+<li><p><strong>project_directory</strong> (<em>str</em>) – The current project directory to rebase upon.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A path to the respective file with rebased absolute file paths.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -617,7 +660,7 @@ Returns the comprehensive (default values for missing job types) job types for A
 
 <dl class="function">
 <dt id="arc.common.is_notebook">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_notebook</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#is_notebook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_notebook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_notebook</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#is_notebook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_notebook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether ARC was called from an IPython notebook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -631,7 +674,7 @@ Returns the comprehensive (default values for missing job types) job types for A
 
 <dl class="function">
 <dt id="arc.common.is_str_float">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_str_float</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#is_str_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_str_float" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_str_float</code><span class="sig-paren">(</span><em class="sig-param">value: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#is_str_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_str_float" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a string represents a number.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -697,12 +740,15 @@ Does not check for value unicity.</p>
 
 <dl class="function">
 <dt id="arc.common.read_yaml_file">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">read_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#read_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.read_yaml_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">read_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">project_directory: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#read_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.read_yaml_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a YAML file (usually an input / restart file, but also conformers file)
 and return the parameters as python variables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The YAML file path to read.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – The YAML file path to read.</p></li>
+<li><p><strong>project_directory</strong> (<em>str</em><em>, </em><em>optional</em>) – The current project directory to rebase upon.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The content read from the file.</p>
@@ -715,7 +761,7 @@ and return the parameters as python variables.</p>
 
 <dl class="function">
 <dt id="arc.common.save_yaml_file">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">save_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">content</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#save_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.save_yaml_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">save_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">content: list</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#save_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.save_yaml_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a YAML file (usually an input / restart file, but also conformers file)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

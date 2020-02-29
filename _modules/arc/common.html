@@ -469,17 +469,22 @@
         <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
 
 
-<div class="viewcode-block" id="read_yaml_file"><a class="viewcode-back" href="../../api/common.html#arc.common.read_yaml_file">[docs]</a><span class="k">def</span> <span class="nf">read_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<div class="viewcode-block" id="read_yaml_file"><a class="viewcode-back" href="../../api/common.html#arc.common.read_yaml_file">[docs]</a><span class="k">def</span> <span class="nf">read_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                   <span class="n">project_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read a YAML file (usually an input / restart file, but also conformers file)</span>
 <span class="sd">    and return the parameters as python variables.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        path (str): The YAML file path to read.</span>
+<span class="sd">        project_directory (str, optional): The current project directory to rebase upon.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict or list: The content read from the file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">project_directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">globalize_paths</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">project_directory</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;path must be a string, got </span><span class="si">{path}</span><span class="s1"> which is a {type(path)}&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -489,7 +494,9 @@
     <span class="k">return</span> <span class="n">content</span></div>
 
 
-<div class="viewcode-block" id="save_yaml_file"><a class="viewcode-back" href="../../api/common.html#arc.common.save_yaml_file">[docs]</a><span class="k">def</span> <span class="nf">save_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+<div class="viewcode-block" id="save_yaml_file"><a class="viewcode-back" href="../../api/common.html#arc.common.save_yaml_file">[docs]</a><span class="k">def</span> <span class="nf">save_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                   <span class="n">content</span><span class="p">:</span> <span class="nb">list</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">,</span>
+                   <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save a YAML file (usually an input / restart file, but also conformers file)</span>
 
@@ -508,6 +515,65 @@
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="globalize_paths"><a class="viewcode-back" href="../../api/common.html#arc.common.globalize_paths">[docs]</a><span class="k">def</span> <span class="nf">globalize_paths</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="n">project_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rebase all file paths in the contents of the given file on the current project path.</span>
+<span class="sd">    Useful when restarting an ARC project in a different folder or on a different machine.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_path (str): A path to the file to check.</span>
+<span class="sd">                         The contents of this file will be changed and saved as a different file.</span>
+<span class="sd">        project_directory (str): The current project directory to rebase upon.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: A path to the respective file with rebased absolute file paths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">modified</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">new_lines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">project_directory</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+        <span class="n">project_directory</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">new_line</span> <span class="o">=</span> <span class="n">globalize_path</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">project_directory</span><span class="p">)</span>
+        <span class="n">modified</span> <span class="o">=</span> <span class="n">modified</span> <span class="ow">or</span> <span class="n">new_line</span> <span class="o">!=</span> <span class="n">line</span>
+        <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">modified</span><span class="p">:</span>
+        <span class="n">base_name</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="n">file_name_splits</span> <span class="o">=</span> <span class="n">file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">new_file_name</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file_name_splits</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;_globalized.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_name_splits</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">new_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_name</span><span class="p">,</span> <span class="n">new_file_name</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">new_lines</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_path</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">file_path</span></div>
+
+
+<div class="viewcode-block" id="globalize_path"><a class="viewcode-back" href="../../api/common.html#arc.common.globalize_path">[docs]</a><span class="k">def</span> <span class="nf">globalize_path</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                   <span class="n">project_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                   <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rebase an absolute file path on the current project path.</span>
+<span class="sd">    Useful when restarting an ARC project in a different folder or on a different machine.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        string (str): A string containing a path to rebase.</span>
+<span class="sd">        project_directory (str): The current project directory to rebase upon.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: A string with the rebased path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;/calcs/Species/&#39;</span> <span class="ow">in</span> <span class="n">string</span> <span class="ow">or</span> <span class="s1">&#39;/calcs/TSs/&#39;</span> <span class="ow">in</span> <span class="n">string</span> <span class="ow">and</span> <span class="n">project_directory</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+        <span class="n">splits</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/calcs/&#39;</span><span class="p">)</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">new_string</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">project_directory</span> <span class="o">+</span> <span class="s1">&#39;calcs/&#39;</span> <span class="o">+</span> <span class="n">splits</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">new_string</span>
+    <span class="k">return</span> <span class="n">string</span></div>
+
+
 <div class="viewcode-block" id="string_representer"><a class="viewcode-back" href="../../api/common.html#arc.common.string_representer">[docs]</a><span class="k">def</span> <span class="nf">string_representer</span><span class="p">(</span><span class="n">dumper</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add a custom string representer to use block literals for multiline strings.</span>
@@ -517,7 +583,7 @@
     <span class="k">return</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_scalar</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;tag:yaml.org,2002:str&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_ordinal_indicator"><a class="viewcode-back" href="../../api/common.html#arc.common.get_ordinal_indicator">[docs]</a><span class="k">def</span> <span class="nf">get_ordinal_indicator</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+<div class="viewcode-block" id="get_ordinal_indicator"><a class="viewcode-back" href="../../api/common.html#arc.common.get_ordinal_indicator">[docs]</a><span class="k">def</span> <span class="nf">get_ordinal_indicator</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the ordinal indicator for an integer.</span>
 
@@ -535,7 +601,7 @@
     <span class="k">return</span> <span class="s1">&#39;th&#39;</span></div>
 
 
-<div class="viewcode-block" id="get_atom_radius"><a class="viewcode-back" href="../../api/common.html#arc.common.get_atom_radius">[docs]</a><span class="k">def</span> <span class="nf">get_atom_radius</span><span class="p">(</span><span class="n">symbol</span><span class="p">):</span>
+<div class="viewcode-block" id="get_atom_radius"><a class="viewcode-back" href="../../api/common.html#arc.common.get_atom_radius">[docs]</a><span class="k">def</span> <span class="nf">get_atom_radius</span><span class="p">(</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the atom covalent radius of an atom in Angstroms.</span>
 
@@ -557,7 +623,9 @@
     <span class="k">return</span> <span class="n">r</span></div>
 
 
-<div class="viewcode-block" id="colliding_atoms"><a class="viewcode-back" href="../../api/common.html#arc.common.colliding_atoms">[docs]</a><span class="k">def</span> <span class="nf">colliding_atoms</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.55</span><span class="p">):</span>
+<div class="viewcode-block" id="colliding_atoms"><a class="viewcode-back" href="../../api/common.html#arc.common.colliding_atoms">[docs]</a><span class="k">def</span> <span class="nf">colliding_atoms</span><span class="p">(</span><span class="n">xyz</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.55</span><span class="p">,</span>
+                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check whether atoms are too close to each other.</span>
 <span class="sd">    A default threshold of 55% the covalent radii of two atoms is used.</span>
@@ -606,7 +674,9 @@
                       <span class="p">}</span>
 
 
-<div class="viewcode-block" id="get_single_bond_length"><a class="viewcode-back" href="../../api/common.html#arc.common.get_single_bond_length">[docs]</a><span class="k">def</span> <span class="nf">get_single_bond_length</span><span class="p">(</span><span class="n">symbol1</span><span class="p">,</span> <span class="n">symbol2</span><span class="p">):</span>
+<div class="viewcode-block" id="get_single_bond_length"><a class="viewcode-back" href="../../api/common.html#arc.common.get_single_bond_length">[docs]</a><span class="k">def</span> <span class="nf">get_single_bond_length</span><span class="p">(</span><span class="n">symbol1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                           <span class="n">symbol2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                           <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the an approximate for a single bond length between two elements.</span>
 
@@ -697,7 +767,9 @@
     <span class="k">return</span> <span class="n">top</span><span class="p">,</span> <span class="ow">not</span> <span class="n">atom2</span><span class="o">.</span><span class="n">is_hydrogen</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="extermum_list"><a class="viewcode-back" href="../../api/common.html#arc.common.extermum_list">[docs]</a><span class="k">def</span> <span class="nf">extermum_list</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">return_min</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="extermum_list"><a class="viewcode-back" href="../../api/common.html#arc.common.extermum_list">[docs]</a><span class="k">def</span> <span class="nf">extermum_list</span><span class="p">(</span><span class="n">lst</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                  <span class="n">return_min</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                  <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for finding the minimum of a list of numbers (int/float) where some of the entries might be None.</span>
 
@@ -877,7 +949,7 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="determine_model_chemistry_type"><a class="viewcode-back" href="../../api/common.html#arc.common.determine_model_chemistry_type">[docs]</a><span class="k">def</span> <span class="nf">determine_model_chemistry_type</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+<div class="viewcode-block" id="determine_model_chemistry_type"><a class="viewcode-back" href="../../api/common.html#arc.common.determine_model_chemistry_type">[docs]</a><span class="k">def</span> <span class="nf">determine_model_chemistry_type</span><span class="p">(</span><span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine the type of a model chemistry (e.g., DFT, wavefunction, force field, semi-empirical, composite).</span>
 
@@ -927,7 +999,7 @@
     <span class="k">return</span> <span class="n">model_chemistry_class</span></div>
 
 
-<div class="viewcode-block" id="format_level_of_theory_inputs"><a class="viewcode-back" href="../../api/common.html#arc.common.format_level_of_theory_inputs">[docs]</a><span class="k">def</span> <span class="nf">format_level_of_theory_inputs</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">):</span>
+<div class="viewcode-block" id="format_level_of_theory_inputs"><a class="viewcode-back" href="../../api/common.html#arc.common.format_level_of_theory_inputs">[docs]</a><span class="k">def</span> <span class="nf">format_level_of_theory_inputs</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function to format level of theory inputs for internal use in ARC.</span>
 
@@ -1015,7 +1087,7 @@
     <span class="k">return</span> <span class="n">formatted_model_chemistry_dict</span><span class="p">,</span> <span class="n">formatted_model_chemistry_str</span></div>
 
 
-<div class="viewcode-block" id="format_level_of_theory_for_logging"><a class="viewcode-back" href="../../api/common.html#arc.common.format_level_of_theory_for_logging">[docs]</a><span class="k">def</span> <span class="nf">format_level_of_theory_for_logging</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">):</span>
+<div class="viewcode-block" id="format_level_of_theory_for_logging"><a class="viewcode-back" href="../../api/common.html#arc.common.format_level_of_theory_for_logging">[docs]</a><span class="k">def</span> <span class="nf">format_level_of_theory_for_logging</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Format level of theory dictionary to string for logging purposes.</span>
 
@@ -1052,7 +1124,7 @@
     <span class="k">return</span> <span class="n">level_of_theory_log_str</span></div>
 
 
-<div class="viewcode-block" id="is_notebook"><a class="viewcode-back" href="../../api/common.html#arc.common.is_notebook">[docs]</a><span class="k">def</span> <span class="nf">is_notebook</span><span class="p">():</span>
+<div class="viewcode-block" id="is_notebook"><a class="viewcode-back" href="../../api/common.html#arc.common.is_notebook">[docs]</a><span class="k">def</span> <span class="nf">is_notebook</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check whether ARC was called from an IPython notebook.</span>
 
@@ -1071,7 +1143,7 @@
         <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># Probably standard Python interpreter</span></div>
 
 
-<div class="viewcode-block" id="is_str_float"><a class="viewcode-back" href="../../api/common.html#arc.common.is_str_float">[docs]</a><span class="k">def</span> <span class="nf">is_str_float</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="is_str_float"><a class="viewcode-back" href="../../api/common.html#arc.common.is_str_float">[docs]</a><span class="k">def</span> <span class="nf">is_str_float</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check whether a string represents a number.</span>
 

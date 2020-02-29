@@ -1143,7 +1143,7 @@
     <span class="k">return</span> <span class="n">inchi</span></div>
 
 
-<div class="viewcode-block" id="rmg_mol_from_inchi"><a class="viewcode-back" href="../../../api/converter.html#arc.species.converter.rmg_mol_from_inchi">[docs]</a><span class="k">def</span> <span class="nf">rmg_mol_from_inchi</span><span class="p">(</span><span class="n">inchi</span><span class="p">):</span>
+<div class="viewcode-block" id="rmg_mol_from_inchi"><a class="viewcode-back" href="../../../api/converter.html#arc.species.converter.rmg_mol_from_inchi">[docs]</a><span class="k">def</span> <span class="nf">rmg_mol_from_inchi</span><span class="p">(</span><span class="n">inchi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate an RMG Molecule object from InChI.</span>
 
@@ -1156,8 +1156,9 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="n">rmg_mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">()</span><span class="o">.</span><span class="n">from_inchi</span><span class="p">(</span><span class="n">inchi</span><span class="p">,</span> <span class="n">raise_atomtype_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">AtomTypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Got the following Error when trying to create an RMG Molecule object from InChI:&#39;</span>
-                       <span class="s1">&#39;</span><span class="se">\n</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an Error when trying to create an RMG Molecule object from InChI &quot;</span><span class="si">{inchi}</span><span class="s1">&quot;:</span><span class="se">\n</span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;got an unexpected keyword argument&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ConverterError</span><span class="p">(</span><span class="s1">&#39;Make sure RMG-Py is up to date and compiled!&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">rmg_mol</span></div>
 
