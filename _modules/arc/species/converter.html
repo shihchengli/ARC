@@ -1227,19 +1227,19 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">set_multiplicity</span><span class="p">(</span><span class="n">mol_bo</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">SpeciesError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Cannot infer 2D graph connectivity, failed to set species multiplicity with the &#39;</span>
-                               <span class="s1">&#39;following error:</span><span class="se">\n</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot infer 2D graph connectivity, failed to set species multiplicity with the &#39;</span>
+                               <span class="sa">f</span><span class="s1">&#39;following error:</span><span class="se">\n</span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">mol_s1_updated</span><span class="p">,</span> <span class="kc">None</span>
         <span class="n">mol_s1_updated</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="n">mol_bo</span><span class="o">.</span><span class="n">multiplicity</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">order_atoms</span><span class="p">(</span><span class="n">ref_mol</span><span class="o">=</span><span class="n">mol_s1_updated</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol_bo</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">SanitizationError</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not order atoms for </span><span class="si">{0}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol_s1_updated</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">()))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not order atoms for {mol_s1_updated.copy(deep=True).to_smiles()}!&#39;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">set_multiplicity</span><span class="p">(</span><span class="n">mol_s1_updated</span><span class="p">,</span> <span class="n">mol_bo</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span> <span class="n">radical_map</span><span class="o">=</span><span class="n">mol_bo</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">SpeciesError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Cannot infer 2D graph connectivity, failed to set species multiplicity with the &#39;</span>
-                           <span class="s1">&#39;following error:</span><span class="se">\n</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot infer 2D graph connectivity, failed to set species multiplicity with the &#39;</span>
+                           <span class="sa">f</span><span class="s1">&#39;following error:</span><span class="se">\n</span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">mol_s1_updated</span><span class="p">,</span> <span class="n">mol_bo</span>
 
     <span class="k">return</span> <span class="n">mol_s1_updated</span><span class="p">,</span> <span class="n">mol_bo</span></div>
@@ -1278,15 +1278,15 @@
             <span class="n">add_rads_by_atom_valance</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">mol</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">&gt;</span> <span class="n">radicals</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># still problematic, currently there&#39;s no automated solution to this case, raise an error</span>
-                <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;A multiplicity of </span><span class="si">{0}</span><span class="s1"> was given, but only </span><span class="si">{1}</span><span class="s1"> radicals were identified. &#39;</span>
-                                   <span class="s1">&#39;Cannot infer 2D graph representation for this species.</span><span class="se">\n</span><span class="s1">More info:</span><span class="si">{2}</span><span class="se">\n</span><span class="si">{3}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                    <span class="n">mol</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">radicals</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">()))</span>
+                <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;A multiplicity of </span><span class="si">{mol.multiplicity}</span><span class="s1"> was given, but only </span><span class="si">{radicals}</span><span class="s1"> radicals &#39;</span>
+                                   <span class="sa">f</span><span class="s1">&#39;were identified. Cannot infer 2D graph representation for this species.</span><span class="se">\n</span><span class="s1">More &#39;</span>
+                                   <span class="sa">f</span><span class="s1">&#39;info:{mol.copy(deep=True).to_smiles()}</span><span class="se">\n</span><span class="s1">{mol.copy(deep=True).to_adjacency_list()}&#39;</span><span class="p">)</span>
     <span class="n">add_lone_pairs_by_atom_valance</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
     <span class="c1"># final check: an even number of radicals results in an odd multiplicity, and vice versa</span>
     <span class="k">if</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">radicals</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">charge</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="s1">&#39;Number of radicals (</span><span class="si">{0}</span><span class="s1">) and multiplicity (</span><span class="si">{1}</span><span class="s1">) for </span><span class="si">{2}</span><span class="s1"> do not match.</span><span class="se">\n</span><span class="si">{3}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">radicals</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">()))</span>
+                <span class="n">radicals</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">()))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Number of radicals (</span><span class="si">{0}</span><span class="s1">) and multiplicity (</span><span class="si">{1}</span><span class="s1">) for </span><span class="si">{2}</span><span class="s1"> do not match. It might be OK since &#39;</span>
                            <span class="s1">&#39;this species is charged and charged molecules are currently not perceived well in ARC.&#39;</span>
@@ -1410,8 +1410,8 @@
             <span class="k">try</span><span class="p">:</span>  <span class="c1"># TODO: flag as unordered (or solve)</span>
                 <span class="n">order_atoms</span><span class="p">(</span><span class="n">ref_mol</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">SanitizationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not order atoms in</span><span class="se">\n</span><span class="si">{0}</span><span class="se">\n</span><span class="s1">Got the following error:&#39;</span>
-                               <span class="s1">&#39;</span><span class="se">\n</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not order atoms in</span><span class="se">\n</span><span class="s1">{mol.copy(deep=True).to_adjacency_list}&#39;</span>
+                               <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Got the following error:</span><span class="se">\n</span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not order atoms&#39;</span><span class="p">)</span>
@@ -1640,7 +1640,7 @@
     <span class="k">return</span> <span class="n">new_xyz</span></div>
 
 
-<div class="viewcode-block" id="check_isomorphism"><a class="viewcode-back" href="../../../api/converter.html#arc.species.converter.check_isomorphism">[docs]</a><span class="k">def</span> <span class="nf">check_isomorphism</span><span class="p">(</span><span class="n">mol1</span><span class="p">,</span> <span class="n">mol2</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="check_isomorphism"><a class="viewcode-back" href="../../../api/converter.html#arc.species.converter.check_isomorphism">[docs]</a><span class="k">def</span> <span class="nf">check_isomorphism</span><span class="p">(</span><span class="n">mol1</span><span class="p">,</span> <span class="n">mol2</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">convert_to_single_bonds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert ``mol1`` and ``mol2`` to RMG Species objects, and generate resonance structures.</span>
 <span class="sd">    Then check Species isomorphism.</span>
@@ -1651,6 +1651,9 @@
 <span class="sd">        mol2 (Molecule): An RMG Molecule object.</span>
 <span class="sd">        filter_structures (bool, optional): Whether to apply the filtration algorithm when generating</span>
 <span class="sd">                                            resonance structures. ``True`` to apply.</span>
+<span class="sd">        convert_to_single_bonds (bool, optional): Whether to convert both molecules to single bonds,</span>
+<span class="sd">                                                  avoiding a bond order comparison (only compares connectivity).</span>
+<span class="sd">                                                  Resonance structures will not be generated.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: Whether one of the molecules in the Species derived from ``mol1``</span>
@@ -1662,19 +1665,24 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="n">mol1</span><span class="o">.</span><span class="n">reactive</span><span class="p">,</span> <span class="n">mol2</span><span class="o">.</span><span class="n">reactive</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span>
-    <span class="n">mol1_copy</span> <span class="o">=</span> <span class="n">mol1</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">mol2_copy</span> <span class="o">=</span> <span class="n">mol2</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">convert_to_single_bonds</span><span class="p">:</span>
+        <span class="n">mol1_copy</span> <span class="o">=</span> <span class="n">mol1</span><span class="o">.</span><span class="n">to_single_bonds</span><span class="p">(</span><span class="n">raise_atomtype_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">mol2_copy</span> <span class="o">=</span> <span class="n">mol2</span><span class="o">.</span><span class="n">to_single_bonds</span><span class="p">(</span><span class="n">raise_atomtype_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mol1_copy</span> <span class="o">=</span> <span class="n">mol1</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">mol2_copy</span> <span class="o">=</span> <span class="n">mol2</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">spc1</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="n">molecule</span><span class="o">=</span><span class="p">[</span><span class="n">mol1_copy</span><span class="p">])</span>
     <span class="n">spc2</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="n">molecule</span><span class="o">=</span><span class="p">[</span><span class="n">mol2_copy</span><span class="p">])</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">spc1</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="n">filter_structures</span><span class="p">)</span>
-    <span class="k">except</span> <span class="p">(</span><span class="n">AtomTypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
-        <span class="k">pass</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">spc2</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="n">filter_structures</span><span class="p">)</span>
-    <span class="k">except</span> <span class="p">(</span><span class="n">AtomTypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
-        <span class="k">pass</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">convert_to_single_bonds</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">spc1</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="n">filter_structures</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">AtomTypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">spc2</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="n">filter_structures</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">AtomTypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">pass</span>
 
     <span class="k">for</span> <span class="n">molecule1</span> <span class="ow">in</span> <span class="n">spc1</span><span class="o">.</span><span class="n">molecule</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">molecule2</span> <span class="ow">in</span> <span class="n">spc2</span><span class="o">.</span><span class="n">molecule</span><span class="p">:</span>

@@ -212,7 +212,7 @@ Note: This implementation might also be problematic for aromatic species with un
 
 <dl class="function">
 <dt id="arc.species.converter.check_isomorphism">
-<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">check_isomorphism</code><span class="sig-paren">(</span><em class="sig-param">mol1</em>, <em class="sig-param">mol2</em>, <em class="sig-param">filter_structures=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#check_isomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.check_isomorphism" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.converter.</code><code class="sig-name descname">check_isomorphism</code><span class="sig-paren">(</span><em class="sig-param">mol1</em>, <em class="sig-param">mol2</em>, <em class="sig-param">filter_structures=True</em>, <em class="sig-param">convert_to_single_bonds=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/converter.html#check_isomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.converter.check_isomorphism" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert <code class="docutils literal notranslate"><span class="pre">mol1</span></code> and <code class="docutils literal notranslate"><span class="pre">mol2</span></code> to RMG Species objects, and generate resonance structures.
 Then check Species isomorphism.
 This function first makes copies of the molecules, since isIsomorphic() changes atom orders.</p>
@@ -223,6 +223,9 @@ This function first makes copies of the molecules, since isIsomorphic() changes 
 <li><p><strong>mol2</strong> (<em>Molecule</em>) – An RMG Molecule object.</p></li>
 <li><p><strong>filter_structures</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to apply the filtration algorithm when generating
 resonance structures. <code class="docutils literal notranslate"><span class="pre">True</span></code> to apply.</p></li>
+<li><p><strong>convert_to_single_bonds</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to convert both molecules to single bonds,
+avoiding a bond order comparison (only compares connectivity).
+Resonance structures will not be generated.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

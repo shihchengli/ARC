@@ -928,16 +928,16 @@ generating conformers. <code class="docutils literal notranslate"><span class="p
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.check_xyz_isomorphism">
-<code class="sig-name descname">check_xyz_isomorphism</code><span class="sig-paren">(</span><em class="sig-param">allow_nonisomorphic_2d=False</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.check_xyz_isomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.check_xyz_isomorphism" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_xyz_isomorphism</code><span class="sig-paren">(</span><em class="sig-param">mol=None</em>, <em class="sig-param">xyz: dict = None</em>, <em class="sig-param">allow_nonisomorphic_2d: bool = False</em>, <em class="sig-param">verbose: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.check_xyz_isomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.check_xyz_isomorphism" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether the perception of self.final_xyz or <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is isomorphic with self.mol.
 If it is not isomorphic, compliant coordinates will be checked (equivalent to checking isomorphism without
 bond order information, only does not necessitates a molecule object, directly checks bond lengths)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>allow_nonisomorphic_2d</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to continue spawning jobs for the species even if this
-test fails. <cite>True</cite> to allow (default is <cite>False</cite>).</p></li>
-<li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – The coordinates to check (will use self.final_xyz if not given).</p></li>
+<li><p><strong>mol</strong> (<em>Molecule</em><em>, </em><em>optional</em>) – A molecule to check instead of self.mol.</p></li>
+<li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – The coordinates to check instead of self.final_xyz.</p></li>
+<li><p><strong>allow_nonisomorphic_2d</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to allow non-isomorphic representations to pass this test.</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to log isomorphism findings and errors.</p></li>
 </ul>
 </dd>
@@ -1143,7 +1143,7 @@ atoms in 3D space.</p>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.scissors">
-<code class="sig-name descname">scissors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.scissors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.scissors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">scissors</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.scissors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.scissors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cut chemical bonds to create new species from the original one according to the .bdes attribute,
 preserving the 3D geometry other than the splitted bond.
 If one of the scission-resulting species is a hydrogen atom, it will be returned last, labeled as ‘H’.

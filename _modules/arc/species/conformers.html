@@ -398,7 +398,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Conformer execution time using </span><span class="si">{force_field}</span><span class="s1">: </span><span class="si">{days}</span><span class="s1">{int(h):02d}:{int(m):02d}:{int(s):02d}&#39;</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not generate conformers for </span><span class="si">{label}</span><span class="s1">: {mol_list[0].to_smiles()}&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not generate conformers for </span><span class="si">{label}</span><span class="s1">: {mol_list[0].copy(deep=True).to_smiles()}&#39;</span><span class="p">)</span>
         <span class="n">lowest_confs</span><span class="p">,</span> <span class="n">new_conformers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">return_all_conformers</span><span class="p">:</span>
