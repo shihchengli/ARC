@@ -185,7 +185,7 @@
 If the species is a transition state (TS), its <code class="docutils literal notranslate"><span class="pre">ts_guesses</span></code> attribute will have one or more <code class="docutils literal notranslate"><span class="pre">TSGuess</span></code> objects.</p>
 <dl class="class">
 <dt id="arc.species.species.ARCSpecies">
-<em class="property">class </em><code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">ARCSpecies</code><span class="sig-paren">(</span><em class="sig-param">label=None</em>, <em class="sig-param">is_ts=False</em>, <em class="sig-param">rmg_species=None</em>, <em class="sig-param">mol=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">charge=None</em>, <em class="sig-param">smiles=''</em>, <em class="sig-param">adjlist=''</em>, <em class="sig-param">inchi=''</em>, <em class="sig-param">bond_corrections=None</em>, <em class="sig-param">compute_thermo=True</em>, <em class="sig-param">species_dict=None</em>, <em class="sig-param">yml_path=None</em>, <em class="sig-param">ts_methods=None</em>, <em class="sig-param">ts_number=None</em>, <em class="sig-param">rxn_label=None</em>, <em class="sig-param">external_symmetry=None</em>, <em class="sig-param">optical_isomers=None</em>, <em class="sig-param">run_time=None</em>, <em class="sig-param">checkfile=None</em>, <em class="sig-param">number_of_radicals=None</em>, <em class="sig-param">force_field='MMFF94s'</em>, <em class="sig-param">svpfit_output_file=None</em>, <em class="sig-param">bdes=None</em>, <em class="sig-param">directed_rotors=None</em>, <em class="sig-param">consider_all_diastereomers=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.species.species.</code><code class="sig-name descname">ARCSpecies</code><span class="sig-paren">(</span><em class="sig-param">label: str = None</em>, <em class="sig-param">species_dict: dict = None</em>, <em class="sig-param">yml_path: str = None</em>, <em class="sig-param">is_ts: bool = False</em>, <em class="sig-param">rmg_species: rmgpy.species.Species = None</em>, <em class="sig-param">mol: rmgpy.molecule.molecule.Molecule = None</em>, <em class="sig-param">smiles: str = ''</em>, <em class="sig-param">adjlist: str = ''</em>, <em class="sig-param">inchi: str = ''</em>, <em class="sig-param">number_of_radicals: int = None</em>, <em class="sig-param">multiplicity: int = None</em>, <em class="sig-param">charge: int = None</em>, <em class="sig-param">external_symmetry: int = None</em>, <em class="sig-param">optical_isomers: int = None</em>, <em class="sig-param">bond_corrections: dict = None</em>, <em class="sig-param">xyz: list = None</em>, <em class="sig-param">force_field: str = 'MMFF94s'</em>, <em class="sig-param">svpfit_output_file: str = None</em>, <em class="sig-param">bdes: list = None</em>, <em class="sig-param">directed_rotors: dict = None</em>, <em class="sig-param">consider_all_diastereomers: bool = True</em>, <em class="sig-param">checkfile: str = None</em>, <em class="sig-param">run_time: datetime.timedelta = None</em>, <em class="sig-param">compute_thermo: bool = None</em>, <em class="sig-param">e0_only: bool = False</em>, <em class="sig-param">ts_methods: list = None</em>, <em class="sig-param">ts_number: int = None</em>, <em class="sig-param">rxn_label: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class for representing stationary points.</p>
 <p>Structures (rotors_dict is initialized in conformers.find_internal_rotors; pivots/scan/top values are 1-indexed):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {0: {&#39;pivots&#39;: ``list``,
@@ -231,7 +231,8 @@ representation for the species 2D graph.</p></li>
 <li><p><strong>inchi</strong> (<em>str</em><em>, </em><em>optional</em>) – An <a class="reference external" href="https://www.inchi-trust.org/">InChI</a> representation for the species 2D graph.</p></li>
 <li><p><strong>bond_corrections</strong> (<em>dict</em><em>, </em><em>optional</em>) – The bond additivity corrections (BAC) to be used. Determined from the
 structure if not directly given.</p></li>
-<li><p><strong>compute_thermo</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether ot not to calculate thermodynamic properties for this species.</p></li>
+<li><p><strong>compute_thermo</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to calculate thermodynamic properties for this species.</p></li>
+<li><p><strong>e0_only</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to only run statmech (w/o thermo) to compute E0.</p></li>
 <li><p><strong>species_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</p></li>
 <li><p><strong>yml_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to an Arkane YAML file representing a species (for loading the object).</p></li>
 <li><p><strong>ts_methods</strong> (<em>list</em><em>, </em><em>optional</em>) – Methods to try for generating TS guesses. If Species is a TS and <cite>ts_methods</cite> is an
@@ -608,7 +609,18 @@ if not directly given.</p>
 <dl class="attribute">
 <dt id="arc.species.species.ARCSpecies.compute_thermo">
 <code class="sig-name descname">compute_thermo</code><a class="headerlink" href="#arc.species.species.ARCSpecies.compute_thermo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether ot not to calculate thermodynamic properties for this species.</p>
+<dd><p>Whether to calculate thermodynamic properties for this species.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.species.species.ARCSpecies.e0_only">
+<code class="sig-name descname">e0_only</code><a class="headerlink" href="#arc.species.species.ARCSpecies.e0_only" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to only run statmech (w/o thermo) to compute E0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>bool</p>
