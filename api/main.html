@@ -806,7 +806,7 @@ parity plot.</p>
 
 <dl class="method">
 <dt id="arc.main.ARC.as_dict">
-<code class="sig-name descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.as_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/main.html#ARC.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.as_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for dumping this object as a dictionary in a YAML file for restarting ARC.</p>
 </dd></dl>
 
@@ -868,7 +868,7 @@ supported ARC job types (e.g., opt, freq, sp, scan, conformer, ts_guesses) from 
 <dd><p>Execute ARC.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Status dictionary indicating which species converged successfully</p>
+<dd class="field-odd"><p>Status dictionary indicating which species converged successfully.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>dict</p>
@@ -892,8 +892,16 @@ in the restart dictionary.</p>
 
 <dl class="method">
 <dt id="arc.main.ARC.summary">
-<code class="sig-name descname">summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.summary" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/main.html#ARC.summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.summary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Report status and data of all species / reactions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Status dictionary indicating which species converged successfully.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

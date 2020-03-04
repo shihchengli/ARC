@@ -766,16 +766,10 @@ Either <code class="docutils literal notranslate"><span class="pre">deg_incremen
 <dd class="field-odd"><p><strong>zmat_str</strong> (<em>str</em>) – The zmat.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The coords section.</p>
+<dd class="field-even"><p>The coords section, str: The variables section if it exists, else None]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The variables section if it exists, else None.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>Tuple[str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1125,22 +1119,10 @@ option is ‘gaussian’.</p></li>
 <dd class="field-odd"><p><strong>xyz_dict</strong> (<em>dict</em>) – The ARC xyz format.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The X coordinates.</p>
+<dd class="field-even"><p>The X coordinates, the Y coordinates, the Z coordinates.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The Y coordinates.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The Z coordinates.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple</p>
+<dd class="field-odd"><p>Tuple[tuple, tuple, tuple]</p>
 </dd>
 </dl>
 </dd></dl>

@@ -636,7 +636,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_atoms</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">number_of_heavy_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">number_of_heavy_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;The number of heavy (non hydrogen) atoms in the species&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_heavy_atoms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -656,7 +656,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_heavy_atoms</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">radius</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine the largest distance from the coordinate system origin attributed to one of the molecule&#39;s</span>
 <span class="sd">        atoms in 3D space.</span>
@@ -674,7 +674,7 @@
         <span class="sd">&quot;&quot;&quot;Allow setting the radius&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="ARCSpecies.as_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ARCSpecies.as_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;A helper function for dumping this object as a dictionary in a YAML file for restarting ARC&quot;&quot;&quot;</span>
         <span class="n">species_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;force_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_field</span>
@@ -912,7 +912,7 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.from_yml_file"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.from_yml_file">[docs]</a>    <span class="k">def</span> <span class="nf">from_yml_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ARCSpecies.from_yml_file"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.from_yml_file">[docs]</a>    <span class="k">def</span> <span class="nf">from_yml_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load important species attributes such as label and final_xyz from an Arkane YAML file.</span>
 <span class="sd">        Actual QM data parsing is done later when processing thermo and kinetics.</span>
@@ -1062,7 +1062,7 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not generate a cheap conformer for </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.get_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.get_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">get_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ARCSpecies.get_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.get_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">get_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the highest quality xyz the species has.</span>
 <span class="sd">        If it doesn&#39;t have any 3D information, and if ``generate`` is ``True``, cheaply generate it.</span>
@@ -1244,7 +1244,12 @@
                             <span class="k">break</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">directed_rotors</span> <span class="o">=</span> <span class="n">directed_rotors_scans</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.set_dihedral"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.set_dihedral">[docs]</a>    <span class="k">def</span> <span class="nf">set_dihedral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">deg_increment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deg_abs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ARCSpecies.set_dihedral"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.set_dihedral">[docs]</a>    <span class="k">def</span> <span class="nf">set_dihedral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">scan</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                     <span class="n">deg_increment</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">deg_abs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">count</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                     <span class="n">xyz</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generated an RDKit molecule object from either self.final_xyz or ``xyz``.</span>
 <span class="sd">        Increments the current dihedral angle between atoms i, j, k, l in the `scan` list by &#39;deg_increment` in degrees.</span>
@@ -1314,7 +1319,10 @@
                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.external_symmetry}</span><span class="s2"> and </span><span class="si">{symmetry}</span><span class="s2">, respectively. &quot;</span>
                                <span class="sa">f</span><span class="s2">&quot;Using the user input of </span><span class="si">{self.external_symmetry}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.determine_multiplicity"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.determine_multiplicity">[docs]</a>    <span class="k">def</span> <span class="nf">determine_multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">smiles</span><span class="p">,</span> <span class="n">adjlist</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
+<div class="viewcode-block" id="ARCSpecies.determine_multiplicity"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.determine_multiplicity">[docs]</a>    <span class="k">def</span> <span class="nf">determine_multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">smiles</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                               <span class="n">adjlist</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                               <span class="n">mol</span><span class="p">:</span> <span class="n">Molecule</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine the spin multiplicity of the species</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1360,8 +1368,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ts_report</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chosen_ts_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ts_report</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;TS method summary for </span><span class="si">{self.label}</span><span class="s1"> in </span><span class="si">{self.rxn_label}</span><span class="se">\n</span><span class="s1">&#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ts_report</span> <span class="o">+=</span> <span class="s1">&#39;Methods that successfully generated a TS guess:</span><span class="se">\n</span><span class="s1">&#39;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">successful_methods</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ts_report</span> <span class="o">+=</span> <span class="s1">&#39;Methods that successfully generated a TS guess:</span><span class="se">\n</span><span class="s1">&#39;</span>
                 <span class="k">for</span> <span class="n">successful_method</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">successful_methods</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">ts_report</span> <span class="o">+=</span> <span class="n">successful_method</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsuccessful_methods</span><span class="p">:</span>
@@ -1426,7 +1434,7 @@
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol_s</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_atoms</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol_s</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.process_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.process_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">process_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_list</span><span class="p">):</span>
+<div class="viewcode-block" id="ARCSpecies.process_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.process_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">process_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_list</span><span class="p">:</span> <span class="nb">list</span> <span class="ow">or</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Process the user&#39;s input and add either to the .conformers attribute or to .ts_guesses.</span>
 
@@ -1479,8 +1487,9 @@
                     <span class="c1">#     if xyz == tsg.xyz:</span>
                     <span class="c1">#         break</span>
                     <span class="c1"># else:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TSGuess</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;user guess </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tsg_index</span><span class="p">),</span>
-                                                   <span class="n">xyz</span><span class="o">=</span><span class="n">remove_dummies</span><span class="p">(</span><span class="n">xyz</span><span class="p">),</span> <span class="n">energy</span><span class="o">=</span><span class="n">energy</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TSGuess</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;user guess </span><span class="si">{tsg_index}</span><span class="s1">&#39;</span><span class="p">,</span>
+                                                   <span class="n">xyz</span><span class="o">=</span><span class="n">remove_dummies</span><span class="p">(</span><span class="n">xyz</span><span class="p">),</span>
+                                                   <span class="n">energy</span><span class="o">=</span><span class="n">energy</span><span class="p">))</span>
                     <span class="c1"># user guesses are always successful in generating a *guess*:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="p">[</span><span class="n">tsg_index</span><span class="p">]</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="n">tsg_index</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -1488,10 +1497,16 @@
                 <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">xyzs</span><span class="p">:</span>
                     <span class="n">consistent</span> <span class="o">=</span> <span class="n">check_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">consistent</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Inconsistent combination of number of electrons, multiplicity and charge  &#39;</span>
+                        <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Inconsistent combination of number of electrons, multiplicity and charge &#39;</span>
                                            <span class="sa">f</span><span class="s1">&#39;for </span><span class="si">{self.label}</span><span class="s1">.&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.set_transport_data"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.set_transport_data">[docs]</a>    <span class="k">def</span> <span class="nf">set_transport_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lj_path</span><span class="p">,</span> <span class="n">opt_path</span><span class="p">,</span> <span class="n">bath_gas</span><span class="p">,</span> <span class="n">opt_level</span><span class="p">,</span> <span class="n">freq_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">freq_level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ARCSpecies.set_transport_data"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.set_transport_data">[docs]</a>    <span class="k">def</span> <span class="nf">set_transport_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">lj_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                           <span class="n">opt_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                           <span class="n">bath_gas</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                           <span class="n">opt_level</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                           <span class="n">freq_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                           <span class="n">freq_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the species.transport_data attribute after a Lennard-Jones calculation (via OneDMin).</span>
 
@@ -1879,7 +1894,7 @@
             <span class="k">raise</span> <span class="n">TSError</span><span class="p">(</span><span class="s1">&#39;Unrecognized method. Should be either </span><span class="si">{0}</span><span class="s1">. Got: </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                           <span class="p">[</span><span class="s1">&#39;User guess&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">default_ts_methods</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">))</span>
 
-<div class="viewcode-block" id="TSGuess.as_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TSGuess.as_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;A helper function for dumping this object as a dictionary in a YAML file for restarting ARC&quot;&quot;&quot;</span>
         <span class="n">ts_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
@@ -1906,7 +1921,7 @@
             <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;rmg_reaction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rxn_string</span>
         <span class="k">return</span> <span class="n">ts_dict</span></div>
 
-<div class="viewcode-block" id="TSGuess.from_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="TSGuess.from_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A helper function for loading this object from a dictionary in a YAML file for restarting ARC</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2020,7 +2035,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="TSGuess.process_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.process_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">process_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz</span><span class="p">):</span>
+<div class="viewcode-block" id="TSGuess.process_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.process_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">process_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz</span><span class="p">:</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Process the user&#39;s input. If ``xyz`` represents a file path, parse it.</span>
 
@@ -2053,7 +2068,9 @@
     <span class="n">electrons</span> <span class="o">-=</span> <span class="n">charge</span></div>
 
 
-<div class="viewcode-block" id="nearly_equal"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.nearly_equal">[docs]</a><span class="k">def</span> <span class="nf">nearly_equal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">sig_fig</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<div class="viewcode-block" id="nearly_equal"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.nearly_equal">[docs]</a><span class="k">def</span> <span class="nf">nearly_equal</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">b</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">sig_fig</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function to determine whether two floats are nearly equal.</span>
 <span class="sd">    Can be replaced by math.isclose in Py3</span>
@@ -2061,7 +2078,11 @@
     <span class="k">return</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="n">sig_fig</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="n">sig_fig</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="determine_rotor_symmetry"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.determine_rotor_symmetry">[docs]</a><span class="k">def</span> <span class="nf">determine_rotor_symmetry</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">pivots</span><span class="p">,</span> <span class="n">rotor_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">energies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_num_wells</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="determine_rotor_symmetry"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.determine_rotor_symmetry">[docs]</a><span class="k">def</span> <span class="nf">determine_rotor_symmetry</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                             <span class="n">pivots</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                             <span class="n">rotor_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                             <span class="n">energies</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                             <span class="n">return_num_wells</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine the rotor symmetry number from a potential energy scan.</span>
 <span class="sd">    The *worst* resolution for each peak and valley is determined.</span>
@@ -2071,9 +2092,9 @@
 <span class="sd">    the highest peak value. This is only applied if the highest peak is above 2 kJ/mol.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        rotor_path (str): The path to an ESS output rotor scan file.</span>
 <span class="sd">        label (str): The species label (used for error messages).</span>
 <span class="sd">        pivots (list, optional): A list of two atom indices representing the torsion pivots.</span>
+<span class="sd">        rotor_path (str): The path to an ESS output rotor scan file.</span>
 <span class="sd">        energies (list, optional): The list of energies in the scan in kJ/mol.</span>
 <span class="sd">        return_num_wells (bool, optional): Whether to also return the number of wells, ``True`` to return,</span>
 <span class="sd">                                           default is ``False``.</span>
@@ -2173,17 +2194,19 @@
         <span class="k">return</span> <span class="n">symmetry</span><span class="p">,</span> <span class="n">max_e</span></div>
 
 
-<div class="viewcode-block" id="cyclic_index_i_plus_1"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.cyclic_index_i_plus_1">[docs]</a><span class="k">def</span> <span class="nf">cyclic_index_i_plus_1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<div class="viewcode-block" id="cyclic_index_i_plus_1"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.cyclic_index_i_plus_1">[docs]</a><span class="k">def</span> <span class="nf">cyclic_index_i_plus_1</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                          <span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                          <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A helper function for cyclic indexing rotor scans&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="k">else</span> <span class="mi">0</span></div>
 
 
-<div class="viewcode-block" id="cyclic_index_i_minus_1"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.cyclic_index_i_minus_1">[docs]</a><span class="k">def</span> <span class="nf">cyclic_index_i_minus_1</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+<div class="viewcode-block" id="cyclic_index_i_minus_1"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.cyclic_index_i_minus_1">[docs]</a><span class="k">def</span> <span class="nf">cyclic_index_i_minus_1</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A helper function for cyclic indexing rotor scans&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span></div>
 
 
-<div class="viewcode-block" id="determine_rotor_type"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.determine_rotor_type">[docs]</a><span class="k">def</span> <span class="nf">determine_rotor_type</span><span class="p">(</span><span class="n">rotor_path</span><span class="p">):</span>
+<div class="viewcode-block" id="determine_rotor_type"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.determine_rotor_type">[docs]</a><span class="k">def</span> <span class="nf">determine_rotor_type</span><span class="p">(</span><span class="n">rotor_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine whether this rotor should be treated as a HinderedRotor of a FreeRotor</span>
 <span class="sd">    according to it&#39;s maximum peak</span>
@@ -2193,7 +2216,7 @@
     <span class="k">return</span> <span class="s1">&#39;FreeRotor&#39;</span> <span class="k">if</span> <span class="n">max_val</span> <span class="o">&lt;</span> <span class="n">minimum_barrier</span> <span class="k">else</span> <span class="s1">&#39;HinderedRotor&#39;</span></div>
 
 
-<div class="viewcode-block" id="enumerate_bonds"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.enumerate_bonds">[docs]</a><span class="k">def</span> <span class="nf">enumerate_bonds</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
+<div class="viewcode-block" id="enumerate_bonds"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.enumerate_bonds">[docs]</a><span class="k">def</span> <span class="nf">enumerate_bonds</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="n">Molecule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for calling Molecule.enumerate_bonds.</span>
 <span class="sd">    First, get the Kekulized molecule (get the Kekule version with alternating single and double bonds if the molecule</span>
@@ -2212,7 +2235,10 @@
         <span class="k">return</span> <span class="n">mol</span><span class="o">.</span><span class="n">enumerate_bonds</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="check_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.check_xyz">[docs]</a><span class="k">def</span> <span class="nf">check_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="p">):</span>
+<div class="viewcode-block" id="check_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.check_xyz">[docs]</a><span class="k">def</span> <span class="nf">check_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+              <span class="n">multiplicity</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+              <span class="n">charge</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+              <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks xyz for electronic consistency with the spin multiplicity and charge.</span>
 
@@ -2237,7 +2263,9 @@
     <span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="are_coords_compliant_with_graph"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.are_coords_compliant_with_graph">[docs]</a><span class="k">def</span> <span class="nf">are_coords_compliant_with_graph</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
+<div class="viewcode-block" id="are_coords_compliant_with_graph"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.are_coords_compliant_with_graph">[docs]</a><span class="k">def</span> <span class="nf">are_coords_compliant_with_graph</span><span class="p">(</span><span class="n">xyz</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                                    <span class="n">mol</span><span class="p">:</span> <span class="n">Molecule</span><span class="p">,</span>
+                                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check whether the Cartesian coordinates represent the same 2D connectivity as the graph.</span>
 <span class="sd">    Bond orders are not considered here, this function checks whether the coordinates represent a bond length</span>
@@ -2267,7 +2295,7 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="check_label"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.check_label">[docs]</a><span class="k">def</span> <span class="nf">check_label</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+<div class="viewcode-block" id="check_label"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.check_label">[docs]</a><span class="k">def</span> <span class="nf">check_label</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check whether a species (or reaction) label is illegal, modify it if needed.</span>
 

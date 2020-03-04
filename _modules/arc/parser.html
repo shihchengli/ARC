@@ -403,7 +403,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple[list: The electronic energy in kJ/mol,</span>
-<span class="sd">              list: The scan angles in degrees,</span>
+<span class="sd">              list: The dihedral scan angle in degrees,</span>
 <span class="sd">             ]</span>
 
 <span class="sd">    Raises:</span>
@@ -600,7 +600,7 @@
         <span class="k">return</span> <span class="n">results</span></div>
 
 
-<div class="viewcode-block" id="parse_xyz_from_file"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_xyz_from_file">[docs]</a><span class="k">def</span> <span class="nf">parse_xyz_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<div class="viewcode-block" id="parse_xyz_from_file"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_xyz_from_file">[docs]</a><span class="k">def</span> <span class="nf">parse_xyz_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse xyz coordinated from:</span>
 <span class="sd">    - .xyz: XYZ file</span>
@@ -665,7 +665,7 @@
     <span class="k">return</span> <span class="n">xyz</span></div>
 
 
-<div class="viewcode-block" id="parse_trajectory"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_trajectory">[docs]</a><span class="k">def</span> <span class="nf">parse_trajectory</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<div class="viewcode-block" id="parse_trajectory"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_trajectory">[docs]</a><span class="k">def</span> <span class="nf">parse_trajectory</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse all geometries from an xyz trajectory file or an ESS output file.</span>
 
@@ -817,7 +817,7 @@
     <span class="k">return</span> <span class="n">polarizability</span></div>
 
 
-<span class="k">def</span> <span class="nf">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for getting a list of lines from a file.</span>
 
