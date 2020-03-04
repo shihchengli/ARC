@@ -709,9 +709,12 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">Writing input file to </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">save_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">restart_dict</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ARC.execute"><a class="viewcode-back" href="../../api/main.html#arc.main.ARC.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ARC.execute"><a class="viewcode-back" href="../../api/main.html#arc.main.ARC.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Execute ARC.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Status dictionary indicating which species converged successfully</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arc_species_list</span><span class="p">:</span>
@@ -767,8 +770,9 @@
                             <span class="n">rmg_database</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rmg_database</span><span class="p">,</span>
                             <span class="n">compare_to_rmg</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compare_to_rmg</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
-        <span class="n">log_footer</span><span class="p">(</span><span class="n">execution_time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span><span class="p">)</span></div>
+        <span class="n">status_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+        <span class="n">log_footer</span><span class="p">(</span><span class="n">execution_time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">status_dict</span></div>
 
 <div class="viewcode-block" id="ARC.save_project_info_file"><a class="viewcode-back" href="../../api/main.html#arc.main.ARC.save_project_info_file">[docs]</a>    <span class="k">def</span> <span class="nf">save_project_info_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -830,11 +834,14 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Report status and data of all species / reactions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">status_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n\n</span><span class="s1">All jobs terminated. Summary for project </span><span class="si">{self.project}</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;convergence&#39;</span><span class="p">]:</span>
+                <span class="n">status_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Species </span><span class="si">{label}</span><span class="s1"> converged successfully</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
+                <span class="n">status_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="n">job_type_status</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">val</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;job_types&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
                                    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="n">key</span><span class="p">]}</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Species </span><span class="si">{label}</span><span class="s1"> failed with status:</span><span class="se">\n</span><span class="s1">  </span><span class="si">{job_type_status}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -846,7 +853,9 @@
                     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  and warnings: </span><span class="si">{output[&quot;warnings&quot;]}</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="s1">&#39;errors&#39;</span> <span class="ow">in</span> <span class="n">output</span> <span class="ow">and</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  and errors: </span><span class="si">{output[&quot;errors&quot;]}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">status_dict</span></div>
 
 <div class="viewcode-block" id="ARC.determine_model_chemistry"><a class="viewcode-back" href="../../api/main.html#arc.main.ARC.determine_model_chemistry">[docs]</a>    <span class="k">def</span> <span class="nf">determine_model_chemistry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
