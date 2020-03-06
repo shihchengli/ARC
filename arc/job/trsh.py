@@ -19,11 +19,15 @@ from arc.settings import (delete_command,
                           inconsistency_az,
                           list_available_nodes_command,
                           maximum_barrier,
+                          preserve_param_in_scan_ratio,
                           rotor_scan_resolution,
                           servers,
                           submit_filename)
+from arc.species import ARCSpecies
+from arc.species.conformers import determine_smallest_atom_index_in_scan
 from arc.species.converter import xyz_from_data, xyz_to_coords_list
 from arc.species.species import determine_rotor_symmetry
+from arc.species.vectors import calculate_dihedral_angle, calculate_distance
 from arc.parser import parse_normal_displacement_modes, parse_xyz_from_file
 
 
@@ -957,12 +961,18 @@ def scan_quality_check(label: str,
                        pivots: list,
                        energies: list,
                        scan_res: float = rotor_scan_resolution,
-                       used_methods: list = None):
+                       used_methods: list = None,
+                       species: ARCSpecies = None,
+                       preserve_params: list = None,
+                       trajectory: list = None,
+                       original_xyz: dict = None,
+                       ):
     """
     Checks the scan's quality:
     - Whether the initial and final points are consistent
     - whether it is relatively "smooth"
-    - whether the optimized geometry indeed represents the minimum energy conformer
+    - whether atom distances to preserve aren't violated
+    - whether the optimized geometry indeed represents the minimum energy conformer (for a non-TS)
     - whether the barrier height is reasonable
     Recommends whether or not to use this rotor using the 'successful_rotors' and 'unsuccessful_rotors' attributes.
 
@@ -972,6 +982,12 @@ def scan_quality_check(label: str,
         energies (list): The scan energies in kJ/mol.
         scan_res (float, optional): The scan resolution in degrees.
         used_methods (list, optional): Troubleshooting methods already tried out.
+        species (ARCSpecies, optional): The ARCSpecies this scan is related to.
+        preserve_params (list, optional): Entries are length 2 lists of atom indices (1-indexed) between which the
+                                          distance as well as a torsion dihedral angle with these atoms as its pivots
+                                          must be preserved throughout the scan to a tolerance.
+        trajectory (list, optional): Entries are Cartesian coordinates along the scan trajectory.
+        original_xyz (dict, optional): The optimized coordinated for the species.
 
     Returns:
         invalidate (bool): Whether to invalidate this rotor, ``True`` to invalidate.
@@ -1023,28 +1039,92 @@ def scan_quality_check(label: str,
                 actions = ['inc_res', 'freeze']
             return invalidate, invalidation_reason, message, actions
 
-    # 2. Check conformation:
-    energy_diff = energies[0] - np.min(energies)
-    if energy_diff >= 2 or energy_diff > 0.5 * (max(energies) - min(energies)):
-        invalidate = True
-        invalidation_reason = f'Another conformer for {label} exists which is {energy_diff:.2f} kJ/mol lower.'
-        message = f'Species {label} is not oriented correctly around pivots {pivots}. ' \
-                  f'Another conformer exists which is {energy_diff:.2f} kJ/mol lower. ' \
-                  f'searching for a better conformation...'
-        logger.info(message)
-        # Find the rotation dihedral in degrees to the closest minimum:
-        min_index = np.argmin(energies)
-        deg_increment = min_index * scan_res
-        actions = ['change conformer', pivots, deg_increment]
-        if actions in used_methods:
-            logger.error(f'Not troubleshooting a rotor with the same method: {actions}')
-            actions = list()
-        return invalidate, invalidation_reason, message, actions
+    # 2. Check TS atom distance constraints are preserved
+    if preserve_params is not None:
+        threshold = preserve_param_in_scan_ratio
+        success = True
+        pivots = list()
+        for atoms in preserve_params:
+            for i, xyz in enumerate(trajectory):
+                if i != 0:
+                    # check that the distance between this atom pair is preserved relative to the previous entry
+                    # in the trajectory, as well as relative to the final_xyz.
+                    current_distance = calculate_distance(coords=xyz, atoms=atoms, index=1)
+                    previous_distance = calculate_distance(coords=trajectory[i-1], atoms=atoms, index=1)
+                    original_distance = calculate_distance(coords=original_xyz, atoms=atoms, index=1)
+                    if 1.0 + threshold < current_distance / previous_distance < 1.0 / (1.0 + threshold) \
+                            or 1.0 + threshold < current_distance / original_distance < 1.0 / (1.0 + threshold):
+                        success = False
+                        pivots.append(atoms)
+                        message = f'The rotor breaks the TS around pivots {pivots}: In trajectory {i}, the distance ' \
+                                  f'between the pivots is {current_distance} Angstroms, a ' \
+                                  f'{current_distance / previous_distance} change relative to the previous ' \
+                                  f'frame, a {current_distance / original_distance} change relative to the original ' \
+                                  f'geometry (greater than {1.0 + threshold} or smaller than {1.0 / (1.0 + threshold)}).'
+                        break
 
-    # 3. Check the barrier height
+                    if species.mol is not None:
+                        scan = [determine_smallest_atom_index_in_scan(atom1=species.mol.atoms.index(atoms[0]),
+                                                                      atom2=species.mol.atoms.index(atoms[1]),
+                                                                      mol=species.mol)]
+                        scan.extend(atoms)
+                        scan.append(determine_smallest_atom_index_in_scan(atom1=species.mol.atoms.index(atoms[1]),
+                                                                          atom2=species.mol.atoms.index(atoms[0]),
+                                                                          mol=species.mol))
+                        # check that a dihedral angle with this atom pair as its pivots is preserved relative to the
+                        # previous entry in the trajectory, as well as relative to the final_xyz.
+                        current_dihedral = calculate_dihedral_angle(coords=xyz, torsion=scan, index=1)
+                        previous_dihedral = calculate_dihedral_angle(coords=trajectory[i - 1], torsion=scan, index=1)
+                        original_dihedral = calculate_dihedral_angle(coords=original_xyz, torsion=scan, index=1)
+                        if 1.0 + threshold < current_dihedral / previous_dihedral < 1.0 / (1.0 + threshold) \
+                                or 1.0 + threshold < current_dihedral / original_dihedral < 1.0 / (1.0 + threshold):
+                            success = False
+                            pivots.append(atoms)
+                            message = f'The rotor breaks the TS around pivots {pivots}: In trajectory {i}, the ' \
+                                      f'dihedral angle with these pivots is {current_dihedral} degrees, a ' \
+                                      f'{current_dihedral / previous_dihedral} change relative to the previous ' \
+                                      f'frame, a {current_dihedral / original_dihedral} change relative to the ' \
+                                      f'original geometry (greater than {1.0 + threshold} or smaller than ' \
+                                      f'{1.0 / (1.0 + threshold)}).'
+                            break
+
+        if species.mol is None:
+            logger.warning(f'Cannot check that the dihedral angle of {species.label} is consistent throughout rotor '
+                           f'scans without a .mol attribute')
+        if not success:
+            invalidate = True
+            invalidation_reason = message
+            logger.info(message)
+            actions = list()
+            return invalidate, invalidation_reason, message, actions
+
+    # 3. Check conformation:
+    if species is None or not species.is_ts:
+        # not checking conformation for a TS, since the scan could be a coordinate to/from the saddle
+        energy_diff = energies[0] - np.min(energies)
+        if energy_diff >= 2 or energy_diff > 0.5 * (max(energies) - min(energies)):
+            invalidate = True
+            invalidation_reason = f'Another conformer for {label} exists which is {energy_diff:.2f} kJ/mol lower.'
+            message = f'Species {label} is not oriented correctly around pivots {pivots}. ' \
+                      f'Another conformer exists which is {energy_diff:.2f} kJ/mol lower. ' \
+                      f'searching for a better conformation...'
+            logger.info(message)
+            # Find the rotation dihedral in degrees to the closest minimum:
+            min_index = np.argmin(energies)
+            deg_increment = float(min_index * scan_res)
+            actions = ['change conformer', pivots, deg_increment]
+            if actions in used_methods:
+                logger.error(f'Not troubleshooting a rotor with the same method: {actions}')
+                actions = list()
+            return invalidate, invalidation_reason, message, actions
+
+    # 4. Check the barrier height
     if (np.max(energies) - np.min(energies)) > maximum_barrier:
         # The barrier for the internal rotation is higher than `maximum_barrier`
-        num_wells = determine_rotor_symmetry(label=label, pivots=pivots, rotor_path='', energies=energies,
+        num_wells = determine_rotor_symmetry(label=label,
+                                             pivots=pivots,
+                                             rotor_path='',
+                                             energies=energies,
                                              return_num_wells=True)[-1]
         if num_wells == 1:
             invalidate = True
