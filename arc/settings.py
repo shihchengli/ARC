@@ -166,9 +166,11 @@ valid_chars = "-_()[]=., %s%s" % (string.ascii_letters, string.digits)
 rotor_scan_resolution = 8.0  # degrees. Default: 8.0
 
 # rotor validation parameters
-maximum_barrier = 40    # a rotor threshold (kJ/mol) above which the mode will be considered as vibrational if
-                        # there's only one well. Default: 40 (~10 kcal/mol)
-minimum_barrier = 1.0   # a rotor threshold (kJ/mol) below which it is considered a FreeRotor. Default: 1.0 kJ/mol
-inconsistency_az = 5    # maximum allowed inconsistency (kJ/mol) between initial and final rotor scan points. Default: 5
+maximum_barrier = 40  # a rotor threshold (kJ/mol) above which the mode will be considered as vibrational if
+                      # there's only one well. Default: 40 (~10 kcal/mol)
+minimum_barrier = 1.0  # a rotor threshold (kJ/mol) below which it is considered a FreeRotor. Default: 1.0 kJ/mol
+inconsistency_az = 5  # maximum allowed inconsistency (kJ/mol) between initial and final rotor scan points. Default: 5
 inconsistency_ab = 0.3  # maximum allowed inconsistency between consecutive points in the scan given as a fraction
-#  of the maximum scan energy. Default: 30%
+                        # of the maximum scan energy. Default: 30%
+preserve_param_in_scan_ratio = 0.15  # a threshold for the relative change in bond distance between key atoms or a
+                                     # dihedral around key atoms during a rotor scan for invalidating it. Default: 15%
