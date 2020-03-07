@@ -967,16 +967,19 @@
 <span class="sd">        The mol_list attribute is used for identifying rotors and generating conformers,</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">assign_atom_ids</span><span class="p">()</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                                                                       <span class="n">filter_structures</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">ILPSolutionError</span><span class="p">,</span> <span class="n">ResonanceError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not generate resonance structures for species </span><span class="si">{self.label}</span><span class="s1">. Got: </span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                                                                           <span class="n">filter_structures</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">ILPSolutionError</span><span class="p">,</span> <span class="n">ResonanceError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not generate resonance structures for species </span><span class="si">{self.label}</span><span class="s1">. Got: </span><span class="si">{e}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">]</span>
             <span class="n">success</span> <span class="o">=</span> <span class="n">order_atoms_in_mol_list</span><span class="p">(</span><span class="n">ref_mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">mol_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
-                <span class="c1"># try sorting by IDs, repeat object creation to make sure the are unchanged</span>
+                <span class="c1"># try sorting by IDs, repeat object creation to make sure the original instances remain unchanged</span>
                 <span class="n">mol_copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="n">mol_copy</span><span class="o">.</span><span class="n">assign_atom_ids</span><span class="p">()</span>
                 <span class="n">mol_list</span> <span class="o">=</span> <span class="n">mol_copy</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1090,7 +1093,7 @@
                 <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span>
         <span class="k">return</span> <span class="n">xyz</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.determine_rotors"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.determine_rotors">[docs]</a>    <span class="k">def</span> <span class="nf">determine_rotors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ARCSpecies.determine_rotors"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.determine_rotors">[docs]</a>    <span class="k">def</span> <span class="nf">determine_rotors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine possible unique rotors in the species to be treated as hindered rotors,</span>
 <span class="sd">        taking into account all localized structures.</span>
@@ -1100,12 +1103,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotors_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># this species was marked to skip rotor scans (.rotors_dict is not initialized as an empty dict but as None)</span>
             <span class="k">return</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">:</span>
-            <span class="n">mol_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">mol_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">mol_list</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">mol_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot determine rotors for species </span><span class="si">{self.label}</span><span class="s1"> without a .mol attribute.&#39;</span><span class="p">)</span>
                     <span class="k">continue</span>
@@ -1424,15 +1423,17 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">perceived_mol</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># molecules_from_xyz() returned None for b_mol</span>
+                <span class="c1"># molecules_from_xyz() returned None for mol_b</span>
                 <span class="c1"># todo: Atom order will not be correct, fix</span>
                 <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">mol_s</span><span class="p">,</span> <span class="n">mol_b</span> <span class="o">=</span> <span class="n">molecules_from_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol_b</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_atoms</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mol_b</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol_b</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_atoms</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol_b</span>
-            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol_s</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_atoms</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol_s</span></div>
+            <span class="k">elif</span> <span class="n">mol_s</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol_s</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_atoms</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol_s</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not infer a 2D graph for species </span><span class="si">{self.label}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.process_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.process_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">process_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_list</span><span class="p">:</span> <span class="nb">list</span> <span class="ow">or</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
