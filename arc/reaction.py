@@ -42,6 +42,9 @@ class ARCReaction(object):
         multiplicity (int, optional): The reaction surface multiplicity. A trivial guess will be made unless provided.
         charge (int, optional): The reaction surface charge.
         reaction_dict (dict, optional): A dictionary to create this object from (used when restarting ARC).
+        preserve_param_in_scan (list, optional): Entries are length two iterables of atom indices (1-indexed)
+                                                 between which distances and dihedrals of these pivota must be
+                                                 preserved. Used for identification of rotors which break a TS.
 
     Attributes:
         label (str): The reaction's label in the format `r1 + r2 <=> p1 + p2`
@@ -67,9 +70,12 @@ class ARCReaction(object):
         index (int): An auto-generated index associating the ARCReaction object with the
                      corresponding TS :ref:`ARCSpecies <species>` object.
         ts_label (str): The :ref:`ARCSpecies <species>` label of the respective TS.
+        preserve_param_in_scan (list): Entries are length two iterables of atom indices (1-indexed) between which
+                                       distances and dihedrals of these pivota must be preserved.
     """
     def __init__(self, label='', reactants=None, products=None, ts_label=None, rmg_reaction=None,
-                 ts_methods=None, ts_xyz_guess=None, multiplicity=None, charge=0, reaction_dict=None):
+                 ts_methods=None, ts_xyz_guess=None, multiplicity=None, charge=0, reaction_dict=None,
+                 preserve_param_in_scan=None):
         self.arrow = ' <=> '
         self.plus = ' + '
         self.r_species = list()
@@ -105,18 +111,21 @@ class ARCReaction(object):
             self.set_label_reactants_products()
             self.ts_methods = ts_methods if ts_methods is not None else default_ts_methods
             self.ts_methods = [tsm.lower() for tsm in self.ts_methods]
-            self.ts_xyz_guess = ts_xyz_guess if ts_xyz_guess is not None else list()
+            self.ts_xyz_guess = ts_xyz_guess or list()
+            self.preserve_param_in_scan = preserve_param_in_scan
         if len(self.reactants) > 3 or len(self.products) > 3:
             raise ReactionError(f'An ARC Reaction can have up to three reactants / products. got {len(self.reactants)} '
                                 f'reactants and {len(self.products)} products for reaction {self.label}.')
         if self.ts_xyz_guess is not None and not isinstance(self.ts_xyz_guess, list):
             self.ts_xyz_guess = [self.ts_xyz_guess]
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return a string representation of the object"""
         str_representation = f'ARCReaction('
         str_representation += f'label="{self.label}", '
         str_representation += f'rmg_reaction="{self.rmg_reaction}", '
+        if self.preserve_param_in_scan is not None:
+            str_representation += f'preserve_param_in_scan="{self.preserve_param_in_scan}", '
         str_representation += f'multiplicity={self.multiplicity}, '
         str_representation += f'charge={self.charge})'
         return str_representation
@@ -134,6 +143,8 @@ class ARCReaction(object):
         reaction_dict['p_species'] = [spc.as_dict() for spc in self.p_species]
         if self.ts_species is not None:
             reaction_dict['ts_species'] = self.ts_species.as_dict()
+        if self.preserve_param_in_scan is not None:
+            reaction_dict['preserve_param_in_scan'] = self.preserve_param_in_scan
         if 'rmg_reaction' in reaction_dict:
             reaction_dict['rmg_reaction'] = self.rmg_reaction_to_str()
         reaction_dict['family'] = self.family
@@ -184,6 +195,8 @@ class ARCReaction(object):
         self.ts_methods = reaction_dict['ts_methods'] if 'ts_methods' in reaction_dict else default_ts_methods
         self.ts_methods = [tsm.lower() for tsm in self.ts_methods]
         self.ts_xyz_guess = reaction_dict['ts_xyz_guess'] if 'ts_xyz_guess' in reaction_dict else list()
+        self.preserve_param_in_scan = reaction_dict['preserve_param_in_scan'] \
+            if 'preserve_param_in_scan' in reaction_dict else None
 
     def set_label_reactants_products(self):
         """A helper function for settings the label, reactants, and products attributes for a Reaction"""
@@ -381,6 +394,11 @@ class ARCReaction(object):
         if self.rmg_reaction is not None:
             self.family, self.family_own_reverse = rmgdb.determine_reaction_family(rmgdb=rmg_database,
                                                                                    reaction=self.rmg_reaction)
+
+    def determine_preserve_distance_in_scan(self):
+        """Determine which atom labels participate in the reaction coordinate from the RMG reaction family"""
+        if self.family is not None:
+            pass
 
     def check_ts(self, verbose: bool = True) -> bool:
         """
