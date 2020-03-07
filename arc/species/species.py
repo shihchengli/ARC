@@ -168,6 +168,9 @@ class ARCSpecies(object):
                                                      coordinates are given for the species, all diastereomers will be
                                                      considered, otherwise the chirality specified by the given
                                                      coordinates will be preserved.
+        preserve_param_in_scan (list, optional): Entries are length two iterables of atom indices (1-indexed)
+                                                 between which distances and dihedrals of these pivota must be
+                                                 preserved. Used for identification of rotors which break a TS.
 
     Attributes:
         label (str): The species' label.
@@ -252,6 +255,8 @@ class ARCSpecies(object):
                                                      centers, nitrogen inversions, and cis/trans double bonds) when
                                                      generating conformers. ``True`` to consider all.
         zmat (dict): The species internal coordinates (Z Matrix).
+        preserve_param_in_scan (list): Entries are length two iterables of atom indices (1-indexed) between which
+                                       distances and dihedrals of these pivota must be  preserved.
     """
     def __init__(self,
                  label: str = None,
@@ -274,6 +279,7 @@ class ARCSpecies(object):
                  svpfit_output_file: str = None,
                  bdes: list = None,
                  directed_rotors: dict = None,
+                 preserve_param_in_scan: list = None,
                  consider_all_diastereomers: bool = True,
                  checkfile: str = None,
                  run_time: datetime.timedelta = None,
@@ -334,6 +340,7 @@ class ARCSpecies(object):
             self.directed_rotors = directed_rotors if directed_rotors is not None else dict()
             self.consider_all_diastereomers = consider_all_diastereomers
             self.zmat = None
+            self.preserve_param_in_scan = preserve_param_in_scan
             if self.bdes is not None and not isinstance(self.bdes, list):
                 raise SpeciesError(f'The .bdes argument must be a list, got {self.bdes} which is a {type(self.bdes)}')
             if self.is_ts:
@@ -419,7 +426,7 @@ class ARCSpecies(object):
                     if not self.bond_corrections and self.mol is not None:
                         self.bond_corrections = enumerate_bonds(self.mol)
                         if self.bond_corrections:
-                            self.long_thermo_description += 'Bond corrections: {0}\n'.format(self.bond_corrections)
+                            self.long_thermo_description += f'Bond corrections: {self.bond_corrections}\n'
 
             if not self.bond_corrections and self.compute_thermo:
                 logger.warning(f'Cannot determine bond additivity corrections (BAC) for species {self.label} based on '
@@ -445,6 +452,16 @@ class ARCSpecies(object):
                 and not self.conformers:
             raise SpeciesError(f'No structure (xyz, SMILES, adjList, RMG Species or Molecule) '
                                f'was given for species {self.label}')
+        if self.preserve_param_in_scan is not None:
+            if not isinstance(self.preserve_param_in_scan, list):
+                raise SpeciesError(f'preserve_param_in_scan must be a list, got {self.preserve_param_in_scan}, '
+                                   f'which is a {type(self.preserve_param_in_scan)}')
+            for entry in self.preserve_param_in_scan:
+                if not isinstance(entry, list) or len(entry) != 2:
+                    raise SpeciesError(f'Each entry in preserve_param_in_scan must be a length 2 list, got '
+                                       f'{self.preserve_param_in_scan}')
+                if 0 in entry:
+                    raise SpeciesError(f'preserve_param_in_scan must be 1-indexed, got: {self.preserve_param_in_scan}')
         self.label = check_label(self.label)
         allowed_keys = ['brute_force_sp', 'brute_force_opt', 'cont_opt', 'ess',
                         'brute_force_sp_diagonal', 'brute_force_opt_diagonal', 'cont_opt_diagonal']
@@ -455,7 +472,7 @@ class ARCSpecies(object):
         if self.mol is not None and self.mol_list is None:
             self.set_mol_list()
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return a string representation of the object"""
         str_representation = 'ARCSpecies('
         str_representation += f'label={self.label}, '
@@ -598,6 +615,8 @@ class ARCSpecies(object):
             species_dict['conformers_before_opt'] = [xyz_to_str(conf) for conf in self.conformers_before_opt]
         if self.bdes is not None:
             species_dict['bdes'] = self.bdes
+        if self.preserve_param_in_scan is not None:
+            species_dict['preserve_param_in_scan'] = self.preserve_param_in_scan
         if self.rotors_dict is not None and len(list(self.rotors_dict.keys())):
             rotors_dict = dict()
             for index, rotor_dict in self.rotors_dict.items():
@@ -654,6 +673,8 @@ class ARCSpecies(object):
         self.conf_is_isomorphic = species_dict['conf_is_isomorphic'] if 'conf_is_isomorphic' in species_dict else None
         self.zmat = check_zmat_dict(species_dict['zmat']) if 'zmat' in species_dict else None
         self.is_ts = species_dict['is_ts'] if 'is_ts' in species_dict else False
+        self.preserve_param_in_scan = species_dict['preserve_param_in_scan'] \
+            if 'preserve_param_in_scan' in species_dict else None
         if self.is_ts:
             self.ts_conf_spawned = species_dict['ts_conf_spawned'] if 'ts_conf_spawned' in species_dict else False
             self.ts_number = species_dict['ts_number'] if 'ts_number' in species_dict else None
