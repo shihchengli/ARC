@@ -294,6 +294,7 @@
 <span class="sd">                        - &#39;method&#39; (optional values: &#39;pcm&#39; (default), &#39;cpcm&#39;, &#39;dipole&#39;, &#39;ipcm&#39;, &#39;scipcm&#39;)</span>
 <span class="sd">                        -  &#39;solvent&#39; (values are strings of &quot;known&quot; solvents, see https://gaussian.com/scrf/,</span>
 <span class="sd">                                      default is &quot;water&quot;)</span>
+<span class="sd">        fine_only (bool): If ``True`` ARC will not run optimization jobs without fine=True</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        project (str): The project&#39;s name. Used for naming the working directory.</span>
@@ -347,6 +348,7 @@
 <span class="sd">                                  the molecule. Keys are tuples of (min_num_atoms, max_num_atoms), values are</span>
 <span class="sd">                                  dictionaries with &#39;optfreq&#39; and &#39;sp&#39; as keys and levels of theory as values.</span>
 <span class="sd">        solvent (dict): The solvent model and solvent to use.</span>
+<span class="sd">        fine_only (bool): If ``True`` ARC will not run optimization jobs without fine=True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -379,6 +381,7 @@
                  <span class="n">dont_gen_confs</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">n_confs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
                  <span class="n">e_confs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+                 <span class="n">fine_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rmg_database</span> <span class="o">=</span> <span class="n">rmg_database</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">restart_dict</span> <span class="o">=</span> <span class="n">restart_dict</span>
@@ -401,6 +404,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">e_confs</span> <span class="o">=</span> <span class="n">e_confs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dont_gen_confs</span> <span class="o">=</span> <span class="n">dont_gen_confs</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span> <span class="o">=</span> <span class="n">job_types</span> <span class="k">if</span> <span class="n">job_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">default_job_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fine_only</span> <span class="o">=</span> <span class="n">fine_only</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -568,7 +572,7 @@
                             <span class="c1"># opt/fine isn&#39;t running</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;geo&#39;</span><span class="p">]:</span>
                                 <span class="c1"># opt/fine hasn&#39;t finished (and isn&#39;t running), so run it</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_only</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="c1"># opt/fine is done, check post-opt job types</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;job_types&#39;</span><span class="p">][</span><span class="s1">&#39;freq&#39;</span><span class="p">]</span> \
@@ -607,7 +611,7 @@
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_method</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">run_composite_job</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_only</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_conformer_jobs</span><span class="p">()</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_jobs</span> <span class="o">!=</span> <span class="p">{}:</span>  <span class="c1"># loop while jobs are still running</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Currently running jobs:</span><span class="se">\n</span><span class="si">{self.running_jobs}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -645,7 +649,7 @@
                                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                                     <span class="c1"># if initial_xyz is None, then we&#39;re probably troubleshooting conformers, don&#39;t opt</span>
                                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_method</span><span class="p">:</span>
-                                        <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_only</span><span class="p">)</span>
                                     <span class="k">else</span><span class="p">:</span>
                                         <span class="bp">self</span><span class="o">.</span><span class="n">run_composite_job</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="kc">False</span>
@@ -687,7 +691,7 @@
                             <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_method</span><span class="p">:</span>
                                     <span class="c1"># This wasn&#39;t originally a composite method, probably troubleshooted as such</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_only</span><span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;irc&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
                                         <span class="bp">self</span><span class="o">.</span><span class="n">run_irc_job</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">irc_direction</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span>
@@ -1079,17 +1083,18 @@
                             <span class="s1">&#39; using it for geometry optimization&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">rxn</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">successful_tsgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">initial_xyz</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_method</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_only</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">run_composite_job</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">chosen_ts_method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">ts_guesses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">method</span></div>
 
-<div class="viewcode-block" id="Scheduler.run_opt_job"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.run_opt_job">[docs]</a>    <span class="k">def</span> <span class="nf">run_opt_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+<div class="viewcode-block" id="Scheduler.run_opt_job"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.run_opt_job">[docs]</a>    <span class="k">def</span> <span class="nf">run_opt_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn a geometry optimization job. The initial guess is taken from the `initial_xyz` attribute.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            label (str): The species label.</span>
+<span class="sd">            fine (bool): Whether or not a fine grid should be used during optimization</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;opt&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]:</span>  <span class="c1"># Check whether or not opt jobs have been spawned yet</span>
             <span class="c1"># we&#39;re spawning the first opt job for this species</span>
@@ -1097,7 +1102,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot execute opt job for </span><span class="si">{label}</span><span class="s1"> without xyz (got None for Species.initial_xyz)&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_job</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">initial_xyz</span><span class="p">,</span> <span class="n">level_of_theory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">opt_level</span><span class="p">,</span>
-                     <span class="n">job_type</span><span class="o">=</span><span class="s1">&#39;opt&#39;</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+                     <span class="n">job_type</span><span class="o">=</span><span class="s1">&#39;opt&#39;</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="n">fine</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Scheduler.run_composite_job"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.run_composite_job">[docs]</a>    <span class="k">def</span> <span class="nf">run_composite_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1765,7 +1770,7 @@
                 <span class="k">if</span> <span class="n">spawn_jobs</span><span class="p">:</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_method</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;opt&#39;</span><span class="p">]:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_only</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="c1"># opt wasn&#39;t requested, skip directly to additional relevant job types</span>
                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;freq&#39;</span><span class="p">]:</span>
@@ -2419,7 +2424,7 @@
                         <span class="n">rotor_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;symmetry&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                     <span class="c1"># re-run opt (or composite) on the new initial_xyz with the desired dihedral</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_method</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">run_opt_job</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_only</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">run_composite_job</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
