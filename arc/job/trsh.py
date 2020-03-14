@@ -1063,30 +1063,31 @@ def scan_quality_check(label: str,
                                   f'geometry (greater than {1.0 + threshold} or smaller than {1.0 / (1.0 + threshold)}).'
                         break
 
-                    if species.mol is not None:
-                        scan = [determine_smallest_atom_index_in_scan(atom1=species.mol.atoms.index(atoms[0]),
-                                                                      atom2=species.mol.atoms.index(atoms[1]),
-                                                                      mol=species.mol)]
-                        scan.extend(atoms)
-                        scan.append(determine_smallest_atom_index_in_scan(atom1=species.mol.atoms.index(atoms[1]),
-                                                                          atom2=species.mol.atoms.index(atoms[0]),
-                                                                          mol=species.mol))
-                        # check that a dihedral angle with this atom pair as its pivots is preserved relative to the
-                        # previous entry in the trajectory, as well as relative to the final_xyz.
-                        current_dihedral = calculate_dihedral_angle(coords=xyz, torsion=scan, index=1)
-                        previous_dihedral = calculate_dihedral_angle(coords=trajectory[i - 1], torsion=scan, index=1)
-                        original_dihedral = calculate_dihedral_angle(coords=original_xyz, torsion=scan, index=1)
-                        if 1.0 + threshold < current_dihedral / previous_dihedral < 1.0 / (1.0 + threshold) \
-                                or 1.0 + threshold < current_dihedral / original_dihedral < 1.0 / (1.0 + threshold):
-                            success = False
-                            pivots.append(atoms)
-                            message = f'The rotor breaks the TS around pivots {pivots}: In trajectory {i}, the ' \
-                                      f'dihedral angle with these pivots is {current_dihedral} degrees, a ' \
-                                      f'{current_dihedral / previous_dihedral} change relative to the previous ' \
-                                      f'frame, a {current_dihedral / original_dihedral} change relative to the ' \
-                                      f'original geometry (greater than {1.0 + threshold} or smaller than ' \
-                                      f'{1.0 / (1.0 + threshold)}).'
-                            break
+                    # if species.mol is not None:
+                    #     # this is buggy for TSs, find another way (perhaps XYZ proximity? Or demand torsion input instead of pivots?)
+                    #     scan = [determine_smallest_atom_index_in_scan(atom1=species.mol.atoms.index(atoms[0] - 1),
+                    #                                                   atom2=species.mol.atoms.index(atoms[1] - 1),
+                    #                                                   mol=species.mol)]
+                    #     scan.extend(atoms)
+                    #     scan.append(determine_smallest_atom_index_in_scan(atom1=species.mol.atoms.index(atoms[1] - 1),
+                    #                                                       atom2=species.mol.atoms.index(atoms[0] - 1),
+                    #                                                       mol=species.mol))
+                    #     # check that a dihedral angle with this atom pair as its pivots is preserved relative to the
+                    #     # previous entry in the trajectory, as well as relative to the final_xyz.
+                    #     current_dihedral = calculate_dihedral_angle(coords=xyz, torsion=scan, index=1)
+                    #     previous_dihedral = calculate_dihedral_angle(coords=trajectory[i - 1], torsion=scan, index=1)
+                    #     original_dihedral = calculate_dihedral_angle(coords=original_xyz, torsion=scan, index=1)
+                    #     if 1.0 + threshold < current_dihedral / previous_dihedral < 1.0 / (1.0 + threshold) \
+                    #             or 1.0 + threshold < current_dihedral / original_dihedral < 1.0 / (1.0 + threshold):
+                    #         success = False
+                    #         pivots.append(atoms)
+                    #         message = f'The rotor breaks the TS around pivots {pivots}: In trajectory {i}, the ' \
+                    #                   f'dihedral angle with these pivots is {current_dihedral} degrees, a ' \
+                    #                   f'{current_dihedral / previous_dihedral} change relative to the previous ' \
+                    #                   f'frame, a {current_dihedral / original_dihedral} change relative to the ' \
+                    #                   f'original geometry (greater than {1.0 + threshold} or smaller than ' \
+                    #                   f'{1.0 / (1.0 + threshold)}).'
+                    #         break
 
         if species.mol is None:
             logger.warning(f'Cannot check that the dihedral angle of {species.label} is consistent throughout rotor '
