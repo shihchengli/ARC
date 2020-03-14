@@ -190,7 +190,8 @@
 
 <span class="sd">    generate_conformers</span>
 <span class="sd">        generate_force_field_conformers</span>
-<span class="sd">            get_force_field_energies, rdkit_force_field or mix_rdkit_and_openbabel_force_field, determine_dihedrals</span>
+<span class="sd">            get_force_field_energies, rdkit_force_field or openbabel_force_field_on_rdkit_conformers,</span>
+<span class="sd">            determine_dihedrals</span>
 <span class="sd">        deduce_new_conformers</span>
 <span class="sd">            get_torsion_angles, determine_torsion_symmetry, determine_torsion_sampling_points,</span>
 <span class="sd">            change_dihedrals_and_force_field_it</span>
@@ -606,7 +607,7 @@
 <span class="sd">        list: New conformer combinations, entries are conformer dictionaries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">base_energy</span> <span class="o">=</span> <span class="n">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_confs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">base_xyz</span><span class="p">,</span>
-                                           <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                                           <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">suppress_warning</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">base_energy</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
@@ -703,7 +704,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># no multiple torsions (all torsions are symmetric or no torsions in the molecule), this is a trivial case</span>
         <span class="n">energy</span> <span class="o">=</span> <span class="n">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_confs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">base_xyz</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span>
-                                          <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                                          <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">suppress_warning</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">new_conformers</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="n">len_conformers</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_conformers</span><span class="p">),</span>
                                <span class="s1">&#39;xyz&#39;</span><span class="p">:</span> <span class="n">base_xyz</span><span class="p">,</span>
                                <span class="s1">&#39;FF energy&#39;</span><span class="p">:</span> <span class="n">energy</span><span class="p">,</span>
@@ -817,7 +818,8 @@
         <span class="n">xyz</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">torsions</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">new_dihedrals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">xyz</span><span class="p">,</span> <span class="n">energy</span> <span class="o">=</span> <span class="n">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">)</span>
+        <span class="n">xyz</span><span class="p">,</span> <span class="n">energy</span> <span class="o">=</span> <span class="n">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                               <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span> <span class="n">suppress_warning</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">energy</span>
 
     <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
@@ -836,7 +838,7 @@
                 <span class="n">xyz_dihedrals</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">set_rdkit_dihedrals</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">torsion_0_indexed</span><span class="p">,</span> <span class="n">deg_abs</span><span class="o">=</span><span class="n">dihedral</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">force_field</span> <span class="o">!=</span> <span class="s1">&#39;gromacs&#39;</span><span class="p">:</span>
             <span class="n">xyz_</span><span class="p">,</span> <span class="n">energy</span> <span class="o">=</span> <span class="n">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz_dihedrals</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                    <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">)</span>
+                                                    <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span> <span class="n">suppress_warning</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">energy</span> <span class="ow">and</span> <span class="n">xyz_</span><span class="p">:</span>
                 <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">energy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">optimize</span><span class="p">:</span>
@@ -928,7 +930,7 @@
     <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">molecules_from_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">xyzs</span> <span class="o">=</span> <span class="n">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_confs</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">xyzs</span> <span class="o">=</span> <span class="n">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_confs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">suppress_warning</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="n">xyzs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyzs</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">num_chiral_centers</span> <span class="o">=</span> <span class="n">get_number_of_chiral_centers</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">just_get_the_number</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1177,7 +1179,14 @@
     <span class="k">return</span> <span class="n">torsion_angles</span></div>
 
 
-<div class="viewcode-block" id="get_force_field_energies"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.get_force_field_energies">[docs]</a><span class="k">def</span> <span class="nf">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_confs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s1">&#39;MMFF94s&#39;</span><span class="p">,</span>  <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">try_ob</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="get_force_field_energies"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.get_force_field_energies">[docs]</a><span class="k">def</span> <span class="nf">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                             <span class="n">mol</span><span class="p">:</span> <span class="n">Molecule</span><span class="p">,</span>
+                             <span class="n">num_confs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                             <span class="n">xyz</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                             <span class="n">force_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;MMFF94s&#39;</span><span class="p">,</span>
+                             <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                             <span class="n">try_ob</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                             <span class="n">suppress_warning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine force field energies using RDKit.</span>
 <span class="sd">    If ``num_confs`` is given, random 3D geometries will be generated. If xyz is given, it will be directly used instead.</span>
@@ -1190,33 +1199,79 @@
 <span class="sd">        xyz (dict, optional): The 3D coordinates guess.</span>
 <span class="sd">        force_field (str, optional): The type of force field to use.</span>
 <span class="sd">        optimize (bool, optional): Whether to first optimize the conformer using FF. True to optimize.</span>
-<span class="sd">        try_ob (bool, optional): Whether to try OpenBabel if RDKit fails. ``True`` to try, ``False`` by default.</span>
+<span class="sd">        try_ob (bool, optional): Whether to try OpenBabel if RDKit fails. ``True`` to try, ``True`` by default.</span>
+<span class="sd">        suppress_warning (bool, optional): Wheter to suppress warning of using OpenBabel. ``True`` to suppress, ``False`` by default.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ConformerError: If conformers could not be generated.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Entries are xyz coordinates, each in a dict format.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Entries are the FF energies (in kJ/mol).</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ConformerError: If conformers could not be generated.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">force_field</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;mmff94&#39;</span><span class="p">,</span> <span class="s1">&#39;mmff94s&#39;</span><span class="p">,</span> <span class="s1">&#39;uff&#39;</span><span class="p">]:</span>
         <span class="n">rd_mol</span> <span class="o">=</span> <span class="n">embed_rdkit</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_confs</span><span class="o">=</span><span class="n">num_confs</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">)</span>
-        <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">rdkit_force_field</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">,</span>
-                                           <span class="n">try_ob</span><span class="o">=</span><span class="n">try_ob</span><span class="p">)</span>
+        <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">rdkit_force_field</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyzs</span><span class="p">)</span> <span class="ow">and</span> <span class="n">force_field</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;gaff&#39;</span><span class="p">,</span> <span class="s1">&#39;mmff94&#39;</span><span class="p">,</span> <span class="s1">&#39;mmff94s&#39;</span><span class="p">,</span> <span class="s1">&#39;uff&#39;</span><span class="p">,</span> <span class="s1">&#39;ghemical&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">try_ob</span><span class="p">:</span>
-        <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">mix_rdkit_and_openbabel_force_field</span><span class="p">(</span><span class="n">label</span><span class="p">,</span>
-                                                             <span class="n">mol</span><span class="p">,</span>
-                                                             <span class="n">num_confs</span><span class="o">=</span><span class="n">num_confs</span><span class="p">,</span>
-                                                             <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span>
-                                                             <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span>
-                                                             <span class="n">try_ob</span><span class="o">=</span><span class="n">try_ob</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">suppress_warning</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using OpenBabel instead of RDKit as a fall back method to generate conformers for </span><span class="si">{label}</span><span class="s1">. &#39;</span>
+                           <span class="sa">f</span><span class="s1">&#39;This is often slower.&#39;</span><span class="p">)</span>
+        <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">openbabel_force_field_on_rdkit_conformers</span><span class="p">(</span>
+                                            <span class="n">label</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyzs</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">force_field</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;mmff94&#39;</span><span class="p">,</span> <span class="s1">&#39;mmff94s&#39;</span><span class="p">,</span> <span class="s1">&#39;uff&#39;</span><span class="p">,</span> <span class="s1">&#39;gaff&#39;</span><span class="p">,</span> <span class="s1">&#39;ghemical&#39;</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="n">ConformerError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unrecognized force field for </span><span class="si">{label}</span><span class="s1">. Should be either MMFF94, MMFF94s, UFF, &#39;</span>
                                  <span class="sa">f</span><span class="s1">&#39;Ghemical, or GAFF. Got: </span><span class="si">{force_field}</span><span class="s1">.&#39;</span><span class="p">)</span>
         <span class="c1"># raise ConformerError(f&#39;Could not generate conformers for species {label}.&#39;)</span>
+    <span class="k">return</span> <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span></div>
+
+
+<div class="viewcode-block" id="openbabel_force_field_on_rdkit_conformers"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.openbabel_force_field_on_rdkit_conformers">[docs]</a><span class="k">def</span> <span class="nf">openbabel_force_field_on_rdkit_conformers</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s1">&#39;MMFF94s&#39;</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Optimize RDKit conformers by OpenBabel using a force field (MMFF94 or MMFF94s are recommended).</span>
+<span class="sd">    This is a fall back method when RDKit fails to generate force field optimized conformers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        label (str): The species&#39; label.</span>
+<span class="sd">        rd_mol (RDKit RDMol): The RDKit molecule with embedded conformers to optimize.</span>
+<span class="sd">        force_field (str, optional): The type of force field to use.</span>
+<span class="sd">        optimize (bool, optional): Whether to first optimize the conformer using FF. True to optimize.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Entries are optimized xyz&#39;s in a dictionary format.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Entries are float numbers representing the energies (in kJ/mol).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="c1"># Set up Openbabel input and output format</span>
+    <span class="n">obconversion</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBConversion</span><span class="p">()</span>
+    <span class="n">obconversion</span><span class="o">.</span><span class="n">SetInAndOutFormats</span><span class="p">(</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
+    <span class="c1"># Set up Openbabel force field</span>
+    <span class="n">ff</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBForceField</span><span class="o">.</span><span class="n">FindForceField</span><span class="p">(</span><span class="n">force_field</span><span class="p">)</span>
+    <span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">rd_atom</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="k">for</span> <span class="n">rd_atom</span> <span class="ow">in</span> <span class="n">rd_mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rd_mol</span><span class="o">.</span><span class="n">GetNumConformers</span><span class="p">()):</span>
+        <span class="c1"># Convert RDKit conformer to xyz string</span>
+        <span class="n">conf</span> <span class="o">=</span> <span class="n">rd_mol</span><span class="o">.</span><span class="n">GetConformer</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">xyz_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;{conf.GetNumAtoms()}</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()):</span>
+            <span class="n">xyz_str</span> <span class="o">+=</span> <span class="n">symbols</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;      &#39;</span>
+            <span class="n">pt</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">GetAtomPosition</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+            <span class="n">xyz_str</span> <span class="o">+=</span> <span class="s1">&#39;   &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">z</span><span class="p">)])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="c1"># Build OpenBabel molecule from xyz string</span>
+        <span class="n">ob_mol</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBMol</span><span class="p">()</span>
+        <span class="n">obconversion</span><span class="o">.</span><span class="n">ReadString</span><span class="p">(</span><span class="n">ob_mol</span><span class="p">,</span> <span class="n">xyz_str</span><span class="p">)</span>
+        <span class="n">ff</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">ob_mol</span><span class="p">)</span>
+        <span class="c1"># Optimize the molecule if needed</span>
+        <span class="k">if</span> <span class="n">optimize</span><span class="p">:</span>
+            <span class="n">ff</span><span class="o">.</span><span class="n">ConjugateGradients</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
+        <span class="c1"># Export xyzs and energies</span>
+        <span class="n">ob_mol</span><span class="o">.</span><span class="n">GetCoordinates</span><span class="p">()</span>
+        <span class="n">ff</span><span class="o">.</span><span class="n">GetCoordinates</span><span class="p">(</span><span class="n">ob_mol</span><span class="p">)</span>
+        <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ff</span><span class="o">.</span><span class="n">Energy</span><span class="p">())</span>
+        <span class="n">xyz_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">obconversion</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">ob_mol</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">converter</span><span class="o">.</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span></div>
 
 
@@ -1460,18 +1515,15 @@
     <span class="k">return</span> <span class="n">xyz_dict</span></div>
 
 
-<div class="viewcode-block" id="rdkit_force_field"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.rdkit_force_field">[docs]</a><span class="k">def</span> <span class="nf">rdkit_force_field</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s1">&#39;MMFF94s&#39;</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">try_ob</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="rdkit_force_field"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.rdkit_force_field">[docs]</a><span class="k">def</span> <span class="nf">rdkit_force_field</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s1">&#39;MMFF94s&#39;</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Optimize RDKit conformers using a force field (MMFF94 or MMFF94s are recommended).</span>
-<span class="sd">    Fallback to OpenBabel if RDKit fails.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        label (str): The species&#39; label.</span>
 <span class="sd">        rd_mol (RDKit RDMol): The RDKit molecule with embedded conformers to optimize.</span>
-<span class="sd">        mol (Molecule, optional): The RMG molecule object with connectivity and bond order information.</span>
 <span class="sd">        force_field (str, optional): The type of force field to use.</span>
 <span class="sd">        optimize (bool, optional): Whether to first optimize the conformer using FF. True to optimize.</span>
-<span class="sd">        try_ob (bool, optional): Whether to try OpenBabel if RDKit fails. ``True`` to try, ``False`` by default.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Entries are optimized xyz&#39;s in a dictionary format.</span>
@@ -1482,7 +1534,7 @@
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rd_mol</span><span class="o">.</span><span class="n">GetNumConformers</span><span class="p">()):</span>
         <span class="k">if</span> <span class="n">optimize</span><span class="p">:</span>
             <span class="n">v</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
-            <span class="k">while</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">:</span>  <span class="c1"># v == 1: continue, v == 0: enough steps, v == -1: unable to set up</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AllChem</span><span class="o">.</span><span class="n">MMFFOptimizeMolecule</span><span class="p">(</span><span class="n">rd_mol</span><span class="p">,</span> <span class="n">mmffVariant</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span> <span class="n">confId</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
                                                       <span class="n">maxIters</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">ignoreInterfragInteractions</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                 <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -1492,12 +1544,6 @@
             <span class="k">if</span> <span class="n">optimize</span><span class="p">:</span>
                 <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ff</span><span class="o">.</span><span class="n">CalcEnergy</span><span class="p">())</span>
             <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">read_rdkit_embedded_conformer_i</span><span class="p">(</span><span class="n">rd_mol</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyzs</span><span class="p">)</span> <span class="ow">and</span> <span class="n">try_ob</span><span class="p">:</span>
-        <span class="c1"># RDKit failed, try OpenBabel</span>
-        <span class="n">energies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="n">xyzs</span> <span class="o">=</span> <span class="n">read_rdkit_embedded_conformers</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">xyzs</span><span class="p">:</span>
-            <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">openbabel_force_field</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span></div>
 
 

@@ -941,12 +941,10 @@
     <span class="k">for</span> <span class="n">xyz1_entry</span> <span class="ow">in</span> <span class="n">xyz1</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">xyz2_entry</span> <span class="ow">in</span> <span class="n">xyz2</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">xyz1_entry</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">xyz2_entry</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">continue</span>
             <span class="k">if</span> <span class="n">almost_equal_coords</span><span class="p">(</span><span class="n">xyz1_entry</span><span class="p">,</span> <span class="n">xyz2_entry</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">):</span>
-                <span class="k">break</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">return</span> <span class="kc">True</span></div>
+                <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># Anytime find one match, return `True`</span>
+    <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># If no match is found</span></div>
 
 
 <div class="viewcode-block" id="determine_model_chemistry_type"><a class="viewcode-back" href="../../api/common.html#arc.common.determine_model_chemistry_type">[docs]</a><span class="k">def</span> <span class="nf">determine_model_chemistry_type</span><span class="p">(</span><span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
