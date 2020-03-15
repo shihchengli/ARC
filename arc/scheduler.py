@@ -1228,6 +1228,11 @@ class Scheduler(object):
                 self.species_dict[label].determine_rotors()
             self.run_scan_jobs(label)
 
+        if composite:
+            self.post_sp_actions(label=label,
+                                 sp_path=os.path.join(self.job_dict[label]['composite'][job_name].local_path,
+                                                      'output.out'))
+
         if self.job_types['orbitals'] and 'orbitals' not in self.job_dict[label]:
             self.run_orbitals_job(label)
 
