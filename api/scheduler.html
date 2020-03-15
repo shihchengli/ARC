@@ -185,7 +185,7 @@
 Includes spawning, terminating, checking, and troubleshooting various jobs</p>
 <dl class="class">
 <dt id="arc.scheduler.Scheduler">
-<em class="property">class </em><code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">Scheduler</code><span class="sig-paren">(</span><em class="sig-param">project: str</em>, <em class="sig-param">ess_settings: dict</em>, <em class="sig-param">species_list: list</em>, <em class="sig-param">project_directory: str</em>, <em class="sig-param">composite_method: str = ''</em>, <em class="sig-param">conformer_level: str = ''</em>, <em class="sig-param">opt_level: str = ''</em>, <em class="sig-param">freq_level: str = ''</em>, <em class="sig-param">sp_level: str = ''</em>, <em class="sig-param">scan_level: str = ''</em>, <em class="sig-param">ts_guess_level: str = ''</em>, <em class="sig-param">irc_level: str = ''</em>, <em class="sig-param">orbitals_level: str = ''</em>, <em class="sig-param">adaptive_levels: dict = None</em>, <em class="sig-param">rmg_database=None</em>, <em class="sig-param">job_types: dict = None</em>, <em class="sig-param">job_additional_options: dict = None</em>, <em class="sig-param">solvent: dict = None</em>, <em class="sig-param">job_shortcut_keywords: dict = None</em>, <em class="sig-param">rxn_list: list = None</em>, <em class="sig-param">bath_gas: str = None</em>, <em class="sig-param">restart_dict: dict = None</em>, <em class="sig-param">max_job_time: float = 120</em>, <em class="sig-param">allow_nonisomorphic_2d: bool = False</em>, <em class="sig-param">memory: float = 14</em>, <em class="sig-param">testing: bool = False</em>, <em class="sig-param">dont_gen_confs: list = None</em>, <em class="sig-param">n_confs: int = 10</em>, <em class="sig-param">e_confs: float = 5</em>, <em class="sig-param">fine_only: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">Scheduler</code><span class="sig-paren">(</span><em class="sig-param">project: str</em>, <em class="sig-param">ess_settings: dict</em>, <em class="sig-param">species_list: list</em>, <em class="sig-param">project_directory: str</em>, <em class="sig-param">composite_method: str = ''</em>, <em class="sig-param">conformer_level: str = ''</em>, <em class="sig-param">opt_level: str = ''</em>, <em class="sig-param">freq_level: str = ''</em>, <em class="sig-param">sp_level: str = ''</em>, <em class="sig-param">scan_level: str = ''</em>, <em class="sig-param">ts_guess_level: str = ''</em>, <em class="sig-param">irc_level: str = ''</em>, <em class="sig-param">orbitals_level: str = ''</em>, <em class="sig-param">adaptive_levels: dict = None</em>, <em class="sig-param">rmg_database=None</em>, <em class="sig-param">job_types: dict = None</em>, <em class="sig-param">job_additional_options: dict = None</em>, <em class="sig-param">solvation: dict = None</em>, <em class="sig-param">job_shortcut_keywords: dict = None</em>, <em class="sig-param">rxn_list: list = None</em>, <em class="sig-param">bath_gas: str = None</em>, <em class="sig-param">restart_dict: dict = None</em>, <em class="sig-param">max_job_time: float = 120</em>, <em class="sig-param">allow_nonisomorphic_2d: bool = False</em>, <em class="sig-param">memory: float = 14</em>, <em class="sig-param">testing: bool = False</em>, <em class="sig-param">dont_gen_confs: list = None</em>, <em class="sig-param">n_confs: int = 10</em>, <em class="sig-param">e_confs: float = 5</em>, <em class="sig-param">fine_only: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler" title="Permalink to this definition">¶</a></dt>
 <dd><p>ARC’s Scheduler class. Creates jobs, submits, checks status, troubleshoots.
 Each species in <cite>species_list</cite> has to have a unique label.</p>
 <p>Dictionary structures:</p>
@@ -267,7 +267,7 @@ file, or user-requested. Additional conformer generation should be avoided.</p><
 <li><p><strong>n_confs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of lowest force field conformers to consider.</p></li>
 <li><p><strong>e_confs</strong> (<em>float</em><em>, </em><em>optional</em>) – The energy threshold in kJ/mol above the lowest energy conformer below which
 force field conformers are considered.</p></li>
-<li><p><strong>solvent</strong> (<em>dict</em>) – <p>This argument, if not None, requests that a calculation be performed in the presence of a
+<li><p><strong>solvation</strong> (<em>dict</em>) – <p>This argument, if not <code class="docutils literal notranslate"><span class="pre">None</span></code>, requests that a calculation be performed in the presence of a
 solvent by placing the solute in a cavity within the solvent reaction field.
 Keys are:
 - ‘method’ (optional values: ‘pcm’ (default), ‘cpcm’, ‘dipole’, ‘ipcm’, ‘scipcm’)
@@ -711,9 +711,9 @@ dictionaries with ‘optfreq’ and ‘sp’ as keys and levels of theory as val
 </dd></dl>
 
 <dl class="attribute">
-<dt id="arc.scheduler.Scheduler.solvent">
-<code class="sig-name descname">solvent</code><a class="headerlink" href="#arc.scheduler.Scheduler.solvent" title="Permalink to this definition">¶</a></dt>
-<dd><p>The solvent model and solvent to use.</p>
+<dt id="arc.scheduler.Scheduler.solvation">
+<code class="sig-name descname">solvation</code><a class="headerlink" href="#arc.scheduler.Scheduler.solvation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The solvation model and solvent to use.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>dict</p>

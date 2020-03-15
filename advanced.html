@@ -918,7 +918,7 @@ argument to the main ARC object if using the API):</p>
 <div class="section" id="use-solvent-corrections">
 <h2>Use solvent corrections<a class="headerlink" href="#use-solvent-corrections" title="Permalink to this headline">¶</a></h2>
 <p>This feature is currently only implemented for jobs spawned using Gaussian.
-The <cite>solvent</cite> argument, if not None, requests that a calculation be performed in the presence of a solvent
+The <cite>solvation</cite> argument, if not <code class="docutils literal notranslate"><span class="pre">None</span></code>, requests that a calculation be performed in the presence of a solvent
 by placing the solute (the species) in a cavity within the solvent reaction field. This argument is a dictionary,
 with the following keys:</p>
 <blockquote>
@@ -928,7 +928,7 @@ with the following keys:</p>
 </ul>
 </div></blockquote>
 <p>Example:</p>
-<p>solvent = {‘method’: ‘pcm’, ‘solvent: ‘DiethylEther’}</p>
+<p>solvation = {‘method’: ‘pcm’, ‘solvent: ‘DiethylEther’}</p>
 <p>See <a class="reference external" href="https://gaussian.com/scrf/">https://gaussian.com/scrf/</a> for more details.</p>
 </div>
 </div>

@@ -288,12 +288,12 @@
 <span class="sd">        n_confs (int, optional): The number of lowest force field conformers to consider.</span>
 <span class="sd">        e_confs (float, optional): The energy threshold in kJ/mol above the lowest energy conformer below which</span>
 <span class="sd">                                   force field conformers are considered.</span>
-<span class="sd">        solvent (dict): This argument, if not None, requests that a calculation be performed in the presence of a</span>
-<span class="sd">                        solvent by placing the solute in a cavity within the solvent reaction field.</span>
-<span class="sd">                        Keys are:</span>
-<span class="sd">                        - &#39;method&#39; (optional values: &#39;pcm&#39; (default), &#39;cpcm&#39;, &#39;dipole&#39;, &#39;ipcm&#39;, &#39;scipcm&#39;)</span>
-<span class="sd">                        -  &#39;solvent&#39; (values are strings of &quot;known&quot; solvents, see https://gaussian.com/scrf/,</span>
-<span class="sd">                                      default is &quot;water&quot;)</span>
+<span class="sd">        solvation (dict): This argument, if not ``None``, requests that a calculation be performed in the presence of a</span>
+<span class="sd">                          solvent by placing the solute in a cavity within the solvent reaction field.</span>
+<span class="sd">                          Keys are:</span>
+<span class="sd">                          - &#39;method&#39; (optional values: &#39;pcm&#39; (default), &#39;cpcm&#39;, &#39;dipole&#39;, &#39;ipcm&#39;, &#39;scipcm&#39;)</span>
+<span class="sd">                          -  &#39;solvent&#39; (values are strings of &quot;known&quot; solvents, see https://gaussian.com/scrf/,</span>
+<span class="sd">                                        default is &quot;water&quot;)</span>
 <span class="sd">        fine_only (bool): If ``True`` ARC will not run optimization jobs without fine=True</span>
 
 <span class="sd">    Attributes:</span>
@@ -347,7 +347,7 @@
 <span class="sd">        adaptive_levels (dict): A dictionary of levels of theory for ranges of the number of heavy atoms in</span>
 <span class="sd">                                  the molecule. Keys are tuples of (min_num_atoms, max_num_atoms), values are</span>
 <span class="sd">                                  dictionaries with &#39;optfreq&#39; and &#39;sp&#39; as keys and levels of theory as values.</span>
-<span class="sd">        solvent (dict): The solvent model and solvent to use.</span>
+<span class="sd">        solvation (dict): The solvation model and solvent to use.</span>
 <span class="sd">        fine_only (bool): If ``True`` ARC will not run optimization jobs without fine=True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -369,7 +369,7 @@
                  <span class="n">rmg_database</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">job_types</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">job_additional_options</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">solvent</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">solvation</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">job_shortcut_keywords</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">rxn_list</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">bath_gas</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -398,7 +398,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">testing</span> <span class="o">=</span> <span class="n">testing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="n">memory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bath_gas</span> <span class="o">=</span> <span class="n">bath_gas</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">solvent</span> <span class="o">=</span> <span class="n">solvent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solvation</span> <span class="o">=</span> <span class="n">solvation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">adaptive_levels</span> <span class="o">=</span> <span class="n">adaptive_levels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_confs</span> <span class="o">=</span> <span class="n">n_confs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">e_confs</span> <span class="o">=</span> <span class="n">e_confs</span>
@@ -898,7 +898,7 @@
         <span class="n">job_level_of_theory_dict</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">format_level_of_theory_inputs</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">)</span>
         <span class="n">job</span> <span class="o">=</span> <span class="n">Job</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">ess_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ess_settings</span><span class="p">,</span> <span class="n">species_name</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="n">job_type</span><span class="p">,</span>
                   <span class="n">job_level_of_theory_dict</span><span class="o">=</span><span class="n">job_level_of_theory_dict</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="n">species</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span>
-                  <span class="n">charge</span><span class="o">=</span><span class="n">species</span><span class="o">.</span><span class="n">charge</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="n">fine</span><span class="p">,</span> <span class="n">irc_direction</span><span class="o">=</span><span class="n">irc_direction</span><span class="p">,</span> <span class="n">solvent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">solvent</span><span class="p">,</span>
+                  <span class="n">charge</span><span class="o">=</span><span class="n">species</span><span class="o">.</span><span class="n">charge</span><span class="p">,</span> <span class="n">fine</span><span class="o">=</span><span class="n">fine</span><span class="p">,</span> <span class="n">irc_direction</span><span class="o">=</span><span class="n">irc_direction</span><span class="p">,</span> <span class="n">solvation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">solvation</span><span class="p">,</span>
                   <span class="n">shift</span><span class="o">=</span><span class="n">shift</span><span class="p">,</span> <span class="n">software</span><span class="o">=</span><span class="n">software</span><span class="p">,</span> <span class="n">is_ts</span><span class="o">=</span><span class="n">species</span><span class="o">.</span><span class="n">is_ts</span><span class="p">,</span> <span class="n">total_job_memory_gb</span><span class="o">=</span><span class="n">memory</span><span class="p">,</span> <span class="n">trsh</span><span class="o">=</span><span class="n">trsh</span><span class="p">,</span>
                   <span class="n">ess_trsh_methods</span><span class="o">=</span><span class="n">ess_trsh_methods</span><span class="p">,</span> <span class="n">scan</span><span class="o">=</span><span class="n">scan</span><span class="p">,</span> <span class="n">pivots</span><span class="o">=</span><span class="n">pivots</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="n">occ</span><span class="p">,</span>
                   <span class="n">job_additional_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">job_additional_options</span><span class="p">,</span> <span class="n">job_shortcut_keywords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">job_shortcut_keywords</span><span class="p">,</span>
