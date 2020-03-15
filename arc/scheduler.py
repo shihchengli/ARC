@@ -816,6 +816,7 @@ class Scheduler(object):
                 for rotors_dict in self.species_dict[label].rotors_dict.values():
                     if rotors_dict['pivots'] == job.pivots:
                         rotors_dict['scan_path'] = job.local_path_to_output_file
+                        rotors_dict['job_name'] = job.job_name
             self.save_restart_dict()
             return True
 
@@ -1485,6 +1486,7 @@ class Scheduler(object):
                               'invalidation_reason': ``str``,
                               'times_dihedral_set': ``int``,
                               'scan_path': <path to scan output file>,
+                              'job_name': <scan Job name>,
                               'max_e': ``float``,  # in kJ/mol,
                               'symmetry': ``int``,
                               'dimensions': ``int``,
@@ -2164,6 +2166,7 @@ class Scheduler(object):
                               'invalidation_reason': ``str``,
                               'times_dihedral_set': ``int``,
                               'scan_path': <path to scan output file>,
+                              'job_name': <scan Job name>,
                               'max_e': ``float``,  # in kJ/mol,
                               'symmetry': ``int``,
                               'dimensions': ``int``,
@@ -2237,6 +2240,7 @@ class Scheduler(object):
                 self.species_dict[label].rotors_dict[i]['success'] = False
             if self.species_dict[label].rotors_dict[i]['success'] is not None:  # exclude reset conformer
                 self.species_dict[label].rotors_dict[i]['scan_path'] = job.local_path_to_output_file
+                self.species_dict[label].rotors_dict[i]['job_name'] = job.job_name
                 self.species_dict[label].rotors_dict[i]['invalidation_reason'] = invalidation_reason
 
         # If energies were obtained, draw the scan curve
@@ -2285,6 +2289,7 @@ class Scheduler(object):
                     for rotor_dict in self.species_dict[label].rotors_dict.values():
                         # don't initialize all parameters, e.g., `times_dihedral_set` needs to remain as is
                         rotor_dict['scan_path'] = ''
+                        rotor_dict['job_name'] = ''
                         rotor_dict['invalidation_reason'] = ''
                         rotor_dict['success'] = None
                         rotor_dict.pop('symmetry', None)
@@ -2308,6 +2313,7 @@ class Scheduler(object):
                 for rotor_dict in self.species_dict[label].rotors_dict.values():
                     if rotor_dict['pivots'] == pivots:
                         rotor_dict['scan_path'] = ''
+                        rotor_dict['job_name'] = ''
                         rotor_dict['invalidation_reason'] = invalidation_reason
                         rotor_dict['success'] = False
 
@@ -2340,6 +2346,7 @@ class Scheduler(object):
                               'invalidation_reason': ``str``,
                               'times_dihedral_set': ``int``,
                               'scan_path': <path to scan output file>,
+                              'job_name': <scan Job name>,
                               'max_e': ``float``,  # in kJ/mol,
                               'symmetry': ``int``,
                               'dimensions': ``int``,
@@ -2560,6 +2567,7 @@ class Scheduler(object):
                     for rotor in self.species_dict[label].rotors_dict.values():
                         # don't initialize all parameters, e.g., `times_dihedral_set` needs to remain as is
                         rotor['scan_path'] = ''
+                        rotor['job_name'] = ''
                         rotor['invalidation_reason'] = ''
                         rotor['success'] = None
                         rotor.pop('symmetry', None)
