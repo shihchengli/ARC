@@ -255,8 +255,8 @@
 
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_frequencies() can currently only parse Gaussian, Molpro, Orca, QChem and TeraChem &#39;</span>
-                          <span class="sa">f</span><span class="s1">&#39;files, got </span><span class="si">{software}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using parser.parse_frequencies(). Determined frequencies are: </span><span class="si">{freqs}</span><span class="s1">&#39;</span><span class="p">)</span>
+                          <span class="sa">f</span><span class="s1">&#39;files, got </span><span class="si">{</span><span class="n">software</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using parser.parse_frequencies(). Determined frequencies are: </span><span class="si">{</span><span class="n">freqs</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">freqs</span></div>
 
 
@@ -311,7 +311,7 @@
             <span class="k">elif</span> <span class="n">parse</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span> <span class="ow">or</span> <span class="s1">&#39;-------------------&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="n">parse</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_normal_displacement_modes is currently not implemented for </span><span class="si">{software}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_normal_displacement_modes is currently not implemented for </span><span class="si">{</span><span class="n">software</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
     <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="n">normal_disp_modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">normal_disp_modes</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">normal_disp_modes</span></div>
@@ -331,7 +331,7 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="n">coords</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">load_geometry</span><span class="p">()</span>
     <span class="k">except</span> <span class="n">LogError</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse xyz from </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse xyz from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">xyz_from_data</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">numbers</span><span class="o">=</span><span class="n">number</span><span class="p">)</span></div>
 
@@ -363,12 +363,12 @@
 <span class="sd">        float: The electronic energy in kJ/mol</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">determine_qm_software</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">e_elect</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">load_energy</span><span class="p">(</span><span class="n">zpe_scale_factor</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.001</span>  <span class="c1"># convert to kJ/mol</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">LogError</span><span class="p">,</span> <span class="ne">NotImplementedError</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read e_elect from </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read e_elect from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">e_elect</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">e_elect</span></div>
 
@@ -410,14 +410,14 @@
 <span class="sd">        InputError: If ``path`` is invalid.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">determine_qm_software</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">load_scan_energies</span><span class="p">()</span>
         <span class="n">energies</span> <span class="o">*=</span> <span class="mf">0.001</span>  <span class="c1"># convert to kJ/mol</span>
         <span class="n">angles</span> <span class="o">*=</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># convert to degrees</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">LogError</span><span class="p">,</span> <span class="ne">NotImplementedError</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read energies from </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read energies from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span></div>
 
@@ -452,7 +452,7 @@
 <span class="sd">        InputError: If ``path`` is invalid.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">software</span> <span class="o">=</span> <span class="n">software</span> <span class="ow">or</span> <span class="n">determine_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;directed_scan_type&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;ess_</span><span class="si">{software}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;directed_scan_type&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;ess_</span><span class="si">{</span><span class="n">software</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
                <span class="s1">&#39;scans&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
                <span class="s1">&#39;directed_scan&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>
                <span class="p">}</span>
@@ -585,13 +585,13 @@
                             <span class="c1"># we have all the data for this block, pass to ``results`` and initialize ``dihedrals_dict``</span>
                             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">energy</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
                                 <span class="n">dihedral_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">dihedrals_dict</span><span class="p">[</span><span class="n">torsion</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">torsion</span> <span class="ow">in</span> <span class="n">torsions</span><span class="p">]</span>  <span class="c1"># ordered</span>
-                                <span class="n">key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{dihedral:.2f}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">dihedral</span> <span class="ow">in</span> <span class="n">dihedral_list</span><span class="p">)</span>
+                                <span class="n">key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dihedral</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">dihedral</span> <span class="ow">in</span> <span class="n">dihedral_list</span><span class="p">)</span>
                                 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="n">energy</span><span class="p">}</span>
                             <span class="n">dihedrals_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>  <span class="c1"># keys are torsion tuples, values are dihedral angles</span>
                     <span class="k">break</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_nd_scan_energies is currently only implemented for Gaussian, got </span><span class="si">{software}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_nd_scan_energies is currently only implemented for Gaussian, got </span><span class="si">{</span><span class="n">software</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">min_e</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">return_original_dihedrals</span><span class="p">:</span>
@@ -631,7 +631,7 @@
                 <span class="n">num_of_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="k">break</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not identify the number of atoms line in the xyz file </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not identify the number of atoms line in the xyz file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">relevant_lines</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">num_of_atoms</span><span class="p">]</span>
     <span class="k">elif</span> <span class="n">file_extension</span> <span class="o">==</span> <span class="s1">&#39;.gjf&#39;</span><span class="p">:</span>
@@ -659,7 +659,7 @@
             <span class="k">elif</span> <span class="s1">&#39;geometry={&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="n">record</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">relevant_lines</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse xyz coordinates from file </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse xyz coordinates from file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">relevant_lines</span><span class="p">:</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">relevant_lines</span> <span class="k">if</span> <span class="n">line</span><span class="p">]))</span>
     <span class="k">return</span> <span class="n">xyz</span></div>
@@ -690,7 +690,7 @@
 
     <span class="k">if</span> <span class="n">ess_file</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Currently parse_trajectory only supports Gaussian files, got {type(log)}&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Currently parse_trajectory only supports Gaussian files, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">log</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">traj</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -702,7 +702,7 @@
                 <span class="n">xyz_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
                 <span class="k">while</span> <span class="s1">&#39;--------------------------------------------&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
                     <span class="n">splits</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-                    <span class="n">xyz_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;{qcel.periodictable.to_E(int(splits[1]))}  </span><span class="si">{splits[3]}</span><span class="s1">  </span><span class="si">{splits[4]}</span><span class="s1">  </span><span class="si">{splits[5]}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="n">xyz_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">qcel</span><span class="o">.</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_E</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
                     <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">traj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">))</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -717,8 +717,8 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]]):</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_lines</span><span class="p">):</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_lines</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_of_atoms</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse trajectory, expected </span><span class="si">{num_of_atoms}</span><span class="s1"> atoms, &#39;</span>
-                                          <span class="sa">f</span><span class="s1">&#39;but got {len(xyz_lines)} for point {len(traj) + 1} in the trajectory.&#39;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse trajectory, expected </span><span class="si">{</span><span class="n">num_of_atoms</span><span class="si">}</span><span class="s1"> atoms, &#39;</span>
+                                          <span class="sa">f</span><span class="s1">&#39;but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">xyz_lines</span><span class="p">)</span><span class="si">}</span><span class="s1"> for point </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s1"> in the trajectory.&#39;</span><span class="p">)</span>
                     <span class="n">traj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">xyz_line</span> <span class="k">for</span> <span class="n">xyz_line</span> <span class="ow">in</span> <span class="n">xyz_lines</span><span class="p">])))</span>
                 <span class="n">num_of_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="n">skip_line</span> <span class="o">=</span> <span class="kc">True</span>
@@ -733,12 +733,12 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_lines</span><span class="p">):</span>
             <span class="c1"># add the last point in the trajectory</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_lines</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_of_atoms</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse trajectory, expected </span><span class="si">{num_of_atoms}</span><span class="s1"> atoms, &#39;</span>
-                                  <span class="sa">f</span><span class="s1">&#39;but got {len(xyz_lines)} for point {len(traj) + 1} in the trajectory.&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse trajectory, expected </span><span class="si">{</span><span class="n">num_of_atoms</span><span class="si">}</span><span class="s1"> atoms, &#39;</span>
+                                  <span class="sa">f</span><span class="s1">&#39;but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">xyz_lines</span><span class="p">)</span><span class="si">}</span><span class="s1"> for point </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s1"> in the trajectory.&#39;</span><span class="p">)</span>
             <span class="n">traj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">xyz_line</span> <span class="k">for</span> <span class="n">xyz_line</span> <span class="ow">in</span> <span class="n">xyz_lines</span><span class="p">])))</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse trajectory from </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse trajectory from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">traj</span></div>
 
 
@@ -834,7 +834,7 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">lines</span>
 
 
