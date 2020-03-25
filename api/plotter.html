@@ -572,10 +572,18 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 
 <dl class="function">
 <dt id="arc.plotter.save_thermo_lib">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_thermo_lib</code><span class="sig-paren">(</span><em class="sig-param">species_list</em>, <em class="sig-param">path</em>, <em class="sig-param">name</em>, <em class="sig-param">lib_long_desc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_thermo_lib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_thermo_lib" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save an RMG thermo library of all species in <cite>species_list</cite> in the supplied <cite>path</cite>.
-<cite>name</cite> is the library’s name (or project’s name).
-<cite>long_desc</cite> is a multiline string with level of theory description.</p>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_thermo_lib</code><span class="sig-paren">(</span><em class="sig-param">species_list: list</em>, <em class="sig-param">path: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">lib_long_desc: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/plotter.html#save_thermo_lib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_thermo_lib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save an RMG thermo library of all species</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>species_list</strong> (<em>list</em>) – Entries are ARCSpecies objects to be saved in the library.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – The file path where the library should be created.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The library’s name (or project’s name).</p></li>
+<li><p><strong>lib_long_desc</strong> (<em>str</em>) – A multiline string with level of theory description.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
