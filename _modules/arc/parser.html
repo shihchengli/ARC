@@ -665,18 +665,18 @@
     <span class="k">return</span> <span class="n">xyz</span></div>
 
 
-<div class="viewcode-block" id="parse_trajectory"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_trajectory">[docs]</a><span class="k">def</span> <span class="nf">parse_trajectory</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="viewcode-block" id="parse_trajectory"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_trajectory">[docs]</a><span class="k">def</span> <span class="nf">parse_trajectory</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse all geometries from an xyz trajectory file or an ESS output file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        path (str): The file path.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        list: Entries are xyz&#39;s on the trajectory.</span>
-
 <span class="sd">    Raises:</span>
 <span class="sd">        ParserError: If the trajectory could not be read.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Entries are xyz&#39;s on the trajectory.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 

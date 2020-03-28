@@ -979,8 +979,8 @@ in self.species_dict[species.label][‘rotors_dict’]. Also updates ‘number_o
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.determine_symmetry">
-<code class="sig-name descname">determine_symmetry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.determine_symmetry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine external symmetry and chirality (optical isomers) of the species.</p>
+<code class="sig-name descname">determine_symmetry</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.determine_symmetry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the external symmetry and chirality (optical isomers) of the species.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1031,7 +1031,7 @@ this could very well not be the best (lowest) one.</p>
 
 <dl class="method">
 <dt id="arc.species.species.ARCSpecies.get_xyz">
-<code class="sig-name descname">get_xyz</code><span class="sig-paren">(</span><em class="sig-param">generate: bool = True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.get_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.get_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_xyz</code><span class="sig-paren">(</span><em class="sig-param">generate: bool = True</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.get_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.get_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the highest quality xyz the species has.
 If it doesn’t have any 3D information, and if <code class="docutils literal notranslate"><span class="pre">generate</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, cheaply generate it.
 Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if no xyz can be retrieved nor generated.</p>
