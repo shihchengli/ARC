@@ -207,10 +207,15 @@ Status line formats:</p>
 
 <dl class="function">
 <dt id="arc.job.local.delete_all_local_arc_jobs">
-<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">delete_all_local_arc_jobs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#delete_all_local_arc_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.delete_all_local_arc_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">delete_all_local_arc_jobs</code><span class="sig-paren">(</span><em class="sig-param">jobs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#delete_all_local_arc_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.delete_all_local_arc_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete all ARC-spawned jobs (with job name starting with <cite>a</cite> and a digit) from the local server.
 Make sure you know what you’re doing, so unrelated jobs won’t be deleted…
 Useful when terminating ARC while some (ghost) jobs are still running.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jobs</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – Specific ARC job IDs to delete.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">

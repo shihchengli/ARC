@@ -111,6 +111,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#calculating-bdes-bond-dissociation-energies">Calculating BDEs (bond dissociation energies)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#disable-comparisons-with-the-rmg-database">Disable comparisons with the RMG database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-solvent-corrections">Use solvent corrections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#batch-delete-arc-jobs">Batch delete ARC jobs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Output</a></li>
@@ -369,7 +370,7 @@ maximal node <code class="docutils literal notranslate"><span class="pre">memory
 <div class="section" id="using-a-fine-dft-grid-for-optimization">
 <h2>Using a fine DFT grid for optimization<a class="headerlink" href="#using-a-fine-dft-grid-for-optimization" title="Permalink to this headline">¶</a></h2>
 <p>This option is turned on by default. If you’d like to turn it off,
-set <code class="docutils literal notranslate"><span class="pre">fine</span></code> in the <code class="docutils literal notranslate"><span class="pre">job_types</span></code> dictionary to <cite>False</cite>.</p>
+set <code class="docutils literal notranslate"><span class="pre">fine</span></code> in the <code class="docutils literal notranslate"><span class="pre">job_types</span></code> dictionary to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <p>If turned on, ARC will spawn another optimization job after the first one converges
 with a fine grid settings, using the already optimized geometry.</p>
 <p>It is also possible to instruct ARC not to run the first optimization job and instead go straight to the fine
@@ -397,7 +398,7 @@ describing the importance of a DFT grid.</p>
 <div class="section" id="rotor-scans">
 <h2>Rotor scans<a class="headerlink" href="#rotor-scans" title="Permalink to this headline">¶</a></h2>
 <p>This option is turned on by default. If you’d like to turn it off,
-set <code class="docutils literal notranslate"><span class="pre">rotors</span></code> in the <code class="docutils literal notranslate"><span class="pre">job_types</span></code> dictionary to <cite>False</cite>.</p>
+set <code class="docutils literal notranslate"><span class="pre">rotors</span></code> in the <code class="docutils literal notranslate"><span class="pre">job_types</span></code> dictionary to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <p>ARC will perform 1D (one dimensional) rotor scans for all possible unique internal rotors in the species,</p>
 <p>The rotor scan resolution is 8 degrees by default (scanning 360 degrees overall).
 This can be changed via the <code class="docutils literal notranslate"><span class="pre">rotor_scan_resolution</span></code> parameter in the settings.
@@ -517,7 +518,7 @@ individual jobs being submit to your server queue system.</p></li>
 <p>ARC has fairly good auto-troubleshooting methods.</p>
 <p>However, at times a user might know in advance that a particular additional keyword
 is required for the calculation. In such cases, simply pass the relevant keyword
-in the <code class="docutils literal notranslate"><span class="pre">initial_trsh</span></code> (<cite>trsh</cite> stands for <cite>troubleshooting</cite>) dictionary passed to ARC:</p>
+in the <code class="docutils literal notranslate"><span class="pre">initial_trsh</span></code> (<code class="docutils literal notranslate"><span class="pre">trsh</span></code> stands for <code class="docutils literal notranslate"><span class="pre">troubleshooting</span></code>) dictionary passed to ARC:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">initial_trsh</span><span class="p">:</span>
   <span class="n">gaussian</span><span class="p">:</span>
   <span class="o">-</span> <span class="n">iop</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -550,9 +551,9 @@ factor using the <code class="docutils literal notranslate"><span class="pre">fr
 <p>Often we’d like to adapt the levels of theory to the size of the molecule.
 To do so, pass the <code class="docutils literal notranslate"><span class="pre">adaptive_levels</span></code> attribute, which is a dictionary of
 levels of theory for ranges of the number of heavy (non-hydrogen) atoms in the
-molecule. Keys are tuples of (<cite>min_num_atoms</cite>, <cite>max_num_atoms</cite>), values are
+molecule. Keys are tuples of (<code class="docutils literal notranslate"><span class="pre">min_num_atoms</span></code>, <code class="docutils literal notranslate"><span class="pre">max_num_atoms</span></code>), values are
 dictionaries with <code class="docutils literal notranslate"><span class="pre">optfreq</span></code> and <code class="docutils literal notranslate"><span class="pre">sp</span></code> as keys and levels of theory as values.
-Don’t forget to bound the entire range between <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">inf</span></code>, also make sure
+Don’t forget to bound the entire range between 1 and <code class="docutils literal notranslate"><span class="pre">inf</span></code>, also make sure
 there aren’t any gaps in the heavy atom ranges. The below is in Python (not YAML) format:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adaptive_levels</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>      <span class="p">{</span><span class="s1">&#39;optfreq&#39;</span><span class="p">:</span> <span class="s1">&#39;wb97xd/6-311+g(2d,2p)&#39;</span><span class="p">,</span>
                                  <span class="s1">&#39;sp&#39;</span><span class="p">:</span> <span class="s1">&#39;ccsd(t)-f12/aug-cc-pvtz-f12&#39;</span><span class="p">},</span>
@@ -573,7 +574,7 @@ If the molecule perceived from the 3D coordinate is not isomorphic
 with the input 2D graph, ARC will not spawn any additional jobs for the species, and will not use it further
 (for thermo and/or rates calculations). However, sometimes the perception algorithm doesn’t work as expected (e.g.,
 issues with charged species and triplets are known). To continue spawning jobs for all species in an ARC
-project, pass <cite>True</cite> to the <code class="docutils literal notranslate"><span class="pre">allow_nonisomorphic_2d</span></code> argument (it is <cite>False</cite> by default).</p>
+project, pass <code class="docutils literal notranslate"><span class="pre">True</span></code> to the <code class="docutils literal notranslate"><span class="pre">allow_nonisomorphic_2d</span></code> argument (it is <code class="docutils literal notranslate"><span class="pre">False</span></code> by default).</p>
 </div>
 <div class="section" id="using-a-non-default-project-directory">
 <span id="directory"></span><h2>Using a non-default project directory<a class="headerlink" href="#using-a-non-default-project-directory" title="Permalink to this headline">¶</a></h2>
@@ -590,11 +591,11 @@ folder path using the <code class="docutils literal notranslate"><span class="pr
 One way is to open a <a class="reference external" href="http://gaussian.com/">Gaussian</a> output file
 using <a class="reference external" href="https://gaussian.com/gaussview6/">GaussView</a>.</p>
 <p>ARC supports an additional way to generate high quality and good looking MOs.
-Simply set the <code class="docutils literal notranslate"><span class="pre">orbitals</span></code> entry of the <code class="docutils literal notranslate"><span class="pre">job_types</span></code> dictionary to <cite>True</cite> (it is <cite>False</cite> by default`).
+Simply set the <code class="docutils literal notranslate"><span class="pre">orbitals</span></code> entry of the <code class="docutils literal notranslate"><span class="pre">job_types</span></code> dictionary to <code class="docutils literal notranslate"><span class="pre">True</span></code> (it is <code class="docutils literal notranslate"><span class="pre">False</span></code> by default`).
 ARC will spawn a <a class="reference external" href="https://www.q-chem.com/">QChem</a> job with the
 <code class="docutils literal notranslate"><span class="pre">PRINT_ORBITALS</span> <span class="pre">TRUE</span></code> directive using <a class="reference external" href="http://nbo.chem.wisc.edu/">NBO</a>,
 and will copy the resulting FCheck output file.
-Make sure you set the <cite>orbitals</cite> level of theory to the desired level in <code class="docutils literal notranslate"><span class="pre">default_levels_of_theory</span></code>
+Make sure you set the <code class="docutils literal notranslate"><span class="pre">orbitals</span></code> level of theory to the desired level in <code class="docutils literal notranslate"><span class="pre">default_levels_of_theory</span></code>
 in <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>.
 Open the resulting FCheck file using <a class="reference external" href="http://iqmol.org/">IQMol</a>
 to post process and save images.</p>
@@ -828,7 +829,7 @@ which could be read as an input in ARC:</p>
 </div>
 <div class="section" id="calculating-bdes-bond-dissociation-energies">
 <h2>Calculating BDEs (bond dissociation energies)<a class="headerlink" href="#calculating-bdes-bond-dissociation-energies" title="Permalink to this headline">¶</a></h2>
-<p>To direct ARC to calculate BDEs for a species, set the <code class="docutils literal notranslate"><span class="pre">bde</span></code> job type to <cite>True</cite>,
+<p>To direct ARC to calculate BDEs for a species, set the <code class="docutils literal notranslate"><span class="pre">bde</span></code> job type to <code class="docutils literal notranslate"><span class="pre">True</span></code>,
 and set the requested atom indices (1-indexed) in the species <code class="docutils literal notranslate"><span class="pre">.bdes</span></code> argument
 as a list of tuples representing indices of bonded atoms (via a single bond)
 between which the BDE will be calculated (a list of lists is also allowed and will be converted),
@@ -836,9 +837,9 @@ E.g., a species can be defined as:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spc1</span> <span class="o">=</span> <span class="n">ARCSpecies</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;label1&#39;</span><span class="p">,</span> <span class="n">smiles</span><span class="o">=</span><span class="s1">&#39;CC(NO)C&#39;</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz1</span><span class="p">,</span> <span class="n">bdes</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">)])</span>
 </pre></div>
 </div>
-<p>Note that the <cite>bdes</cite> species argument also accepts the string <code class="docutils literal notranslate"><span class="pre">'all_h'</span></code> as one of the entries
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">bdes</span></code> species argument also accepts the string <code class="docutils literal notranslate"><span class="pre">'all_h'</span></code> as one of the entries
 in the list, directing ARC to calculate BDEs for all hydrogen atoms in the species.
-Below is an example requesting all hydrogen BDEs in ethanol including the <cite>C–O</cite> BDE:</p>
+Below is an example requesting all hydrogen BDEs in ethanol including the <code class="docutils literal notranslate"><span class="pre">C--O</span></code> BDE:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="p">:</span> <span class="n">ethanol_BDEs</span>
 
 <span class="n">job_types</span><span class="p">:</span>
@@ -894,10 +895,10 @@ but on the optimal geometry determined by ARC. To calculate the same BDEs in eth
     <span class="o">-</span> <span class="mi">2</span>
 </pre></div>
 </div>
-<p>Note: The BDEs are determined based on <cite>E0</cite>, therefore both <code class="docutils literal notranslate"><span class="pre">sp</span></code> and <code class="docutils literal notranslate"><span class="pre">freq</span></code> jobs
+<p>Note: The BDEs are determined based on <code class="docutils literal notranslate"><span class="pre">E0</span></code>, therefore both <code class="docutils literal notranslate"><span class="pre">sp</span></code> and <code class="docutils literal notranslate"><span class="pre">freq</span></code> jobs
 must be spawned (and successfully terminated for all species and fragments).</p>
-<p>The calculated BDEs are reported in the log file as well as in a designated <cite>BDE_report.yml</cite>
-file under the <cite>output</cite> directory in the project’s folder. Units are kJ/mol.</p>
+<p>The calculated BDEs are reported in the log file as well as in a designated <code class="docutils literal notranslate"><span class="pre">BDE_report.yml</span></code>
+file under the <code class="docutils literal notranslate"><span class="pre">output</span></code> directory in the project’s folder. Units are kJ/mol.</p>
 </div>
 <div class="section" id="disable-comparisons-with-the-rmg-database">
 <h2>Disable comparisons with the RMG database<a class="headerlink" href="#disable-comparisons-with-the-rmg-database" title="Permalink to this headline">¶</a></h2>
@@ -918,7 +919,7 @@ argument to the main ARC object if using the API):</p>
 <div class="section" id="use-solvent-corrections">
 <h2>Use solvent corrections<a class="headerlink" href="#use-solvent-corrections" title="Permalink to this headline">¶</a></h2>
 <p>This feature is currently only implemented for jobs spawned using Gaussian.
-The <cite>solvation</cite> argument, if not <code class="docutils literal notranslate"><span class="pre">None</span></code>, requests that a calculation be performed in the presence of a solvent
+The <code class="docutils literal notranslate"><span class="pre">solvation</span></code> argument, if not <code class="docutils literal notranslate"><span class="pre">None</span></code>, requests that a calculation be performed in the presence of a solvent
 by placing the solute (the species) in a cavity within the solvent reaction field. This argument is a dictionary,
 with the following keys:</p>
 <blockquote>
@@ -930,6 +931,31 @@ with the following keys:</p>
 <p>Example:</p>
 <p>solvation = {‘method’: ‘pcm’, ‘solvent: ‘DiethylEther’}</p>
 <p>See <a class="reference external" href="https://gaussian.com/scrf/">https://gaussian.com/scrf/</a> for more details.</p>
+</div>
+<div class="section" id="batch-delete-arc-jobs">
+<h2>Batch delete ARC jobs<a class="headerlink" href="#batch-delete-arc-jobs" title="Permalink to this headline">¶</a></h2>
+<p>DANGER ZONE: Make sure you understand what you’re doing before running this script! Data of running jobs will be lost.</p>
+<p>ARC has a feature that deletes all ARC-spawned jobs from selected servers and projects.
+To delete all ARC jobs, type in a terminal in the ARC code folder after activating <code class="docutils literal notranslate"><span class="pre">arc_env</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">arc</span><span class="o">/</span><span class="n">utils</span><span class="o">/</span><span class="n">delete</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>You can also request to delete jobs from a specific server by specifying its name after the <code class="docutils literal notranslate"><span class="pre">-s</span></code> flag:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">arc</span><span class="o">/</span><span class="n">utils</span><span class="o">/</span><span class="n">delete</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">s</span> <span class="n">server1</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>To delete jobs from a specific ARC project, pass the project’s name after the <code class="docutils literal notranslate"><span class="pre">-p</span></code> flag:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">arc</span><span class="o">/</span><span class="n">utils</span><span class="o">/</span><span class="n">delete</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">p</span> <span class="n">project1</span>
+</pre></div>
+</div>
+<p>Alternatively (since project names might be long and not always shown in full when requesting the server job status),
+one can supply an ARC job ID, and ALL jobs related to the project of the given job ID will be deleted
+(NOT only the given job!):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">arc</span><span class="o">/</span><span class="n">utils</span><span class="o">/</span><span class="n">delete</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">j</span> <span class="n">a_54836</span>
+</pre></div>
+</div>
+<p>Note that either a <code class="docutils literal notranslate"><span class="pre">-a</span></code>, a <code class="docutils literal notranslate"><span class="pre">-p</span></code>, or a <code class="docutils literal notranslate"><span class="pre">-j</span></code> flag must be given.
+All flags can be combined with the optional <code class="docutils literal notranslate"><span class="pre">-s</span></code> flag.</p>
 </div>
 </div>
 

@@ -331,14 +331,17 @@ Either <cite>file_string</cite> or <cite>local_file_path</cite> must be given.</
 
 <dl class="function">
 <dt id="arc.job.ssh.delete_all_arc_jobs">
-<code class="sig-prename descclassname">arc.job.ssh.</code><code class="sig-name descname">delete_all_arc_jobs</code><span class="sig-paren">(</span><em class="sig-param">server_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/ssh.html#delete_all_arc_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.ssh.delete_all_arc_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.job.ssh.</code><code class="sig-name descname">delete_all_arc_jobs</code><span class="sig-paren">(</span><em class="sig-param">server_list</em>, <em class="sig-param">jobs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/ssh.html#delete_all_arc_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.ssh.delete_all_arc_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete all ARC-spawned jobs (with job name starting with <cite>a</cite> and a digit) from :list:servers
 (<cite>servers</cite> could also be a string of one server name)
 Make sure you know what you’re doing, so unrelated jobs won’t be deleted…
 Useful when terminating ARC while some (ghost) jobs are still running.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>server_list</strong> (<em>list</em>) – List of servers to delete ARC jobs from.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_list</strong> (<em>list</em>) – List of servers to delete ARC jobs from.</p></li>
+<li><p><strong>jobs</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – Specific ARC job IDs to delete.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
