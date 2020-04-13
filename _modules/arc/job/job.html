@@ -301,11 +301,11 @@
 <span class="sd">                         ARC adopts the following naming system to describe computing hardware hierarchy</span>
 <span class="sd">                         node &gt; cpu &gt; cpu_cores &gt; cpu_threads</span>
 <span class="sd">        input_file_memory (int): The memory ARC writes to job input files in appropriate formats per ESS.</span>
-<span class="sd">                                 In software like Gaussian, this varible is total memory for all cpu cores.</span>
-<span class="sd">                                 In software like Orca, this varible is memory per cpu core.</span>
+<span class="sd">                                 In software like Gaussian, this variable is total memory for all cpu cores.</span>
+<span class="sd">                                 In software like Orca, this variable is memory per cpu core.</span>
 <span class="sd">        submit_script_memory (int): The memory ARC writes to submit script in appropriate formats per cluster system.</span>
-<span class="sd">                                    In system like Sun Grid Engine, this varible is total memory for all cpu cores.</span>
-<span class="sd">                                    In system like Slurm, this varible is memory per cpu core.</span>
+<span class="sd">                                    In system like Sun Grid Engine, this variable is total memory for all cpu cores.</span>
+<span class="sd">                                    In system like Slurm, this variable is memory per cpu core.</span>
 <span class="sd">                                    Notice that submit_script_memory &gt; input_file_memory because additional memory is</span>
 <span class="sd">                                    needed to execute a job on server properly</span>
 <span class="sd">        total_job_memory_gb (int): The total memory ARC specifies for a job in GB.</span>
@@ -505,7 +505,7 @@
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;fine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine</span>
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_status</span>
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;cpu_cores&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu_cores</span>
-        <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;total_job_memory_gb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_job_memory_gb</span>
+        <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;total_job_memory_gb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_job_memory_gb</span><span class="p">)</span>
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;job_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span>
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;scan_res&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_res</span>
         <span class="n">job_dict</span><span class="p">[</span><span class="s1">&#39;is_ts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span>
