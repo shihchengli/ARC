@@ -256,7 +256,7 @@ Useful for comparing xyz’s in unit tests.</p>
 
 <dl class="function">
 <dt id="arc.common.check_ess_settings">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">check_ess_settings</code><span class="sig-paren">(</span><em class="sig-param">ess_settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#check_ess_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.check_ess_settings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">check_ess_settings</code><span class="sig-paren">(</span><em class="sig-param">ess_settings: Optional[dict] = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#check_ess_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.check_ess_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function to convert servers in the ess_settings dict to lists
 Assists in troubleshooting job and trying a different server
 Also check ESS and servers.</p>
@@ -301,7 +301,7 @@ For example:
 
 <dl class="function">
 <dt id="arc.common.determine_ess">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_ess</code><span class="sig-paren">(</span><em class="sig-param">log_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_ess" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_ess</code><span class="sig-paren">(</span><em class="sig-param">log_file: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#determine_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_ess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the ESS to which the log file belongs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -342,7 +342,7 @@ For example:
 
 <dl class="function">
 <dt id="arc.common.determine_symmetry">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_symmetry</code><span class="sig-paren">(</span><em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_symmetry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_symmetry</code><span class="sig-paren">(</span><em class="sig-param">xyz: dict</em><span class="sig-paren">)</span> &#x2192; Tuple[int, int]<a class="reference internal" href="../_modules/arc/common.html#determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_symmetry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine external symmetry and chirality (optical isomers) of the species.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -355,10 +355,14 @@ For example:
 <dd class="field-odd"><p>int</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>1 if no chiral centers are present, 2 if chiral centers are present.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p>The external symmetry number.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> if no chiral centers are present, <code class="docutils literal notranslate"><span class="pre">2</span></code> if chiral centers are present.</p></li>
+</ul>
+</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p>Tuple[int, int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -389,6 +393,30 @@ Two <code class="docutils literal notranslate"><span class="pre">atom_list_to_ex
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.common.estimate_orca_mem_cpu_requirement">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">estimate_orca_mem_cpu_requirement</code><span class="sig-paren">(</span><em class="sig-param">num_heavy_atoms: int</em>, <em class="sig-param">server: str = ''</em>, <em class="sig-param">consider_server_limits: bool = False</em><span class="sig-paren">)</span> &#x2192; Tuple[int, float]<a class="reference internal" href="../_modules/arc/common.html#estimate_orca_mem_cpu_requirement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.estimate_orca_mem_cpu_requirement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates memory and cpu requirements for an Orca job.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_heavy_atoms</strong> (<em>int</em>) – The number of heavy atoms in the species.</p></li>
+<li><p><strong>server</strong> (<em>str</em>) – The name of the server where Orca runs.</p></li>
+<li><p><strong>consider_server_limits</strong> (<em>bool</em>) – Try to give realistic estimations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>the amount of total memory (MB) and cpu cores required for the Orca job of given species.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[int, float]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -443,7 +471,7 @@ More examples can be found from <cite>test_format_level_of_theory_for_logging</c
 
 <dl class="function">
 <dt id="arc.common.format_level_of_theory_inputs">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_inputs</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_inputs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_inputs</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory: Union[str, dict]</em><span class="sig-paren">)</span> &#x2192; Tuple[dict, str]<a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_inputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function to format level of theory inputs for internal use in ARC.</p>
 <dl>
 <dt>Examples: input -&gt; output</dt><dd><p>‘cbs-qb3’ -&gt; {‘method’: ‘cbs-qb3’, ‘basis’: ‘’, ‘auxiliary_basis’: ‘’, ‘dispersion’: ‘’}
@@ -623,7 +651,7 @@ The contents of this file will be changed and saved as a different file.</p></li
 
 <dl class="function">
 <dt id="arc.common.initialize_job_types">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">initialize_job_types</code><span class="sig-paren">(</span><em class="sig-param">job_types</em>, <em class="sig-param">specific_job_type=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#initialize_job_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_job_types" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">initialize_job_types</code><span class="sig-paren">(</span><em class="sig-param">job_types: dict</em>, <em class="sig-param">specific_job_type: str = ''</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#initialize_job_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_job_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for initializing job_types.
 Returns the comprehensive (default values for missing job types) job types for ARC.</p>
 <dl class="field-list simple">
@@ -644,7 +672,7 @@ Returns the comprehensive (default values for missing job types) job types for A
 
 <dl class="function">
 <dt id="arc.common.initialize_log">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">initialize_log</code><span class="sig-paren">(</span><em class="sig-param">log_file</em>, <em class="sig-param">project</em>, <em class="sig-param">project_directory=None</em>, <em class="sig-param">verbose=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#initialize_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_log" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">initialize_log</code><span class="sig-paren">(</span><em class="sig-param">log_file: str</em>, <em class="sig-param">project: str</em>, <em class="sig-param">project_directory: Optional[str] = None</em>, <em class="sig-param">verbose: int = 20</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#initialize_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set up a logger for ARC.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -675,13 +703,30 @@ Returns the comprehensive (default values for missing job types) job types for A
 <dl class="function">
 <dt id="arc.common.is_str_float">
 <code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_str_float</code><span class="sig-paren">(</span><em class="sig-param">value: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#is_str_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_str_float" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check whether a string represents a number.</p>
+<dd><p>Check whether a string can be converted to a floating number.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – The string to check.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if it does, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if it can, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="arc.common.is_str_int">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_str_int</code><span class="sig-paren">(</span><em class="sig-param">value: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#is_str_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_str_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a string can be converted to an integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – The string to check.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if it can, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>bool</p>
@@ -691,7 +736,7 @@ Returns the comprehensive (default values for missing job types) job types for A
 
 <dl class="function">
 <dt id="arc.common.key_by_val">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">key_by_val</code><span class="sig-paren">(</span><em class="sig-param">dictionary</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#key_by_val"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.key_by_val" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">key_by_val</code><span class="sig-paren">(</span><em class="sig-param">dictionary: dict</em>, <em class="sig-param">value: Any</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="../_modules/arc/common.html#key_by_val"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.key_by_val" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for getting a key from a dictionary corresponding to a certain value.
 Does not check for value unicity.</p>
 <dl class="field-list simple">
@@ -712,7 +757,7 @@ Does not check for value unicity.</p>
 
 <dl class="function">
 <dt id="arc.common.log_footer">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">log_footer</code><span class="sig-paren">(</span><em class="sig-param">execution_time</em>, <em class="sig-param">level=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#log_footer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_footer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">log_footer</code><span class="sig-paren">(</span><em class="sig-param">execution_time: str</em>, <em class="sig-param">level: int = 20</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#log_footer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_footer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output a footer for the log.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -726,7 +771,7 @@ Does not check for value unicity.</p>
 
 <dl class="function">
 <dt id="arc.common.log_header">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">log_header</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">level=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#log_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_header" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">log_header</code><span class="sig-paren">(</span><em class="sig-param">project: str</em>, <em class="sig-param">level: int = 20</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#log_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_header" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output a header containing identifying information about ARC to the log.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -740,7 +785,7 @@ Does not check for value unicity.</p>
 
 <dl class="function">
 <dt id="arc.common.read_yaml_file">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">read_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">project_directory: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#read_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.read_yaml_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">read_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">project_directory: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#read_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.read_yaml_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a YAML file (usually an input / restart file, but also conformers file)
 and return the parameters as python variables.</p>
 <dl class="field-list simple">
@@ -775,7 +820,7 @@ and return the parameters as python variables.</p>
 
 <dl class="function">
 <dt id="arc.common.sort_two_lists_by_the_first">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">sort_two_lists_by_the_first</code><span class="sig-paren">(</span><em class="sig-param">list1</em>, <em class="sig-param">list2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#sort_two_lists_by_the_first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.sort_two_lists_by_the_first" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">sort_two_lists_by_the_first</code><span class="sig-paren">(</span><em class="sig-param">list1: List[Union[float, int, None]], list2: List[Union[float, int, None]]</em><span class="sig-paren">)</span> &#x2192; Tuple[List[Union[float, int]], List[Union[float, int]]]<a class="reference internal" href="../_modules/arc/common.html#sort_two_lists_by_the_first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.sort_two_lists_by_the_first" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sort two lists in increasing order by the values of the first list.
 Ignoring None entries from list1 and their respective entries in list2.
 The function was written in this format rather the more pytonic <code class="docutils literal notranslate"><span class="pre">zip(*sorted(zip(list1,</span> <span class="pre">list2)))</span></code> style

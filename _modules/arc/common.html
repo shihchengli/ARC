@@ -182,6 +182,8 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">qcelemental</span> <span class="k">as</span> <span class="nn">qcel</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
 <span class="kn">from</span> <span class="nn">arkane.ess</span> <span class="kn">import</span> <span class="n">GaussianLog</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">,</span> <span class="n">OrcaLog</span><span class="p">,</span> <span class="n">QChemLog</span><span class="p">,</span> <span class="n">TeraChemLog</span>
 <span class="kn">from</span> <span class="nn">arkane.util</span> <span class="kn">import</span> <span class="n">determine_qm_software</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="kn">import</span> <span class="n">get_element</span>
@@ -197,7 +199,9 @@
 <span class="n">VERSION</span> <span class="o">=</span> <span class="s1">&#39;1.1.0&#39;</span>
 
 
-<div class="viewcode-block" id="initialize_job_types"><a class="viewcode-back" href="../../api/common.html#arc.common.initialize_job_types">[docs]</a><span class="k">def</span> <span class="nf">initialize_job_types</span><span class="p">(</span><span class="n">job_types</span><span class="p">,</span> <span class="n">specific_job_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="initialize_job_types"><a class="viewcode-back" href="../../api/common.html#arc.common.initialize_job_types">[docs]</a><span class="k">def</span> <span class="nf">initialize_job_types</span><span class="p">(</span><span class="n">job_types</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                         <span class="n">specific_job_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for initializing job_types.</span>
 <span class="sd">    Returns the comprehensive (default values for missing job types) job types for ARC.</span>
@@ -257,7 +261,7 @@
     <span class="k">return</span> <span class="n">job_types</span></div>
 
 
-<div class="viewcode-block" id="determine_ess"><a class="viewcode-back" href="../../api/common.html#arc.common.determine_ess">[docs]</a><span class="k">def</span> <span class="nf">determine_ess</span><span class="p">(</span><span class="n">log_file</span><span class="p">):</span>
+<div class="viewcode-block" id="determine_ess"><a class="viewcode-back" href="../../api/common.html#arc.common.determine_ess">[docs]</a><span class="k">def</span> <span class="nf">determine_ess</span><span class="p">(</span><span class="n">log_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine the ESS to which the log file belongs.</span>
 
@@ -282,7 +286,7 @@
                      <span class="sa">f</span><span class="s1">&#39;Gaussian, Molpro, Orca, QChem, or TeraChem.&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="check_ess_settings"><a class="viewcode-back" href="../../api/common.html#arc.common.check_ess_settings">[docs]</a><span class="k">def</span> <span class="nf">check_ess_settings</span><span class="p">(</span><span class="n">ess_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="check_ess_settings"><a class="viewcode-back" href="../../api/common.html#arc.common.check_ess_settings">[docs]</a><span class="k">def</span> <span class="nf">check_ess_settings</span><span class="p">(</span><span class="n">ess_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function to convert servers in the ess_settings dict to lists</span>
 <span class="sd">    Assists in troubleshooting job and trying a different server</span>
@@ -321,7 +325,11 @@
     <span class="k">return</span> <span class="n">settings</span></div>
 
 
-<div class="viewcode-block" id="initialize_log"><a class="viewcode-back" href="../../api/common.html#arc.common.initialize_log">[docs]</a><span class="k">def</span> <span class="nf">initialize_log</span><span class="p">(</span><span class="n">log_file</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">project_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>
+<div class="viewcode-block" id="initialize_log"><a class="viewcode-back" href="../../api/common.html#arc.common.initialize_log">[docs]</a><span class="k">def</span> <span class="nf">initialize_log</span><span class="p">(</span><span class="n">log_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                   <span class="n">project</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                   <span class="n">project_directory</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+                   <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set up a logger for ARC.</span>
 
@@ -384,7 +392,9 @@
     <span class="k">return</span> <span class="n">logger</span></div>
 
 
-<div class="viewcode-block" id="log_header"><a class="viewcode-back" href="../../api/common.html#arc.common.log_header">[docs]</a><span class="k">def</span> <span class="nf">log_header</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>
+<div class="viewcode-block" id="log_header"><a class="viewcode-back" href="../../api/common.html#arc.common.log_header">[docs]</a><span class="k">def</span> <span class="nf">log_header</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+               <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+               <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Output a header containing identifying information about ARC to the log.</span>
 
@@ -417,7 +427,9 @@
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Starting project </span><span class="si">{</span><span class="n">project</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="log_footer"><a class="viewcode-back" href="../../api/common.html#arc.common.log_footer">[docs]</a><span class="k">def</span> <span class="nf">log_footer</span><span class="p">(</span><span class="n">execution_time</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>
+<div class="viewcode-block" id="log_footer"><a class="viewcode-back" href="../../api/common.html#arc.common.log_footer">[docs]</a><span class="k">def</span> <span class="nf">log_footer</span><span class="p">(</span><span class="n">execution_time</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+               <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+               <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Output a footer for the log.</span>
 
@@ -470,7 +482,7 @@
 
 
 <div class="viewcode-block" id="read_yaml_file"><a class="viewcode-back" href="../../api/common.html#arc.common.read_yaml_file">[docs]</a><span class="k">def</span> <span class="nf">read_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                   <span class="n">project_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="n">project_directory</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read a YAML file (usually an input / restart file, but also conformers file)</span>
@@ -695,7 +707,7 @@
     <span class="k">return</span> <span class="mf">2.5</span></div>
 
 
-<div class="viewcode-block" id="determine_symmetry"><a class="viewcode-back" href="../../api/common.html#arc.common.determine_symmetry">[docs]</a><span class="k">def</span> <span class="nf">determine_symmetry</span><span class="p">(</span><span class="n">xyz</span><span class="p">):</span>
+<div class="viewcode-block" id="determine_symmetry"><a class="viewcode-back" href="../../api/common.html#arc.common.determine_symmetry">[docs]</a><span class="k">def</span> <span class="nf">determine_symmetry</span><span class="p">(</span><span class="n">xyz</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine external symmetry and chirality (optical isomers) of the species.</span>
 
@@ -705,7 +717,9 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        int: The external symmetry number.</span>
 <span class="sd">    Returns:</span>
-<span class="sd">        int: 1 if no chiral centers are present, 2 if chiral centers are present.</span>
+<span class="sd">        Tuple[int, int]:</span>
+<span class="sd">            - The external symmetry number.</span>
+<span class="sd">            - ``1`` if no chiral centers are present, ``2`` if chiral centers are present.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">atom_numbers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># List of atomic numbers</span>
     <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]:</span>
@@ -793,7 +807,9 @@
         <span class="k">return</span> <span class="nb">max</span><span class="p">([</span><span class="n">entry</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span></div>
 
 
-<div class="viewcode-block" id="sort_two_lists_by_the_first"><a class="viewcode-back" href="../../api/common.html#arc.common.sort_two_lists_by_the_first">[docs]</a><span class="k">def</span> <span class="nf">sort_two_lists_by_the_first</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+<div class="viewcode-block" id="sort_two_lists_by_the_first"><a class="viewcode-back" href="../../api/common.html#arc.common.sort_two_lists_by_the_first">[docs]</a><span class="k">def</span> <span class="nf">sort_two_lists_by_the_first</span><span class="p">(</span><span class="n">list1</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]],</span>
+                                <span class="n">list2</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]],</span>
+                                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sort two lists in increasing order by the values of the first list.</span>
 <span class="sd">    Ignoring None entries from list1 and their respective entries in list2.</span>
@@ -839,7 +855,9 @@
     <span class="k">return</span> <span class="n">sorted_list1</span><span class="p">,</span> <span class="n">sorted_list2</span></div>
 
 
-<div class="viewcode-block" id="key_by_val"><a class="viewcode-back" href="../../api/common.html#arc.common.key_by_val">[docs]</a><span class="k">def</span> <span class="nf">key_by_val</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="key_by_val"><a class="viewcode-back" href="../../api/common.html#arc.common.key_by_val">[docs]</a><span class="k">def</span> <span class="nf">key_by_val</span><span class="p">(</span><span class="n">dictionary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+               <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+               <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for getting a key from a dictionary corresponding to a certain value.</span>
 <span class="sd">    Does not check for value unicity.</span>
@@ -997,7 +1015,7 @@
     <span class="k">return</span> <span class="n">model_chemistry_class</span></div>
 
 
-<div class="viewcode-block" id="format_level_of_theory_inputs"><a class="viewcode-back" href="../../api/common.html#arc.common.format_level_of_theory_inputs">[docs]</a><span class="k">def</span> <span class="nf">format_level_of_theory_inputs</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="format_level_of_theory_inputs"><a class="viewcode-back" href="../../api/common.html#arc.common.format_level_of_theory_inputs">[docs]</a><span class="k">def</span> <span class="nf">format_level_of_theory_inputs</span><span class="p">(</span><span class="n">level_of_theory</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function to format level of theory inputs for internal use in ARC.</span>
 
@@ -1143,16 +1161,33 @@
 
 <div class="viewcode-block" id="is_str_float"><a class="viewcode-back" href="../../api/common.html#arc.common.is_str_float">[docs]</a><span class="k">def</span> <span class="nf">is_str_float</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check whether a string represents a number.</span>
+<span class="sd">    Check whether a string can be converted to a floating number.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        value (str): The string to check.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        bool: ``True`` if it does, ``False`` otherwise.</span>
+<span class="sd">        bool: ``True`` if it can, ``False`` otherwise.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_str_int"><a class="viewcode-back" href="../../api/common.html#arc.common.is_str_int">[docs]</a><span class="k">def</span> <span class="nf">is_str_int</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether a string can be converted to an integer.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (str): The string to check.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: ``True`` if it can, ``False`` otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span></div>
@@ -1177,6 +1212,47 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">d</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">d</span><span class="si">}{</span><span class="n">h</span><span class="si">:</span><span class="s1">02.0f</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">m</span><span class="si">:</span><span class="s1">02.0f</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">s</span><span class="si">:</span><span class="s1">02.0f</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
+
+<div class="viewcode-block" id="estimate_orca_mem_cpu_requirement"><a class="viewcode-back" href="../../api/common.html#arc.common.estimate_orca_mem_cpu_requirement">[docs]</a><span class="k">def</span> <span class="nf">estimate_orca_mem_cpu_requirement</span><span class="p">(</span><span class="n">num_heavy_atoms</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                                      <span class="n">server</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                                      <span class="n">consider_server_limits</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                                      <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Estimates memory and cpu requirements for an Orca job.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        num_heavy_atoms (int): The number of heavy atoms in the species.</span>
+<span class="sd">        server (str): The name of the server where Orca runs.</span>
+<span class="sd">        consider_server_limits (bool):  Try to give realistic estimations.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple[int, float]:</span>
+<span class="sd">            - the amount of total memory (MB) and cpu cores required for the Orca job of given species.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">max_server_mem_gb</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">max_server_cpus</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">consider_server_limits</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
+            <span class="n">max_server_mem_gb</span> <span class="o">=</span> <span class="n">servers</span><span class="p">[</span><span class="n">server</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;memory&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">max_server_cpus</span> <span class="o">=</span> <span class="n">servers</span><span class="p">[</span><span class="n">server</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cpus&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot find server </span><span class="si">{</span><span class="n">server</span><span class="si">}</span><span class="s1"> in settings.py&#39;</span><span class="p">)</span>
+            <span class="n">consider_server_limits</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">max_server_mem_gb</span> <span class="o">=</span> <span class="n">max_server_mem_gb</span> <span class="k">if</span> <span class="n">is_str_int</span><span class="p">(</span><span class="n">max_server_mem_gb</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">max_server_cpus</span> <span class="o">=</span> <span class="n">max_server_cpus</span> <span class="k">if</span> <span class="n">is_str_int</span><span class="p">(</span><span class="n">max_server_cpus</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="n">est_cpu</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">num_heavy_atoms</span> <span class="o">*</span> <span class="mi">4</span>
+    <span class="k">if</span> <span class="n">consider_server_limits</span> <span class="ow">and</span> <span class="n">max_server_cpus</span> <span class="ow">and</span> <span class="n">est_cpu</span> <span class="o">&gt;</span> <span class="n">max_server_cpus</span><span class="p">:</span>
+        <span class="n">est_cpu</span> <span class="o">=</span> <span class="n">max_server_cpus</span>
+
+    <span class="n">est_memory</span> <span class="o">=</span> <span class="mf">2000.0</span> <span class="o">*</span> <span class="n">est_cpu</span>
+    <span class="k">if</span> <span class="n">consider_server_limits</span> <span class="ow">and</span> <span class="n">max_server_mem_gb</span> <span class="ow">and</span> <span class="n">est_memory</span> <span class="o">&gt;</span> <span class="n">max_server_mem_gb</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">:</span>
+        <span class="n">est_memory</span> <span class="o">=</span> <span class="n">max_server_mem_gb</span> <span class="o">*</span> <span class="mi">1024</span>
+
+    <span class="k">return</span> <span class="n">est_cpu</span><span class="p">,</span> <span class="n">est_memory</span></div>
 </pre></div>
 
            </div>
