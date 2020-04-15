@@ -445,6 +445,31 @@ corresponding TS <a class="reference internal" href="species.html#species"><span
 </dd></dl>
 
 <dl class="method">
+<dt id="arc.reaction.ARCReaction.check_atom_balance">
+<code class="sig-name descname">check_atom_balance</code><span class="sig-paren">(</span><em class="sig-param">ts_xyz: Optional[dict] = None</em>, <em class="sig-param">raise_error: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.check_atom_balance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.check_atom_balance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check atom balance between reactants, TSs, and product wells.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts_xyz</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em>) – An alternative TS xyz to check.
+If unspecified, user guesses and the ts_species will be checked.</p></li>
+<li><p><strong>raise_error</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to raise an error if an imbalance is found.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ReactionError</strong> – If not all wells and TSs are atom balanced.
+    The exception is not raised if <code class="docutils literal notranslate"><span class="pre">raise_error</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Whether all wells and TSs are atom balanced.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="arc.reaction.ARCReaction.check_attributes">
 <code class="sig-name descname">check_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.check_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.check_attributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that the Reaction object is defined correctly</p>
@@ -489,6 +514,26 @@ corresponding TS <a class="reference internal" href="species.html#species"><span
 <dt id="arc.reaction.ARCReaction.from_dict">
 <code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">reaction_dict: dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.from_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for loading this object from a dictionary in a YAML file for restarting ARC</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="arc.reaction.ARCReaction.get_species_count">
+<code class="sig-name descname">get_species_count</code><span class="sig-paren">(</span><em class="sig-param">species: arc.species.species.ARCSpecies</em>, <em class="sig-param">well: int = 0</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.get_species_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.reaction.ARCReaction.get_species_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of times a species participates in the reactants or products well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>species</strong> (<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a>) – The species to check.</p></li>
+<li><p><strong>well</strong> (<em>int</em><em>, </em><em>optional</em>) – Either <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code> for the reactants or products well, respectively.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The number of times this species appears in the respective well.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[int, None]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
