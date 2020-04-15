@@ -931,7 +931,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;conformer&#39;</span><span class="p">,</span> <span class="s1">&#39;opt&#39;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
-                    <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;opt=(ts, calcfc, noeigentest, maxstep=5, maxcycles=100)&#39;</span>
+                    <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;opt=(ts, calcfc, noeigentest, maxcycles=100)&#39;</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;opt=(calcfc)&#39;</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine</span><span class="p">:</span>
@@ -940,7 +940,7 @@
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span><span class="p">:</span>
                         <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;opt=(ts, calcfc, noeigentest, tight, maxstep=5, maxcycles=100)&#39;</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;opt=(tight, calcfc)&#39;</span>
+                        <span class="n">job_type_1</span> <span class="o">=</span> <span class="s1">&#39;opt=(tight, calcfc, maxstep=5)&#39;</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">job_type_1</span> <span class="o">+=</span> <span class="s1">&#39; guess=read&#39;</span>
                 <span class="k">else</span><span class="p">:</span>
