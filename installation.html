@@ -222,21 +222,31 @@ clone it in a separate folder and add it to your PYTHONPATH just as well.</p></l
 (ESS, e.g., Gaussian etc.) are installed. <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2">Instructions for generating RSA keys could be found here</a>.</p></li>
 <li><p>Copy the RSA SSH key path/s on your local machine to ARC/arc/settings.py in the servers
 dictionary under keys.</p></li>
-<li><p>Update the <cite>servers</cite> dictionary in <a class="reference external" href="https://github.com/ReactionMechanismGenerator/ARC/blob/master/arc/settings.py">ARC/arc/settings.py</a>.</p>
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">servers</span></code> dictionary in <a class="reference external" href="https://github.com/ReactionMechanismGenerator/ARC/blob/master/arc/settings.py">ARC/arc/settings.py</a>.</p>
 <ul>
 <li><p>A local server must be named with the reserved keyword <code class="docutils literal notranslate"><span class="pre">local</span></code>. <code class="docutils literal notranslate"><span class="pre">cluster_soft</span></code> and username (<code class="docutils literal notranslate"><span class="pre">un</span></code>) are
 mandatory.</p></li>
 <li><p>A remote server has no limitations for naming. <code class="docutils literal notranslate"><span class="pre">cluster_soft</span></code>, <code class="docutils literal notranslate"><span class="pre">address</span></code>, username (<code class="docutils literal notranslate"><span class="pre">un</span></code>), and <code class="docutils literal notranslate"><span class="pre">key</span></code>
 (the path to the local RSA SSH key) are mandatory.</p></li>
-<li><p>Optional parameters for both local and remote servers are <code class="docutils literal notranslate"><span class="pre">cpus</span></code> and <code class="docutils literal notranslate"><span class="pre">memory</span></code>. The number of CPU cores ARC
-will use when spawning ESS jobs defaults to 8 unless otherwise specified under <code class="docutils literal notranslate"><span class="pre">cpus</span></code>.
-The <code class="docutils literal notranslate"><span class="pre">memory</span></code> parameter stands for the maximum amount of memory available to a node. By default, ARC will use 14 GB
-of memory for each ESS job. If a job crashes due to insufficient memory, ARC will automatically re-run the job with
-increased memory. However, ARC will not use more than 90% of the maximum node memory specified under <code class="docutils literal notranslate"><span class="pre">memory</span></code>.</p></li>
+<li><p>Optional parameters for both local and remote servers are <code class="docutils literal notranslate"><span class="pre">cpus</span></code> and <code class="docutils literal notranslate"><span class="pre">memory</span></code>. These two parameters stand for
+the maximum amount of cpu cores and memory in GB available to a node. If a job crashes due to cpu or memory issues,
+ARC will automatically re-run the job with different cpu and memory allocations within the limitation specified by
+these two parameters. By default, <code class="docutils literal notranslate"><span class="pre">cpus</span></code> is 8 and <code class="docutils literal notranslate"><span class="pre">memory</span></code> is 14 GB.</p></li>
 <li><p>Although ARC currently does not allocate computing resources dynamically based on system size or ESS, the user can
 manually control memory specifications for each project. See <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Advanced Features</span></a> for details.</p></li>
 <li><p>In certain ESS, the maximum number of CPU cores allowed for a calculation depends on system size. If a job crashes
 for this reason, ARC will attempt to re-run the job with fewer CPU cores.</p></li>
+</ul>
+</li>
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">default_job_settings</span></code> dictionary in <a class="reference external" href="https://github.com/ReactionMechanismGenerator/ARC/blob/master/arc/settings.py">ARC/arc/settings.py</a>.</p>
+<ul>
+<li><p>This dictionary contains default job memory, cpu, and time settings.</p></li>
+<li><p>A default ESS job in ARC has 14 GB of memory, 8 cpu cores, and 120 hours of maximum execution time. The default
+settings can be changed by providing different values to the <code class="docutils literal notranslate"><span class="pre">job_total_memory_gb</span></code>, <code class="docutils literal notranslate"><span class="pre">job_cpu_cores</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">job_time_limit_hrs</span></code> keys.</p></li>
+<li><p>ARC will alter job memory, cpu, and time settings when troubleshoot jobs crashed due to resource allocation issues.
+The <code class="docutils literal notranslate"><span class="pre">job_max_server_node_memory_allocation</span></code> key stands for the maximum percentage of total node memory ARC will
+use when troubleshoot a job. The default value is 80%.</p></li>
 </ul>
 </li>
 <li><p>Update the submit scripts in <a class="reference external" href="https://github.com/ReactionMechanismGenerator/ARC/blob/master/arc/job/submit.py">ARC/arc/job/submit.py</a>
@@ -298,7 +308,7 @@ server’s definitions are different that ARC’s, you should also modify the fo
 them differently, e.g., <cite>Slurm1</cite> and <cite>Slurm2</cite>, and make sure to pair them accordingly under the <code class="docutils literal notranslate"><span class="pre">servers</span></code> dictionary.</p>
 </div>
 <div class="section" id="tests">
-<span id="id5"></span><h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p>If you’d like to make sure ARC has access to your servers and recognises your ESS, use the “radar” tool, available
 as an iPython notebook (see <a class="reference internal" href="tools.html#tools"><span class="std std-ref">Standalone tools</span></a>).</p></li>
