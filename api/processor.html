@@ -182,16 +182,16 @@
   <div class="section" id="module-arc.processor">
 <span id="arc-processor"></span><span id="processor"></span><h1>arc.processor<a class="headerlink" href="#module-arc.processor" title="Permalink to this headline">¶</a></h1>
 <p>Processor module for computing thermodynamic properties and rate coefficients using statistical mechanics.</p>
-<dl class="class">
+<dl class="py class">
 <dt id="arc.processor.StatmechEnum">
 <em class="property">class </em><code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">StatmechEnum</code><a class="reference internal" href="../_modules/arc/processor.html#StatmechEnum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.StatmechEnum" title="Permalink to this definition">¶</a></dt>
 <dd><p>The supported statmech software adapters.
 The available adapters are a finite set.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.processor.clean_output_directory">
-<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">clean_output_directory</code><span class="sig-paren">(</span><em class="sig-param">project_directory: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#clean_output_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.clean_output_directory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">clean_output_directory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">project_directory</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#clean_output_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.clean_output_directory" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>A helper function to organize the output directory.</dt><dd><ul class="simple">
 <li><p>remove redundant rotor.txt files (from kinetics jobs)</p></li>
@@ -207,9 +207,9 @@ The available adapters are a finite set.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.processor.compare_rates">
-<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">compare_rates</code><span class="sig-paren">(</span><em class="sig-param">rxns_for_kinetics_lib: list, rmg_database: Type[rmgpy.data.rmg.RMGDatabase], output_directory: str, T_min: tuple = None, T_max: tuple = None, T_count: int = 50</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#compare_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.compare_rates" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">compare_rates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rxns_for_kinetics_lib</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">rmg_database</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>rmgpy.data.rmg.RMGDatabase<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">output_directory</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">T_min</span><span class="p">:</span> <span class="n">tuple</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">T_max</span><span class="p">:</span> <span class="n">tuple</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">T_count</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">50</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#compare_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.compare_rates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the calculates thermo with RMG’s estimations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -225,9 +225,9 @@ The available adapters are a finite set.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.processor.compare_thermo">
-<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">compare_thermo</code><span class="sig-paren">(</span><em class="sig-param">species_for_thermo_lib: list, rmg_database: Type[rmgpy.data.rmg.RMGDatabase], output_directory: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#compare_thermo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.compare_thermo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">compare_thermo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">species_for_thermo_lib</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">rmg_database</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>rmgpy.data.rmg.RMGDatabase<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">output_directory</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#compare_thermo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.compare_thermo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the calculates thermo with RMG’s estimations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -240,9 +240,9 @@ The available adapters are a finite set.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.processor.compare_transport">
-<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">compare_transport</code><span class="sig-paren">(</span><em class="sig-param">species_for_transport_lib: list, rmg_database: Type[rmgpy.data.rmg.RMGDatabase], output_directory: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#compare_transport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.compare_transport" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">compare_transport</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">species_for_transport_lib</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">rmg_database</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>rmgpy.data.rmg.RMGDatabase<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">output_directory</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#compare_transport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.compare_transport" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the calculates transport data with RMG’s estimations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -255,9 +255,9 @@ The available adapters are a finite set.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.processor.load_rmg_database">
-<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">load_rmg_database</code><span class="sig-paren">(</span><em class="sig-param">rmg_database: Type[rmgpy.data.rmg.RMGDatabase], species_dict: dict, output_dict: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#load_rmg_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.load_rmg_database" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">load_rmg_database</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rmg_database</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>rmgpy.data.rmg.RMGDatabase<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">species_dict</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">output_dict</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#load_rmg_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.load_rmg_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the RMG database.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -271,9 +271,9 @@ See Scheduler for a description of this dictionary.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.processor.process_arc_project">
-<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">process_arc_project</code><span class="sig-paren">(</span><em class="sig-param">statmech_adapter: str</em>, <em class="sig-param">project: str</em>, <em class="sig-param">project_directory: str</em>, <em class="sig-param">species_dict: dict</em>, <em class="sig-param">reactions: list</em>, <em class="sig-param">output_dict: dict</em>, <em class="sig-param">use_bac: bool</em>, <em class="sig-param">sp_level: str = ''</em>, <em class="sig-param">freq_scale_factor: float = 1.0</em>, <em class="sig-param">compute_thermo: bool = True</em>, <em class="sig-param">compute_rates: bool = True</em>, <em class="sig-param">compute_transport: bool = False</em>, <em class="sig-param">T_min: tuple = None</em>, <em class="sig-param">T_max: tuple = None</em>, <em class="sig-param">T_count: int = 50</em>, <em class="sig-param">lib_long_desc: str = ''</em>, <em class="sig-param">rmg_database: Type[rmgpy.data.rmg.RMGDatabase] = None</em>, <em class="sig-param">compare_to_rmg: bool = True</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#process_arc_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.process_arc_project" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">process_arc_project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">statmech_adapter</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">project</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">species_dict</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">reactions</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">output_dict</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">use_bac</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="n">sp_level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">freq_scale_factor</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">compute_thermo</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">compute_rates</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">compute_transport</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">T_min</span><span class="p">:</span> <span class="n">tuple</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">T_max</span><span class="p">:</span> <span class="n">tuple</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">T_count</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">50</span></em>, <em class="sig-param"><span class="n">lib_long_desc</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">rmg_database</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>rmgpy.data.rmg.RMGDatabase<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">compare_to_rmg</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#process_arc_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.process_arc_project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process an RMG project, generate thermo and rate coefficients using statistical mechanics (statmech).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -304,9 +304,9 @@ from RMG’s database.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.processor.process_bdes">
-<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">process_bdes</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">species_dict: dict</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/processor.html#process_bdes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.process_bdes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">process_bdes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">species_dict</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/processor.html#process_bdes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.process_bdes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process bond dissociation energies for a single parent species represented by <cite>label</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -324,9 +324,9 @@ from RMG’s database.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.processor.write_unconverged_log">
-<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">write_unconverged_log</code><span class="sig-paren">(</span><em class="sig-param">unconverged_species: list</em>, <em class="sig-param">unconverged_rxns: list</em>, <em class="sig-param">log_file_path: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#write_unconverged_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.write_unconverged_log" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">write_unconverged_log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">unconverged_species</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">unconverged_rxns</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">log_file_path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#write_unconverged_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.write_unconverged_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a log file of unconverged species and reactions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

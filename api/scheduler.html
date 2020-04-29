@@ -183,9 +183,9 @@
 <span id="arc-scheduler"></span><span id="scheduler"></span><h1>arc.scheduler<a class="headerlink" href="#module-arc.scheduler" title="Permalink to this headline">¶</a></h1>
 <p>A module for scheduling jobs
 Includes spawning, terminating, checking, and troubleshooting various jobs</p>
-<dl class="class">
+<dl class="py class">
 <dt id="arc.scheduler.Scheduler">
-<em class="property">class </em><code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">Scheduler</code><span class="sig-paren">(</span><em class="sig-param">project: str</em>, <em class="sig-param">ess_settings: dict</em>, <em class="sig-param">species_list: list</em>, <em class="sig-param">project_directory: str</em>, <em class="sig-param">composite_method: str = ''</em>, <em class="sig-param">conformer_level: str = ''</em>, <em class="sig-param">opt_level: str = ''</em>, <em class="sig-param">freq_level: str = ''</em>, <em class="sig-param">sp_level: str = ''</em>, <em class="sig-param">scan_level: str = ''</em>, <em class="sig-param">ts_guess_level: str = ''</em>, <em class="sig-param">irc_level: str = ''</em>, <em class="sig-param">orbitals_level: str = ''</em>, <em class="sig-param">adaptive_levels: dict = None</em>, <em class="sig-param">rmg_database=None</em>, <em class="sig-param">job_types: dict = None</em>, <em class="sig-param">job_additional_options: dict = None</em>, <em class="sig-param">solvation: dict = None</em>, <em class="sig-param">job_shortcut_keywords: dict = None</em>, <em class="sig-param">rxn_list: list = None</em>, <em class="sig-param">bath_gas: str = None</em>, <em class="sig-param">restart_dict: dict = None</em>, <em class="sig-param">max_job_time: float = None</em>, <em class="sig-param">allow_nonisomorphic_2d: bool = False</em>, <em class="sig-param">memory: float = None</em>, <em class="sig-param">testing: bool = False</em>, <em class="sig-param">dont_gen_confs: list = None</em>, <em class="sig-param">n_confs: int = 10</em>, <em class="sig-param">e_confs: float = 5</em>, <em class="sig-param">fine_only: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">Scheduler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">project</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">ess_settings</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">species_list</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">composite_method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">conformer_level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">opt_level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">freq_level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">sp_level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">scan_level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">ts_guess_level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">irc_level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">orbitals_level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">adaptive_levels</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rmg_database</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">job_types</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">job_additional_options</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">solvation</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">job_shortcut_keywords</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rxn_list</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">bath_gas</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">restart_dict</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">max_job_time</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">allow_nonisomorphic_2d</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">memory</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">testing</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">dont_gen_confs</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_confs</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">10</span></em>, <em class="sig-param"><span class="n">e_confs</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">fine_only</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler" title="Permalink to this definition">¶</a></dt>
 <dd><p>ARC’s Scheduler class. Creates jobs, submits, checks status, troubleshoots.
 Each species in <cite>species_list</cite> has to have a unique label.</p>
 <p>Dictionary structures:</p>
@@ -280,7 +280,7 @@ Keys are:
 </ul>
 </dd>
 </dl>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.project">
 <code class="sig-name descname">project</code><a class="headerlink" href="#arc.scheduler.Scheduler.project" title="Permalink to this definition">¶</a></dt>
 <dd><p>The project’s name. Used for naming the working directory.</p>
@@ -291,7 +291,7 @@ Keys are:
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.servers">
 <code class="sig-name descname">servers</code><a class="headerlink" href="#arc.scheduler.Scheduler.servers" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of servers used for the present project.</p>
@@ -302,7 +302,7 @@ Keys are:
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.species_list">
 <code class="sig-name descname">species_list</code><a class="headerlink" href="#arc.scheduler.Scheduler.species_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contains input <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects (both species and TSs).</p>
@@ -313,7 +313,7 @@ Keys are:
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.species_dict">
 <code class="sig-name descname">species_dict</code><a class="headerlink" href="#arc.scheduler.Scheduler.species_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keys are labels, values are <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p>
@@ -324,7 +324,7 @@ Keys are:
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.rxn_list">
 <code class="sig-name descname">rxn_list</code><a class="headerlink" href="#arc.scheduler.Scheduler.rxn_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contains input <a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> objects.</p>
@@ -335,7 +335,7 @@ Keys are:
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.unique_species_labels">
 <code class="sig-name descname">unique_species_labels</code><a class="headerlink" href="#arc.scheduler.Scheduler.unique_species_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of species labels (checked for duplicates).</p>
@@ -346,7 +346,7 @@ Keys are:
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.adaptive_levels">
 <code class="sig-name descname">adaptive_levels</code><a class="headerlink" href="#arc.scheduler.Scheduler.adaptive_levels" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of levels of theory for ranges of the number of heavy atoms in the
@@ -359,7 +359,7 @@ dictionaries with ‘optfreq’ and ‘sp’ as keys and levels of theory as val
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.job_dict">
 <code class="sig-name descname">job_dict</code><a class="headerlink" href="#arc.scheduler.Scheduler.job_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of all scheduled jobs. Keys are species / TS labels,
@@ -372,7 +372,7 @@ values are dictionaries where keys are job names (corresponding to
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.running_jobs">
 <code class="sig-name descname">running_jobs</code><a class="headerlink" href="#arc.scheduler.Scheduler.running_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of currently running jobs (a subset of <cite>job_dict</cite>).
@@ -384,7 +384,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.servers_jobs_ids">
 <code class="sig-name descname">servers_jobs_ids</code><a class="headerlink" href="#arc.scheduler.Scheduler.servers_jobs_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of relevant job IDs currently running on the server.</p>
@@ -395,7 +395,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.output">
 <code class="sig-name descname">output</code><a class="headerlink" href="#arc.scheduler.Scheduler.output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output dictionary with status per job type and final QM file paths for all species.</p>
@@ -406,7 +406,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.ess_settings">
 <code class="sig-name descname">ess_settings</code><a class="headerlink" href="#arc.scheduler.Scheduler.ess_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of available ESS and a corresponding server list.</p>
@@ -417,7 +417,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.job_additional_options">
 <code class="sig-name descname">job_additional_options</code><a class="headerlink" href="#arc.scheduler.Scheduler.job_additional_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Additional specifications to control the execution of a job.</p>
@@ -428,7 +428,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.job_shortcut_keywords">
 <code class="sig-name descname">job_shortcut_keywords</code><a class="headerlink" href="#arc.scheduler.Scheduler.job_shortcut_keywords" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut keyword specifications to control the execution of a job.</p>
@@ -439,7 +439,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.restart_dict">
 <code class="sig-name descname">restart_dict</code><a class="headerlink" href="#arc.scheduler.Scheduler.restart_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A restart dictionary parsed from a YAML restart file.</p>
@@ -450,7 +450,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.project_directory">
 <code class="sig-name descname">project_directory</code><a class="headerlink" href="#arc.scheduler.Scheduler.project_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Folder path for the project: the input file path or ARC/Projects/project-name.</p>
@@ -461,7 +461,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.save_restart">
 <code class="sig-name descname">save_restart</code><a class="headerlink" href="#arc.scheduler.Scheduler.save_restart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to start saving a restart file. <code class="docutils literal notranslate"><span class="pre">True</span></code> only after all species are loaded
@@ -473,7 +473,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.restart_path">
 <code class="sig-name descname">restart_path</code><a class="headerlink" href="#arc.scheduler.Scheduler.restart_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path to the <cite>restart.yml</cite> file to be saved.</p>
@@ -484,7 +484,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.max_job_time">
 <code class="sig-name descname">max_job_time</code><a class="headerlink" href="#arc.scheduler.Scheduler.max_job_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximal allowed job time on the server in hours (can be fractional).</p>
@@ -495,7 +495,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.testing">
 <code class="sig-name descname">testing</code><a class="headerlink" href="#arc.scheduler.Scheduler.testing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used for internal ARC testing (generating the object w/o executing it).</p>
@@ -506,7 +506,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.rmg_database">
 <code class="sig-name descname">rmg_database</code><a class="headerlink" href="#arc.scheduler.Scheduler.rmg_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>The RMG database object.</p>
@@ -517,7 +517,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.allow_nonisomorphic_2d">
 <code class="sig-name descname">allow_nonisomorphic_2d</code><a class="headerlink" href="#arc.scheduler.Scheduler.allow_nonisomorphic_2d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to optimize species even if they do not have a 3D conformer that is
@@ -529,7 +529,7 @@ isomorphic to the 2D graph representation.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.dont_gen_confs">
 <code class="sig-name descname">dont_gen_confs</code><a class="headerlink" href="#arc.scheduler.Scheduler.dont_gen_confs" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of species labels for which conformer jobs were loaded from a restart file,
@@ -541,7 +541,7 @@ or user-requested. Additional conformer generation should be avoided for them.</
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.memory">
 <code class="sig-name descname">memory</code><a class="headerlink" href="#arc.scheduler.Scheduler.memory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The total allocated job memory in GB (14 by default).</p>
@@ -552,7 +552,7 @@ or user-requested. Additional conformer generation should be avoided for them.</
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.n_confs">
 <code class="sig-name descname">n_confs</code><a class="headerlink" href="#arc.scheduler.Scheduler.n_confs" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of lowest force field conformers to consider.</p>
@@ -563,7 +563,7 @@ or user-requested. Additional conformer generation should be avoided for them.</
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.e_confs">
 <code class="sig-name descname">e_confs</code><a class="headerlink" href="#arc.scheduler.Scheduler.e_confs" title="Permalink to this definition">¶</a></dt>
 <dd><p>The energy threshold in kJ/mol above the lowest energy conformer below which
@@ -575,7 +575,7 @@ force field conformers are considered.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.job_types">
 <code class="sig-name descname">job_types</code><a class="headerlink" href="#arc.scheduler.Scheduler.job_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of job types to execute. Keys are job types, values are boolean.</p>
@@ -586,7 +586,7 @@ force field conformers are considered.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.bath_gas">
 <code class="sig-name descname">bath_gas</code><a class="headerlink" href="#arc.scheduler.Scheduler.bath_gas" title="Permalink to this definition">¶</a></dt>
 <dd><p>A bath gas. Currently used in OneDMin to calc L-J parameters.
@@ -598,7 +598,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.composite_method">
 <code class="sig-name descname">composite_method</code><a class="headerlink" href="#arc.scheduler.Scheduler.composite_method" title="Permalink to this definition">¶</a></dt>
 <dd><p>A composite method to use.</p>
@@ -609,7 +609,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.conformer_level">
 <code class="sig-name descname">conformer_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.conformer_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for conformer comparisons.</p>
@@ -620,7 +620,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.opt_level">
 <code class="sig-name descname">opt_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.opt_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for geometry optimizations.</p>
@@ -631,7 +631,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.freq_level">
 <code class="sig-name descname">freq_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.freq_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for frequency calculations.</p>
@@ -642,7 +642,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.sp_level">
 <code class="sig-name descname">sp_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.sp_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for single point energy calculations.</p>
@@ -653,7 +653,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.scan_level">
 <code class="sig-name descname">scan_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.scan_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for torsion scans.</p>
@@ -664,7 +664,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.ts_guess_level">
 <code class="sig-name descname">ts_guess_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.ts_guess_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for TS guess comparisons.</p>
@@ -675,7 +675,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.irc_level">
 <code class="sig-name descname">irc_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.irc_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for IRC calculations.</p>
@@ -686,7 +686,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.orbitals_level">
 <code class="sig-name descname">orbitals_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.orbitals_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for calculating MOs (for plotting).</p>
@@ -697,9 +697,9 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
-<dt>
-<code class="sig-name descname">adaptive_levels</code></dt>
+<dl class="py attribute">
+<dt id="id0">
+<code class="sig-name descname">adaptive_levels</code><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of levels of theory for ranges of the number of heavy atoms in
 the molecule. Keys are tuples of (min_num_atoms, max_num_atoms), values are
 dictionaries with ‘optfreq’ and ‘sp’ as keys and levels of theory as values.</p>
@@ -710,7 +710,7 @@ dictionaries with ‘optfreq’ and ‘sp’ as keys and levels of theory as val
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.solvation">
 <code class="sig-name descname">solvation</code><a class="headerlink" href="#arc.scheduler.Scheduler.solvation" title="Permalink to this definition">¶</a></dt>
 <dd><p>The solvation model and solvent to use.</p>
@@ -721,7 +721,7 @@ dictionaries with ‘optfreq’ and ‘sp’ as keys and levels of theory as val
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="arc.scheduler.Scheduler.fine_only">
 <code class="sig-name descname">fine_only</code><a class="headerlink" href="#arc.scheduler.Scheduler.fine_only" title="Permalink to this definition">¶</a></dt>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code> ARC will not run optimization jobs without fine=True</p>
@@ -732,9 +732,9 @@ dictionaries with ‘optfreq’ and ‘sp’ as keys and levels of theory as val
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.check_all_done">
-<code class="sig-name descname">check_all_done</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_all_done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_all_done" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_all_done</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_all_done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_all_done" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that we have all required data for the species/TS.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -743,9 +743,9 @@ dictionaries with ‘optfreq’ and ‘sp’ as keys and levels of theory as val
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.check_directed_scan">
-<code class="sig-name descname">check_directed_scan</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">pivots</em>, <em class="sig-param">scan</em>, <em class="sig-param">energies</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_directed_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_directed_scan" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_directed_scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">pivots</span></em>, <em class="sig-param"><span class="n">scan</span></em>, <em class="sig-param"><span class="n">energies</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_directed_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_directed_scan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks (QA) whether the directed scan is relatively “smooth”,
 and whether the optimized geometry indeed represents the minimum energy conformer.
 Recommends whether or not to use this rotor using the ‘successful_rotors’ and ‘unsuccessful_rotors’ attributes.
@@ -762,9 +762,9 @@ This method differs from check_directed_scan_job(), since here we consider the e
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.check_directed_scan_job">
-<code class="sig-name descname">check_directed_scan_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_directed_scan_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_directed_scan_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_directed_scan_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_directed_scan_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_directed_scan_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that a directed scan job for a specific dihedral angle converged successfully, otherwise troubleshoot.</p>
 <p>rotors_dict structure (attribute of ARCSpecies):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: ``list``,
@@ -798,9 +798,9 @@ This method differs from check_directed_scan_job(), since here we consider the e
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.check_freq_job">
-<code class="sig-name descname">check_freq_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_freq_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_freq_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_freq_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_freq_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_freq_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that a freq job converged successfully. Also checks (QA) that no imaginary frequencies were assigned for
 stable species, and that exactly one imaginary frequency was assigned for a TS.</p>
 <dl class="field-list simple">
@@ -813,9 +813,9 @@ stable species, and that exactly one imaginary frequency was assigned for a TS.<
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.check_irc_job">
-<code class="sig-name descname">check_irc_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_irc_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_irc_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_irc_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_irc_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_irc_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check an IRC job and perform post-job tasks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -827,9 +827,9 @@ stable species, and that exactly one imaginary frequency was assigned for a TS.<
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.check_md_job">
-<code class="sig-name descname">check_md_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job</em>, <em class="sig-param">max_iterations=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_md_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_md_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_md_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em>, <em class="sig-param"><span class="n">max_iterations</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_md_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_md_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether the MD spawning algorithm converged on a single structure.
 If not converged, spawn another MD job (up to a maximum number of jobs).
 If it did converge, save the resulting lowest conformers and DFT them.</p>
@@ -844,9 +844,9 @@ If it did converge, save the resulting lowest conformers and DFT them.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.check_negative_freq">
-<code class="sig-name descname">check_negative_freq</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job</em>, <em class="sig-param">vibfreqs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_negative_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_negative_freq" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_negative_freq</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em>, <em class="sig-param"><span class="n">vibfreqs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_negative_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_negative_freq" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for determining the number of negative frequencies. Also logs appropriate errors.
 Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the number of negative frequencies is as excepted, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 <dl class="field-list simple">
@@ -860,9 +860,9 @@ Returns <code class="docutils literal notranslate"><span class="pre">True</span>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.check_scan_job">
-<code class="sig-name descname">check_scan_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_scan_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_scan_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_scan_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">job</span><span class="p">:</span> <span class="n"><a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job">arc.job.job.Job</a></span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_scan_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_scan_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that a rotor scan job converged successfully. Also checks (QA) whether the scan is relatively “smooth”,
 and whether the optimized geometry indeed represents the minimum energy conformer.
 Recommends whether or not to use this rotor using the ‘successful_rotors’ and ‘unsuccessful_rotors’ attributes.
@@ -877,6 +877,7 @@ rotors_dict structure (attribute of ARCSpecies):</p>
                   &#39;scan_path&#39;: &lt;path to scan output file&gt;,
                   &#39;max_e&#39;: ``float``,  # in kJ/mol,
                   &#39;symmetry&#39;: ``int``,
+                  &#39;trsh_methods&#39;: ``list``,
                   &#39;dimensions&#39;: ``int``,
                   &#39;original_dihedrals&#39;: ``list``,
                   &#39;cont_indices&#39;: ``list``,
@@ -898,9 +899,9 @@ rotors_dict structure (attribute of ARCSpecies):</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.check_sp_job">
-<code class="sig-name descname">check_sp_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_sp_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_sp_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_sp_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_sp_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_sp_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that a single point job converged successfully.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -912,9 +913,9 @@ rotors_dict structure (attribute of ARCSpecies):</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.delete_all_species_jobs">
-<code class="sig-name descname">delete_all_species_jobs</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.delete_all_species_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.delete_all_species_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_all_species_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.delete_all_species_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.delete_all_species_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete all jobs of a species/TS.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -923,9 +924,9 @@ rotors_dict structure (attribute of ARCSpecies):</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.determine_adaptive_level">
-<code class="sig-name descname">determine_adaptive_level</code><span class="sig-paren">(</span><em class="sig-param">original_level_of_theory</em>, <em class="sig-param">job_type</em>, <em class="sig-param">heavy_atoms</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.determine_adaptive_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.determine_adaptive_level" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_adaptive_level</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">original_level_of_theory</span></em>, <em class="sig-param"><span class="n">job_type</span></em>, <em class="sig-param"><span class="n">heavy_atoms</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.determine_adaptive_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.determine_adaptive_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the level of theory to be used according to the job type and number of heavy atoms.
 self.adaptive_levels is a dictionary of levels of theory for ranges of the number of heavy atoms in the
 molecule. Keys are tuples of (min_num_atoms, max_num_atoms), values are dictionaries with ‘optfreq’ and ‘sp’
@@ -941,9 +942,9 @@ as keys and levels of theory as values. ‘inf’ is accepted an max_num_atoms.<
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.determine_most_likely_ts_conformer">
-<code class="sig-name descname">determine_most_likely_ts_conformer</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.determine_most_likely_ts_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.determine_most_likely_ts_conformer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_most_likely_ts_conformer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.determine_most_likely_ts_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.determine_most_likely_ts_conformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the most likely TS conformer.
 Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 <dl class="field-list simple">
@@ -953,9 +954,9 @@ Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.determine_most_stable_conformer">
-<code class="sig-name descname">determine_most_stable_conformer</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.determine_most_stable_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.determine_most_stable_conformer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">determine_most_stable_conformer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.determine_most_stable_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.determine_most_stable_conformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the most stable conformer for a species (which is not a TS).
 Also run an isomorphism check.
 Save the resulting xyz as <cite>initial_xyz</cite>.</p>
@@ -966,9 +967,9 @@ Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.end_job">
-<code class="sig-name descname">end_job</code><span class="sig-paren">(</span><em class="sig-param">job</em>, <em class="sig-param">label</em>, <em class="sig-param">job_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.end_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.end_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">end_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">job</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.end_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.end_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for checking job status, saving in csv file, and downloading output files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -987,15 +988,15 @@ Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.get_servers_jobs_ids">
 <code class="sig-name descname">get_servers_jobs_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.get_servers_jobs_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.get_servers_jobs_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check status on all active servers, return a list of relevant running job IDs</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.initialize_output_dict">
-<code class="sig-name descname">initialize_output_dict</code><span class="sig-paren">(</span><em class="sig-param">label=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.initialize_output_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.initialize_output_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">initialize_output_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.initialize_output_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.initialize_output_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.output.
 Do not initialize keys that will contain paths (‘geo’, ‘freq’, ‘sp’, ‘composite’),
 their existence indicate the job was terminated for restarting purposes.
@@ -1007,15 +1008,15 @@ If <code class="docutils literal notranslate"><span class="pre">label</span></co
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.make_reaction_labels_info_file">
 <code class="sig-name descname">make_reaction_labels_info_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.make_reaction_labels_info_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.make_reaction_labels_info_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for creating the <cite>reactions labels.info</cite> file</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.parse_composite_geo">
-<code class="sig-name descname">parse_composite_geo</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.parse_composite_geo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.parse_composite_geo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">parse_composite_geo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.parse_composite_geo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.parse_composite_geo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that a ‘composite’ job converged successfully, and parse the geometry into <cite>final_xyz</cite>.
 Also checks (QA) that no imaginary frequencies were assigned for stable species,
 and that exactly one imaginary frequency was assigned for a TS.
@@ -1030,9 +1031,9 @@ Returns <code class="docutils literal notranslate"><span class="pre">True</span>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.parse_conformer">
-<code class="sig-name descname">parse_conformer</code><span class="sig-paren">(</span><em class="sig-param">job</em>, <em class="sig-param">label</em>, <em class="sig-param">i</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.parse_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.parse_conformer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">parse_conformer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">job</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">i</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.parse_conformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.parse_conformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse E0 (kJ/mol) from the conformer opt output file.
 For species, save it in the Species.conformer_energies attribute.
 Fot TSs, save it in the TSGuess.energy attribute, and also parse the geometry.</p>
@@ -1047,9 +1048,9 @@ Fot TSs, save it in the TSGuess.energy attribute, and also parse the geometry.</
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.parse_opt_geo">
-<code class="sig-name descname">parse_opt_geo</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.parse_opt_geo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.parse_opt_geo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">parse_opt_geo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.parse_opt_geo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.parse_opt_geo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that an ‘opt’ or ‘optfreq’ job converged successfully, and parse the geometry into <cite>final_xyz</cite>.
 If the job is ‘optfreq’, also checks (QA) that no imaginary frequencies were assigned for stable species,
 and that exactly one imaginary frequency was assigned for a TS.
@@ -1064,9 +1065,9 @@ Returns <code class="docutils literal notranslate"><span class="pre">True</span>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.post_sp_actions">
-<code class="sig-name descname">post_sp_actions</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">sp_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.post_sp_actions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.post_sp_actions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">post_sp_actions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">sp_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.post_sp_actions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.post_sp_actions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform post-sp actions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1078,9 +1079,9 @@ Returns <code class="docutils literal notranslate"><span class="pre">True</span>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.process_conformers">
-<code class="sig-name descname">process_conformers</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.process_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.process_conformers" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">process_conformers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.process_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.process_conformers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process the generated conformers and spawn DFT jobs at the conformer_level.
 If more than one conformer is available, they will be optimized at the DFT conformer_level.</p>
 <dl class="field-list simple">
@@ -1090,9 +1091,9 @@ If more than one conformer is available, they will be optimized at the DFT confo
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.process_directed_scans">
-<code class="sig-name descname">process_directed_scans</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">pivots</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.process_directed_scans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.process_directed_scans" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">process_directed_scans</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">pivots</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.process_directed_scans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.process_directed_scans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process all directed rotors for a species and check the quality of the scan.</p>
 <p>rotors_dict structure (attribute of ARCSpecies):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {1: {&#39;pivots&#39;: ``list``,
@@ -1126,16 +1127,16 @@ If more than one conformer is available, they will be optimized at the DFT confo
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.restore_running_jobs">
 <code class="sig-name descname">restore_running_jobs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.restore_running_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.restore_running_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make Job objects for jobs which were running in the previous session.
 Important for the restart feature so long jobs won’t be ran twice.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_composite_job">
-<code class="sig-name descname">run_composite_job</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_composite_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_composite_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_composite_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_composite_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_composite_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn a composite job (e.g., CBS-QB3) using ‘final_xyz’ for species ot TS ‘label’.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1144,9 +1145,9 @@ Important for the restart feature so long jobs won’t be ran twice.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_conformer_jobs">
-<code class="sig-name descname">run_conformer_jobs</code><span class="sig-paren">(</span><em class="sig-param">labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_conformer_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_conformer_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_conformer_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_conformer_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_conformer_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select the most stable conformer for each species using molecular dynamics (force fields) and subsequently
 spawning opt jobs at the conformer level of theory, usually a reasonable yet cheap DFT, e.g., b97d3/6-31+g(d,p).
 The resulting conformer is saved in a string format xyz in the Species initial_xyz attribute.</p>
@@ -1159,9 +1160,9 @@ self.unique_species_labels.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_force_field_fit_job">
-<code class="sig-name descname">run_force_field_fit_job</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_force_field_fit_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_force_field_fit_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_force_field_fit_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_force_field_fit_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_force_field_fit_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn a force field parameter fitting job (currently only Gaussian is supported for this task).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1170,9 +1171,9 @@ self.unique_species_labels.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_freq_job">
-<code class="sig-name descname">run_freq_job</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_freq_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_freq_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_freq_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_freq_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_freq_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn a freq job using ‘final_xyz’ for species ot TS ‘label’.
 If this was originally a composite job, run an appropriate separate freq job outputting the Hessian.</p>
 <dl class="field-list simple">
@@ -1182,9 +1183,9 @@ If this was originally a composite job, run an appropriate separate freq job out
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_gromacs_job">
-<code class="sig-name descname">run_gromacs_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">confs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_gromacs_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_gromacs_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_gromacs_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">confs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_gromacs_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_gromacs_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a Gromacs MD job.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1196,9 +1197,9 @@ If this was originally a composite job, run an appropriate separate freq job out
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_irc_job">
-<code class="sig-name descname">run_irc_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">irc_direction='forward'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_irc_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_irc_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_irc_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">irc_direction</span><span class="o">=</span><span class="default_value">'forward'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_irc_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_irc_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn an IRC job.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1210,9 +1211,9 @@ If this was originally a composite job, run an appropriate separate freq job out
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_job">
-<code class="sig-name descname">run_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">xyz</em>, <em class="sig-param">level_of_theory</em>, <em class="sig-param">job_type</em>, <em class="sig-param">fine=False</em>, <em class="sig-param">software=None</em>, <em class="sig-param">shift=''</em>, <em class="sig-param">trsh=''</em>, <em class="sig-param">memory=None</em>, <em class="sig-param">conformer=-1</em>, <em class="sig-param">ess_trsh_methods=None</em>, <em class="sig-param">scan=''</em>, <em class="sig-param">pivots=None</em>, <em class="sig-param">occ=None</em>, <em class="sig-param">scan_trsh=''</em>, <em class="sig-param">scan_res=None</em>, <em class="sig-param">max_job_time=None</em>, <em class="sig-param">confs=None</em>, <em class="sig-param">radius=None</em>, <em class="sig-param">directed_scan_type=None</em>, <em class="sig-param">directed_scans=None</em>, <em class="sig-param">directed_dihedrals=None</em>, <em class="sig-param">rotor_index=None</em>, <em class="sig-param">cpu_cores=None</em>, <em class="sig-param">irc_direction=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">xyz</span></em>, <em class="sig-param"><span class="n">level_of_theory</span></em>, <em class="sig-param"><span class="n">job_type</span></em>, <em class="sig-param"><span class="n">fine</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">software</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">shift</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">trsh</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">memory</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">conformer</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">ess_trsh_methods</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scan</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">pivots</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">occ</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scan_trsh</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">scan_res</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">max_job_time</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">confs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">radius</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">directed_scan_type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">directed_scans</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">directed_dihedrals</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rotor_index</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cpu_cores</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">irc_direction</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for running (all) jobs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1258,9 +1259,9 @@ but used to identify the rotor.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_onedmin_job">
-<code class="sig-name descname">run_onedmin_job</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_onedmin_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_onedmin_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_onedmin_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_onedmin_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_onedmin_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn a lennard-jones calculation using OneDMin.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1269,9 +1270,9 @@ but used to identify the rotor.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_opt_job">
-<code class="sig-name descname">run_opt_job</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">fine=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_opt_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_opt_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_opt_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">fine</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_opt_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_opt_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn a geometry optimization job. The initial guess is taken from the <cite>initial_xyz</cite> attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1283,9 +1284,9 @@ but used to identify the rotor.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_orbitals_job">
-<code class="sig-name descname">run_orbitals_job</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_orbitals_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_orbitals_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_orbitals_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_orbitals_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_orbitals_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn orbitals job used for molecular orbital visualization.
 Currently supporting QChem for printing the orbitals, the output could be visualized using IQMol.</p>
 <dl class="field-list simple">
@@ -1295,9 +1296,9 @@ Currently supporting QChem for printing the orbitals, the output could be visual
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_scan_jobs">
-<code class="sig-name descname">run_scan_jobs</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_scan_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_scan_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_scan_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_scan_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_scan_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn rotor scan jobs using ‘final_xyz’ for species (or TS).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1306,9 +1307,9 @@ Currently supporting QChem for printing the orbitals, the output could be visual
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_sp_job">
-<code class="sig-name descname">run_sp_job</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_sp_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_sp_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_sp_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_sp_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_sp_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn a single point job using ‘final_xyz’ for species ot TS ‘label’.
 If the method is MRCI, first spawn a simple CCSD job, and use orbital determination to run the MRCI job.</p>
 <dl class="field-list simple">
@@ -1318,9 +1319,9 @@ If the method is MRCI, first spawn a simple CCSD job, and use orbital determinat
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.run_ts_conformer_jobs">
-<code class="sig-name descname">run_ts_conformer_jobs</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_ts_conformer_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_ts_conformer_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_ts_conformer_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_ts_conformer_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_ts_conformer_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn opt jobs at the ts_guesses level of theory for the TS guesses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1329,21 +1330,21 @@ If the method is MRCI, first spawn a simple CCSD job, and use orbital determinat
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.save_restart_dict">
 <code class="sig-name descname">save_restart_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.save_restart_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.save_restart_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the restart_dict and save the restart.yml file.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.schedule_jobs">
 <code class="sig-name descname">schedule_jobs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.schedule_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.schedule_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>The main job scheduling block</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.spawn_directed_scan_jobs">
-<code class="sig-name descname">spawn_directed_scan_jobs</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">rotor_index</em>, <em class="sig-param">xyz=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_directed_scan_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_directed_scan_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">spawn_directed_scan_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">rotor_index</span></em>, <em class="sig-param"><span class="n">xyz</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_directed_scan_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_directed_scan_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn directed scan jobs.
 Directed scan types could be one of the following: ‘brute_force_sp’, ‘brute_force_opt’, ‘cont_opt’,
 ‘brute_force_sp_diagonal’, ‘brute_force_opt_diagonal’, or ‘cont_opt_diagonal’.
@@ -1367,9 +1368,9 @@ The differentiation between <code class="docutils literal notranslate"><span cla
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.spawn_md_jobs">
-<code class="sig-name descname">spawn_md_jobs</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">prev_conf_list=None</em>, <em class="sig-param">num_confs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_md_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_md_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">spawn_md_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">prev_conf_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">num_confs</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_md_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_md_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Embed conformers and run a molecular dynamics optimization using a fitted force field.
 Then generate conformers using combinations of the detected torsion wells, and re-run until converging.</p>
 <dl class="field-list simple">
@@ -1384,9 +1385,9 @@ If not given, a first Gromacs job will be spawned.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.spawn_post_opt_jobs">
-<code class="sig-name descname">spawn_post_opt_jobs</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_post_opt_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_post_opt_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">spawn_post_opt_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_post_opt_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_post_opt_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn additional jobs after opt has converged.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1398,9 +1399,9 @@ If not given, a first Gromacs job will be spawned.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.troubleshoot_conformer_isomorphism">
-<code class="sig-name descname">troubleshoot_conformer_isomorphism</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_conformer_isomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_conformer_isomorphism" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">troubleshoot_conformer_isomorphism</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_conformer_isomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_conformer_isomorphism" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshoot conformer optimization for a species that failed isomorphic test in
 <cite>determine_most_stable_conformer</cite>.</p>
 <dl class="field-list simple">
@@ -1410,9 +1411,9 @@ If not given, a first Gromacs job will be spawned.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.troubleshoot_ess">
-<code class="sig-name descname">troubleshoot_ess</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job</em>, <em class="sig-param">level_of_theory</em>, <em class="sig-param">conformer=-1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_ess" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">troubleshoot_ess</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em>, <em class="sig-param"><span class="n">level_of_theory</span></em>, <em class="sig-param"><span class="n">conformer</span><span class="o">=</span><span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_ess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshoot issues related to the electronic structure software, such as conversion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1426,9 +1427,9 @@ If not given, a first Gromacs job will be spawned.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.troubleshoot_negative_freq">
-<code class="sig-name descname">troubleshoot_negative_freq</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">job</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_negative_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_negative_freq" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">troubleshoot_negative_freq</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_negative_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_negative_freq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshooting cases where non-TS species have negative frequencies.
 Run newly generated conformers.</p>
 <dl class="field-list simple">
@@ -1441,9 +1442,9 @@ Run newly generated conformers.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.troubleshoot_opt_jobs">
-<code class="sig-name descname">troubleshoot_opt_jobs</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_opt_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_opt_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">troubleshoot_opt_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_opt_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_opt_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>We’re troubleshooting for opt jobs.
 First check for server status and troubleshoot if needed. Then check for ESS status and troubleshoot
 if needed. Finally, check whether or not the last job had fine=True, add if it didn’t run with fine.</p>
@@ -1454,27 +1455,45 @@ if needed. Finally, check whether or not the last job had fine=True, add if it d
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="arc.scheduler.Scheduler.troubleshoot_scan_job">
-<code class="sig-name descname">troubleshoot_scan_job</code><span class="sig-paren">(</span><em class="sig-param">job</em>, <em class="sig-param">methods=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_scan_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_scan_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">troubleshoot_scan_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">job</span><span class="p">:</span> <span class="n"><a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job">arc.job.job.Job</a></span></em>, <em class="sig-param"><span class="n">methods</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dict<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>bool<span class="p">, </span>dict<span class="p">]</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_scan_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_scan_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshooting rotor scans
-Using the following methods: freezing all dihedrals other than the scan’s pivots for this job,
-or increasing the scan resolution.</p>
+Using the following methods:
+1. freeze: freezing specific internal coordinates or all torsions other than the scan’s pivots
+2. inc_res: increasing the scan resolution.
+3. change conformer: changing to a conformer with a lower energy</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The scan Job object.</p></li>
-<li><p><strong>methods</strong> (<em>list</em>) – The troubleshooting method/s to try. Optional values: ‘freeze’, ‘inc_res’.</p></li>
+<li><p><strong>methods</strong> (<em>dict</em>) – <p>The troubleshooting method/s to try:
+{‘freeze’: &lt;a list of problematic internal coordinates&gt;,</p>
+<blockquote>
+<div><p>’inc_res’: <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+‘change conformer’: &lt;a xyz dict&gt;}</p>
+</div></blockquote>
+</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the troubleshooting is valid.</p></li>
+<li><p>The actions are actual applied in the troubleshooting.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[bool, dict]</p>
 </dd>
 </dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.scheduler.sum_time_delta">
-<code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">sum_time_delta</code><span class="sig-paren">(</span><em class="sig-param">timedelta_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#sum_time_delta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.sum_time_delta" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">sum_time_delta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">timedelta_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#sum_time_delta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.sum_time_delta" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for summing datetime.timedelta objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

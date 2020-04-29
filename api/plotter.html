@@ -182,9 +182,9 @@
   <div class="section" id="module-arc.plotter">
 <span id="arc-plotter"></span><span id="plotter"></span><h1>arc.plotter<a class="headerlink" href="#module-arc.plotter" title="Permalink to this headline">¶</a></h1>
 <p>A module for plotting and saving output files such as RMG libraries.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.check_xyz_species_for_drawing">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">check_xyz_species_for_drawing</code><span class="sig-paren">(</span><em class="sig-param">xyz=None</em>, <em class="sig-param">species=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#check_xyz_species_for_drawing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.check_xyz_species_for_drawing" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">check_xyz_species_for_drawing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">species</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#check_xyz_species_for_drawing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.check_xyz_species_for_drawing" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for checking the coordinates before drawing them.
 Either <code class="docutils literal notranslate"><span class="pre">xyz</span></code> or <code class="docutils literal notranslate"><span class="pre">species</span></code> must be given. If both are given, <code class="docutils literal notranslate"><span class="pre">xyz</span></code> gets precedence.
 If <code class="docutils literal notranslate"><span class="pre">species</span></code> is given, xys will be taken from it or cheaply generated for it.</p>
@@ -210,9 +210,9 @@ If <code class="docutils literal notranslate"><span class="pre">species</span></
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.draw_3d">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_3d</code><span class="sig-paren">(</span><em class="sig-param">xyz=None</em>, <em class="sig-param">species=None</em>, <em class="sig-param">project_directory=None</em>, <em class="sig-param">save_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_3d" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_3d</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">species</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_3d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the molecule in a “3D-balls” style.
 Saves an image if a species and <code class="docutils literal notranslate"><span class="pre">project_directory</span></code> are provided.</p>
 <dl class="field-list simple">
@@ -227,9 +227,9 @@ Saves an image if a species and <code class="docutils literal notranslate"><span
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.draw_kinetics_plots">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_kinetics_plots</code><span class="sig-paren">(</span><em class="sig-param">rxn_list</em>, <em class="sig-param">T_min</em>, <em class="sig-param">T_max</em>, <em class="sig-param">T_count=50</em>, <em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_kinetics_plots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_kinetics_plots" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_kinetics_plots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rxn_list</span></em>, <em class="sig-param"><span class="n">T_min</span></em>, <em class="sig-param"><span class="n">T_max</span></em>, <em class="sig-param"><span class="n">T_count</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_kinetics_plots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_kinetics_plots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws plots of calculated rate coefficients and RMG’s estimates.
 <cite>rxn_list</cite> has a .kinetics attribute calculated by ARC and an .rmg_reactions list with RMG rates.</p>
 <dl class="field-list simple">
@@ -246,9 +246,9 @@ and an .rmg_reactions list with RMG rates.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.draw_parity_plot">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_parity_plot</code><span class="sig-paren">(</span><em class="sig-param">var_arc</em>, <em class="sig-param">var_rmg</em>, <em class="sig-param">labels</em>, <em class="sig-param">var_label</em>, <em class="sig-param">var_units</em>, <em class="sig-param">pp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_parity_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_parity_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_parity_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">var_arc</span></em>, <em class="sig-param"><span class="n">var_rmg</span></em>, <em class="sig-param"><span class="n">labels</span></em>, <em class="sig-param"><span class="n">var_label</span></em>, <em class="sig-param"><span class="n">var_units</span></em>, <em class="sig-param"><span class="n">pp</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_parity_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_parity_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw a parity plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -264,9 +264,9 @@ and an .rmg_reactions list with RMG rates.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.draw_structure">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_structure</code><span class="sig-paren">(</span><em class="sig-param">xyz=None</em>, <em class="sig-param">species=None</em>, <em class="sig-param">project_directory=None</em>, <em class="sig-param">method='show_sticks'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_structure" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_structure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">species</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'show_sticks'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_structure" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for drawing a molecular structure using either show_sticks or draw_3d.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -280,9 +280,9 @@ and an .rmg_reactions list with RMG rates.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.draw_thermo_parity_plots">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_thermo_parity_plots</code><span class="sig-paren">(</span><em class="sig-param">species_list</em>, <em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_thermo_parity_plots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_thermo_parity_plots" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_thermo_parity_plots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">species_list</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_thermo_parity_plots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_thermo_parity_plots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws parity plots of calculated thermo and RMG’s estimates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -294,16 +294,16 @@ and an .rmg_reactions list with RMG rates.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.get_text_positions">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">get_text_positions</code><span class="sig-paren">(</span><em class="sig-param">x_data</em>, <em class="sig-param">y_data</em>, <em class="sig-param">txt_width</em>, <em class="sig-param">txt_height</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#get_text_positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.get_text_positions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">get_text_positions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_data</span></em>, <em class="sig-param"><span class="n">y_data</span></em>, <em class="sig-param"><span class="n">txt_width</span></em>, <em class="sig-param"><span class="n">txt_height</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#get_text_positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.get_text_positions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the positions of plot annotations to avoid overlapping.
 Source: <a class="reference external" href="https://stackoverflow.com/questions/8850142/matplotlib-overlapping-annotations">stackoverflow</a>.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.log_bde_report">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">log_bde_report</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">bde_report</em>, <em class="sig-param">spc_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#log_bde_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.log_bde_report" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">log_bde_report</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">bde_report</span></em>, <em class="sig-param"><span class="n">spc_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#log_bde_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.log_bde_report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prettify the report for bond dissociation energies. Log and save to file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -317,9 +317,9 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.log_kinetics">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">log_kinetics</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#log_kinetics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.log_kinetics" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">log_kinetics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#log_kinetics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.log_kinetics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logging kinetics from an Arkane output file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -331,9 +331,9 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.log_thermo">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">log_thermo</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#log_thermo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.log_thermo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">log_thermo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#log_thermo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.log_thermo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logging thermodata from an Arkane output file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -345,9 +345,9 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.plot_1d_rotor_scan">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_1d_rotor_scan</code><span class="sig-paren">(</span><em class="sig-param">angles=None</em>, <em class="sig-param">energies=None</em>, <em class="sig-param">results=None</em>, <em class="sig-param">path=None</em>, <em class="sig-param">scan=None</em>, <em class="sig-param">comment=''</em>, <em class="sig-param">units='degrees'</em>, <em class="sig-param">original_dihedral=None</em>, <em class="sig-param">label=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_1d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_1d_rotor_scan" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_1d_rotor_scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angles</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">energies</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">results</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scan</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">comment</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">'degrees'</span></em>, <em class="sig-param"><span class="n">original_dihedral</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_1d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_1d_rotor_scan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots a 1D rotor PES for energy vs. angles. Either <code class="docutils literal notranslate"><span class="pre">angles</span></code> and <code class="docutils literal notranslate"><span class="pre">energies</span></code> or <code class="docutils literal notranslate"><span class="pre">results</span></code> must be given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -369,9 +369,9 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.plot_2d_rotor_scan">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_2d_rotor_scan</code><span class="sig-paren">(</span><em class="sig-param">results</em>, <em class="sig-param">path=None</em>, <em class="sig-param">label=''</em>, <em class="sig-param">cmap='Blues'</em>, <em class="sig-param">resolution=90</em>, <em class="sig-param">mark_lowest_conformations=False</em>, <em class="sig-param">original_dihedrals=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_2d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_2d_rotor_scan" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_2d_rotor_scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'Blues'</span></em>, <em class="sig-param"><span class="n">resolution</span><span class="o">=</span><span class="default_value">90</span></em>, <em class="sig-param"><span class="n">mark_lowest_conformations</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">original_dihedrals</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_2d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_2d_rotor_scan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a 2D rotor scan.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -429,9 +429,9 @@ If given, the conformer will be marked on the plot with a red dot.</p></li>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.plot_3d_mol_as_scatter">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_3d_mol_as_scatter</code><span class="sig-paren">(</span><em class="sig-param">xyz</em>, <em class="sig-param">path=None</em>, <em class="sig-param">plot_h=True</em>, <em class="sig-param">show_plot=True</em>, <em class="sig-param">name=''</em>, <em class="sig-param">index=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_3d_mol_as_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_3d_mol_as_scatter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_3d_mol_as_scatter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_h</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">show_plot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">index</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_3d_mol_as_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_3d_mol_as_scatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the molecule as scattered balls in space according to the supplied xyz coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -447,9 +447,9 @@ If given, the conformer will be marked on the plot with a red dot.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.plot_torsion_angles">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_torsion_angles</code><span class="sig-paren">(</span><em class="sig-param">torsion_angles</em>, <em class="sig-param">torsions_sampling_points=None</em>, <em class="sig-param">wells_dict=None</em>, <em class="sig-param">e_conformers=None</em>, <em class="sig-param">de_threshold=5.0</em>, <em class="sig-param">plot_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_torsion_angles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_torsion_angles" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_torsion_angles</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">torsion_angles</span></em>, <em class="sig-param"><span class="n">torsions_sampling_points</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">wells_dict</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">e_conformers</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">de_threshold</span><span class="o">=</span><span class="default_value">5.0</span></em>, <em class="sig-param"><span class="n">plot_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_torsion_angles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_torsion_angles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the torsion angles of the generated conformers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -467,9 +467,9 @@ Each entry in such a list is a well dictionary with the following keys:
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.save_conformers_file">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_conformers_file</code><span class="sig-paren">(</span><em class="sig-param">project_directory</em>, <em class="sig-param">label</em>, <em class="sig-param">xyzs</em>, <em class="sig-param">level_of_theory</em>, <em class="sig-param">multiplicity=None</em>, <em class="sig-param">charge=None</em>, <em class="sig-param">is_ts=False</em>, <em class="sig-param">energies=None</em>, <em class="sig-param">ts_methods=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_conformers_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_conformers_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_conformers_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">project_directory</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">xyzs</span></em>, <em class="sig-param"><span class="n">level_of_theory</span></em>, <em class="sig-param"><span class="n">multiplicity</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">charge</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">is_ts</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">energies</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ts_methods</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_conformers_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_conformers_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the conformers before or after optimization.
 If energies are given, the conformers are considered to be optimized.</p>
 <dl class="field-list simple">
@@ -490,9 +490,9 @@ If not given (None) then the Species.conformer_energies are used instead.</p></l
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.save_geo">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_geo</code><span class="sig-paren">(</span><em class="sig-param">species=None</em>, <em class="sig-param">xyz=None</em>, <em class="sig-param">project_directory=None</em>, <em class="sig-param">path=None</em>, <em class="sig-param">filename=None</em>, <em class="sig-param">format_='all'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_geo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_geo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_geo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">species</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xyz</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">format_</span><span class="o">=</span><span class="default_value">'all'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_geo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_geo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a geometry file.
 If <code class="docutils literal notranslate"><span class="pre">species</span></code> is given, .final_xyz will be saved if it is not None, otherwise .initial_xyz will be used.
 If <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is given, it gets precedence over <code class="docutils literal notranslate"><span class="pre">species</span></code>.
@@ -514,9 +514,9 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.save_irc_traj_animation">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_irc_traj_animation</code><span class="sig-paren">(</span><em class="sig-param">irc_f_path</em>, <em class="sig-param">irc_r_path</em>, <em class="sig-param">out_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_irc_traj_animation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_irc_traj_animation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_irc_traj_animation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">irc_f_path</span></em>, <em class="sig-param"><span class="n">irc_r_path</span></em>, <em class="sig-param"><span class="n">out_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_irc_traj_animation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_irc_traj_animation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save an IRC trajectory animation file showing the entire reaction coordinate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -529,18 +529,18 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.save_kinetics_lib">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_kinetics_lib</code><span class="sig-paren">(</span><em class="sig-param">rxn_list</em>, <em class="sig-param">path</em>, <em class="sig-param">name</em>, <em class="sig-param">lib_long_desc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_kinetics_lib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_kinetics_lib" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_kinetics_lib</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rxn_list</span></em>, <em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">lib_long_desc</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_kinetics_lib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_kinetics_lib" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save an RMG kinetics library of all reactions in <cite>rxn_list</cite> in the supplied <cite>path</cite>.
 <cite>rxn_list</cite> is a list of ARCReaction objects.
 <cite>name</cite> is the library’s name (or project’s name).
 <cite>long_desc</cite> is a multiline string with level of theory description.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.save_nd_rotor_yaml">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_nd_rotor_yaml</code><span class="sig-paren">(</span><em class="sig-param">results</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_nd_rotor_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_nd_rotor_yaml" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_nd_rotor_yaml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_nd_rotor_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_nd_rotor_yaml" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a text file summarizing a rotor scan, useful for brute force scans.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -552,9 +552,9 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.save_rotor_text_file">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_rotor_text_file</code><span class="sig-paren">(</span><em class="sig-param">angles</em>, <em class="sig-param">energies</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_rotor_text_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_rotor_text_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_rotor_text_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angles</span></em>, <em class="sig-param"><span class="n">energies</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_rotor_text_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_rotor_text_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a text file summarizing a rotor scan, useful for brute force scans.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -570,9 +570,9 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.save_thermo_lib">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_thermo_lib</code><span class="sig-paren">(</span><em class="sig-param">species_list: list</em>, <em class="sig-param">path: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">lib_long_desc: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/plotter.html#save_thermo_lib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_thermo_lib" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_thermo_lib</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">species_list</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lib_long_desc</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/plotter.html#save_thermo_lib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_thermo_lib" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save an RMG thermo library of all species</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -586,17 +586,17 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.save_transport_lib">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_transport_lib</code><span class="sig-paren">(</span><em class="sig-param">species_list</em>, <em class="sig-param">path</em>, <em class="sig-param">name</em>, <em class="sig-param">lib_long_desc=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_transport_lib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_transport_lib" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_transport_lib</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">species_list</span></em>, <em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">lib_long_desc</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_transport_lib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_transport_lib" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save an RMG transport library of all species in <cite>species_list</cite> in the supplied <cite>path</cite>.
 <cite>name</cite> is the library’s name (or project’s name).
 <cite>long_desc</cite> is a multiline string with level of theory description.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.show_sticks">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">show_sticks</code><span class="sig-paren">(</span><em class="sig-param">xyz=None</em>, <em class="sig-param">species=None</em>, <em class="sig-param">project_directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#show_sticks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.show_sticks" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">show_sticks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">species</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#show_sticks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.show_sticks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the molecule in a “sticks” style according to the supplied xyz coordinates.
 Returns whether successful of not. If successful, saves the image using draw_3d.
 Either <code class="docutils literal notranslate"><span class="pre">xyz</span></code> or <code class="docutils literal notranslate"><span class="pre">species</span></code> must be specified.</p>
@@ -617,9 +617,9 @@ Either <code class="docutils literal notranslate"><span class="pre">xyz</span></
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.plotter.text_plotter">
-<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">text_plotter</code><span class="sig-paren">(</span><em class="sig-param">x_data</em>, <em class="sig-param">y_data</em>, <em class="sig-param">labels</em>, <em class="sig-param">text_positions</em>, <em class="sig-param">axis</em>, <em class="sig-param">txt_width</em>, <em class="sig-param">txt_height</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#text_plotter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.text_plotter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">text_plotter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_data</span></em>, <em class="sig-param"><span class="n">y_data</span></em>, <em class="sig-param"><span class="n">labels</span></em>, <em class="sig-param"><span class="n">text_positions</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">txt_width</span></em>, <em class="sig-param"><span class="n">txt_height</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#text_plotter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.text_plotter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotate a plot and add an arrow.
 Source: <a class="reference external" href="https://stackoverflow.com/questions/8850142/matplotlib-overlapping-annotations">stackoverflow</a>.</p>
 </dd></dl>

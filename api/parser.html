@@ -182,9 +182,26 @@
   <div class="section" id="module-arc.parser">
 <span id="arc-parser"></span><span id="parser"></span><h1>arc.parser<a class="headerlink" href="#module-arc.parser" title="Permalink to this headline">¶</a></h1>
 <p>A module for parsing information from various files.</p>
-<dl class="function">
+<dl class="py function">
+<dt id="arc.parser.parse_1d_scan_coords">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_1d_scan_coords</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_1d_scan_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_1d_scan_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the 1D torsion scan coordinates from an ESS log file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The ESS log file to parse from.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Cartesian coordinates</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="arc.parser.parse_1d_scan_energies">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_1d_scan_energies</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_1d_scan_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_1d_scan_energies" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_1d_scan_energies</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_1d_scan_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_1d_scan_energies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the 1D torsion scan energies from an ESS log file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -209,15 +226,15 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.parser.parse_dipole_moment">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_dipole_moment</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_dipole_moment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_dipole_moment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_dipole_moment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_dipole_moment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_dipole_moment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the dipole moment in Debye from an opt job output file.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.parser.parse_e_elect">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_e_elect</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">zpe_scale_factor=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_e_elect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_e_elect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_e_elect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">zpe_scale_factor</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_e_elect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_e_elect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the electronic energy from an sp job output file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -235,15 +252,15 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.parser.parse_frequencies">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_frequencies</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">software</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_frequencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_frequencies" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_frequencies</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">software</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_frequencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_frequencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the frequencies from a freq job output file.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.parser.parse_geometry">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_geometry</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_geometry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_geometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_geometry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the xyz geometry from an ESS log file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -258,9 +275,53 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
+<dt id="arc.parser.parse_ic_info">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_ic_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/arc/parser.html#parse_ic_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_ic_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the information of internal coordinates (ic) of an intermediate scan conformer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The path to a readable output file.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – If files other than Gaussian log is input</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A DataFrame containing the information of the internal coordinates</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="arc.parser.parse_ic_values">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_ic_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ic_block</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">software</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/arc/parser.html#parse_ic_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_ic_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal coordinates (ic) for an intermediate scan conformer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ic_block</strong> (<em>list</em>) – A list of strings containing the optimized internal coordinates of</p></li>
+<li><p><strong>intermediate scan conformer</strong> (<em>an</em>) – </p></li>
+<li><p><strong>software</strong> (<em>str</em><em>, </em><em>optional</em>) – The software to used to generate the log file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – If the software is not supported</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A DataFrame containing the values of the internal coordinates</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="arc.parser.parse_nd_scan_energies">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_nd_scan_energies</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">software=None</em>, <em class="sig-param">return_original_dihedrals=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_nd_scan_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_nd_scan_energies" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_nd_scan_energies</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">software</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">return_original_dihedrals</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_nd_scan_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_nd_scan_energies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the ND torsion scan energies from an ESS log file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -299,9 +360,9 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.parser.parse_normal_displacement_modes">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_normal_displacement_modes</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">software=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_normal_displacement_modes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_normal_displacement_modes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_normal_displacement_modes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">software</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_normal_displacement_modes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_normal_displacement_modes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse frequencies and normal displacement modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -329,21 +390,107 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.parser.parse_polarizability">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_polarizability</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_polarizability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_polarizability" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_polarizability</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_polarizability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_polarizability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the polarizability from a freq job output file, returns the value in Angstrom^3.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
+<dt id="arc.parser.parse_scan_args">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_scan_args</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/parser.html#parse_scan_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_scan_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the scan arguments, including which internal coordinates (IC) are being scanned, which are frozen,
+what is the step size and the number of atoms, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The path to a readable output file.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – If files other than Gaussian log is input</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl>
+<dt>A dict contains the scan arguments</dt><dd><p>as well as step number, step size, number of atom
+{‘scan’: &lt;list, atom indexes of the torsion to be scanned&gt;,</p>
+<blockquote>
+<div><p>’freeze’: &lt;list, list of internal coordinates identified by atom indexes&gt;,
+‘step’: &lt;int, number of steps to scan&gt;,
+‘step_size’: &lt;float, the size of each step&gt;
+‘n_atom’: &lt;int, the number of atoms of the molecule&gt;
+}</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="arc.parser.parse_scan_conformers">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_scan_conformers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/arc/parser.html#parse_scan_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_scan_conformers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse all the internal coordinates of all the scan intermediate conformers and tablet
+all the infos into a single DataFrame object. Any redundant internal coordinates
+will be removed during the process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The path to a readable output file.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – If files other than Gaussian log is input</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a list of conformers containing the all the internal</dt><dd><p>coordinates information in pd.DataFrame</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="arc.parser.parse_str_blocks">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_str_blocks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">head_pat</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Match<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">tail_pat</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Match<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">regex</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">tail_count</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">block_count</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="../_modules/arc/parser.html#parse_str_blocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_str_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of blocks defined by the head pattern and the tail pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>str</em>) – The path to the readable file.</p></li>
+<li><p><strong>head_pat</strong> (<em>str/regex</em>) – Str pattern or regular expression of the head of the block.</p></li>
+<li><p><strong>tail_pat</strong> (<em>str/regex</em>) – Str pattern or regular expresion of the tail of the block.</p></li>
+<li><p><strong>regex</strong> (<em>bool</em><em>, </em><em>optional</em>) – Use regex (True) or str pattern (False) to search.</p></li>
+<li><p><strong>tail_count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of times that the tail repeats.</p></li>
+<li><p><strong>block_count</strong> (<em>int</em><em>, </em><em>optional</em>) – The max number of blocks to search. -1 for any number.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>InputError</strong> – If the file could not be found.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of str blocks</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="arc.parser.parse_t1">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_t1</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_t1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_t1" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_t1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_t1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_t1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the T1 parameter from a Molpro or Orca coupled cluster calculation.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.parser.parse_trajectory">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_trajectory</code><span class="sig-paren">(</span><em class="sig-param">path: str</em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="../_modules/arc/parser.html#parse_trajectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_trajectory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_trajectory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="../_modules/arc/parser.html#parse_trajectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_trajectory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse all geometries from an xyz trajectory file or an ESS output file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -361,9 +508,9 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.parser.parse_xyz_from_file">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_xyz_from_file</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/parser.html#parse_xyz_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_xyz_from_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_xyz_from_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/parser.html#parse_xyz_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_xyz_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse xyz coordinated from:
 - .xyz: XYZ file
 - .gjf: Gaussian input file
@@ -385,9 +532,9 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.parser.parse_zpe">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_zpe</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_zpe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_zpe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_zpe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#parse_zpe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_zpe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the calculated ZPE from a frequency output file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -402,9 +549,9 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.parser.process_conformers_file">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">process_conformers_file</code><span class="sig-paren">(</span><em class="sig-param">conformers_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#process_conformers_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.process_conformers_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">process_conformers_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">conformers_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/parser.html#process_conformers_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.process_conformers_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse coordinates and energies from an ARC conformers file of either species or TSs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

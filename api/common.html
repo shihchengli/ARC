@@ -187,9 +187,9 @@ As such, it should not import any other ARC module (specifically ones that use t
 <div><p>to avoid circular imports.</p>
 </div></blockquote>
 <p>VERSION is the full ARC version, using <a class="reference external" href="https://semver.org/">semantic versioning</a>.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.almost_equal_coords">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_coords</code><span class="sig-paren">(</span><em class="sig-param">xyz1: dict</em>, <em class="sig-param">xyz2: dict</em>, <em class="sig-param">rtol: float = 1e-05</em>, <em class="sig-param">atol: float = 1e-08</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_coords</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz1</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">xyz2</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">rtol</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1e-05</span></em>, <em class="sig-param"><span class="n">atol</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1e-08</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for checking whether two xyz’s are almost equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -209,9 +209,9 @@ As such, it should not import any other ARC module (specifically ones that use t
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.almost_equal_coords_lists">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_coords_lists</code><span class="sig-paren">(</span><em class="sig-param">xyz1: dict</em>, <em class="sig-param">xyz2: dict</em>, <em class="sig-param">rtol: float = 1e-05</em>, <em class="sig-param">atol: float = 1e-08</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords_lists" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_coords_lists</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz1</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">xyz2</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">rtol</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1e-05</span></em>, <em class="sig-param"><span class="n">atol</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1e-08</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#almost_equal_coords_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_coords_lists" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for checking two lists of xyz’s has at least one entry in each that is almost equal.
 Useful for comparing xyz’s in unit tests.</p>
 <dl class="field-list simple">
@@ -232,9 +232,9 @@ Useful for comparing xyz’s in unit tests.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.almost_equal_lists">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_lists</code><span class="sig-paren">(</span><em class="sig-param">iter1: list</em>, <em class="sig-param">iter2: list</em>, <em class="sig-param">rtol: float = 1e-05</em>, <em class="sig-param">atol: float = 1e-08</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#almost_equal_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_lists" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">almost_equal_lists</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">iter1</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">iter2</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">rtol</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1e-05</span></em>, <em class="sig-param"><span class="n">atol</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1e-08</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#almost_equal_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.almost_equal_lists" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for checking whether two iterables are almost equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -254,9 +254,9 @@ Useful for comparing xyz’s in unit tests.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.check_ess_settings">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">check_ess_settings</code><span class="sig-paren">(</span><em class="sig-param">ess_settings: Optional[dict] = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#check_ess_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.check_ess_settings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">check_ess_settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ess_settings</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dict<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#check_ess_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.check_ess_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function to convert servers in the ess_settings dict to lists
 Assists in troubleshooting job and trying a different server
 Also check ESS and servers.</p>
@@ -273,9 +273,42 @@ Also check ESS and servers.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
+<dt id="arc.common.check_torsion_change">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">check_torsion_change</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">torsions</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">index_1</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">index_2</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">20.0</span></em>, <em class="sig-param"><span class="n">delta</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0.0</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/arc/common.html#check_torsion_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.check_torsion_change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two sets of torsions (in DataFrame) and check if any entry has a
+difference larger than threshold. The output is a DataFrame consisting of
+<code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">False</span></code>, indicating which torsions changed significantly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>torsions</strong> (<em>pd.DataFrame</em>) – A DataFrame consisting of multiple sets of torsions.</p></li>
+<li><p><strong>index_1</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em>) – The index of the first conformer.</p></li>
+<li><p><strong>index_2</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em>) – The index of the second conformer.</p></li>
+<li><p><strong>threshold</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>int</em><em>]</em>) – The threshold used to determine the difference significance.</p></li>
+<li><p><strong>delta</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>int</em><em>]</em>) – A known difference between torsion pairs,
+delta = tor[index_1] - tor[index_2].
+E.g.,for the torsions to be scanned, the
+differences are equal to the scan resolution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>a DataFrame consisting of <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">False</span></code>, indicating</dt><dd><p>which torsions changed significantly. <code class="docutils literal notranslate"><span class="pre">True</span></code> for significant
+change.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="arc.common.colliding_atoms">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">colliding_atoms</code><span class="sig-paren">(</span><em class="sig-param">xyz: dict</em>, <em class="sig-param">threshold: float = 0.55</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#colliding_atoms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.colliding_atoms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">colliding_atoms</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.55</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#colliding_atoms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.colliding_atoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether atoms are too close to each other.
 A default threshold of 55% the covalent radii of two atoms is used.
 For example:
@@ -299,9 +332,9 @@ For example:
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.determine_ess">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_ess</code><span class="sig-paren">(</span><em class="sig-param">log_file: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#determine_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_ess" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_ess</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">log_file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#determine_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_ess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the ESS to which the log file belongs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -316,9 +349,9 @@ For example:
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.determine_model_chemistry_type">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_model_chemistry_type</code><span class="sig-paren">(</span><em class="sig-param">method: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#determine_model_chemistry_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_model_chemistry_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_model_chemistry_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#determine_model_chemistry_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_model_chemistry_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the type of a model chemistry (e.g., DFT, wavefunction, force field, semi-empirical, composite).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -340,9 +373,9 @@ For example:
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.determine_symmetry">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_symmetry</code><span class="sig-paren">(</span><em class="sig-param">xyz: dict</em><span class="sig-paren">)</span> &#x2192; Tuple[int, int]<a class="reference internal" href="../_modules/arc/common.html#determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_symmetry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_symmetry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">]</span><a class="reference internal" href="../_modules/arc/common.html#determine_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_symmetry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine external symmetry and chirality (optical isomers) of the species.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -367,9 +400,9 @@ For example:
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.determine_top_group_indices">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_top_group_indices</code><span class="sig-paren">(</span><em class="sig-param">mol</em>, <em class="sig-param">atom1</em>, <em class="sig-param">atom2</em>, <em class="sig-param">index=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_top_group_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_top_group_indices" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">determine_top_group_indices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mol</span></em>, <em class="sig-param"><span class="n">atom1</span></em>, <em class="sig-param"><span class="n">atom2</span></em>, <em class="sig-param"><span class="n">index</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#determine_top_group_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.determine_top_group_indices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the indices of a “top group” in a molecule.
 The top is defined as all atoms connected to atom2, including atom2, excluding the direction of atom1.
 Two <code class="docutils literal notranslate"><span class="pre">atom_list_to_explore</span></code> are used so the list the loop iterates through isn’t changed within the loop.</p>
@@ -397,9 +430,9 @@ Two <code class="docutils literal notranslate"><span class="pre">atom_list_to_ex
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.estimate_orca_mem_cpu_requirement">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">estimate_orca_mem_cpu_requirement</code><span class="sig-paren">(</span><em class="sig-param">num_heavy_atoms: int</em>, <em class="sig-param">server: str = ''</em>, <em class="sig-param">consider_server_limits: bool = False</em><span class="sig-paren">)</span> &#x2192; Tuple[int, float]<a class="reference internal" href="../_modules/arc/common.html#estimate_orca_mem_cpu_requirement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.estimate_orca_mem_cpu_requirement" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">estimate_orca_mem_cpu_requirement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num_heavy_atoms</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">server</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">consider_server_limits</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>int<span class="p">, </span>float<span class="p">]</span><a class="reference internal" href="../_modules/arc/common.html#estimate_orca_mem_cpu_requirement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.estimate_orca_mem_cpu_requirement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates memory and cpu requirements for an Orca job.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -421,9 +454,9 @@ Two <code class="docutils literal notranslate"><span class="pre">atom_list_to_ex
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.extermum_list">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">extermum_list</code><span class="sig-paren">(</span><em class="sig-param">lst: list</em>, <em class="sig-param">return_min: bool = True</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../_modules/arc/common.html#extermum_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.extermum_list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">extermum_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">return_min</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../_modules/arc/common.html#extermum_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.extermum_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for finding the minimum of a list of numbers (int/float) where some of the entries might be None.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -442,9 +475,9 @@ Two <code class="docutils literal notranslate"><span class="pre">atom_list_to_ex
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.format_level_of_theory_for_logging">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_for_logging</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_for_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_for_logging" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_for_logging</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">level_of_theory</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_for_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_for_logging" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format level of theory dictionary to string for logging purposes.</p>
 <dl class="simple">
 <dt>Examples: input -&gt; output</dt><dd><p>{‘method’: ‘cbs-qb3’} -&gt; ‘cbs-qb3’
@@ -469,9 +502,9 @@ More examples can be found from <cite>test_format_level_of_theory_for_logging</c
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.format_level_of_theory_inputs">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_inputs</code><span class="sig-paren">(</span><em class="sig-param">level_of_theory: Union[str, dict]</em><span class="sig-paren">)</span> &#x2192; Tuple[dict, str]<a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_inputs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">format_level_of_theory_inputs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">level_of_theory</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>dict<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>dict<span class="p">, </span>str<span class="p">]</span><a class="reference internal" href="../_modules/arc/common.html#format_level_of_theory_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.format_level_of_theory_inputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function to format level of theory inputs for internal use in ARC.</p>
 <dl>
 <dt>Examples: input -&gt; output</dt><dd><p>‘cbs-qb3’ -&gt; {‘method’: ‘cbs-qb3’, ‘basis’: ‘’, ‘auxiliary_basis’: ‘’, ‘dispersion’: ‘’}
@@ -511,9 +544,9 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.get_atom_radius">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_atom_radius</code><span class="sig-paren">(</span><em class="sig-param">symbol: str</em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/common.html#get_atom_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_atom_radius" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_atom_radius</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbol</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/common.html#get_atom_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_atom_radius" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the atom covalent radius of an atom in Angstroms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -531,7 +564,7 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.get_git_branch">
 <code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_git_branch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_git_branch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_git_branch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the git branch to be logged.</p>
@@ -545,7 +578,7 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.get_git_commit">
 <code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_git_commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_git_commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_git_commit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the recent git commit to be logged.</p>
@@ -563,15 +596,15 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.get_logger">
 <code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_logger</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#get_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_logger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the ARC logger (avoid having multiple entries of the logger).</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.get_ordinal_indicator">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_ordinal_indicator</code><span class="sig-paren">(</span><em class="sig-param">number: int</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#get_ordinal_indicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_ordinal_indicator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_ordinal_indicator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">number</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#get_ordinal_indicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_ordinal_indicator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the ordinal indicator for an integer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -586,9 +619,9 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.get_single_bond_length">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_single_bond_length</code><span class="sig-paren">(</span><em class="sig-param">symbol1: str</em>, <em class="sig-param">symbol2: str</em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/common.html#get_single_bond_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_single_bond_length" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_single_bond_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbol1</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">symbol2</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/common.html#get_single_bond_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_single_bond_length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the an approximate for a single bond length between two elements.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -606,9 +639,9 @@ e.g., {‘method’: ‘DLPNO-CCSD(T)-F12’, ‘basis’: ‘cc-pVTZ-F12’,</p
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.globalize_path">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">globalize_path</code><span class="sig-paren">(</span><em class="sig-param">string: str</em>, <em class="sig-param">project_directory: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#globalize_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.globalize_path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">globalize_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#globalize_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.globalize_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rebase an absolute file path on the current project path.
 Useful when restarting an ARC project in a different folder or on a different machine.</p>
 <dl class="field-list simple">
@@ -627,9 +660,9 @@ Useful when restarting an ARC project in a different folder or on a different ma
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.globalize_paths">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">globalize_paths</code><span class="sig-paren">(</span><em class="sig-param">file_path: str</em>, <em class="sig-param">project_directory: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#globalize_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.globalize_paths" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">globalize_paths</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/common.html#globalize_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.globalize_paths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rebase all file paths in the contents of the given file on the current project path.
 Useful when restarting an ARC project in a different folder or on a different machine.</p>
 <dl class="field-list simple">
@@ -649,9 +682,9 @@ The contents of this file will be changed and saved as a different file.</p></li
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.initialize_job_types">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">initialize_job_types</code><span class="sig-paren">(</span><em class="sig-param">job_types: dict</em>, <em class="sig-param">specific_job_type: str = ''</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#initialize_job_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_job_types" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">initialize_job_types</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">job_types</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">specific_job_type</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#initialize_job_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_job_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for initializing job_types.
 Returns the comprehensive (default values for missing job types) job types for ARC.</p>
 <dl class="field-list simple">
@@ -670,9 +703,9 @@ Returns the comprehensive (default values for missing job types) job types for A
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.initialize_log">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">initialize_log</code><span class="sig-paren">(</span><em class="sig-param">log_file: str</em>, <em class="sig-param">project: str</em>, <em class="sig-param">project_directory: Optional[str] = None</em>, <em class="sig-param">verbose: int = 20</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#initialize_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_log" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">initialize_log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">log_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">project</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">20</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#initialize_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.initialize_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set up a logger for ARC.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -686,7 +719,7 @@ Returns the comprehensive (default values for missing job types) job types for A
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.is_notebook">
 <code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_notebook</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#is_notebook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_notebook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether ARC was called from an IPython notebook.</p>
@@ -700,9 +733,54 @@ Returns the comprehensive (default values for missing job types) job types for A
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
+<dt id="arc.common.is_same_pivot">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_same_pivot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">torsion1</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>list<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">torsion2</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>list<span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>bool<span class="p">]</span><a class="reference internal" href="../_modules/arc/common.html#is_same_pivot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_same_pivot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if two torsions have the same pivots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>torsion1</strong> (<em>Union</em><em>[</em><em>list</em><em>, </em><em>str</em><em>]</em>) – The four atom indices representing the first torsion.</p></li>
+<li><p><strong>(</strong><strong>Union</strong> (<em>torsion2</em>) – [list, str]): The four atom indices representing the second torsion.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if two torsions share the same pivots.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Optional[bool]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="arc.common.is_same_sequence_sublist">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_same_sequence_sublist</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">child_list</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">parent_list</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#is_same_sequence_sublist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_same_sequence_sublist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the parent list has a sublist which is identical to the child list including the sequence.
+.. rubric:: Examples</p>
+<ul class="simple">
+<li><p>child_list = [1,2,3], parent_list=[5,1,2,3,9] -&gt; <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p>child_list = [1,2,3], parent_list=[5,6,1,3,9] -&gt; <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>child_list</strong> (<em>list</em>) – The child list (the pattern to search in the parent list).</p></li>
+<li><p><strong>parent_list</strong> (<em>list</em>) – The parent list.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the sublist is in the parent list.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="arc.common.is_str_float">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_str_float</code><span class="sig-paren">(</span><em class="sig-param">value: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#is_str_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_str_float" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_str_float</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#is_str_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_str_float" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a string can be converted to a floating number.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -717,9 +795,9 @@ Returns the comprehensive (default values for missing job types) job types for A
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.is_str_int">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_str_int</code><span class="sig-paren">(</span><em class="sig-param">value: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#is_str_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_str_int" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">is_str_int</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/common.html#is_str_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.is_str_int" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a string can be converted to an integer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -734,9 +812,9 @@ Returns the comprehensive (default values for missing job types) job types for A
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.key_by_val">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">key_by_val</code><span class="sig-paren">(</span><em class="sig-param">dictionary: dict</em>, <em class="sig-param">value: Any</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="../_modules/arc/common.html#key_by_val"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.key_by_val" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">key_by_val</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dictionary</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="../_modules/arc/common.html#key_by_val"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.key_by_val" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for getting a key from a dictionary corresponding to a certain value.
 Does not check for value unicity.</p>
 <dl class="field-list simple">
@@ -755,9 +833,9 @@ Does not check for value unicity.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.log_footer">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">log_footer</code><span class="sig-paren">(</span><em class="sig-param">execution_time: str</em>, <em class="sig-param">level: int = 20</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#log_footer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_footer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">log_footer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">execution_time</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">level</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">20</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#log_footer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_footer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output a footer for the log.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -769,9 +847,9 @@ Does not check for value unicity.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.log_header">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">log_header</code><span class="sig-paren">(</span><em class="sig-param">project: str</em>, <em class="sig-param">level: int = 20</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#log_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_header" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">log_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">project</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">level</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">20</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#log_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.log_header" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output a header containing identifying information about ARC to the log.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -783,9 +861,9 @@ Does not check for value unicity.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.read_yaml_file">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">read_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">project_directory: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#read_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.read_yaml_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">read_yaml_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#read_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.read_yaml_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a YAML file (usually an input / restart file, but also conformers file)
 and return the parameters as python variables.</p>
 <dl class="field-list simple">
@@ -804,9 +882,9 @@ and return the parameters as python variables.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.save_yaml_file">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">save_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">content: list</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#save_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.save_yaml_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">save_yaml_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">content</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/common.html#save_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.save_yaml_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a YAML file (usually an input / restart file, but also conformers file)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -818,9 +896,9 @@ and return the parameters as python variables.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.sort_two_lists_by_the_first">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">sort_two_lists_by_the_first</code><span class="sig-paren">(</span><em class="sig-param">list1: List[Union[float, int, None]], list2: List[Union[float, int, None]]</em><span class="sig-paren">)</span> &#x2192; Tuple[List[Union[float, int]], List[Union[float, int]]]<a class="reference internal" href="../_modules/arc/common.html#sort_two_lists_by_the_first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.sort_two_lists_by_the_first" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">sort_two_lists_by_the_first</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list1</span><span class="p">:</span> <span class="n">List[Union[float, int, None]]</span></em>, <em class="sig-param"><span class="n">list2</span><span class="p">:</span> <span class="n">List[Union[float, int, None]]</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>List<span class="p">[</span>Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span><span class="p">]</span><span class="p">, </span>List<span class="p">[</span>Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span><span class="p">]</span><span class="p">]</span><a class="reference internal" href="../_modules/arc/common.html#sort_two_lists_by_the_first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.sort_two_lists_by_the_first" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sort two lists in increasing order by the values of the first list.
 Ignoring None entries from list1 and their respective entries in list2.
 The function was written in this format rather the more pytonic <code class="docutils literal notranslate"><span class="pre">zip(*sorted(zip(list1,</span> <span class="pre">list2)))</span></code> style
@@ -851,15 +929,15 @@ to accommodate for dictionaries as entries of list2, otherwise a
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.string_representer">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">string_representer</code><span class="sig-paren">(</span><em class="sig-param">dumper</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#string_representer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.string_representer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">string_representer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dumper</span></em>, <em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#string_representer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.string_representer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a custom string representer to use block literals for multiline strings.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.common.time_lapse">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">time_lapse</code><span class="sig-paren">(</span><em class="sig-param">t0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#time_lapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.time_lapse" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">time_lapse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#time_lapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.time_lapse" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function returning the elapsed time since t0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

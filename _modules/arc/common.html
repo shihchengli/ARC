@@ -168,7 +168,7 @@
 
 <span class="sd">VERSION is the full ARC version, using `semantic versioning &lt;https://semver.org/&gt;`_.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -178,11 +178,11 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">qcelemental</span> <span class="k">as</span> <span class="nn">qcel</span>
-
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">arkane.ess</span> <span class="kn">import</span> <span class="n">ess_factory</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">,</span> <span class="n">OrcaLog</span><span class="p">,</span> <span class="n">QChemLog</span><span class="p">,</span> <span class="n">TeraChemLog</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="kn">import</span> <span class="n">get_element</span>
@@ -1252,6 +1252,92 @@
         <span class="n">est_memory</span> <span class="o">=</span> <span class="n">max_server_mem_gb</span> <span class="o">*</span> <span class="mi">1024</span>
 
     <span class="k">return</span> <span class="n">est_cpu</span><span class="p">,</span> <span class="n">est_memory</span></div>
+
+
+<div class="viewcode-block" id="check_torsion_change"><a class="viewcode-back" href="../../api/common.html#arc.common.check_torsion_change">[docs]</a><span class="k">def</span> <span class="nf">check_torsion_change</span><span class="p">(</span><span class="n">torsions</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                         <span class="n">index_1</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                         <span class="n">index_2</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                         <span class="n">threshold</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.0</span><span class="p">,</span>
+                         <span class="n">delta</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compare two sets of torsions (in DataFrame) and check if any entry has a</span>
+<span class="sd">    difference larger than threshold. The output is a DataFrame consisting of</span>
+<span class="sd">    ``True``/``False``, indicating which torsions changed significantly.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        torsions (pd.DataFrame): A DataFrame consisting of multiple sets of torsions.</span>
+<span class="sd">        index_1 (Union[int, str]): The index of the first conformer.</span>
+<span class="sd">        index_2 (Union[int, str]): The index of the second conformer.</span>
+<span class="sd">        threshold (Union[float, int]): The threshold used to determine the difference significance.</span>
+<span class="sd">        delta (Union[float, int]): A known difference between torsion pairs,</span>
+<span class="sd">                                   delta = tor[index_1] - tor[index_2].</span>
+<span class="sd">                                   E.g.,for the torsions to be scanned, the</span>
+<span class="sd">                                   differences are equal to the scan resolution.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: a DataFrame consisting of ``True``/``False``, indicating</span>
+<span class="sd">                      which torsions changed significantly. ``True`` for significant</span>
+<span class="sd">                      change.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># First iteration without 180/-180 adjustment</span>
+    <span class="n">change</span> <span class="o">=</span> <span class="p">(</span><span class="n">torsions</span><span class="p">[</span><span class="n">index_1</span><span class="p">]</span> <span class="o">-</span> <span class="n">torsions</span><span class="p">[</span><span class="n">index_2</span><span class="p">]</span> <span class="o">-</span> <span class="n">delta</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">threshold</span>
+    <span class="c1"># Apply 180/-180 adjustment to those shown significance</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">change</span><span class="p">[</span><span class="n">change</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+        <span class="c1"># a -180 / 180 flip causes different sign</span>
+        <span class="k">if</span> <span class="n">torsions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="n">index_1</span><span class="p">]</span> <span class="o">*</span> <span class="n">torsions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="n">index_2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">torsions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="n">index_1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> \
+              <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">torsions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="n">index_1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">360</span> <span class="o">-</span> <span class="n">torsions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="n">index_2</span><span class="p">]</span> <span class="o">-</span> <span class="n">delta</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="n">change</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="n">torsions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="n">index_2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> \
+              <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">torsions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="n">index_1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">360</span> <span class="o">-</span> <span class="n">torsions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="n">index_2</span><span class="p">]</span> <span class="o">-</span> <span class="n">delta</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="n">change</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">change</span></div>
+
+
+<div class="viewcode-block" id="is_same_pivot"><a class="viewcode-back" href="../../api/common.html#arc.common.is_same_pivot">[docs]</a><span class="k">def</span> <span class="nf">is_same_pivot</span><span class="p">(</span><span class="n">torsion1</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                  <span class="n">torsion2</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                  <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if two torsions have the same pivots.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        torsion1 (Union[list, str]): The four atom indices representing the first torsion.</span>
+<span class="sd">        torsion2 (Union: [list, str]): The four atom indices representing the second torsion.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[bool]: ``True`` if two torsions share the same pivots.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">torsion1</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">torsion1</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">torsion1</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">torsion1</span>
+    <span class="n">torsion2</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">torsion2</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">torsion2</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">torsion2</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">torsion1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">torsion2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">torsion1</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">torsion2</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="ow">or</span> <span class="n">torsion1</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">torsion2</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="is_same_sequence_sublist"><a class="viewcode-back" href="../../api/common.html#arc.common.is_same_sequence_sublist">[docs]</a><span class="k">def</span> <span class="nf">is_same_sequence_sublist</span><span class="p">(</span><span class="n">child_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parent_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if the parent list has a sublist which is identical to the child list including the sequence.</span>
+<span class="sd">    Examples:</span>
+<span class="sd">        - child_list = [1,2,3], parent_list=[5,1,2,3,9] -&gt; ``True``</span>
+<span class="sd">        - child_list = [1,2,3], parent_list=[5,6,1,3,9] -&gt; ``False``</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        child_list (list): The child list (the pattern to search in the parent list).</span>
+<span class="sd">        parent_list (list): The parent list.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: ``True`` if the sublist is in the parent list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parent_list</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">child_list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parent_list</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">child_list</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">parent_list</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">child_list</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">child_list</span> <span class="o">==</span> <span class="n">parent_list</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">child_list</span><span class="p">)]:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
 </pre></div>
 
            </div>

@@ -184,9 +184,9 @@
 <p>A module for running jobs on the local machine.
 When transitioning to Python 3, use
 <a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.run">subprocess.run()</a></p>
-<dl class="function">
+<dl class="py function">
 <dt id="arc.job.local.check_job_status">
-<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">check_job_status</code><span class="sig-paren">(</span><em class="sig-param">job_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#check_job_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.check_job_status" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">check_job_status</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">job_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#check_job_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.check_job_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible statuses: <cite>before_submission</cite>, <cite>running</cite>, <cite>errored on node xx</cite>, <cite>done</cite>
 Status line formats:</p>
 <p>OGE:</p>
@@ -199,15 +199,15 @@ Status line formats:</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.job.local.check_running_jobs_ids">
 <code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">check_running_jobs_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#check_running_jobs_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.check_running_jobs_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of <code class="docutils literal notranslate"><span class="pre">int</span></code> representing job IDs of all jobs submitted by the user on a server</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.job.local.delete_all_local_arc_jobs">
-<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">delete_all_local_arc_jobs</code><span class="sig-paren">(</span><em class="sig-param">jobs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#delete_all_local_arc_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.delete_all_local_arc_jobs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">delete_all_local_arc_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">jobs</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#delete_all_local_arc_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.delete_all_local_arc_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete all ARC-spawned jobs (with job name starting with <cite>a</cite> and a digit) from the local server.
 Make sure you know what you’re doing, so unrelated jobs won’t be deleted…
 Useful when terminating ARC while some (ghost) jobs are still running.</p>
@@ -218,15 +218,15 @@ Useful when terminating ARC while some (ghost) jobs are still running.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.job.local.delete_job">
-<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">delete_job</code><span class="sig-paren">(</span><em class="sig-param">job_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#delete_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.delete_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">delete_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">job_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#delete_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.delete_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a running job</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.job.local.execute_command">
-<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">execute_command</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">shell=True</em>, <em class="sig-param">no_fail=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#execute_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.execute_command" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">execute_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em>, <em class="sig-param"><span class="n">shell</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">no_fail</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#execute_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.execute_command" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a command.</p>
 <p class="rubric">Notes</p>
 <p>If <cite>no_fail</cite> == True, then a warning is logged and <cite>False</cite> is returned so that the calling function can debug
@@ -245,30 +245,30 @@ the situation.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.job.local.get_last_modified_time">
-<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">get_last_modified_time</code><span class="sig-paren">(</span><em class="sig-param">file_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#get_last_modified_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.get_last_modified_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">get_last_modified_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#get_last_modified_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.get_last_modified_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns the last modified time of <cite>file_path</cite> in a datetime format</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.job.local.rename_output">
-<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">rename_output</code><span class="sig-paren">(</span><em class="sig-param">local_file_path</em>, <em class="sig-param">software</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#rename_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.rename_output" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">rename_output</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">local_file_path</span></em>, <em class="sig-param"><span class="n">software</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#rename_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.rename_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rename the output file to “output.out” for consistency between software
 <cite>local_file_path</cite> is the full path to the output.out file,
 <cite>software</cite> is the software used for the job by which the original output file name is determined</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.job.local.submit_job">
-<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">submit_job</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#submit_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.submit_job" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">submit_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#submit_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.submit_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submit a job
 <cite>path</cite> is the job’s folder path, where the submit script is located (without the submit script file name)</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="arc.job.local.write_file">
-<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param">file_path</em>, <em class="sig-param">file_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#write_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.write_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.job.local.</code><code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span></em>, <em class="sig-param"><span class="n">file_string</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/local.html#write_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.local.write_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write <cite>file_string</cite> as the file’s content in <cite>file_path</cite></p>
 </dd></dl>
 

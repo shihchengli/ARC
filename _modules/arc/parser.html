@@ -165,17 +165,20 @@
 <span class="sd">A module for parsing information from various files.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Match</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">qcelemental</span> <span class="k">as</span> <span class="nn">qcel</span>
 
 <span class="kn">from</span> <span class="nn">arkane.exceptions</span> <span class="kn">import</span> <span class="n">LogError</span>
 <span class="kn">from</span> <span class="nn">arkane.ess</span> <span class="kn">import</span> <span class="n">ess_factory</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">,</span> <span class="n">OrcaLog</span><span class="p">,</span> <span class="n">QChemLog</span><span class="p">,</span> <span class="n">TeraChemLog</span>
 
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">determine_ess</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">determine_ess</span><span class="p">,</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">is_same_pivot</span>
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">ParserError</span>
-<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="n">xyz_from_data</span><span class="p">,</span> <span class="n">str_to_xyz</span>
+<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="n">str_to_xyz</span><span class="p">,</span> <span class="n">xyz_from_data</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
@@ -439,6 +442,40 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read energies from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span></div>
+
+
+<div class="viewcode-block" id="parse_1d_scan_coords"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_1d_scan_coords">[docs]</a><span class="k">def</span> <span class="nf">parse_1d_scan_coords</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse the 1D torsion scan coordinates from an ESS log file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The ESS log file to parse from.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: The Cartesian coordinates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Currently parse_1d_scan_coords only supports Gaussian files, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">log</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">traj</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;Normal termination of Gaussian&#39;</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">or</span> <span class="s1">&#39;Error termination via&#39;</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="s1">&#39;Optimization completed&#39;</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="k">while</span> <span class="s1">&#39;Input orientation:&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">5</span>
+            <span class="n">xyz_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">while</span> <span class="s1">&#39;--------------------------------------------&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">splits</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">xyz_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">qcel</span><span class="o">.</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_E</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">traj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">traj</span></div>
 
 
 <div class="viewcode-block" id="parse_nd_scan_energies"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_nd_scan_energies">[docs]</a><span class="k">def</span> <span class="nf">parse_nd_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">software</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_original_dihedrals</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -897,6 +934,269 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">line_index</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span></div>
+
+
+<div class="viewcode-block" id="parse_str_blocks"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_str_blocks">[docs]</a><span class="k">def</span> <span class="nf">parse_str_blocks</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                     <span class="n">head_pat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Match</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                     <span class="n">tail_pat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Match</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                     <span class="n">regex</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                     <span class="n">tail_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                     <span class="n">block_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a list of blocks defined by the head pattern and the tail pattern.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_path (str): The path to the readable file.</span>
+<span class="sd">        head_pat (str/regex): Str pattern or regular expression of the head of the block.</span>
+<span class="sd">        tail_pat (str/regex): Str pattern or regular expresion of the tail of the block.</span>
+<span class="sd">        regex (bool, optional): Use regex (True) or str pattern (False) to search.</span>
+<span class="sd">        tail_count (int, optional): The number of times that the tail repeats.</span>
+<span class="sd">        block_count (int, optional): The max number of blocks to search. -1 for any number.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        InputError: If the file could not be found.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: List of str blocks</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Could not find file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">blks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Different search mode</span>
+        <span class="k">if</span> <span class="n">regex</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">y</span>
+        <span class="c1"># &#39;search&#39; for the head or &#39;read&#39; until the tail</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;search&#39;</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">line</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;search&#39;</span><span class="p">:</span>
+                <span class="c1"># Stop searching if found enough blocks</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">blks</span><span class="p">))</span> <span class="o">==</span> <span class="n">block_count</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="c1"># Check if matching the head pattern</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">match</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="n">head_pat</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                    <span class="c1"># Switch to &#39;read&#39; mode</span>
+                    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                        <span class="n">tail_repeat</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;read&#39;</span>
+                        <span class="n">blks</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+                        <span class="n">blks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;read&#39;</span><span class="p">:</span>
+                <span class="n">blks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">match</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="n">tail_pat</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                    <span class="n">tail_repeat</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="c1"># If see enough tail patterns, switch to &#39;search&#39; mode</span>
+                    <span class="k">if</span> <span class="n">tail_repeat</span> <span class="o">==</span> <span class="n">tail_count</span><span class="p">:</span>
+                        <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;search&#39;</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="c1"># Remove the last incomplete search</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">tail_repeat</span> <span class="o">!=</span> <span class="n">tail_count</span><span class="p">):</span>
+            <span class="n">blks</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">blks</span></div>
+
+
+<div class="viewcode-block" id="parse_scan_args"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_scan_args">[docs]</a><span class="k">def</span> <span class="nf">parse_scan_args</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the scan arguments, including which internal coordinates (IC) are being scanned, which are frozen,</span>
+<span class="sd">    what is the step size and the number of atoms, etc.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_path (str): The path to a readable output file.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: If files other than Gaussian log is input</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A dict contains the scan arguments</span>
+<span class="sd">                          as well as step number, step size, number of atom</span>
+<span class="sd">                          {&#39;scan&#39;: &lt;list, atom indexes of the torsion to be scanned&gt;,</span>
+<span class="sd">                           &#39;freeze&#39;: &lt;list, list of internal coordinates identified by atom indexes&gt;,</span>
+<span class="sd">                           &#39;step&#39;: &lt;int, number of steps to scan&gt;,</span>
+<span class="sd">                           &#39;step_size&#39;: &lt;float, the size of each step&gt;</span>
+<span class="sd">                           &#39;n_atom&#39;: &lt;int, the number of atoms of the molecule&gt;</span>
+<span class="sd">                           }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="n">scan_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;scan&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;freeze&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                 <span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;step_size&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;n_atom&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># g09, g16</span>
+            <span class="n">scan_blk</span> <span class="o">=</span> <span class="n">parse_str_blocks</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;The following ModRedundant input section has been read:&#39;</span><span class="p">,</span>
+                                        <span class="s1">&#39;Isotopes and Nuclear Properties&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># Cannot find any block</span>
+            <span class="c1"># g03</span>
+            <span class="n">scan_blk_1</span> <span class="o">=</span> <span class="n">parse_str_blocks</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;The following ModRedundant input section has been read:&#39;</span><span class="p">,</span>
+                                          <span class="s1">&#39;GradGradGradGrad&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">scan_blk_2</span> <span class="o">=</span> <span class="n">parse_str_blocks</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;NAtoms=&#39;</span><span class="p">,</span>
+                                          <span class="s1">&#39;One-electron integrals computed&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">scan_blk</span> <span class="o">=</span> <span class="n">scan_blk_1</span> <span class="o">+</span> <span class="n">scan_blk_2</span>
+        <span class="n">scan_pat</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;[DBA]?(\s+\d+){2,4}\s+S\s+\d+[\s\d.]+&#39;</span>
+        <span class="n">frz_pat</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;[DBA]?(\s+\d+){2,4}\s+F&#39;</span>
+        <span class="n">value_pat</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;[\d.]+&#39;</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">scan_blk</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">scan_pat</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">value_pat</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                <span class="n">scan_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>  <span class="c1"># atom indexes + step + stepsize</span>
+                <span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">scan_len</span><span class="p">)]</span>
+                <span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;step_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">frz_pat</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">value_pat</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                <span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;freeze&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">))])</span>
+            <span class="k">if</span> <span class="s1">&#39;NAtoms&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;n_atom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_scan_args() can currently only parse Gaussian output &#39;</span>
+                                  <span class="sa">f</span><span class="s1">&#39;files, got </span><span class="si">{</span><span class="n">log</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">scan_args</span></div>
+
+
+<div class="viewcode-block" id="parse_ic_info"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_ic_info">[docs]</a><span class="k">def</span> <span class="nf">parse_ic_info</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the information of internal coordinates (ic) of an intermediate scan conformer.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_path (str): The path to a readable output file.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: If files other than Gaussian log is input</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: A DataFrame containing the information of the internal coordinates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="n">ic_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">:</span> <span class="p">[]</span>
+               <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;atoms&#39;</span><span class="p">,</span> <span class="s1">&#39;redundant&#39;</span><span class="p">,</span> <span class="s1">&#39;scan&#39;</span><span class="p">]}</span>
+    <span class="n">scan_args</span> <span class="o">=</span> <span class="n">parse_scan_args</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="n">max_atom_ind</span> <span class="o">=</span> <span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;n_atom&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">):</span>
+        <span class="n">ic_info_block</span> <span class="o">=</span> <span class="n">parse_str_blocks</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;Initial Parameters&#39;</span><span class="p">,</span> <span class="s1">&#39;-----------&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                         <span class="n">tail_count</span><span class="o">=</span><span class="mi">3</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ic_info_block</span><span class="p">:</span>
+            <span class="c1"># Line example with split() indices:</span>
+            <span class="c1"># 0 1     2                        3              4         5       6            7</span>
+            <span class="c1"># ! R1    R(1, 2)                  1.3581         calculate D2E/DX2 analytically !</span>
+            <span class="n">terms</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">terms</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">terms</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># &#39;R: bond, A: angle, D: dihedral</span>
+            <span class="n">atom_inds</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[(),]&#39;</span><span class="p">,</span> <span class="n">terms</span><span class="p">[</span><span class="mi">2</span><span class="p">])[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;atoms&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">atom_ind</span><span class="p">)</span> <span class="k">for</span> <span class="n">atom_ind</span> <span class="ow">in</span> <span class="n">atom_inds</span><span class="p">])</span>
+
+            <span class="c1"># Identify redundant, cases like 5 atom angles or redundant atoms</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;A&#39;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom_inds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">)</span> \
+                    <span class="ow">or</span> <span class="p">(</span><span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;R&#39;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom_inds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> \
+                    <span class="ow">or</span> <span class="p">(</span><span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;D&#39;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom_inds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">):</span>
+                <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;redundant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Sometimes, redundant atoms with weird indices are added.</span>
+                <span class="c1"># Reason unclear. Maybe to better define the molecule, or to</span>
+                <span class="c1"># solve equations more easily.</span>
+                <span class="n">weird_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;atoms&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                                 <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="n">max_atom_ind</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">weird_indices</span><span class="p">:</span>
+                    <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;redundant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;redundant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="c1"># Identify ics being scanned</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom_inds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> \
+                    <span class="ow">and</span> <span class="n">is_same_pivot</span><span class="p">(</span><span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">],</span> <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;atoms&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom_inds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> \
+                    <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;atoms&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Currently doesn&#39;t support scan of angles</span>
+                <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_ic_info() can currently only parse Gaussian output &#39;</span>
+                                  <span class="sa">f</span><span class="s1">&#39;files, got </span><span class="si">{</span><span class="n">log</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">ic_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">ic_dict</span><span class="p">)</span>
+    <span class="n">ic_info</span> <span class="o">=</span> <span class="n">ic_info</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ic_info</span></div>
+
+
+<div class="viewcode-block" id="parse_ic_values"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_ic_values">[docs]</a><span class="k">def</span> <span class="nf">parse_ic_values</span><span class="p">(</span><span class="n">ic_block</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                    <span class="n">software</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the internal coordinates (ic) for an intermediate scan conformer</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ic_block (list): A list of strings containing the optimized internal coordinates of</span>
+<span class="sd">        an intermediate scan conformer</span>
+<span class="sd">        software(str, optional): The software to used to generate the log file.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: If the software is not supported</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: A DataFrame containing the values of the internal coordinates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ic_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">]}</span>
+    <span class="k">if</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ic_block</span><span class="p">:</span>
+            <span class="c1"># Line example with split() indices:</span>
+            <span class="c1"># 0 1     2                       3              4      5    6                   7</span>
+            <span class="c1"># ! R1    R(1,2)                  1.3602         -DE/DX =    0.0                 !</span>
+            <span class="n">terms</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">terms</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">terms</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_ics() can currently only parse Gaussian output &#39;</span>
+                                  <span class="sa">f</span><span class="s1">&#39;files, got </span><span class="si">{</span><span class="n">software</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">ics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">ic_dict</span><span class="p">)</span>
+    <span class="n">ics</span> <span class="o">=</span> <span class="n">ics</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ics</span></div>
+
+
+<div class="viewcode-block" id="parse_scan_conformers"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_scan_conformers">[docs]</a><span class="k">def</span> <span class="nf">parse_scan_conformers</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse all the internal coordinates of all the scan intermediate conformers and tablet</span>
+<span class="sd">    all the infos into a single DataFrame object. Any redundant internal coordinates</span>
+<span class="sd">    will be removed during the process.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_path (str): The path to a readable output file.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: If files other than Gaussian log is input</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: a list of conformers containing the all the internal</span>
+<span class="sd">                       coordinates information in pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="n">scan_args</span> <span class="o">=</span> <span class="n">parse_scan_args</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="n">scan_ic_info</span> <span class="o">=</span> <span class="n">parse_ic_info</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">):</span>
+        <span class="n">software</span> <span class="o">=</span> <span class="s1">&#39;gaussian&#39;</span>
+        <span class="n">ic_blks</span> <span class="o">=</span> <span class="n">parse_str_blocks</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;Optimized Parameters&#39;</span><span class="p">,</span> <span class="s1">&#39;-----------&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                   <span class="n">tail_count</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">block_count</span><span class="o">=</span><span class="p">(</span><span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;step&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_scan_conformers() can currently only parse Gaussian output &#39;</span>
+                                  <span class="sa">f</span><span class="s1">&#39;files, got </span><span class="si">{</span><span class="n">log</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c1"># Extract IC values for each conformer</span>
+    <span class="n">conformers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">ic_blk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ic_blks</span><span class="p">):</span>
+        <span class="n">ics</span> <span class="o">=</span> <span class="n">parse_ic_values</span><span class="p">(</span><span class="n">ic_blk</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">software</span><span class="p">)</span>
+        <span class="n">ics</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">ind</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">conformers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ics</span><span class="p">)</span>
+    <span class="c1"># Concatenate ICs of conformers to a single table and remove redundant ICs</span>
+    <span class="n">scan_conformers</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">scan_ic_info</span><span class="p">]</span> <span class="o">+</span> <span class="n">conformers</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">red_ind</span> <span class="o">=</span> <span class="n">scan_conformers</span><span class="p">[</span><span class="n">scan_conformers</span><span class="o">.</span><span class="n">redundant</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">red_ind</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">scan_conformers</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">red_ind</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">scan_conformers</span></div>
 </pre></div>
 
            </div>
